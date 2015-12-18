@@ -5,8 +5,8 @@ import fr.ensimag.deca.tree.Location;
 /**
  * Definition of a method parameter.
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl41
+ * @date 01/01/2016
  */
 public class ParamDefinition extends NonTypeDefinition {
 

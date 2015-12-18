@@ -1,2 +1,2 @@
 Projet Génie Logiciel, Ensimag.
-@AUTHOR@, @DATE@.
+gl41, 01/01/2016.

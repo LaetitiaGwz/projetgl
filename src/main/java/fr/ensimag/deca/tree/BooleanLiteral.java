@@ -10,8 +10,8 @@ import java.io.PrintStream;
 
 /**
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl41
+ * @date 01/01/2016
  */
 public class BooleanLiteral extends AbstractExpr {
 

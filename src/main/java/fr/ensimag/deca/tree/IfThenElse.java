@@ -13,8 +13,8 @@ import org.apache.commons.lang.Validate;
 /**
  * Full if/else if/else statement.
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl41
+ * @date 01/01/2016
  */
 public class IfThenElse extends AbstractInst {
     private ListIfThen ifThen;

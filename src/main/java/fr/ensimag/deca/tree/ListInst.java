@@ -10,8 +10,8 @@ import fr.ensimag.ima.pseudocode.Label;
 
 /**
  * 
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl41
+ * @date 01/01/2016
  */
 public class ListInst extends TreeList<AbstractInst> {
 

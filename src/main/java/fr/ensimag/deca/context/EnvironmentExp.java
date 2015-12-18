@@ -11,8 +11,8 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
  * parentEnvironment if it fails. Insertion is always done in the first
  * EnvironmentExp of the list.
  * 
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl41
+ * @date 01/01/2016
  */
 public class EnvironmentExp {
     // A FAIRE : implémenter la structure de donnée représentant un

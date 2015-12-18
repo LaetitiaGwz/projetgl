@@ -11,8 +11,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 /**
  * List of expressions (eg list of parameters).
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl41
+ * @date 01/01/2016
  */
 public class ListExpr extends TreeList<AbstractExpr> {
     public void verifyParams(DecacCompiler compiler, EnvironmentExp localEnv,

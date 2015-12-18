@@ -4,8 +4,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl41
+ * @date 01/01/2016
  */
 public class ListIfThen extends TreeList<AbstractIfThen> {
 

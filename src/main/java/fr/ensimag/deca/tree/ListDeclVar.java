@@ -5,8 +5,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 /**
  * List of variables within a declaration (e.g. x, y=42).
  * 
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl41
+ * @date 01/01/2016
  */
 public class ListDeclVar extends TreeList<AbstractDeclVar> {
 

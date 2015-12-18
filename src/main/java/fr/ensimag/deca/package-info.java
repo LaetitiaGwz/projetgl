@@ -1,7 +1,7 @@
 /**
  * Toplevel for the Deca compiler.
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl41
+ * @date 01/01/2016
  */
 package fr.ensimag.deca;

@@ -10,8 +10,8 @@ import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
 /**
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl41
+ * @date 01/01/2016
  */
 public class Initialization extends AbstractInitialization {
 

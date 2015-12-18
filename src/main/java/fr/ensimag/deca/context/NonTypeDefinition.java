@@ -6,8 +6,8 @@ import fr.ensimag.ima.pseudocode.DAddr;
 /**
  * Definition other than a type.
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl41
+ * @date 01/01/2016
  */
 public abstract class NonTypeDefinition extends Definition {
 

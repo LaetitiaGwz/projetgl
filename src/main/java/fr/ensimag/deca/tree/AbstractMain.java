@@ -6,8 +6,8 @@ import fr.ensimag.deca.context.ContextualError;
 /**
  * Main block of a Deca program.
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl41
+ * @date 01/01/2016
  */
 public abstract class AbstractMain extends Tree {
 

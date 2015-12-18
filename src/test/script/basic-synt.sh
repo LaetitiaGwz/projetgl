@@ -1,7 +1,7 @@
 #! /bin/sh
 
-# Auteur : @AUTHOR@
-# Version initiale : @DATE@
+# Auteur : gl41
+# Version initiale : 01/01/2016
 
 # Test minimaliste de la syntaxe.
 # On lance test_synt sur un fichier valide, et les tests invalides.
