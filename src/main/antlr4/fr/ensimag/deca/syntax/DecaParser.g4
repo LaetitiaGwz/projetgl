@@ -77,12 +77,18 @@ list_decl returns[ListDeclVarSet tree]
 
 decl_var_set returns[AbstractDeclVarSet tree]
     : type dv=list_decl_var SEMI {
+        $tree = new DeclVarSet($type.tree, $dv.tree);
     }
     ;
 
 list_decl_var returns[ListDeclVar tree]
     : dv1=decl_var {
+        $tree = new ListDeclVar();
+        assert($dv1.tree != null);
+        $tree.add($dv1.tree);
         } (COMMA dv2=decl_var {
+        assert($dv2.tree != null);
+        $tree.add($dv2.tree);
         }
       )*
     ;
@@ -100,6 +106,7 @@ decl_var returns[AbstractDeclVar tree]
 
 list_inst returns[ListInst tree]
 @init {
+    $tree = new ListInst();
 }
     : (inst {
         }
