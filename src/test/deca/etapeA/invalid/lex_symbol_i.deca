@@ -1,0 +1,28 @@
+// Description:
+//    test du lexeur pour les symboles spéciaux
+//
+// Resultats:
+// ok
+
+<
+>
+=
++
+-
+*
+/
+%
+.
+,
+(
+)
+{
+}
+!
+;
+==
+!=
+>=
+<=
+&&
+||

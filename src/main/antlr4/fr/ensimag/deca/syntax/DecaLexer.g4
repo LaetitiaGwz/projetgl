@@ -22,18 +22,18 @@ ELSE: 'else'   ;
 FALSE: 'false';      
 IF: 'if';
 INSTANCEOF: 'instanceof';  
-NEW: 'new'       ;
-NULL: 'null'     ;
-READINT: 'readInt'    ;
+NEW: 'new';
+NULL: 'null';
+READINT: 'readInt';
 READFLOAT: 'readFloat';  
 PRINT: 'print';
-PRINTLN: 'println'   ;  
+PRINTLN: 'println';
 PRINTLNX: 'printlnx';  
-PRINTX: 'printx'   ;
+PRINTX: 'printx';
 PROTECTED: 'protected';  
 RETURN: 'return';     
 THIS: 'this';
-TRUE: 'true'   ;     
+TRUE: 'true';
 WHILE: 'while';
 
 fragment LETTER : 'a' .. 'z'+'A' .. 'Z';
@@ -42,27 +42,27 @@ fragment DIGIT : '0' .. '9';
 /* 
  * Symboles spéciaux
 */
-LT: '<'  ;
-GT: '>'  ;
-EQUALS: '='  ;
-PLUS: '+'  ;
-MINUS: '-'  ;
-TIMES: '*'  ;
-SLASH: '/'  ;
-PERCENT: '%'  ;
-DOT: '.'  ;
-COMMA: ','  ;
-OPARENT: '('  ;
-CPARENT: ')'  ;
-OBRACE: '{' ; 
+LT: '<';
+GT: '>';
+EQUALS: '=';
+PLUS: '+';
+MINUS: '-';
+TIMES: '*';
+SLASH: '/';
+PERCENT: '%';
+DOT: '.';
+COMMA: ',';
+OPARENT: '(';
+CPARENT: ')';
+OBRACE: '{';
 CBRACE: '}';
-EXCLAM: '!'  ;
-SEMI: ';'  ;
-EQEQ: '=='  ;
-NEQ: '!='  ;
-GEQ: '>='  ;
-LEQ: '<='  ;
-AND: '&&' ; 
+EXCLAM: '!';
+SEMI: ';';
+EQEQ: '==';
+NEQ: '!=';
+GEQ: '>=';
+LEQ: '<=';
+AND: '&&';
 OR: '||';
 
 /* 
@@ -91,7 +91,6 @@ fragment STRING_CAR: ~('"' | '\\' | '\n') ;
 STRING : '"' (STRING_CAR + '\\"' + '\\\\')*  ' »' { System.out.println("["+getText()+" ]"); }; 
 MULTI_LINE_STRING : '"' (STRING_CAR + EOL + '\\"' + '\\\\')*  ' »' { System.out.println("["+getText()+" ]"); }; 
 
-
 /* 
  * Commentaires
 */
@@ -112,7 +111,7 @@ SEPARATEUR: (ESPACE
 /* 
  * Inclusion de fichier
 */
-fragment FILENAME : (LETTER + DIGIT + '.' + '-' + '_')+ ;
+fragment FILENAME : (LETTER + DIGIT + '.' + '-' + '_')+;
 INCLUDE : '#include' (' ')* '"' FILENAME '"';
 
 /* 
@@ -121,12 +120,6 @@ INCLUDE : '#include' (' ')* '"' FILENAME '"';
 
 IDENT : (LETTER + '$' + '_')(LETTER + DIGIT + '$' + '_')*;
 
-
-
-UNMATCH 
+UNMATCH
     : . { System.out.println("Non reconnu : " + getText()); }
     ;
-
-
-
-

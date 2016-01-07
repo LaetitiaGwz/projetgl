@@ -1,0 +1,18 @@
+// Description:
+//    test du lexeur pour les chaines de caractère
+//
+// Resultats:
+// ok
+
+// Strings sur une ligne
+"bonjour"
+"\\\\"
+"\\""
+
+// Tests de tous les caractères
+" & é " ' ( - è _ ç à ) = ^ $ ù * , ; : ! ~ # { [ | ` \ ç @ ] } ê £ µ'
+
+//Strings sur plusieures lignes
+"chaine \n sur\n plusieures \n lignes"
+"chaine \n\n\n\n sur plusieures \n lignes"
+
