@@ -39,6 +39,10 @@ public class CompilerOptions {
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
+	private boolean parse = false;
+	private boolean verification =false;
+	private boolean nocheck= false;
+	private int registre =16;
     private List<File> sourceFiles = new ArrayList<File>();
 
     
@@ -47,9 +51,13 @@ public class CompilerOptions {
 		if (args.length==1){
 			throw new CLIException("Aucun parametre rentree");
 		}
-		if(args.length==2 && args[1].equals("-b")){
+		if(args.length==2 && args[1].equals("-b")){ //on check pour la bannière
 			this.printBanner=true;
 		}
+
+
+
+
 
         Logger logger = Logger.getRootLogger();
         // map command-line debug option to log4j's level.
