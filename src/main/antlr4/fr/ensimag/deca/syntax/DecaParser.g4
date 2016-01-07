@@ -109,6 +109,7 @@ list_inst returns[ListInst tree]
     $tree = new ListInst();
 }
     : (inst {
+            $tree.add($inst.tree);
         }
       )*
     ;
@@ -159,10 +160,13 @@ if_then_else returns[AbstractInst tree]
 
 list_expr returns[ListExpr tree]
 @init   {
+            $tree = new ListExpr();
         }
     : (e1=expr {
+            $tree.add($e1.tree);
         }
        (COMMA e2=expr {
+            $tree.add($e2.tree);
         }
        )* )?
     ;
