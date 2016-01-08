@@ -106,6 +106,9 @@ public class CompilerOptions {
 				else{
 					throw new CLIException("commande incorrect");
 				}
+				if(this.parse==true && this.verification==true){
+					throw new CLIException("-p et -v sont incompatibles");
+				}
 			}
 		}
 
