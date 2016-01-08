@@ -1,0 +1,15 @@
+// Description:
+//    test du non terminal list-inst
+// Vérifie les instructions de type print
+// Resultats:
+// ok
+
+{
+   print(a);
+   println(b);
+   printx(c);
+   printlnx(d);
+}
+
+
+
