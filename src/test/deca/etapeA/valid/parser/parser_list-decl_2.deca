@@ -1,0 +1,11 @@
+// Description:
+//    test du non terminal primary_exp
+//
+// Resultats:
+// le parseur doit reconnaitre un bloc avec trois déclarations
+
+{
+    Float number0 = 0.4,number1 = 32.5,number3;
+}
+
+

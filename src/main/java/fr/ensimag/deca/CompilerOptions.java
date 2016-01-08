@@ -36,14 +36,97 @@ public class CompilerOptions {
         return Collections.unmodifiableList(sourceFiles);
     }
 
+	public boolean getParse() {
+		return parse;
+	}
+
+	public boolean getVerification(){return verification;}
+
+	public boolean getNoCheck(){return nocheck;}
+
+	public Integer getRegistre(){return registre;}
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
+	private boolean parse = false;
+	private boolean verification =false;
+	private boolean nocheck= false;
+	private Integer registre =16;
     private List<File> sourceFiles = new ArrayList<File>();
 
     
     public void parseArgs(String[] args) throws CLIException {
-        // A FAIRE : parcourir args pour positionner les options correctement.
+        // A FAIRE : parcourir args pour positionner les options correctement
+		if (args.length==0){
+			throw new CLIException("Aucun parametre rentree");
+		}
+		else if(args.length==1 && args[0].equals("-b")){ //on check pour la bannière
+			this.printBanner=true;
+		}
+		else{
+			Integer i=0;
+			while(i<args.length){ // on parcours la commande
+				if(args[i].equals("-p")){ //parse
+					this.parse=true;
+					i++;
+				}
+				else if(args[i].equals("-v")){ //verification
+					this.verification=true;
+					i++;
+				}
+				else if(args[i].equals("-n")){ //nocheck
+					this.nocheck=true;
+					i++;
+				}
+				else if (args[i].equals("-d")){ //debug
+					this.debug++;
+					i++;
+				}
+				else if(args[i].equals("-r")){
+					try {
+						Integer mon_int = Integer.parseInt(args[i+1]);
+						if(mon_int<=16 && mon_int>=4){
+							this.registre=mon_int;
+						}
+						else{
+							throw new CLIException("mauvaise valeur pour -r X");
+						}
+					}
+					catch (NumberFormatException nfe){
+						throw new CLIException("mauvais argument pour -r X");
+					}
+					i++;
+					i++;
+				}
+				else if(args[i].equals("-P")){
+					this.parallel=true;
+					i++;
+				}
+				else if(args[i].contains("deca")){
+					File tmp =new File(args[i]);
+					if(sourceFiles.contains((tmp))){
+						i++;
+					}
+					else {
+						sourceFiles.add(tmp);
+						i++;
+					}
+				}
+				else{
+					throw new CLIException("commande incorrect");
+				}
+				if(this.parse==true && this.verification==true){
+					throw new CLIException("-p et -v sont incompatibles");
+				}
+			}
+		}
+
+
+
+
+
+
         Logger logger = Logger.getRootLogger();
         // map command-line debug option to log4j's level.
         switch (getDebug()) {
@@ -67,10 +150,20 @@ public class CompilerOptions {
             logger.info("Java assertions disabled");
         }
 
-        throw new UnsupportedOperationException("not yet implemented");
+
     }
 
     protected void displayUsage() {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+        System.out.println("Voici les différents fonctions du compilateur:");
+		System.out.println("-b affiche le nom de l'equipe, doit etre utiliser seul");
+		System.out.print("-p apllique le parser et décompile celui-ci et l'affiche, doit etre suivi au moins d'un nom de fichier source ");
+		System.out.println(" ne peux etre utilisé avec -v");
+    	System.out.print("-v arrete decac après la vérification, ne produit pas de sortie, doit etre suivi au moins d'un nom de fichier source");
+		System.out.print("ne peut estre suivit de -p");
+		System.out.println("-n enleve les tests de débordements (arithméthique,mémoire,null");
+		System.out.println("-r X limite l'utilisation des registres à R(X-1), nb: 4 <= X <= 16");
+		System.out.println("-d active les traces de debug, activer plusieurs fois pour avoir plus de traces");
+		System.out.println("-P si plusieurs fichiers sources lance la compilation en parallèle");
+		System.out.println("-w affiche les warnings");
+	}
 }

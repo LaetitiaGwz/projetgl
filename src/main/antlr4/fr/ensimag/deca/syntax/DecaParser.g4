@@ -155,7 +155,6 @@ inst returns[AbstractInst tree]
         }
     ;
 
-// TODO
 if_then_else returns[AbstractInst tree]
 @init {
 }
@@ -370,13 +369,13 @@ primary_expr returns[AbstractExpr tree]
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
-            //TODO
+            $tree = $expr.tree;
         }
     | READINT OPARENT CPARENT {
-            //TODO
+            $tree = new ReadInt();
         }
     | READFLOAT OPARENT CPARENT {
-            //TODO
+            $tree = new ReadFloat();
         }
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
@@ -405,16 +404,16 @@ literal returns[AbstractExpr tree]
             //TODO
         }
     | fd=FLOAT {
-            //TODO
+            $tree = new FloatLiteral(Float.parseFloat($fd.getText()));
         }
     | STRING {
             $tree = new StringLiteral($STRING.getText());
         }
     | TRUE {
-            //TODO
+            $tree = new BooleanLiteral(true);
         }
     | FALSE {
-            //TODO
+            $tree = new BooleanLiteral(false);
         }
     | THIS {
             //TODO
@@ -432,8 +431,12 @@ ident returns[AbstractIdentifier tree]
 /****     Class related rules     ****/
 
 list_classes returns[ListDeclClass tree]
+@init {
+    $tree = new ListDeclClass();
+}
     :
       (c1=class_decl {
+
         }
       )*
     ;

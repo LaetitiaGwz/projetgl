@@ -26,10 +26,13 @@ public class DecacMain {
             System.exit(1);
         }
         if (options.getPrintBanner()) {
-            throw new UnsupportedOperationException("decac -b not yet implemented");
+            System.err.println("Le groupe est  ProjetGL41");
+            System.exit(1);
         }
         if (options.getSourceFiles().isEmpty()) {
-            throw new UnsupportedOperationException("decac without argument not yet implemented");
+            System.err.println("Il n'y a pas de fichier source");
+			options.displayUsage();
+			System.exit(1);
         }
         if (options.getParallel()) {
             // A FAIRE : instancier DecacCompiler pour chaque fichier à
