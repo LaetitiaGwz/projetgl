@@ -1,0 +1,12 @@
+// Description:
+//    test du non terminal primary_exp
+//
+// Resultats:
+// le parseur doit reconnaitre un bloc
+
+{
+    Float number = 0.4;
+}
+
+
+

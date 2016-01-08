@@ -1,0 +1,10 @@
+
+// Description:
+//    test du lexeur pour les identificateurs
+//    vérifie que les identificateurs sont composés de bons caractères
+//
+// Resultats:
+// erreur syntaxique
+// Ligne <9> : <syntaxError>
+
+toŒto

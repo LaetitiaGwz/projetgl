@@ -1,0 +1,10 @@
+// Description:
+//    test du lexeur pour les litéraux flottants
+//    vérifie la bonne formation du litéral
+//
+// Resultats:
+// erreur syntaxique
+// Ligne <9> : <syntaxError>
+
+2xab.AB0p-21F
+
