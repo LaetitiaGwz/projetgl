@@ -58,14 +58,14 @@ public class CompilerOptions {
     
     public void parseArgs(String[] args) throws CLIException {
         // A FAIRE : parcourir args pour positionner les options correctement
-		if (args.length==1){
+		if (args.length==0){
 			throw new CLIException("Aucun parametre rentree");
 		}
-		else if(args.length==2 && args[1].equals("-b")){ //on check pour la bannière
+		else if(args.length==1 && args[0].equals("-b")){ //on check pour la bannière
 			this.printBanner=true;
 		}
 		else{
-			Integer i=1;
+			Integer i=0;
 			while(i<args.length){ // on parcours la commande
 				if(args[i].equals("-p")){ //parse
 					this.parse=true;
