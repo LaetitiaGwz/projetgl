@@ -11,7 +11,7 @@ options {
 @members {
 }
 
-EOL:'\n';
+
 /* 
  * mot réservé
 */
@@ -36,7 +36,7 @@ THIS: 'this';
 TRUE: 'true';
 WHILE: 'while';
 
-fragment LETTER : 'a' .. 'z'+'A' .. 'Z';
+fragment LETTER : ('a' .. 'z')|('A' .. 'Z');
 fragment DIGIT : '0' .. '9';
 
 /* 
@@ -69,32 +69,32 @@ OR: '||';
  * Littéraux entiers
 */
 fragment POSITIVE_DIGIT : '1' .. '9';
-INT : '0' + POSITIVE_DIGIT DIGIT*;
+INT : '0' | POSITIVE_DIGIT DIGIT*;
 
 /* 
  * Littéraux flottants
 */
-fragment NUM : DIGIT+;
-fragment SIGN :'+'+'-'+'';
-fragment EXP : ('E' + 'e') SIGN NUM;
+fragment NUM : (DIGIT)+;
+fragment SIGN :(PLUS|MINUS)?;
+fragment EXP : ('E' | 'e') SIGN NUM;
 fragment DEC : NUM '.' NUM;
-fragment FLOATDEC : (DEC + DEC EXP) ('F' + 'f' + '');
-fragment DIGITHEX :'0' .. '9'+'A' .. 'F'+'a' .. 'f';
-NUMHEX : DIGITHEX+;
-fragment FLOATHEX : ('0x' + '0X') NUMHEX '.' NUMHEX ('P' + 'p') SIGN NUM ('F' + 'f' + '') ;
-FLOAT : FLOATDEC + FLOATHEX;
+fragment FLOATDEC : (DEC | DEC EXP) ('F' | 'f')?;
+fragment DIGITHEX :'0' .. '9'|'A' .. 'F'|'a' .. 'f';
+fragment NUMHEX : (DIGITHEX)+;
+fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f')? ;
+FLOAT : FLOATDEC | FLOATHEX ;
 
 /* 
  * Chaines de caractères
 */
 fragment STRING_CAR: ~('"' | '\\' | '\n') ;
-STRING : '"' (STRING_CAR + '\\"' + '\\\\')*  ' »' { System.out.println("["+getText()+" ]"); }; 
-MULTI_LINE_STRING : '"' (STRING_CAR + EOL + '\\"' + '\\\\')*  ' »' { System.out.println("["+getText()+" ]"); }; 
+STRING : '"' (STRING_CAR | '\\"' | '\\\\')*  '"'; 
+MULTI_LINE_STRING : '"' (STRING_CAR | 'n' | '\\"' | '\\\\')*  '"'; 
 
 /* 
  * Commentaires
 */
-fragment COMMENT : ('//' (~('\n'))* 
+fragment COMMENT : ('//' .*? '\n'
 	  |'/*' .*? '*/'
           );
 
@@ -111,15 +111,12 @@ SEPARATEUR: (ESPACE
 /* 
  * Inclusion de fichier
 */
-fragment FILENAME : (LETTER + DIGIT + '.' + '-' + '_')+;
+fragment FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
 INCLUDE : '#include' (' ')* '"' FILENAME '"';
 
 /* 
  * Identifiant
 */
 
-IDENT : (LETTER + '$' + '_')(LETTER + DIGIT + '$' + '_')*;
+IDENT : (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
 
-UNMATCH
-    : . { System.out.println("Non reconnu : " + getText()); }
-    ;
