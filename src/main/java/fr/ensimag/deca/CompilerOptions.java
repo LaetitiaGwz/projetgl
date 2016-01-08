@@ -36,6 +36,16 @@ public class CompilerOptions {
         return Collections.unmodifiableList(sourceFiles);
     }
 
+	public boolean getParse() {
+		return parse;
+	}
+
+	public boolean getVerification(){return verification;}
+
+	public boolean getNoCheck(){return nocheck;}
+
+	public Integer getRegistre(){return registre;}
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
