@@ -42,7 +42,7 @@ public class CompilerOptions {
 	private boolean parse = false;
 	private boolean verification =false;
 	private boolean nocheck= false;
-	private int registre =16;
+	private Integer registre =16;
     private List<File> sourceFiles = new ArrayList<File>();
 
     
@@ -51,9 +51,64 @@ public class CompilerOptions {
 		if (args.length==1){
 			throw new CLIException("Aucun parametre rentree");
 		}
-		if(args.length==2 && args[1].equals("-b")){ //on check pour la bannière
+		else if(args.length==2 && args[1].equals("-b")){ //on check pour la bannière
 			this.printBanner=true;
 		}
+		else{
+			Integer i=1;
+			while(i<args.length){ // on parcours la commande
+				if(args[i].equals("-p")){ //parse
+					this.parse=true;
+					i++;
+				}
+				else if(args[i].equals("-v")){ //verification
+					this.verification=true;
+					i++;
+				}
+				else if(args[i].equals("-n")){ //nocheck
+					this.nocheck=true;
+					i++;
+				}
+				else if (args[i].equals("-d")){ //debug
+					this.debug++;
+					i++;
+				}
+				else if(args[i].equals("-r")){
+					try {
+						Integer mon_int = Integer.parseInt(args[i+1]);
+						if(mon_int<=16 && mon_int>=4){
+							this.registre=mon_int;
+						}
+						else{
+							throw new CLIException("mauvaise valeur pour -r X");
+						}
+					}
+					catch (NumberFormatException nfe){
+						throw new CLIException("mauvais argument pour -r X");
+					}
+					i++;
+					i++;
+				}
+				else if(args[i].equals("-P")){
+					this.parallel=true;
+					i++;
+				}
+				else if(args[i].contains("deca")){
+					File tmp =new File(args[i]);
+					if(sourceFiles.contains((tmp))){
+						i++;
+					}
+					else {
+						sourceFiles.add(tmp);
+						i++;
+					}
+				}
+				else{
+					throw new CLIException("commande incorrect");
+				}
+			}
+		}
+
 
 
 
@@ -82,7 +137,7 @@ public class CompilerOptions {
             logger.info("Java assertions disabled");
         }
 
-        throw new CLIException("commande incorrect");
+
     }
 
     protected void displayUsage() {
