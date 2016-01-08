@@ -1,0 +1,8 @@
+// Description:
+//    test du lexeur pour les inclusions
+// Nom de fichier invalide
+// Resultats:
+// erreur syntaxique
+// Ligne <8> : <syntaxError>
+
+#include "@"

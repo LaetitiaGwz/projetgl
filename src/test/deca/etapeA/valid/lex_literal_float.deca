@@ -1,0 +1,26 @@
+// Description:
+//    test du lexeur pour les litéraux flottants
+//
+// Resultats:
+// ok
+
+// Décimaux notation usuelle
+1.7
+534.9
+1.526
+7.4f
+
+// Décimaux notation exp
+1e53
+1e+53
+1e-53
+1.234E600
+5E+1f
+5E-1F
+
+// Héxadécimaux
+0xABCD.33p4
+0x0AFB8.1A8p+5f
+0X0.9P-90F
+0X0.9P-90
+

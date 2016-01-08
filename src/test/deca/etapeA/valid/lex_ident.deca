@@ -1,0 +1,22 @@
+// Description:
+//    test du lexeur pour les identificateurs
+//
+// Resultats:
+// ok
+
+bonjour
+Bonjour
+BONJOUR
+
+bonjour523
+$bonjour
+_bonjour
+$$bonjour
+__bonjour
+_$bonjour
+$55bonjour
+_55bonjour
+_$$_33bonjour
+bon$_$53j$our
+
+

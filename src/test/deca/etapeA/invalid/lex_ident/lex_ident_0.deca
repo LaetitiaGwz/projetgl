@@ -1,0 +1,10 @@
+// Description:
+//    test du lexeur pour les identificateurs
+//    vérifie qu'aucun identificateur ne commence par un nombre
+//
+// Resultats:
+// erreur syntaxique
+// Ligne <9> : <syntaxError>
+
+//Interdit de commencer un identificateur par un nombre
+0toto
