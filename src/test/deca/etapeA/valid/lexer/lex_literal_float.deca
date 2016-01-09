@@ -11,12 +11,12 @@
 7.4f
 
 // Décimaux notation exp
-1e53
-1e+53
-1e-53
+1.0e53
+1.11e+53
+1.22e-53
 1.234E600
-5E+1f
-5E-1F
+5.22E+1f
+5.33E-1F
 
 // Héxadécimaux
 0xABCD.33p4
