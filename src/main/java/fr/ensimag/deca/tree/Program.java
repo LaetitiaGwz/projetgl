@@ -32,7 +32,7 @@ public class Program extends AbstractProgram {
     private ListDeclClass classes;
     private AbstractMain main;
 
-    @Override
+    @Override//TODO priorité max !!!!!!!
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
         throw new UnsupportedOperationException("not yet implemented");
