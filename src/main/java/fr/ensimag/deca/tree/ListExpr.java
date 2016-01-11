@@ -29,7 +29,7 @@ public class ListExpr extends TreeList<AbstractExpr> {
         // Erreur si types différents pour un certain paramètre
         int i = 0;
         for (AbstractExpr expr : getList()) {
-            if(signature.paramNumber(i).equals(expr.verifyExpr(compiler, localEnv, currentClass))) {
+            if(!signature.paramNumber(i).sameType(expr.verifyExpr(compiler, localEnv, currentClass))) {
                 throw new ContextualError("Wrong type for param " + i, location);
             }
 
