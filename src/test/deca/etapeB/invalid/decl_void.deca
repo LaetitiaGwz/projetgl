@@ -8,5 +8,5 @@
 //    cree le 01/01/2016
 
 {
-   int my_var;
+   void my_var;
 }
