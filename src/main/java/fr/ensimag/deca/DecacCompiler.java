@@ -185,7 +185,6 @@ public class DecacCompiler {
 
         prog.verifyProgram(this);
         if(this.compilerOptions.getVerification()){
-            System.out.println("on verifie juste");
             return false;
         }
         else{
