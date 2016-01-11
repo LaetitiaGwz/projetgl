@@ -127,10 +127,10 @@ public class DecacCompiler {
         String sourceFile = source.getAbsolutePath();
         String destFile = null;
         // A FAIRE: calculer le nom du fichier .ass à partir du nom du
-        // A FAIRE: fichier .deca.
-		Integer dernierPath=sourceFile.lastIndexOf("/"); //pour debut nom
-		Integer finNom=sourceFile.lastIndexOf("."); //pour fin nom
-		destFile=sourceFile.substring(dernierPath+1,finNom-1); //on a récupéré nom
+        // A FAIRE: fichier .decac
+		Integer finNom=sourceFile.lastIndexOf(".deca"); //pour fin nom
+		destFile=sourceFile.substring(0,finNom); //on a récupéré nom
+        destFile=destFile.concat(".ass");
 
         PrintStream err = System.err;
         PrintStream out = System.out;
@@ -184,26 +184,32 @@ public class DecacCompiler {
 
 
         prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
+        if(this.compilerOptions.getVerification()){
+            return false;
+        }
+        else{
+            assert(prog.checkAllDecorations());
 
-        addComment("start main program");
-        prog.codeGenProgram(this);
-        addComment("end main program");
-        LOG.debug("Generated assembly code:" + nl + program.display());
-        LOG.info("Output file assembly file is: " + destName);
+            addComment("start main program");
+            prog.codeGenProgram(this);
+            addComment("end main program");
+            LOG.debug("Generated assembly code:" + nl + program.display());
+            LOG.info("Output file assembly file is: " + destName);
 
-        FileOutputStream fstream = null;
-        try {
-            fstream = new FileOutputStream(destName);
-        } catch (FileNotFoundException e) {
-            throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
+            FileOutputStream fstream = null;
+            try {
+                fstream = new FileOutputStream(destName);
+            } catch (FileNotFoundException e) {
+                throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
+            }
+
+            LOG.info("Writing assembler file ...");
+
+            program.display(new PrintStream(fstream));
+            LOG.info("Compilation of " + sourceName + " successful.");
+            return false;
         }
 
-        LOG.info("Writing assembler file ...");
-
-        program.display(new PrintStream(fstream));
-        LOG.info("Compilation of " + sourceName + " successful.");
-        return false;
     }
 
     /**

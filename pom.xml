@@ -144,6 +144,15 @@
             <goals><goal>exec</goal></goals>
           </execution>
           <execution>
+            <!-- Test pour le lexer-->
+            <id>all-lex</id>
+            <configuration>
+              <executable>./src/test/script/all-lex.sh</executable>
+            </configuration>
+            <phase>test</phase>
+            <goals><goal>exec</goal></goals>
+          </execution>
+          <execution>
             <id>basic-synt</id>
             <configuration><executable>./src/test/script/basic-synt.sh</executable></configuration>
             <phase>test</phase>

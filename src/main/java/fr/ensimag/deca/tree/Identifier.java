@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
  * @date 01/01/2016
  */
 public class Identifier extends AbstractIdentifier {
-    
+
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -164,12 +164,14 @@ public class Identifier extends AbstractIdentifier {
         this.name = name;
     }
 
+    //TODO
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    //TODO
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
