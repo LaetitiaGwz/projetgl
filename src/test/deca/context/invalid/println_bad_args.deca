@@ -1,0 +1,12 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//    Ligne 11 : mauvais argument numero 1
+// 
+// Historique:
+//    cree le 01/01/2016
+
+{
+   println(1.5);
+}
