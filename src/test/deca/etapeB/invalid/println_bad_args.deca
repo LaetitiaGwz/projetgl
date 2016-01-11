@@ -1,5 +1,5 @@
 // Description:
-//    Affectation et typage
+//    Utilisation ud println
 //
 // Resultats:
 //    Ligne 11 : mauvais argument numero 1
@@ -8,5 +8,5 @@
 //    cree le 01/01/2016
 
 {
-   println("hello", "my", "world");
+   println(1.5);
 }
