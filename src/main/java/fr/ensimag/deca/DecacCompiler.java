@@ -202,7 +202,7 @@ public class DecacCompiler {
 
         if(this.compilerOptions.getParse()){
             IndentPrintStream istream= new IndentPrintStream(out);
-            prog.decompile();
+            prog.decompile(istream);
             return false;
 
         }
