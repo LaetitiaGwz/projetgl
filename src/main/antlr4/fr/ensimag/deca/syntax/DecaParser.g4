@@ -26,6 +26,7 @@ options {
 @header {
     import fr.ensimag.deca.tree.*;
     import java.io.PrintStream;
+    import fr.ensimag.deca.tools.SymbolTable;
 }
 
 @members {
@@ -33,6 +34,7 @@ options {
     protected AbstractProgram parseProgram() {
         return prog().tree;
     }
+    SymbolTable T = new SymbolTable();
 }
 
 prog returns[AbstractProgram tree]
@@ -440,6 +442,7 @@ literal returns[AbstractExpr tree]
 //TODO identifier
 ident returns[AbstractIdentifier tree]
     : IDENT {
+            $tree = new Identifier(T.create($IDENT.getText()));
         }
     ;
 
