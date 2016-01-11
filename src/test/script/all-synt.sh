@@ -38,9 +38,9 @@ done
 # Tests des cas valides
 for cas_de_test in "$VALID_DIR"/*.deca
 do
-    filename=$(echo ${cas_de_test} | sed -e "s@${INVALID_DIR}/@@g")
-    if test_synth "$cas_de_test" 2>&1 \
-    | head -n 1 | grep -q "$filename"':[0-9]'
+    filename=$(echo ${cas_de_test} | sed -e "s@${VALID_DIR}/@@g")
+    if test_synt "$cas_de_test" 2>&1 \
+    | grep -q "$filename"':[0-9]'
     then
         echo -e "$filename"" : ${RED}  ERROR ${WHITE}"
     else

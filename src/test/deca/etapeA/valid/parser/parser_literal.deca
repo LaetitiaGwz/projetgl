@@ -2,7 +2,9 @@
 //    test du non terminal literal
 //
 // Resultats:
-// les symboles doivent être reconnus comme des literaux par le parseur
-
-true false this null
+// ok - les symboles doivent être reconnus comme des literaux par le parseur
+{
+    Boolean b = true;
+    Boolean b1 = false;
+}
 
