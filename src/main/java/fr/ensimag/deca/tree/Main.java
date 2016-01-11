@@ -34,6 +34,7 @@ public class Main extends AbstractMain {
 
         EnvironmentExp env = new EnvironmentExp(null);
         insts.verifyListInst(compiler, env, null, new VoidType(compiler.getSymbols().create("void")));
+        declVariables.verifyListDeclVariable(compiler, env, null);
 
         //TODO verif des déclaration de variable
         LOG.debug("verify Main: end");
