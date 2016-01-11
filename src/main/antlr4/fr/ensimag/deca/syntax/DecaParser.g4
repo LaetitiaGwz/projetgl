@@ -95,14 +95,16 @@ list_decl_var returns[ListDeclVar tree]
 
 decl_var returns[AbstractDeclVar tree]
 @init   {
+            AbstractInitialization initialization;
         }
     : i=ident {
-            $tree = new DeclVar($i.tree, new NoInitialization());
+            initialization = new NoInitialization();
         }
       (EQUALS e=expr {
-            $tree = new DeclVar($i.tree, new Initialization($e.tree));
+            initialization = new Initialization($e.tree);
         }
       )? {
+            $tree = new DeclVar($i.tree, initialization);
         }
     ;
 
@@ -158,15 +160,21 @@ inst returns[AbstractInst tree]
 
 if_then_else returns[AbstractInst tree]
 @init {
+    ListIfThen list_ifthen = new ListIfThen();
+    ListInst list_else = new ListInst();
 }
     : if1=IF OPARENT condition=expr CPARENT OBRACE li_if=list_inst CBRACE {
+            list_ifthen.add(new IfThen($condition.tree, $li_if.tree));
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
+            list_ifthen.add(new IfThen($condition.tree, $li_if.tree));
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
+            list_else = $li_else.tree;
         }
       )? {
+            $tree = new IfThenElse(list_ifthen, list_else);
         }
     ;
 
@@ -250,6 +258,7 @@ eq_neq_expr returns[AbstractExpr tree]
         }
     ;
 
+//TODO instanceof
 inequality_expr returns[AbstractExpr tree]
     : e=sum_expr {
             assert($e.tree != null);
@@ -337,6 +346,7 @@ unary_expr returns[AbstractExpr tree]
         }
     ;
 
+//TODO methode/attributs de classe
 select_expr returns[AbstractExpr tree]
     : e=primary_expr {
             assert($e.tree != null);
@@ -358,6 +368,7 @@ select_expr returns[AbstractExpr tree]
         )
     ;
 
+//TODO methode/cast
 primary_expr returns[AbstractExpr tree]
     : ident {
             assert($ident.tree != null);
@@ -397,13 +408,14 @@ primary_expr returns[AbstractExpr tree]
 type returns[AbstractIdentifier tree]
     : ident {
             assert($ident.tree != null);
-            //TODO
+            $tree = $ident.tree;
         }
     ;
 
+//TODO INT/THIS/NULL
 literal returns[AbstractExpr tree]
     : INT {
-            //TODO
+            $tree = new IntLiteral(Integer.parseInt($INT.getText()));
         }
     | fd=FLOAT {
             $tree = new FloatLiteral(Float.parseFloat($fd.getText()));
@@ -425,6 +437,7 @@ literal returns[AbstractExpr tree]
         }
     ;
 
+//TODO identifier
 ident returns[AbstractIdentifier tree]
     : IDENT {
         }
@@ -432,22 +445,24 @@ ident returns[AbstractIdentifier tree]
 
 /****     Class related rules     ****/
 
+//TODO ajout de classe dans la liste
 list_classes returns[ListDeclClass tree]
 @init {
     $tree = new ListDeclClass();
 }
     :
       (c1=class_decl {
-
         }
       )*
     ;
 
+//TODO
 class_decl
     : CLASS name=ident superclass=class_extension OBRACE class_body CBRACE {
         }
     ;
 
+//TODO
 class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
         }
@@ -455,6 +470,7 @@ class_extension returns[AbstractIdentifier tree]
         }
     ;
 
+//TODO
 class_body
     : (m=decl_method {
         }
@@ -463,11 +479,13 @@ class_body
       )*
     ;
 
+//TODO
 decl_field_set
     : visibility type dv=list_decl_field SEMI {
         }
     ;
 
+//TODO
 visibility
     : /* epsilon */ {
         }
@@ -475,6 +493,7 @@ visibility
         }
     ;
 
+//TODO
 list_decl_field
     : dv1=decl_field {
         }  (COMMA dv2=decl_field {
@@ -482,6 +501,7 @@ list_decl_field
       )*
     ;
 
+//TODO
 decl_field
     : i=ident {
         }
@@ -491,6 +511,7 @@ decl_field
         }
     ;
 
+//TODO
 decl_method
 @init {
 }
@@ -502,6 +523,7 @@ decl_method
         }
     ;
 
+//TODO
 list_params
     : (p1=param {
         } (COMMA p2=param {
@@ -520,6 +542,7 @@ multi_line_string returns[String text, Location location]
         }
     ;
 
+//TODO
 param
     : type ident {
         }
