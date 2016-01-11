@@ -39,7 +39,10 @@ public class DeclVarSet extends AbstractDeclVarSet {
     protected Type verifyDeclVarSet(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        for(AbstractDeclVar var : declVars.getList()) {
+            var.verifyDeclVar(type.getType(), compiler, localEnv, currentClass);
+        }
+        return type.getType();
     }
 
 
