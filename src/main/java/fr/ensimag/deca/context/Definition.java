@@ -64,6 +64,7 @@ public abstract class Definition {
      * Return the same object, as type MethodDefinition, if possible. Throws
      * ContextualError(errorMessage, l) otherwise.
      */
+    //TODO
     public MethodDefinition asMethodDefinition(String errorMessage, Location l)
             throws ContextualError {
         throw new ContextualError(errorMessage, l);
@@ -73,6 +74,7 @@ public abstract class Definition {
      * Return the same object, as type FieldDefinition, if possible. Throws
      * ContextualError(errorMessage, l) otherwise.
      */
+    //TODO
     public FieldDefinition asFieldDefinition(String errorMessage, Location l)
             throws ContextualError {
         throw new ContextualError(errorMessage, l);
