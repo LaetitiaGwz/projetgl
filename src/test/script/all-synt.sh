@@ -8,8 +8,8 @@
 cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:"$PATH"
-INVALID_DIR=src/test/deca/etapeA/invalid/lexer
-VALID_DIR=src/test/deca/etapeA/valid/lexer
+INVALID_DIR=src/test/deca/etapeA/invalid/parser
+VALID_DIR=src/test/deca/etapeA/valid/parser
 
 GREEN="\e[1;32m"
 WHITE="\e[1;37m"
@@ -24,7 +24,7 @@ do
     # du fichier de test
     line_err=$(cat ${cas_de_test} | grep Ligne | sed -e "s/[^0-9]//g")
     filename=$(echo ${cas_de_test} | sed -e "s@${INVALID_DIR}/@@g")
-    if test_lex "$cas_de_test" 2>&1 \
+    if test_synt "$cas_de_test" 2>&1 \
         | grep -q -e "$filename"':'"$line_err"
     then
         echo -e "$filename"" : ${GREEN}  OK ${WHITE}"
@@ -34,11 +34,12 @@ do
     fi
 done
 
+
 # Tests des cas valides
 for cas_de_test in "$VALID_DIR"/*.deca
 do
     filename=$(echo ${cas_de_test} | sed -e "s@${INVALID_DIR}/@@g")
-    if test_lex "$cas_de_test" 2>&1 \
+    if test_synth "$cas_de_test" 2>&1 \
     | head -n 1 | grep -q "$filename"':[0-9]'
     then
         echo -e "$filename"" : ${RED}  ERROR ${WHITE}"
@@ -47,5 +48,6 @@ do
         return_status=1
     fi
 done
+
 
 exit ${return_status}
