@@ -61,6 +61,7 @@ public class DeclVarSet extends AbstractDeclVarSet {
 
         // On implémente sa définition
         type.setDefinition(new VariableDefinition(t, getLocation()));
+        type.setType(t);
 
         // On tente de déclarer la variable dans l'environnement. Sinon erreur
         try {
@@ -77,7 +78,7 @@ public class DeclVarSet extends AbstractDeclVarSet {
         if(type.getDefinition().getType().isVoid()) {
             throw new ContextualError("A variable can not be declared as void.", getLocation());
         }
-
+        System.out.println(type.getType());
         for(AbstractDeclVar var : declVars.getList()) {
             var.verifyDeclVar(type.getType(), compiler, localEnv, currentClass);
         }
