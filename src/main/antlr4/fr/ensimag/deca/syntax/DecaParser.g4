@@ -80,6 +80,7 @@ list_decl returns[ListDeclVarSet tree]
 decl_var_set returns[AbstractDeclVarSet tree]
     : type dv=list_decl_var SEMI {
         $tree = new DeclVarSet($type.tree, $dv.tree);
+        setLocation($tree, $list_decl_var.start);
     }
     ;
 

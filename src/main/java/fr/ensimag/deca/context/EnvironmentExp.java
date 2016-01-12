@@ -2,6 +2,7 @@ package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Dictionary associating identifier's NonTypeDefinition to their names.
@@ -76,4 +77,13 @@ public class EnvironmentExp {
         }
     }
 
+    @Override
+    public String toString() {
+        String s = "Affichage de l'environnement : \n";
+
+        for (Map.Entry<Symbol, NonTypeDefinition> entry : environment.entrySet()) {
+            s += "\nSymbol : " + entry.getKey().getName() + " Definition : " + entry.getValue();
+        }
+        return s;
+    }
 }

@@ -37,6 +37,7 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(Type t, DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+        //TODO vérifier que l'initialisation est du type donné
     }
 
     

@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -35,17 +32,54 @@ public class DeclVarSet extends AbstractDeclVarSet {
         this.declVars = declVars;
     }
 
+    private Type fillType(DecacCompiler compiler) {
+        String typeName = this.getType().getName().getName();
+        if (typeName == "int") {
+            return new IntType(compiler.getSymbols().create("int"));
+        }
+        else if (typeName == "float") {
+            return new FloatType(compiler.getSymbols().create("int"));
+        }
+        return null;
+    }
+
     @Override
     protected Type verifyDeclVarSet(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
 
-        this.type.verifyType(compiler);
+        Type t;
+        // On détermine le type de la variable à partir de l'Identifier
+        if(type.getName().getName().compareTo("int") == 0) {
+            t = new IntType(type.getName());
+        }
+        else if (type.getName().getName().compareTo("float") == 0) {
+            t = new FloatType(type.getName());
+        }
+        else if (type.getName().getName().compareTo("String") == 0) {
+            t = new StringType(type.getName());
+        }
+        else if (type.getName().getName().compareTo("boolean") == 0) {
+            t = new BooleanType(type.getName());
+        }
+        else {
+            throw new UnsupportedOperationException("Not implemented for variable of type " + type.getName().getName());
+        }
 
+
+        // On implémente sa définition
+        type.setDefinition(new VariableDefinition(t, getLocation()));
+
+        // On tente de déclarer la variable dans l'environnement. Sinon erreur
+        try {
+            localEnv.declare(compiler.getSymbols().create(this.type.getName().getName()), type.getVariableDefinition());
+        }
+        catch (EnvironmentExp.DoubleDefException e) {
+            throw new ContextualError("Multiple declaration of variable " + type.getName().getName(), getLocation());
+        }
 
         //erreur si type = void
-        System.out.println(type.getName());
-        if(type.getType().isVoid()) {
+        if(type.getDefinition().getType().isVoid()) {
             throw new ContextualError("A variable can not be declared as void.", getLocation());
         }
 
