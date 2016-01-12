@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.CompilerOptions;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import java.io.PrintStream;
@@ -32,6 +33,7 @@ public class Program extends AbstractProgram {
     }
     private ListDeclClass classes;
     private AbstractMain main;
+    private EnvironmentExp environmentExp;
 
     @Override//TODO priorité max !!!!!!!
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
