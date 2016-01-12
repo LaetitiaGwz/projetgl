@@ -39,7 +39,21 @@ public class DeclVarSet extends AbstractDeclVarSet {
     protected Type verifyDeclVarSet(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        this.type.verifyType(compiler);
+
+
+        //erreur si type = void
+        System.out.println(type.getName());
+        if(type.getType().isVoid()) {
+            throw new ContextualError("A variable can not be declared as void.", getLocation());
+        }
+
+        for(AbstractDeclVar var : declVars.getList()) {
+            var.verifyDeclVar(type.getType(), compiler, localEnv, currentClass);
+        }
+
+        return type.getType();
     }
 
 

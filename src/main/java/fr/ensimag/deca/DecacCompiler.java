@@ -3,6 +3,8 @@ package fr.ensimag.deca;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
+import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
 import fr.ensimag.ima.pseudocode.AbstractLine;
@@ -35,6 +37,12 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
+
+    /**
+     * Les symboles du programme.
+     * @author matthias
+     */
+    private SymbolTable symbols;
     
     /**
      * Portable newline character.
@@ -45,6 +53,17 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+
+        /**
+         * Ajouts des symboles prédéfinis
+         */
+        symbols = new SymbolTable();
+
+        symbols.create("void");
+        symbols.create("int");
+        symbols.create("boolean");
+        symbols.create("float");
+        symbols.create("Object");
     }
 
     /**
@@ -180,30 +199,51 @@ public class DecacCompiler {
             LOG.info("Parsing failed");
             return true;
         }
-        assert(prog.checkAllLocations());
 
+        if(this.compilerOptions.getParse()){
+            IndentPrintStream istream= new IndentPrintStream(out);
+            prog.decompile(istream);
+            return false;
 
-        prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
-
-        addComment("start main program");
-        prog.codeGenProgram(this);
-        addComment("end main program");
-        LOG.debug("Generated assembly code:" + nl + program.display());
-        LOG.info("Output file assembly file is: " + destName);
-
-        FileOutputStream fstream = null;
-        try {
-            fstream = new FileOutputStream(destName);
-        } catch (FileNotFoundException e) {
-            throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
         }
 
-        LOG.info("Writing assembler file ...");
 
-        program.display(new PrintStream(fstream));
-        LOG.info("Compilation of " + sourceName + " successful.");
-        return false;
+        else{
+
+            assert(prog.checkAllLocations());
+
+
+            prog.verifyProgram(this);
+            if(this.compilerOptions.getVerification()){
+                return false;
+            }
+            else{
+                assert(prog.checkAllDecorations());
+
+                addComment("start main program");
+                prog.codeGenProgram(this);
+                addComment("end main program");
+                LOG.debug("Generated assembly code:" + nl + program.display());
+                LOG.info("Output file assembly file is: " + destName);
+
+                FileOutputStream fstream = null;
+                try {
+                    fstream = new FileOutputStream(destName);
+                } catch (FileNotFoundException e) {
+                    throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
+                }
+
+                LOG.info("Writing assembler file ...");
+
+                program.display(new PrintStream(fstream));
+                LOG.info("Compilation of " + sourceName + " successful.");
+                return false;
+            }
+        }
+
+
+
+
     }
 
     /**
@@ -234,4 +274,11 @@ public class DecacCompiler {
         return parser.parseProgramAndManageErrors(err);
     }
 
+    /**
+     * Accesseurs de la table des symbols.
+     */
+
+    public SymbolTable getSymbols() {
+        return symbols;
+    }
 }

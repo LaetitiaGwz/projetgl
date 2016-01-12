@@ -1,12 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.FloatType;
-import fr.ensimag.deca.context.IntType;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
@@ -39,7 +34,9 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Signature printlnSignature = new Signature();
+        printlnSignature.add(new StringType(compiler.getSymbols().create("String")));
+        arguments.verifyParams(compiler, localEnv, currentClass, printlnSignature, getLocation());
     }
 
     @Override
@@ -55,7 +52,12 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        for(AbstractExpr a :this.arguments.getList()){
+            s.print("print"+this.getSuffix()+" (");
+            a.decompile(s);
+            s.print(");");
+
+        }
     }
 
     @Override

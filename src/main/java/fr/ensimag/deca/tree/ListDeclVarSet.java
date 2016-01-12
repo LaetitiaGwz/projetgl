@@ -16,11 +16,16 @@ public class ListDeclVarSet extends TreeList<AbstractDeclVarSet> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        for(AbstractDeclVarSet a : this.getList()){
+            a.decompile(s);
+        }
     }
 
     void verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        for(AbstractDeclVarSet varSet : this.getList()) {
+            varSet.verifyDeclVarSet(compiler, localEnv, currentClass);
+        }
     }
 
 

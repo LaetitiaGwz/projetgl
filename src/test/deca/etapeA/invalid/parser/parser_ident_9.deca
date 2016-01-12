@@ -1,4 +1,3 @@
-
 // Description:
 //    test du lexeur pour les identificateurs
 //    vérifie que les identificateurs sont composés de bons caractères
@@ -7,4 +6,4 @@
 // erreur syntaxique
 // Ligne <9> : <syntaxError>
 
-toàto
+to°to
