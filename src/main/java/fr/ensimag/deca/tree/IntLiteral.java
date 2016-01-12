@@ -4,6 +4,7 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.INT;
 
@@ -39,11 +40,11 @@ public class IntLiteral extends AbstractExpr {
         return "Int (" + getValue() + ")";
     }
 
-    //@Override
-    //protected void codeGenPrint(DecacCompiler compiler){
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler){
 
-      //  compiler.addInstruction(new INT(/*adresse de la variable*/,Register.getR(compiler.getTableRegistre().getLastregistre())));
-    //}
+        compiler.addInstruction(new INT(new ImmediateInteger(this.getValue()),Register.getR(compiler.getTableRegistre().getLastregistre())));
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
