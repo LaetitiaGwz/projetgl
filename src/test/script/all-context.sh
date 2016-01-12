@@ -45,13 +45,18 @@ do
     result_test=$(test_context "$cas_de_test" 2>&1)
     if  echo "$result_test" | grep -q "$filename"':[0-9]'
     then
-        echo -e "$filename"" : ${RED}  ERROR ${WHITE}"
+        echo -e "$filename"" : ${RED}  CONTEXTUAL ERROR ${WHITE}"
+         return_status=1
     elif echo "$result_test" | grep -q "UnsupportedOperationException"
     then
         echo -e "$filename"" : ${YELLOW}  NOT IMPLEMENTED ${WHITE}"
+    elif echo "$result_test" | grep -q "Exception"
+    then
+        echo -e "$filename"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
+         return_status=1
     else
         echo -e "$filename"" : ${GREEN}  OK ${WHITE}"
-        return_status=1
+
     fi
 done
 

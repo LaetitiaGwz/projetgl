@@ -32,17 +32,6 @@ public class DeclVarSet extends AbstractDeclVarSet {
         this.declVars = declVars;
     }
 
-    private Type fillType(DecacCompiler compiler) {
-        String typeName = this.getType().getName().getName();
-        if (typeName == "int") {
-            return new IntType(compiler.getSymbols().create("int"));
-        }
-        else if (typeName == "float") {
-            return new FloatType(compiler.getSymbols().create("int"));
-        }
-        return null;
-    }
-
     @Override
     protected Type verifyDeclVarSet(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
@@ -72,7 +61,10 @@ public class DeclVarSet extends AbstractDeclVarSet {
 
         // On tente de déclarer la variable dans l'environnement. Sinon erreur
         try {
-            localEnv.declare(compiler.getSymbols().create(this.type.getName().getName()), type.getVariableDefinition());
+            for(AbstractDeclVar var : declVars.getList()) {
+                DeclVar castedVar = (DeclVar) var;
+                localEnv.declare(castedVar.getVarName().getName(), type.getVariableDefinition());
+            }
         }
         catch (EnvironmentExp.DoubleDefException e) {
             throw new ContextualError("Multiple declaration of variable " + type.getName().getName(), getLocation());
