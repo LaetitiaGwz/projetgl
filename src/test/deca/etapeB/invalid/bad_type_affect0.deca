@@ -1,0 +1,11 @@
+// Description:
+//    Déclaration de variable
+//
+// Resultats:
+//    Ligne 11 : mauvais typage pour l'affectation
+// 
+
+{
+    int a;
+    a = null;
+}

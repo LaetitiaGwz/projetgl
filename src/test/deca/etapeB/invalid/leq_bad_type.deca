@@ -1,0 +1,11 @@
+// Description:
+//    Déclaration de variable
+//
+// Resultats:
+//    Ligne 10 : mauvais typage de l'inégalité
+// 
+
+{
+    boolean b;
+    b = b <= 23.423;
+}
