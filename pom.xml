@@ -130,21 +130,9 @@
         <executions>
           <!-- One <execution> per executable to launch. Execution
                failure (exit status != 0) will stop the tests. -->
+
+          <!-- Tests pour le lexer -->
           <execution>
-            <id>basic-lex</id>
-            <configuration>
-              <executable>./src/test/script/basic-lex.sh</executable>
-              <!-- If we need to pass arguments :
-                   <arguments>
-                   <argument>...</argument>
-                   </arguments>
-              -->
-            </configuration>
-            <phase>test</phase>
-            <goals><goal>exec</goal></goals>
-          </execution>
-          <execution>
-            <!-- Test pour le lexer-->
             <id>all-lex</id>
             <configuration>
               <executable>./src/test/script/all-lex.sh</executable>
@@ -152,13 +140,40 @@
             <phase>test</phase>
             <goals><goal>exec</goal></goals>
           </execution>
-          <execution>
-            <id>basic-synt</id>
-            <configuration><executable>./src/test/script/basic-synt.sh</executable></configuration>
-            <phase>test</phase>
-            <goals><goal>exec</goal></goals>
-          </execution>
-          <execution>
+
+            <!-- Tests pour le parser-->
+            <execution>
+                <id>basic-synt</id>
+                <configuration><executable>./src/test/script/basic-synt.sh</executable></configuration>
+                <phase>test</phase>
+                <goals><goal>exec</goal></goals>
+            </execution>
+            <execution>
+                <id>all-synt</id>
+                <configuration>
+                    <executable>./src/test/script/all-synt.sh</executable>
+                </configuration>
+                <phase>test</phase>
+                <goals><goal>exec</goal></goals>
+            </execution>
+
+            <!-- Tests pour la vérification contextuelle -->
+            <execution>
+                <id>all-context</id>
+                <configuration>
+                    <executable>./src/test/script/all-context.sh</executable>
+                </configuration>
+                <phase>test</phase>
+                <goals><goal>exec</goal></goals>
+            </execution>
+            <execution>
+                <id>basic-gencode</id>
+                <configuration><executable>./src/test/script/basic-gencode.sh</executable></configuration>
+                <phase>test</phase>
+                <goals><goal>exec</goal></goals>
+            </execution>
+
+            <execution>
             <!-- run a unit test by defining our own class with a main
                  function -->
             <!-- warning: java assertions are not enabled -->
@@ -170,18 +185,7 @@
             <phase>test</phase>
             <goals><goal>java</goal></goals>
           </execution>
-          <execution>
-            <id>basic-context</id>
-            <configuration><executable>./src/test/script/basic-context.sh</executable></configuration>
-            <phase>test</phase>
-            <goals><goal>exec</goal></goals>
-          </execution>
-          <execution>
-            <id>basic-gencode</id>
-            <configuration><executable>./src/test/script/basic-gencode.sh</executable></configuration>
-            <phase>test</phase>
-            <goals><goal>exec</goal></goals>
-          </execution>
+
           <execution>
             <id>basic-decac</id>
             <configuration><executable>./src/test/script/basic-decac.sh</executable></configuration>

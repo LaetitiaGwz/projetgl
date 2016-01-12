@@ -1,19 +1,20 @@
 #! /bin/bash
 
 # Auteur : matthieu
-# Script d'automatisation des tests pour le lexer
+# Script d'automatisation des tests pour la verification contextuelle
 
 # On se place dans le répertoire du projet (quel que soit le
 # répertoire d'où est lancé le script) :
 cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:"$PATH"
-INVALID_DIR=src/test/deca/etapeA/invalid/lexer
-VALID_DIR=src/test/deca/etapeA/valid/lexer
+INVALID_DIR=src/test/deca/etapeB/invalid
+VALID_DIR=src/test/deca/etapeB/valid
 
 GREEN="\e[1;32m"
 WHITE="\e[1;37m"
 RED="\e[31m"
+YELLOW="\e[33m"
 
 return_status=0
 
@@ -24,10 +25,13 @@ do
     # du fichier de test
     line_err=$(cat ${cas_de_test} | grep Ligne | sed -e "s/[^0-9]//g")
     filename=$(echo ${cas_de_test} | sed -e "s@${INVALID_DIR}/@@g")
-    if test_lex "$cas_de_test" 2>&1 \
-        | grep -q -e "$filename"':'"$line_err"
+    result_test=$(test_context "$cas_de_test" 2>&1)
+    if  echo "$result_test" | grep -q "$filename"':[0-9]'
     then
         echo -e "$filename"" : ${GREEN}  OK ${WHITE}"
+    elif echo "$result_test" | grep -q "UnsupportedOperationException"
+    then
+        echo -e "$filename"" : ${YELLOW}  NOT IMPLEMENTED ${WHITE}"
     else
         echo -e "$filename"" : ${RED}  ERROR ${WHITE}"
         return_status=1
@@ -38,10 +42,13 @@ done
 for cas_de_test in "$VALID_DIR"/*.deca
 do
     filename=$(echo ${cas_de_test} | sed -e "s@${VALID_DIR}/@@g")
-    if test_lex "$cas_de_test" 2>&1 \
-     | grep -q "$filename"':[0-9]'
+    result_test=$(test_context "$cas_de_test" 2>&1)
+    if  echo "$result_test" | grep -q "$filename"':[0-9]'
     then
         echo -e "$filename"" : ${RED}  ERROR ${WHITE}"
+    elif echo "$result_test" | grep -q "UnsupportedOperationException"
+    then
+        echo -e "$filename"" : ${YELLOW}  NOT IMPLEMENTED ${WHITE}"
     else
         echo -e "$filename"" : ${GREEN}  OK ${WHITE}"
         return_status=1

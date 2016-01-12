@@ -1,5 +1,7 @@
 package fr.ensimag.ima.pseudocode;
 
+import fr.ensimag.ima.pseudocode.multipleinstructions.InstructionList;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.LinkedList;
@@ -27,6 +29,12 @@ public class IMAProgram {
 
     public void addInstruction(Instruction i) {
         lines.add(new Line(i));
+    }
+
+    public void addInstructionList(InstructionList instList) {
+        for(Instruction i : instList.getList()) {
+            addInstruction(i);
+        }
     }
 
     public void addInstruction(Instruction i, String s) {
