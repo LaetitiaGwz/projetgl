@@ -1,0 +1,15 @@
+// Description:
+//   Test du cast int -> float et inversement
+//
+// Resultats:
+//    ok
+// 
+// Historique:
+//    cree le 01/01/2016
+
+{
+    int a;
+    float b;
+    a = (int)b;
+    b = (float)a;
+}

@@ -32,6 +32,10 @@ do
     elif echo "$result_test" | grep -q "UnsupportedOperationException"
     then
         echo -e "$filename"" : ${YELLOW}  NOT IMPLEMENTED ${WHITE}"
+    elif echo "$result_test" | grep -q "Exception"
+    then
+        echo -e "$filename"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
+         return_status=1
     else
         echo -e "$filename"" : ${RED}  ERROR ${WHITE}"
         return_status=1
