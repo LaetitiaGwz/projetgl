@@ -89,9 +89,11 @@ list_decl_var returns[ListDeclVar tree]
             $tree = new ListDeclVar();
             assert($dv1.tree != null);
             $tree.add($dv1.tree);
+            setLocation($tree, $decl_var.start);
         } (COMMA dv2=decl_var {
             assert($dv2.tree != null);
             $tree.add($dv2.tree);
+            setLocation($tree, $decl_var.start);
         }
       )*
     ;
@@ -108,6 +110,7 @@ decl_var returns[AbstractDeclVar tree]
         }
       )? {
             $tree = new DeclVar($i.tree, initialization);
+            setLocation($tree, $ident.start);
         }
     ;
 
@@ -212,6 +215,7 @@ assign_expr returns[AbstractExpr tree]
             assert($e.tree != null);
             assert($e2.tree != null);
             $tree = new Assign((AbstractLValue)$e.tree, $e2.tree);
+            setLocation($tree, $assign_expr.start);
         }
       | /* epsilon */ {
             assert($e.tree != null);

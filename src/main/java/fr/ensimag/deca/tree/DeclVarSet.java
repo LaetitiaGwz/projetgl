@@ -51,6 +51,9 @@ public class DeclVarSet extends AbstractDeclVarSet {
         else if (type.getName().getName().compareTo("boolean") == 0) {
             t = new BooleanType(type.getName());
         }
+        else if (type.getName().getName().compareTo("void") == 0) {
+            t = new VoidType(type.getName());
+        }
         else {
             throw new UnsupportedOperationException("Not implemented for variable of type " + type.getName().getName());
         }
