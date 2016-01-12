@@ -1,5 +1,6 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.GestionRegistre;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -43,7 +44,19 @@ public class DecacCompiler {
      * @author matthias
      */
     private SymbolTable symbols;
-    
+
+	/**
+	 * table des registres
+     */
+    private GestionRegistre tableRegistre;
+
+    public GestionRegistre getTableRegistre(){
+        return this.tableRegistre;
+    }
+
+    public void setTableRegistre(int nbRegistre){
+        this.tableRegistre=new GestionRegistre(nbRegistre);
+    }
     /**
      * Portable newline character.
      */
