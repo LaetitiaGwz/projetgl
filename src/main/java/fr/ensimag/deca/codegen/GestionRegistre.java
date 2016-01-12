@@ -23,6 +23,14 @@ public class GestionRegistre {
 
 	}
 
+	public int getLastregistre(){
+		int i=2;
+		while(this.tableRegistre[i]){
+			i++;
+		}
+		return i;
+	}
+
 	public void setEtatRegistre(int registre,boolean etat){
 			this.tableRegistre[registre]=etat;
 	}
