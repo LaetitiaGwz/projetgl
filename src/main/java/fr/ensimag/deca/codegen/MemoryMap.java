@@ -36,9 +36,9 @@ public class MemoryMap {
         PC = PC_BASE;
     }
 
-    public DAddr getGlobalVariable(SymbolTable.Symbol symbol){
+    public RegisterOffset getGlobalVariable(SymbolTable.Symbol symbol){
         GB--;
-        return globalVariables.get(symbol);
+        return (RegisterOffset) globalVariables.get(symbol);
     }
 
     public RegisterOffset storeGlobalVariable(SymbolTable.Symbol symbol){
