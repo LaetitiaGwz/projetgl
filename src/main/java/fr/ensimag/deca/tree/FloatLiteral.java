@@ -48,6 +48,15 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
+    protected void codeGenInst(DecacCompiler compiler){
+        int i=compiler.getTableRegistre().getLastregistre();
+        compiler.getTableRegistre().setEtatRegistreTrue(i);
+        compiler.addInstruction(new FLOAT(new ImmediateFloat(this.getValue()),Register.getR(i)));
+
+
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print(java.lang.Float.toHexString(value));
     }

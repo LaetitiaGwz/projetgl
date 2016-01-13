@@ -4,8 +4,10 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.INT;
 
 import java.io.PrintStream;
@@ -44,6 +46,15 @@ public class IntLiteral extends AbstractExpr {
     protected void codeGenPrint(DecacCompiler compiler){
 
         compiler.addInstruction(new INT(new ImmediateInteger(this.getValue()),Register.getR(1))); // pour sortir une valeur: on est obligé de passer par R1
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler){
+        int i=compiler.getTableRegistre().getLastregistre();
+        compiler.getTableRegistre().setEtatRegistreTrue(i);
+        compiler.addInstruction(new FLOAT(new ImmediateInteger(this.getValue()),Register.getR(i)));
+
+
     }
 
     @Override
