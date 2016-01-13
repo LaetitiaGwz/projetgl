@@ -23,7 +23,7 @@ public class Math_deca{
 	}
 
 	public static float ulp(float x){
-
+		//Je ne sais pas s'il faut prendre ne compte les valeur +-infini et NaN 
 		int exp = 0;
 		if(x < 0) {
 			x = -x ;
