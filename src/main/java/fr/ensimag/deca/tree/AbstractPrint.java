@@ -53,7 +53,7 @@ public abstract class AbstractPrint extends AbstractInst {
     @Override
     public void decompile(IndentPrintStream s) {
         for(AbstractExpr a :this.arguments.getList()){
-            s.print("print"+this.getSuffix()+" (");
+            s.print("print"+this.getSuffix()+"(");
             a.decompile(s);
             s.print(");");
 

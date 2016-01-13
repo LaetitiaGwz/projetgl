@@ -23,9 +23,11 @@ public class StringLiteral extends AbstractStringLiteral {
     }
 
     private String value;
+    private String allvalue;
 
     public StringLiteral(String value) {
         Validate.notNull(value);
+        this.allvalue=value;
         this.value = value.substring(1,value.length()-1);
     }
 
@@ -43,7 +45,7 @@ public class StringLiteral extends AbstractStringLiteral {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print(this.getValue());
+        s.print( this.allvalue);
     }
 
     @Override
