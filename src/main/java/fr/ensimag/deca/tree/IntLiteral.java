@@ -9,6 +9,7 @@ import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.INT;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
 
@@ -45,14 +46,14 @@ public class IntLiteral extends AbstractExpr {
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
 
-        compiler.addInstruction(new INT(new ImmediateInteger(this.getValue()),Register.getR(1))); // pour sortir une valeur: on est obligé de passer par R1
+        compiler.addInstruction(new LOAD(new ImmediateInteger(this.getValue()),Register.R1)); // pour sortir une valeur: on est obligé de passer par R1
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         int i=compiler.getTableRegistre().getLastregistre();
         compiler.getTableRegistre().setEtatRegistreTrue(i);
-        compiler.addInstruction(new FLOAT(new ImmediateInteger(this.getValue()),Register.getR(i)));
+        compiler.addInstruction(new LOAD(new ImmediateInteger(this.getValue()),Register.getR(i)));
 
 
     }
