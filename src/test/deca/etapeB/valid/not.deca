@@ -1,0 +1,13 @@
+// Description:
+//    Opérateur unaire
+//
+// Resultats:
+//    ok
+// 
+// Historique:
+//    cree le 01/01/2016
+
+{
+   boolean a = true;
+   boolean b = !a;
+}
