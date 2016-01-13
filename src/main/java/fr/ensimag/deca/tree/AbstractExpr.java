@@ -25,6 +25,17 @@ public abstract class AbstractExpr extends AbstractInst {
     boolean isImplicit() {
         return false;
     }
+
+    private int adresseGb;
+
+    public int getAdresseGb(){
+        return this.adresseGb;
+    }
+
+    public void setAdresseGb(int ad){
+        this.adresseGb=ad;
+    }
+
     private int registreUtilise;
     public int getRegistreUtilise(){
         return this.registreUtilise;

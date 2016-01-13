@@ -33,19 +33,18 @@ public class Multiply extends AbstractOpArith {
         compiler.getTableRegistre().setEtatRegistreTrue(i);
         if(this.getLeftOperand().getType().sameType(new IntType(compiler.getSymbols().create("int")))){
             this.getLeftOperand().codeGenInst(compiler);
-            int j= this.getLeftOperand().getRegistreUtilise();
-            this.getRightOperand().codeGenInst(compiler);
+            int j=this.getRightOperand().getRegistreUtilise();
+            int cible=this.getRightOperand().getAdresseGb();
+            RegisterOffset target= new RegisterOffset(cible,Register.GB);
 
-            compiler.addInstruction(new STORE(Register.getR(j), ));
-            compiler.addInstruction(new MUL(,Register.getR(j)));
+            compiler.addInstruction(new MUL(target,Register.getR(j)));
         }
         else if(this.getLeftOperand().getType().sameType(new IntType(compiler.getSymbols().create("float")))){
             this.getLeftOperand().codeGenInst(compiler);
             int j=this.getLeftOperand().getRegistreUtilise();
-            this.getRightOperand().codeGenInst(compiler);
-
-
-            compiler.addInstruction(new MUL(,Register.getR(j)));
+            int cible = this.getRightOperand().getRegistreUtilise();
+            RegisterOffset target =new RegisterOffset(cible,Register.GB);
+            compiler.addInstruction(new MUL(target,Register.getR(j)));
 
 
         }
