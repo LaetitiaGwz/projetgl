@@ -26,6 +26,16 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         if(rightType.sameType(leftType)) {
             return rightType;
         }
+        else if(rightType.isFloat() && leftType.isInt()) {
+            // Conversion du leftoperand
+            setLeftOperand(new ConvFloat(getLeftOperand()));
+            return getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        }
+        else if(rightType.isInt() && leftType.isFloat()) {
+            // Conversion du rightoperand
+            setRightOperand(new ConvFloat(getRightOperand()));
+            return getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        }
         else {
             throw new ContextualError("Boolean operation on expressions which types are differents.", getLocation());
         }
