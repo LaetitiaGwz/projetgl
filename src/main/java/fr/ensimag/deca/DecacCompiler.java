@@ -1,6 +1,7 @@
 package fr.ensimag.deca;
 
 import fr.ensimag.deca.codegen.GestionRegistre;
+import fr.ensimag.deca.codegen.MemoryMap;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -17,6 +18,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.multipleinstructions.InstructionList;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -45,7 +48,12 @@ public class DecacCompiler {
      */
     private SymbolTable symbols;
 
-	/**
+    /**
+     * Permet de gérer l'état de la mémoire
+     */
+    private MemoryMap memoryMap;
+
+    /**
 	 * table des registres
      */
     private GestionRegistre tableRegistre;
@@ -77,6 +85,12 @@ public class DecacCompiler {
         symbols.create("boolean");
         symbols.create("float");
         symbols.create("Object");
+
+        /**
+         * Initialisation de la map mémoire
+         */
+        memoryMap = new MemoryMap();
+
     }
 
     /**
@@ -123,6 +137,14 @@ public class DecacCompiler {
      */
     public void addInstruction(Instruction instruction) {
         program.addInstruction(instruction);
+    }
+
+    /**
+     * Add a list of instructions to the program
+     * @param list list of instructions to be added to the program
+     */
+    public void addInstructionList(InstructionList list){
+        program.addInstructionList(list);
     }
 
     /**
@@ -293,5 +315,14 @@ public class DecacCompiler {
 
     public SymbolTable getSymbols() {
         return symbols;
+    }
+
+
+    /**
+     * Accesseur de la map mémoire
+     * @return map mémoire
+     */
+    public MemoryMap getMemoryMap() {
+        return memoryMap;
     }
 }

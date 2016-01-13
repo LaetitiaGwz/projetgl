@@ -4,6 +4,11 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.multipleinstructions.GlobalVarDef;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -47,7 +52,16 @@ public class DeclVar extends AbstractDeclVar {
         initialization.verifyInitialization(compiler, t, localEnv, currentClass);
     }
 
-    
+    @Override
+    protected void codeGenDecl(DecacCompiler compiler) {
+        SymbolTable.Symbol symbol = this.getVarName().getName();
+
+        GPRegister r0 = Register.R0;
+        Initialization toto = (Initialization)initialization;
+        compiler.addInstructionList(new GlobalVarDef(symbol, 1, r0, compiler.getMemoryMap()));
+    }
+
+
     @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("not yet implemented");

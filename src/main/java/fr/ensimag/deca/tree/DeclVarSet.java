@@ -70,4 +70,5 @@ public class DeclVarSet extends AbstractDeclVarSet {
         type.prettyPrint(s, prefix, false);
         declVars.prettyPrint(s, prefix, true);
     }
+
 }
