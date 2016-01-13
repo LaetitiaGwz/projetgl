@@ -25,6 +25,13 @@ public abstract class AbstractExpr extends AbstractInst {
     boolean isImplicit() {
         return false;
     }
+    private int registreUtilise;
+    public int getRegistreUtilise(){
+        return this.registreUtilise;
+    }
+    public void setRegistreUtilise(int i){
+        this.registreUtilise=i;
+    }
 
     /**
      * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).

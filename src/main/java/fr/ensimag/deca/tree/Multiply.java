@@ -2,7 +2,9 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.FloatType;
 import fr.ensimag.deca.context.IntType;
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.INT;
@@ -25,21 +27,31 @@ public class Multiply extends AbstractOpArith {
         return "*";
     }
 
-   // @Override
-    //protected codeGenOpArith(DecacCompiler compiler){
-      //  int i= compiler.getTableRegistre().getLastregistre();
-        //compiler.getTableRegistre().setEtatRegistreTrue(i);
-        //if(this.getLeftOperand().getType().sameType(new IntType(compiler.getSymbols().create("int")))){
-            // LOAD #val, RI
-          //  addInstruction(new LOAD(this.getLeftOperand().getValue(),Register.getR(i)));
-            // STORE RI, offset(GB)
-           // addInstruction(new STORE(reg, gbOffset));
-        //}
-        //else if(this.getLeftOperand().getType().sameType(new IntType(compiler.getSymbols().create("float")))){
-//
-  //      }
+    @Override
+    protected void codeGenInst(DecacCompiler compiler){
+        int i= compiler.getTableRegistre().getLastregistre();
+        compiler.getTableRegistre().setEtatRegistreTrue(i);
+        if(this.getLeftOperand().getType().sameType(new IntType(compiler.getSymbols().create("int")))){
+            this.getLeftOperand().codeGenInst(compiler);
+            int j= this.getLeftOperand().getRegistreUtilise();
+            this.getRightOperand().codeGenInst(compiler);
 
-    //    compiler.addInstruction(new MUL(this.getLeftOperand().,this.getRightOperand()));
-    //}
+            compiler.addInstruction(new STORE(Register.getR(j), ));
+            compiler.addInstruction(new MUL(,Register.getR(j)));
+        }
+        else if(this.getLeftOperand().getType().sameType(new IntType(compiler.getSymbols().create("float")))){
+            this.getLeftOperand().codeGenInst(compiler);
+            int j=this.getLeftOperand().getRegistreUtilise();
+            this.getRightOperand().codeGenInst(compiler);
+
+
+            compiler.addInstruction(new MUL(,Register.getR(j)));
+
+
+        }
+
+
+
+    }
 
 }
