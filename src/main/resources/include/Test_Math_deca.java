@@ -13,10 +13,10 @@ public class Test_Math_deca{
 				System.out.println();
 			}
 		}
-		// float x = (float) 0.375;
+		System.out.println("fin");
+		// float x = (float) 0.0;
 		// System.out.println("Math.ulp donne : " + Math.ulp(x));
 		// System.out.println("Math_deca donne : " + Math_deca.ulp(x));
-		// System.out.println( Math.pow(2,-26	));
-		
+				
 	}
 }

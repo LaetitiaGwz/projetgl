@@ -24,27 +24,27 @@ public class Math_deca{
 
 	public static float ulp(float x){
 
-		int exp = -1 ;
-
-		while (x >= 1 || -x >= 1) {
-			x =  x/(float)2.0;
-			exp ++ ;
-		}
-
-		if(x<= 0) {
+		int exp = 0;
+		if(x < 0) {
 			x = -x ;
 		}	
-
-		while (x  < 0.5) {
-			x = x + (float)0.1 ;
-				exp --  ;
+		if ( x >= 1 ) {
+			exp = -1 ;
+			while (x >= 1 ) {
+				x =  x/(float)2.0;
+				exp ++ ;
+			}
+			
 		}
-
-		// if(exp<-1){
-		// 	exp++;
-		// }
-
-		return power(2,exp - 23) ;		
+		else{
+			exp = 0 ;
+			while ( x < 1 && x!=0) {
+				x = x*(float)2.0;
+				exp -- ;
+			}
+			
+		}
+		return power(2,exp - 23) ;	
 	}
 
 
