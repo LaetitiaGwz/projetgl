@@ -34,6 +34,7 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+
         Signature printlnSignature = new Signature();
         printlnSignature.add(new StringType(compiler.getSymbols().create("String")));
         arguments.verifyParams(compiler, localEnv, currentClass, printlnSignature, getLocation());

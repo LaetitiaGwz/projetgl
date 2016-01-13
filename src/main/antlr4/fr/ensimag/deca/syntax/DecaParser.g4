@@ -208,6 +208,7 @@ expr returns[AbstractExpr tree]
     : assign_expr {
             assert($assign_expr.tree != null);
             $tree = $assign_expr.tree;
+            setLocation($tree, $assign_expr.start);
         }
     ;
 
@@ -222,7 +223,7 @@ assign_expr returns[AbstractExpr tree]
             assert($e.tree != null);
             assert($e2.tree != null);
             $tree = new Assign((AbstractLValue)$e.tree, $e2.tree);
-            setLocation($tree, $assign_expr.start);
+            setLocation($tree, $or_expr.start);
         }
       | /* epsilon */ {
             assert($e.tree != null);
@@ -387,6 +388,7 @@ primary_expr returns[AbstractExpr tree]
     : ident {
             assert($ident.tree != null);
             $tree = $ident.tree;
+            setLocation($tree, $ident.start);
         }
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
