@@ -61,7 +61,6 @@ public class DeclVar extends AbstractDeclVar {
         compiler.addInstructionList(new GlobalVarDef(symbol, 1, r0, compiler.getMemoryMap()));
     }
 
-
     @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("not yet implemented");
