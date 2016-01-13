@@ -6,6 +6,9 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -27,27 +30,33 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
+    protected void codeGenInst(DecacCompiler compiler){
+        this.getRightOperand().codeGenInst(compiler);
+        compiler.addInstruction(new STORE(Register.getR(2), new RegisterOffset(3,Register.GB)));
+        compiler.getTableRegistre().resetTableRegistre();
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
 
+        Type t;
+
         if(rightType.sameType(leftType)) {
-            return rightType;
-        }
-        else if(rightType.isFloat() && leftType.isInt()) {
-            // Conversion du leftoperand
-            setLeftOperand(new ConvFloat(getLeftOperand()));
-            return getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+            t = rightType;
         }
         else if(rightType.isInt() && leftType.isFloat()) {
             // Conversion du rightoperand
             setRightOperand(new ConvFloat(getRightOperand()));
-            return getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+            t = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         }
         else {
             throw new ContextualError("Assignement of expressions which types are differents.", getLocation());
         }
+        setType(t);
+        return t;
     }
 
 

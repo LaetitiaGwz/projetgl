@@ -96,7 +96,7 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
-    
+
 
     @Override
     protected void decompileInst(IndentPrintStream s) {
