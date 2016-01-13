@@ -144,4 +144,14 @@ public class Math_deca{
 		return mid/power(10,exp/2) ;
 	}
 
+	public static float cos(float x){
+		float t = tan(x/2) ;
+		return (float)(1-power(t,2))/(1 + power(t,2)) ;
+
+	}
+
+	public static float sin(float x){
+		return tan(x)*cos(x) ;
+	}
+
 }
