@@ -31,9 +31,12 @@ public class GestionRegistre {
 		return i;
 	}
 
-	public void setEtatRegistre(int registre,boolean etat){
-			this.tableRegistre[registre]=etat;
+	public void setEtatRegistreTrue(int registre){
+			this.tableRegistre[registre]=true;
 	}
 
+	public void setEtatRegistreFalse(int registre){
+		this.tableRegistre[registre]=false;
+	}
 
 }

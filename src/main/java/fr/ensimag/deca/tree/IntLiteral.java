@@ -43,7 +43,7 @@ public class IntLiteral extends AbstractExpr {
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
 
-        compiler.addInstruction(new INT(new ImmediateInteger(this.getValue()),Register.getR(compiler.getTableRegistre().getLastregistre())));
+        compiler.addInstruction(new INT(new ImmediateInteger(this.getValue()),Register.getR(1))); // pour sortir une valeur: on est obligé de passer par R1
     }
 
     @Override
