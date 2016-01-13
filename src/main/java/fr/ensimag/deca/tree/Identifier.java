@@ -165,7 +165,27 @@ public class Identifier extends AbstractIdentifier {
     //TODO
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type t;
+        if(getName().getName().compareTo("int") == 0) {
+            t = new IntType(getName());
+        }
+        else if (getName().getName().compareTo("float") == 0) {
+            t = new FloatType(getName());
+        }
+        else if (getName().getName().compareTo("String") == 0) {
+            t = new StringType(getName());
+        }
+        else if (getName().getName().compareTo("boolean") == 0) {
+            t = new BooleanType(getName());
+        }
+        else if (getName().getName().compareTo("void") == 0) {
+            t = new VoidType(getName());
+        }
+        else {
+            throw new UnsupportedOperationException("Not implemented for variable of type " + getName().getName());
+        }
+
+        return t;
     }
     
     
