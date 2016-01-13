@@ -1,7 +1,7 @@
 import java.lang.Math ;
 
 public class Math_deca{
-
+	public static final float MIN_VALUE = (float)1.4E-45;
 	public static float power(float x, int y){
 
 		float originalX = x ;
@@ -33,16 +33,17 @@ public class Math_deca{
 			while (x >= 1 ) {
 				x =  x/(float)2.0;
 				exp ++ ;
-			}
-			
+			}			
 		}
-		else{
+		else if ( x < 1 && x != 0){
 			exp = 0 ;
-			while ( x < 1 && x!=0) {
+			while ( x < 1) {
 				x = x*(float)2.0;
 				exp -- ;
 			}
-			
+		}
+		else{ // cas x = 0.0 
+			return MIN_VALUE ; // c'est ce que fait java.Math, pas sur pour le deca
 		}
 		return power(2,exp - 23) ;	
 	}
