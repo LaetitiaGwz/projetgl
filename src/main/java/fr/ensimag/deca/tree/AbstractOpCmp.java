@@ -20,7 +20,35 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+
+        Type t;
+
+        if(leftType.isInt() && rightType.isInt()) {
+            t = leftType;
+        }
+        else if (leftType.isInt() && rightType.isFloat()) {
+            // on convertit le leftoperand int -> float
+            setLeftOperand(new ConvFloat(getLeftOperand()));
+            t = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        }
+        else if (leftType.isFloat() && rightType.isInt()) {
+            // on convertit le rightoperand int -> float
+            setRightOperand(new ConvFloat(getRightOperand()));
+            t = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        }
+        else if (leftType.isFloat() && rightType.isFloat()) {
+            t = leftType;
+        }
+        else {
+            throw new ContextualError("Comparison on non-numbers. Left : " + leftType.getName() + " Right : " + rightType.getName(), getLocation());
+        }
+
+        setType(t);
+        return t;
+
     }
 
 

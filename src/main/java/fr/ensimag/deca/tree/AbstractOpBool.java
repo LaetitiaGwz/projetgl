@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 
 /**
  *
@@ -25,24 +22,12 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
         Type opType;
 
-        if(rightType.sameType(leftType)) {
-            opType = rightType;
+        if(!(leftType.isBoolean() && rightType.isBoolean())) {
+            throw new ContextualError("Boolean operation on non-boolean operands. Left : " + leftType.getName() + " Right : " + rightType.getName(), getLocation());
         }
-        else if(rightType.isFloat() && leftType.isInt()) {
-            // Conversion du leftoperand
-            setLeftOperand(new ConvFloat(getLeftOperand()));
-            opType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-        }
-        else if(rightType.isInt() && leftType.isFloat()) {
-            // Conversion du rightoperand
-            setRightOperand(new ConvFloat(getRightOperand()));
-            opType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-        }
-        else {
-            throw new ContextualError("Boolean operation on expressions which types are differents. Left : " + leftType.getName() + " Right : " + rightType.getName(), getLocation());
-        }
-        setType(opType);
-        return opType;
+
+        setType(leftType);
+        return leftType;
     }
 
 }
