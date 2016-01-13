@@ -20,7 +20,29 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+
+        Type opType;
+
+        if(rightType.sameType(leftType)) {
+            opType = rightType;
+        }
+        else if(rightType.isFloat() && leftType.isInt()) {
+            // Conversion du leftoperand
+            setLeftOperand(new ConvFloat(getLeftOperand()));
+            opType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        }
+        else if(rightType.isInt() && leftType.isFloat()) {
+            // Conversion du rightoperand
+            setRightOperand(new ConvFloat(getRightOperand()));
+            opType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        }
+        else {
+            throw new ContextualError("Boolean operation on expressions which types are differents. Left : " + leftType.getName() + " Right : " + rightType.getName(), getLocation());
+        }
+        setType(opType);
+        return opType;
     }
 
 }

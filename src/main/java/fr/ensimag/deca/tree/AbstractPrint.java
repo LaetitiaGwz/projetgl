@@ -34,9 +34,18 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        Signature printlnSignature = new Signature();
-        printlnSignature.add(new StringType(compiler.getSymbols().create("String")));
-        arguments.verifyParams(compiler, localEnv, currentClass, printlnSignature, getLocation());
+
+        if(arguments.size() != 1) {
+            throw new ContextualError("Print take only one argument.", getLocation());
+        }
+
+        AbstractExpr firstArg = arguments.iterator().next();
+
+        Type argType = firstArg.verifyExpr(compiler, localEnv, currentClass);
+
+        if(!(argType.isFloat() || argType.isString() || argType.isInt())) {
+            throw new ContextualError("The argument of function print(ln) must be a string, an int or a float. Got a " + argType.getName(), getLocation());
+        }
     }
 
     @Override
@@ -53,7 +62,7 @@ public abstract class AbstractPrint extends AbstractInst {
     @Override
     public void decompile(IndentPrintStream s) {
         for(AbstractExpr a :this.arguments.getList()){
-            s.print("print"+this.getSuffix()+" (");
+            s.print("print"+this.getSuffix()+"(");
             a.decompile(s);
             s.print(");");
 

@@ -159,13 +159,40 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        NonTypeDefinition t = localEnv.get(this.getName());
+        if(t == null) {
+            throw new ContextualError("Undefinded variable " + getName(), getLocation());
+        }
+        setDefinition(t);
+        return t.getType();
     }
 
     //TODO
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type t;
+        if(getName().getName().compareTo("int") == 0) {
+            t = new IntType(getName());
+        }
+        else if (getName().getName().compareTo("float") == 0) {
+            t = new FloatType(getName());
+        }
+        else if (getName().getName().compareTo("String") == 0) {
+            t = new StringType(getName());
+        }
+        else if (getName().getName().compareTo("boolean") == 0) {
+            t = new BooleanType(getName());
+        }
+        else if (getName().getName().compareTo("void") == 0) {
+            t = new VoidType(getName());
+        }
+        else {
+            throw new UnsupportedOperationException("Not implemented for variable of type " + getName().getName());
+        }
+
+        setDefinition(new TypeDefinition(t, Location.BUILTIN));
+        return t;
     }
     
     

@@ -1,8 +1,14 @@
 package fr.ensimag.deca.codegen;
 
 import com.sun.org.apache.xpath.internal.operations.Variable;
+import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.multipleinstructions.InstructionList;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,7 +27,7 @@ public class MemoryMap {
     private int PC; // Program Counter
 
     // Map to store the location of the stored variables in memory
-    private Map<String,Integer> globalVariables = new HashMap<String, Integer>();
+    private Map<SymbolTable.Symbol,DAddr> globalVariables = new HashMap<SymbolTable.Symbol, DAddr>();
 
     public MemoryMap() {
         GB = GB_BASE;
@@ -30,40 +36,17 @@ public class MemoryMap {
         PC = PC_BASE;
     }
 
-    public int getGlobalVariable(String var){
-        return globalVariables.get(var);
+    public RegisterOffset getGlobalVariable(SymbolTable.Symbol symbol){
+        GB--;
+        return (RegisterOffset) globalVariables.get(symbol);
     }
 
-    public int storeGlobalVariable(int value, String var){
-        globalVariables.put(var,value);
-        return addGB(4);
+    public RegisterOffset storeGlobalVariable(SymbolTable.Symbol symbol){
+
+        RegisterOffset gbOffset = new RegisterOffset(GB,Register.GB);
+        globalVariables.put(symbol,gbOffset);
+        GB++;
+        return gbOffset;
     }
 
-    /**
-     * Increment GB by val
-     * @param val the value that will be added to GB
-     * @return the previous value of GB
-     */
-    public int addGB(int val){
-        int previous = GB;
-        GB += val;
-        return previous;
-    }
-
-    /**
-     *
-     * @param val
-     * @return
-     */
-    public int addSP(int val){
-        int previous = SP;
-        SP += val;
-        return previous;
-    }
-
-    public int addLB(int val){
-        int previous = LB;
-        LB += val;
-        return previous;
-    }
 }

@@ -1,6 +1,7 @@
 package fr.ensimag.ima.pseudocode.multipleinstructions;
 
 import fr.ensimag.deca.codegen.MemoryMap;
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
@@ -12,11 +13,11 @@ import fr.ensimag.ima.pseudocode.instructions.STORE;
  * Definition of a global variable
  */
 public class GlobalVarDef extends InstructionList {
-    public GlobalVarDef(String var, int value, GPRegister reg, MemoryMap memoryMap) {
+    public GlobalVarDef(SymbolTable.Symbol symbol, int value, GPRegister reg, MemoryMap memoryMap) {
         // LOAD #val, RI
         addInstruction(new LOAD(value,reg));
         // STORE RI, offset(GB)
-        RegisterOffset gbOffset = new RegisterOffset(memoryMap.storeGlobalVariable(value,var), Register.GB);
+        RegisterOffset gbOffset = memoryMap.storeGlobalVariable(symbol);
         addInstruction(new STORE(reg, gbOffset));
     }
 }

@@ -47,6 +47,9 @@ public class EnvironmentExp {
         if (result != null) {
             return result ;
         }
+        else if(parentEnvironment == null) {
+            return null;
+        }
         else{
             return parentEnvironment.get(key);
         }

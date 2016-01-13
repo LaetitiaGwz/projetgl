@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -37,6 +34,16 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(Type t, DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+
+        // On tente de déclarer la variable dans l'environnement. Sinon erreur contextuelle.
+        try {
+            localEnv.declare(getVarName().getName(), new VariableDefinition(t, getLocation()));
+        }
+        catch (EnvironmentExp.DoubleDefException e) {
+            throw new ContextualError("Multiple declaration of variable " + getVarName(), getLocation());
+        }
+
+        varName.verifyExpr(compiler, localEnv, currentClass);
         initialization.verifyInitialization(compiler, t, localEnv, currentClass);
     }
 
