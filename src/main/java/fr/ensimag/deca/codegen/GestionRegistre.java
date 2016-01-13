@@ -35,8 +35,9 @@ public class GestionRegistre {
 			this.tableRegistre[registre]=true;
 	}
 
-	public void setEtatRegistreFalse(int registre){
-		this.tableRegistre[registre]=false;
+	public void resetTableRegistre(){
+		for(int i=2; i<this.tableRegistre.length;i++){
+			this.tableRegistre[i]=false;
+		}
 	}
-
 }
