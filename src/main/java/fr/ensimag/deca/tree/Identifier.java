@@ -164,6 +164,7 @@ public class Identifier extends AbstractIdentifier {
         if(t == null) {
             throw new ContextualError("Undefinded variable " + getName(), getLocation());
         }
+        setDefinition(t);
         return t.getType();
     }
 
@@ -190,6 +191,7 @@ public class Identifier extends AbstractIdentifier {
             throw new UnsupportedOperationException("Not implemented for variable of type " + getName().getName());
         }
 
+        setDefinition(new TypeDefinition(t, Location.BUILTIN));
         return t;
     }
     

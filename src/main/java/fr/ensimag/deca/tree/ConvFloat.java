@@ -20,7 +20,11 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) {
-        return new FloatType(compiler.getSymbols().create("float"));
+
+        Type floatType = new FloatType(compiler.getSymbols().create("float"));
+
+        setType(floatType);
+        return floatType;
     }
 
 

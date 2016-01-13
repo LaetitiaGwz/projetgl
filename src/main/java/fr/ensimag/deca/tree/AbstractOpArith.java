@@ -24,21 +24,25 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
 
+        Type opType;
+
         if(rightType.sameType(leftType)) {
-            return rightType;
+            opType = rightType;
         }
         else if(rightType.isFloat() && leftType.isInt()) {
             // Conversion du leftoperand
             setLeftOperand(new ConvFloat(getLeftOperand()));
-            return getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+            opType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         }
         else if(rightType.isInt() && leftType.isFloat()) {
             // Conversion du rightoperand
             setRightOperand(new ConvFloat(getRightOperand()));
-            return getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+            opType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         }
         else {
             throw new ContextualError("Arithmetic operation on expressions which types are differents. Left : " + leftType.getName() + " Right : " + rightType.getName(), getLocation());
         }
+        setType(opType);
+        return opType;
     }
 }
