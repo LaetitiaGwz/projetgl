@@ -53,7 +53,9 @@ public class IntLiteral extends AbstractExpr {
     protected void codeGenInst(DecacCompiler compiler){
         int i=compiler.getTableRegistre().getLastregistre();
         compiler.getTableRegistre().setEtatRegistreTrue(i);
+        this.setRegistreUtilise(i);
         compiler.addInstruction(new LOAD(new ImmediateInteger(this.getValue()),Register.getR(i)));
+
 
 
 
