@@ -1,0 +1,12 @@
+// Description:
+//    Déclaration de variable
+//
+// Resultats:
+//    Ligne 11 : mauvais typage de l'inégalité
+// 
+
+{
+    int a;
+    String b;
+    b = b < a;
+}
