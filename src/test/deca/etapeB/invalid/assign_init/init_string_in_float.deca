@@ -8,5 +8,5 @@
 //    cree le 01/01/2016
 
 {
-   int a = 1;
+   float a = "test";
 }
