@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
@@ -30,16 +31,7 @@ public abstract class AbstractExpr extends AbstractInst {
         return false;
     }
 
-
-    private GPRegister registreUtilise;
-    public GPRegister getRegistreUtilise(){
-        return this.registreUtilise;
-    }
-    public void setRegistreUtilise(DecacCompiler compiler){
-        this.registreUtilise=compiler.getRegistreUtilise();
-    }
-
-    /**
+     /**
      * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
      */
     public Type getType() {

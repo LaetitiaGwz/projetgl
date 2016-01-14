@@ -54,24 +54,12 @@ public class DecacCompiler {
     /**
 	 * table des registres
      */
-    private GPRegister registreUtilise = Register.getR(2);
-    public GPRegister getRegistreUtilise(){
-        return this.registreUtilise;
+    private DVal dVal ;
+    public DVal getDval(){
+        return this.dVal;
     }
-    public void setRegistreUtilise(int i){
-        this.getTableRegistre().setEtatRegistreTrue(i);
-        this.registreUtilise=Register.getR(i);
-    }
-    public void libererRegistreUtilise(){
-        int i =this.getTableRegistre().getLastregistre();
-        if(i>2){
-            this.registreUtilise= Register.getR(i-1);
-            this.getTableRegistre().setEtatRegistreFalse(i);
-        }
-        else{
-            this.registreUtilise=Register.getR(2);
-            this.getTableRegistre().setEtatRegistreFalse(2);
-        }
+    public void setDVal(DVal set){
+        this.dVal=set;
     }
     private GestionRegistre tableRegistre;
 
