@@ -31,12 +31,12 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
 
-    private GPRegister registreUtilise = Register.getR(2);
+    private GPRegister registreUtilise;
     public GPRegister getRegistreUtilise(){
         return this.registreUtilise;
     }
-    public void setRegistreUtilise(int i){
-        this.registreUtilise=Register.getR(i);
+    public void setRegistreUtilise(DecacCompiler compiler){
+        this.registreUtilise=compiler.getRegistreUtilise();
     }
 
     /**

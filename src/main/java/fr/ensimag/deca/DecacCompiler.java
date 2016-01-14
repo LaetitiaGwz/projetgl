@@ -9,10 +9,8 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.ima.pseudocode.AbstractLine;
-import fr.ensimag.ima.pseudocode.IMAProgram;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -56,6 +54,25 @@ public class DecacCompiler {
     /**
 	 * table des registres
      */
+    private GPRegister registreUtilise = Register.getR(2);
+    public GPRegister getRegistreUtilise(){
+        return this.registreUtilise;
+    }
+    public void setRegistreUtilise(int i){
+        this.getTableRegistre().setEtatRegistreTrue(i);
+        this.registreUtilise=Register.getR(i);
+    }
+    public void libererRegistreUtilise(){
+        int i =this.getTableRegistre().getLastregistre();
+        if(i>2){
+            this.registreUtilise= Register.getR(i-1);
+            this.getTableRegistre().setEtatRegistreFalse(i);
+        }
+        else{
+            this.registreUtilise=Register.getR(2);
+            this.getTableRegistre().setEtatRegistreFalse(2);
+        }
+    }
     private GestionRegistre tableRegistre;
 
     public GestionRegistre getTableRegistre(){

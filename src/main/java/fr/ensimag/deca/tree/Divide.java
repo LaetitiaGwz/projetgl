@@ -1,6 +1,10 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.instructions.DIV;
+import fr.ensimag.ima.pseudocode.instructions.MUL;
+
 /**
  *
  * @author gl41
@@ -15,6 +19,14 @@ public class Divide extends AbstractOpArith {
     @Override
     protected String getOperatorName() {
         return "/";
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler){
+        this.getLeftOperand().codeGenInst(compiler);
+        this.getRightOperand().codeGenInst(compiler);
+        compiler.addInstruction(new DIV(this.getRightOperand().getRegistreUtilise(),this.getLeftOperand().getRegistreUtilise()));
+
     }
 
 }

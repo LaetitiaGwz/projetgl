@@ -60,8 +60,9 @@ public class DeclVar extends AbstractDeclVar {
         this.getVarName().getNonTypeDefinition().setOperand(stock);
         compiler.incrementeGB();
         getInitialization().codegenInit(compiler);
-        Register resultReg = getVarName().getRegistreUtilise();
+        Register resultReg = compiler.getRegistreUtilise();
         compiler.addInstruction(new STORE(resultReg, stock));
+        compiler.libererRegistreUtilise();
     }
 
     @Override
