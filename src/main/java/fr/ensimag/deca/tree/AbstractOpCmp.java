@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 
 /**
  *
@@ -24,27 +21,30 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
 
-        Type t;
-
-        if(leftType.isInt() && rightType.isInt()) {
-            t = leftType;
-        }
-        else if (leftType.isInt() && rightType.isFloat()) {
-            // on convertit le leftoperand int -> float
-            setLeftOperand(new ConvFloat(getLeftOperand()));
-            t = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-        }
-        else if (leftType.isFloat() && rightType.isInt()) {
-            // on convertit le rightoperand int -> float
-            setRightOperand(new ConvFloat(getRightOperand()));
-            t = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-        }
-        else if (leftType.isFloat() && rightType.isFloat()) {
-            t = leftType;
+        if (leftType.sameType(rightType)) {
+            if(!leftType.isInt() && !rightType.isFloat() && (this instanceof AbstractOpIneq)) {
+                throw new ContextualError("Inequality on non-numbers. Left : " + leftType.getName() + " Right : " + rightType.getName(), getLocation());
+            }
         }
         else {
-            throw new ContextualError("Comparison on non-numbers. Left : " + leftType.getName() + " Right : " + rightType.getName(), getLocation());
+            if (leftType.isInt() && rightType.isFloat()) {
+                // on convertit le leftoperand int -> float
+                getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+                setLeftOperand(new ConvFloat(getLeftOperand()));
+                getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+            }
+            else if (leftType.isFloat() && rightType.isInt()) {
+                // on convertit le rightoperand int -> float
+                getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+                setRightOperand(new ConvFloat(getRightOperand()));
+                getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+            }
+            else {
+                throw new ContextualError("Comparison on variables which types are differents and non-castable. Left : " + leftType.getName() + " Right : " + rightType.getName(), getLocation());
+            }
         }
+
+        Type t = new BooleanType(compiler.getSymbols().create("boolean"));
 
         setType(t);
         return t;

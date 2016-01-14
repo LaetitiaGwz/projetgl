@@ -4,12 +4,14 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.INT;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 import java.io.PrintStream;
 
@@ -33,6 +35,7 @@ public class IntLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+
         setType(new IntType(compiler.getSymbols().create("int")));
         return this.getType();
     }
@@ -47,14 +50,17 @@ public class IntLiteral extends AbstractExpr {
     protected void codeGenPrint(DecacCompiler compiler){
 
         compiler.addInstruction(new LOAD(new ImmediateInteger(this.getValue()),Register.R1)); // pour sortir une valeur: on est obligé de passer par R1
+        compiler.addInstruction(new WINT());
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         int i=compiler.getTableRegistre().getLastregistre();
         compiler.getTableRegistre().setEtatRegistreTrue(i);
-        this.setRegistreUtilise(i);
-        compiler.addInstruction(new LOAD(new ImmediateInteger(this.getValue()),Register.getR(i)));
+        GPRegister target= Register.getR(i);
+        compiler.setDVal(target);
+        compiler.addInstruction(new LOAD(new ImmediateInteger(this.getValue()),target));
+
 
 
 

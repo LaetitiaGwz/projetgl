@@ -1,0 +1,10 @@
+// Description:
+//   Test d'affichage
+//
+// Resultats:
+//    1
+//
+
+{
+    print(1.1);
+}

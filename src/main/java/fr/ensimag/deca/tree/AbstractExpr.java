@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.MemoryMap;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -7,8 +8,12 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.Register;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -25,26 +30,14 @@ public abstract class AbstractExpr extends AbstractInst {
     boolean isImplicit() {
         return false;
     }
-
-    private int adresseGb;
-
-    public int getAdresseGb(){
-        return this.adresseGb;
+    private GPRegister registreUtil;
+    public void setRegistreUtil(GPRegister reg){
+        this.registreUtil=reg;
     }
-
-    public void setAdresseGb(int ad){
-        this.adresseGb=ad;
+    public GPRegister getRegistreUtil(){
+        return this.registreUtil;
     }
-
-    private int registreUtilise;
-    public int getRegistreUtilise(){
-        return this.registreUtilise;
-    }
-    public void setRegistreUtilise(int i){
-        this.registreUtilise=i;
-    }
-
-    /**
+     /**
      * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
      */
     public Type getType() {
@@ -98,7 +91,12 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        Type condType = this.verifyExpr(compiler, localEnv, currentClass);
+
+        if(!condType.isBoolean()) {
+            throw new ContextualError("Condition must be a boolean.", getLocation());
+        }
     }
 
     /**
@@ -107,14 +105,15 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
     }
 
+    protected void codeGenInit(DecacCompiler compiler){
+
+    }
 
     @Override
     protected void decompileInst(IndentPrintStream s) {
@@ -134,26 +133,15 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     protected boolean subtype(EnvironmentExp env, Type parent, Type child) {
-        if(parent.sameType(child)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return (parent.sameType(child));
     }
 
     protected boolean assignCompatible(EnvironmentExp env, Type object, Type value) {
-        if(object.isFloat() && value.isInt()) {
-            return true;
-        }
-        else if (subtype(env, object, value)) {
-            return true;
-        }
-        else return false;
+        return (object.isFloat() && value.isInt()) || subtype(env, object, value);
     }
 
     protected boolean castCompatible(EnvironmentExp env, Type from, Type to) {
-        if(!from.isVoid()) {
+        if(from.isVoid()) {
             return false;
         }
         return assignCompatible(env, from, to) || assignCompatible(env, to, from);

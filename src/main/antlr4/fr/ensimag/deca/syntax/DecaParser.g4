@@ -109,9 +109,10 @@ decl_var returns[AbstractDeclVar tree]
             initialization = new Initialization($e.tree);
         }
       )? {
-            setLocation(initialization, $ident.start);
+            setLocation(initialization, $i.start);
             $tree = new DeclVar($i.tree, initialization);
             setLocation($tree, $i.start);
+            setLocation($i.tree, $i.start);
         }
     ;
 
@@ -328,11 +329,13 @@ sum_expr returns[AbstractExpr tree]
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Plus($e1.tree, $e2.tree);
+            setLocation($tree, $e1.start);
         }
     | e1=sum_expr MINUS e2=mult_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Minus($e1.tree, $e2.tree);
+            setLocation($tree, $e1.start);
         }
     ;
 
@@ -345,16 +348,19 @@ mult_expr returns[AbstractExpr tree]
             assert($e1.tree != null);                                         
             assert($e2.tree != null);
             $tree = new Multiply($e1.tree, $e2.tree);
+            setLocation($tree, $e1.start);
         }
     | e1=mult_expr SLASH e2=unary_expr {
             assert($e1.tree != null);                                         
             assert($e2.tree != null);
             $tree = new Divide($e1.tree, $e2.tree);
+            setLocation($tree, $e1.start);
         }
     | e1=mult_expr PERCENT e2=unary_expr {
             assert($e1.tree != null);                                                                          
             assert($e2.tree != null);
             $tree = new Plus($e1.tree, $e2.tree);
+            setLocation($tree, $e1.start);
         }
     ;
 
@@ -362,10 +368,12 @@ unary_expr returns[AbstractExpr tree]
     : op=MINUS e=unary_expr {
             assert($e.tree != null);
             $tree = new UnaryMinus($e.tree);
+            setLocation($tree, $e.start);
         }
     | op=EXCLAM e=unary_expr {
             assert($e.tree != null);
             $tree = new Not($e.tree);
+            setLocation($tree, $e.start);
         }
     | select_expr {
             assert($select_expr.tree != null);
@@ -463,7 +471,7 @@ literal returns[AbstractExpr tree]
             //TODO
         }
     | NULL {
-            //TODO
+            $tree = new Null();
         }
     ;
 

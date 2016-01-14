@@ -1,10 +1,8 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.FloatType;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.tools.DecacInternalError;
 
 /**
  * Conversion of an int into a float. Used for implicit conversions.
@@ -22,6 +20,7 @@ public class ConvFloat extends AbstractUnaryExpr {
             ClassDefinition currentClass) {
 
         Type floatType = new FloatType(compiler.getSymbols().create("float"));
+        getOperand().setType(new IntType(compiler.getSymbols().create("int")));
 
         setType(floatType);
         return floatType;

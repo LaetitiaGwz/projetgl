@@ -1,0 +1,10 @@
+// Description:
+//   Test d'une initialisation simple
+//
+// Resultats:
+//    ok
+// 
+
+{
+    bool a;
+}

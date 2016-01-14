@@ -1,0 +1,23 @@
+// Description:
+//    Déclaration de variables et initialisation
+//
+// Resultats:
+//    ok
+// 
+// Historique:
+//    cree le 01/01/2016
+
+{
+   boolean a;
+   boolean b = false;
+
+   String c;
+   String d = "ok";
+
+   int e;
+   int f = 5;
+
+   float g;
+   float h = 4.5;
+   float i = 4;
+}

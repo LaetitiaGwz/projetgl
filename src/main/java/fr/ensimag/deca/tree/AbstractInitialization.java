@@ -18,4 +18,6 @@ public abstract class AbstractInitialization extends Tree {
             Type t, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError;
 
+    protected abstract void codegenInit(DecacCompiler compiler);
+    protected abstract AbstractExpr getExpression();
 }

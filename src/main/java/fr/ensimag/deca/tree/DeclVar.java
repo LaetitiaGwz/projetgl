@@ -8,6 +8,8 @@ import java.io.PrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.ima.pseudocode.multipleinstructions.GlobalVarDef;
 import org.apache.commons.lang.Validate;
 
@@ -45,7 +47,7 @@ public class DeclVar extends AbstractDeclVar {
             localEnv.declare(getVarName().getName(), new VariableDefinition(t, getLocation()));
         }
         catch (EnvironmentExp.DoubleDefException e) {
-            throw new ContextualError("Multiple declaration of variable " + getVarName(), getLocation());
+            throw new ContextualError("Multiple declaration of variable " + getVarName().getName().getName(), getLocation());
         }
 
         varName.verifyExpr(compiler, localEnv, currentClass);
@@ -54,12 +56,10 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void codeGenDecl(DecacCompiler compiler) {
-        SymbolTable.Symbol symbol = this.getVarName().getName();
 
-        GPRegister r0 = Register.R0;
-        Initialization toto = (Initialization)initialization;
-        compiler.addInstructionList(new GlobalVarDef(symbol, 1, r0, compiler.getMemoryMap()));
-    }
+        getInitialization().codegenInit(compiler);
+
+        }
 
     @Override
     public void decompile(IndentPrintStream s) {

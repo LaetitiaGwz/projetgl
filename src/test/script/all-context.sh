@@ -22,7 +22,7 @@ success=0
 fail=0
 
 # Tests des cas invalides
-for cas_de_test in "$INVALID_DIR"/*.deca
+for cas_de_test in "$INVALID_DIR"/*.deca "$INVALID_DIR"/*/*.deca
 do
         # Récupération de la ligne ou se produit l'erreur, à partir des commentaires
         # du fichier de test
@@ -50,7 +50,7 @@ do
 done
 
 # Tests des cas valides
-for cas_de_test in "$VALID_DIR"/*.deca
+for cas_de_test in "$VALID_DIR"/*.deca "$VALID_DIR"/*/*.deca
 do
         filename=$(echo ${cas_de_test} | sed -e "s@${VALID_DIR}/@@g")
         result_test=$(test_context "$cas_de_test" 2>&1)
@@ -70,7 +70,6 @@ do
                 return_status=1
         else
                 echo -e "$filename"" : ${GREEN}  OK ${WHITE}"
-                fail=$(($fail + 1))
                 success=$(($success + 1))
 
     fi

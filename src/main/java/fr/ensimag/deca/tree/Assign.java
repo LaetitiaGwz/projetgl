@@ -31,8 +31,10 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        this.getRightOperand().codeGenInst(compiler);
-        compiler.addInstruction(new STORE(Register.getR(2), new RegisterOffset(3,Register.GB)));
+        getRightOperand().codeGenInst(compiler);
+        getRightOperand().setRegistreUtilise(compiler);
+        compiler.addInstruction(new STORE(getRightOperand().getRegistreUtilise(),
+                getLeftOperand().getNonTypeDefinition().getOperand()));
         compiler.getTableRegistre().resetTableRegistre();
     }
 
@@ -53,7 +55,7 @@ public class Assign extends AbstractBinaryExpr {
             t = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         }
         else {
-            throw new ContextualError("Assignement of expressions which types are differents.", getLocation());
+            throw new ContextualError("Assignement incompatible : cannot cast " + rightType + " into " + leftType + ".", getLocation());
         }
         setType(t);
         return t;

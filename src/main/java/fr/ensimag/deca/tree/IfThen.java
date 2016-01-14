@@ -37,7 +37,11 @@ public class IfThen extends AbstractIfThen {
     protected void verifyIfThen(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        condition.verifyCondition(compiler, localEnv, currentClass);
+
+        instructions.verifyListInst(compiler, localEnv, currentClass, returnType);
+
     }
 
 

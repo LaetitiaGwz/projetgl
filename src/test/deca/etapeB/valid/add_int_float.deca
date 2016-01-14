@@ -10,6 +10,5 @@
 {
     int a;
     float b;
-    a = a + b;
     b = a + b;
 }

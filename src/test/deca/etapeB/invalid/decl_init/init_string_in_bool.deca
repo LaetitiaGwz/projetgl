@@ -8,6 +8,5 @@
 //    cree le 01/01/2016
 
 {
-   boolean b = true;
-   boolean b2 = false;
+   boolean a = "test";
 }
