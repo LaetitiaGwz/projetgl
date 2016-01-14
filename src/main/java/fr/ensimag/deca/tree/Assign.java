@@ -53,7 +53,7 @@ public class Assign extends AbstractBinaryExpr {
             t = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         }
         else {
-            throw new ContextualError("Assignement of expressions which types are differents.", getLocation());
+            throw new ContextualError("Assignement incompatible : cannot cast " + rightType + " into " + leftType + ".", getLocation());
         }
         setType(t);
         return t;
