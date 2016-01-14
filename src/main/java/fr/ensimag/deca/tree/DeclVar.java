@@ -8,6 +8,8 @@ import java.io.PrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.ima.pseudocode.multipleinstructions.GlobalVarDef;
 import org.apache.commons.lang.Validate;
 
@@ -55,9 +57,11 @@ public class DeclVar extends AbstractDeclVar {
     @Override
     protected void codeGenDecl(DecacCompiler compiler) {
         SymbolTable.Symbol symbol = getVarName().getName();
-        getMemoryMap().getGlobalVariable(getVarName().getName());
-        Initialization i = (Initialization) getInitialization();
-        i.getExpression().codeGenInst(compiler);
+        RegisterOffset offset = getMemoryMap().storeGlobalVariable(symbol);
+
+        getInitialization().codegenInit(compiler);
+        Register resultReg = getVarName().getRegistreUtilise();
+        compiler.addInstruction(new STORE(resultReg, offset));
     }
 
     @Override
