@@ -61,6 +61,7 @@ public class DeclVar extends AbstractDeclVar {
         if(getInitialization().getExpression()!=null){
             getInitialization().codeGenInit(compiler);
             compiler.addInstruction(new STORE(this.getInitialization().getExpression().getRegistreUtil(),this.getVarName().getNonTypeDefinition().getOperand()));
+            compiler.resetTableRegistre();
         }
     }
 

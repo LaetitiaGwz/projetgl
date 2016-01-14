@@ -66,6 +66,9 @@ public class DecacCompiler {
     public GestionRegistre getTableRegistre(){
         return this.tableRegistre;
     }
+    public void resetTableRegistre(){
+        this.tableRegistre.resetTableRegistre();
+    }
 
     public void setTableRegistre(int nbRegistre){
         this.tableRegistre=new GestionRegistre(nbRegistre);
