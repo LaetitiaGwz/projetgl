@@ -27,7 +27,7 @@ public class MemoryMap {
     private int PC; // Program Counter
 
     // Map to store the location of the stored variables in memory
-    private Map<SymbolTable.Symbol,DAddr> globalVariables = new HashMap<SymbolTable.Symbol, DAddr>();
+    private Map<SymbolTable.Symbol,RegisterOffset> globalVariables = new HashMap<SymbolTable.Symbol, RegisterOffset>();
 
     public MemoryMap() {
         GB = GB_BASE;
@@ -37,8 +37,7 @@ public class MemoryMap {
     }
 
     public RegisterOffset getGlobalVariable(SymbolTable.Symbol symbol){
-        GB--;
-        return (RegisterOffset) globalVariables.get(symbol);
+        return  globalVariables.get(symbol);
     }
 
     public RegisterOffset storeGlobalVariable(SymbolTable.Symbol symbol){

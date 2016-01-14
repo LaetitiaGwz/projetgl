@@ -128,22 +128,11 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     protected boolean subtype(EnvironmentExp env, Type parent, Type child) {
-        if(parent.sameType(child)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return (parent.sameType(child));
     }
 
     protected boolean assignCompatible(EnvironmentExp env, Type object, Type value) {
-        if(object.isFloat() && value.isInt()) {
-            return true;
-        }
-        else if (subtype(env, object, value)) {
-            return true;
-        }
-        else return false;
+        return (object.isFloat() && value.isInt()) || subtype(env, object, value);
     }
 
     protected boolean castCompatible(EnvironmentExp env, Type from, Type to) {
