@@ -52,6 +52,14 @@ public class DeclVarSet extends AbstractDeclVarSet {
         return type.getType();
     }
 
+    @Override
+    protected void codegenDeclVarSet(DecacCompiler compiler) {
+        // run codegen on each declaration
+        for(AbstractDeclVar declVar : getDeclVars().getList()){
+            declVar.codeGenDecl(compiler);
+        }
+    }
+
 
     @Override
     public void decompile(IndentPrintStream s) {

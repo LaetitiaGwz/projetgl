@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
@@ -14,5 +15,4 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
-
-}   
+}

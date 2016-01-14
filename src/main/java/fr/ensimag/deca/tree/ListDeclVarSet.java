@@ -28,5 +28,11 @@ public class ListDeclVarSet extends TreeList<AbstractDeclVarSet> {
         }
     }
 
+    public void codeGenListDecl(DecacCompiler compiler) {
+        // run codegen on each declaration set
+        for(AbstractDeclVarSet declVarSet : getList()){
+            declVarSet.codegenDeclVarSet(compiler);
+        }
+    }
 
 }

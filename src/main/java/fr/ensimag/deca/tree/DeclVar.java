@@ -54,11 +54,8 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void codeGenDecl(DecacCompiler compiler) {
-        SymbolTable.Symbol symbol = this.getVarName().getName();
-
-        GPRegister r0 = Register.R0;
-        Initialization toto = (Initialization)initialization;
-        compiler.addInstructionList(new GlobalVarDef(symbol, 1, r0, compiler.getMemoryMap()));
+        Initialization i = (Initialization) getInitialization();
+        i.getExpression().codeGenInst(compiler);
     }
 
     @Override
