@@ -50,6 +50,7 @@ public class Math_deca{
 		return power(2,exp - 23) ;	
 	}
 	// Méthode de Cordic cf :http://www.trigofacile.com/maths/trigo/calcul/cordic/cordic.htm
+	// changement : on ne prend plus les theta_k tel que atan(theta_k) = 10^-k mais atan(theta_k)=2^-k ;
 	public static float tan(float theta){
 
 		// On se ramène à des angles entre -PI/2 et PI/2
@@ -64,40 +65,46 @@ public class Math_deca{
 			sign = -1;
 		}
 
-		if (theta == Math_deca.PI/2.0) {
+		//if (-theta + Math_deca.PI/(float)2.0 <= Math_deca.ulp(Math_deca.PI/(float)2.0)) {
+		if (theta == Math_deca.PI/(float)2.0 ) {	
 			return sign*MAX_VALUE  ;
 		}
 		// On initialise le tableau des theta_k
-		double tab[] = {0.78539816339744830962,0.099668652491162027378,0.0099996666866652382063,
-			0.00099999966666686666652,0.000099999999666666668667,0.0000099999999996666666667,
-			0.00000099999999999966666667};
+		float tab[] = {(float)0.7853981633974483,(float)0.4636476090008061,(float)0.24497866312686414,(float)0.12435499454676144,
+			(float)0.06241880999595735,(float)0.031239833430268277,(float)0.015623728620476831,(float)0.007812341060101111,(float)0.0039062301319669718,
+			(float)0.0019531225164788188,(float)9.765621895593195E-4,(float)4.882812111948983E-4,(float)2.4414062014936177E-4,(float)1.2207031189367021E-4,
+			(float)6.103515617420877E-5,(float)3.0517578115526096E-5,(float)1.5258789061315762E-5,(float)7.62939453110197E-6,(float)3.814697265606496E-6,
+			(float)1.907348632810187E-6,(float)9.536743164059608E-7,(float)4.7683715820308884E-7,(float)2.3841857910155797E-7,(float)1.1920928955078068E-7,
+			(float)5.960464477539055E-8,(float)2.9802322387695303E-8,(float)1.4901161193847655E-8,(float)7.450580596923828E-9,(float)3.725290298461914E-9,
+			(float)1.862645149230957E-9,(float)9.313225746154785E-10,(float)4.6566128730773926E-10,(float)2.3283064365386963E-10,(float)1.1641532182693481E-10,
+			(float)5.820766091346741E-11};
 
 		int k = 0 ; //Définit le plus grand angle courant de rotation theta_k possible 
 		float x = (float) 1.0 ; //Abscisse du point courant
 		float xTemp = (float) 1.0 ;
 		float y = (float) 0.0 ; //Ordonnée du point courant
-		float epsilon = power(10,-10) ;
+		float epsilon = power(2,-45) ;
 		
 		while ( theta >= epsilon) {
 			
-			if ( k<6) {
+			if ( k<34) {
 				while ( theta < tab[k] ) {
 					k++; 
-					if (k>=5){
+					if (k>=35){
 						break ;
 					}
 				}
 			}
 			else{
-				while (theta < power(10,-k) ) {
+				while (theta < power(2,-k) ) {
 					k++ ;
 				}
 			}
 			
-			theta = (k<6) ? theta - (float)tab[k] : theta - power(10,-k);
+			theta = (k<34) ? theta - (float)tab[k] : theta - power(2,-k); //approximation tan(theta)=theta pour theta petit
 			xTemp = x ;
-			x = x - power(10,-k)*y ;
-			y = y + power(10,-k)*xTemp;
+			x = x - power(2,-k)*y ;
+			y = y + power(2,-k)*xTemp;
 		}
 
 		return sign*y/x ;
@@ -128,8 +135,8 @@ public class Math_deca{
 		float high = x;
 		float mid = x;
 		float oldMid = (float) -5.0 ;
-		float epsilon = power(10,-15); 
-		//On fait une recherche dichotomique de la racine ... ce n'est pas niveau coût.
+		float epsilon = power(2,-23); 
+		//On fait une recherche dichotomique de la racine ... ce n'est pas génial niveau coût.
 		while ( abs(oldMid - mid)>= epsilon ) {
 			oldMid = mid ;
 
@@ -146,12 +153,14 @@ public class Math_deca{
 
 	public static float cos(float x){
 		float t = tan(x/2) ;
-		return (float)(1-power(t,2))/(1 + power(t,2)) ;
+		return (float) 1/sqrt(1 + power(tan(x),2));
+		//return (float)(1-power(t,2))/(1 + power(t,2)) ;
 
 	}
 
 	public static float sin(float x){
-		return tan(x)*cos(x) ;
+		return (float) tan(x)/sqrt(1 + power(tan(x),2));
+		//return tan(x)*cos(x) ; 
 	}
 
 }
