@@ -70,7 +70,6 @@ do
                 return_status=1
         else
                 echo -e "$filename"" : ${GREEN}  OK ${WHITE}"
-                fail=$(($fail + 1))
                 success=$(($success + 1))
 
     fi

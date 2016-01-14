@@ -10,5 +10,11 @@
 {
     int a = 5;
     int b = 2;
-    (a > b);
+    if(a > 3.5) {
+        println("5 est superieur a 3,5");
+    }
+
+    if(a > b) {
+        println("5 est sup à 2");
+    }
 }

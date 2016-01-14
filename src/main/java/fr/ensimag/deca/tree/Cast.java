@@ -28,8 +28,11 @@ public class Cast extends AbstractCast {
         Type castType = type.verifyType(compiler);
         Type opType = expr.verifyExpr(compiler, localEnv, currentClass);
 
+        if(!castCompatible(localEnv, opType, castType)) {
+            throw new ContextualError("Incompatible cast from " + opType + " to " + castType, getLocation());
+        }
 
-
+        setType(castType);
         return castType;
     }
 
