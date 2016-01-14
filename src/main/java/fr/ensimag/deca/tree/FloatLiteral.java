@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
@@ -53,8 +54,10 @@ public class FloatLiteral extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         int i=compiler.getTableRegistre().getLastregistre();
-        compiler.setRegistreUtilise(i);
-        compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()),Register.getR(i)));
+        compiler.getTableRegistre().setEtatRegistreTrue(i);
+        GPRegister target= Register.getR(i);
+        compiler.setDVal(target);
+        compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()),target));
 
 
 
