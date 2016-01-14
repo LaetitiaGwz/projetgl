@@ -1,12 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.FloatType;
-import fr.ensimag.deca.context.IntType;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
@@ -39,7 +34,18 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        if(arguments.size() != 1) {
+            throw new ContextualError("Print take only one argument.", getLocation());
+        }
+
+        AbstractExpr firstArg = arguments.iterator().next();
+
+        Type argType = firstArg.verifyExpr(compiler, localEnv, currentClass);
+
+        if(!(argType.isFloat() || argType.isString() || argType.isInt())) {
+            throw new ContextualError("The argument of function print(ln) must be a string, an int or a float. Got a " + argType.getName(), getLocation());
+        }
     }
 
     @Override
@@ -55,7 +61,12 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        for(AbstractExpr a :this.arguments.getList()){
+            s.print("print"+this.getSuffix()+"(");
+            a.decompile(s);
+            s.print(");");
+
+        }
     }
 
     @Override

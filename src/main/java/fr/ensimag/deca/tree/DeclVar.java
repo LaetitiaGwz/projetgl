@@ -1,12 +1,16 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.multipleinstructions.GlobalVarDef;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -37,9 +41,29 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(Type t, DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+
+        // On tente de déclarer la variable dans l'environnement. Sinon erreur contextuelle.
+        try {
+            localEnv.declare(getVarName().getName(), new VariableDefinition(t, getLocation()));
+        }
+        catch (EnvironmentExp.DoubleDefException e) {
+            throw new ContextualError("Multiple declaration of variable " + getVarName(), getLocation());
+        }
+
+        varName.verifyExpr(compiler, localEnv, currentClass);
+        initialization.verifyInitialization(compiler, t, localEnv, currentClass);
     }
 
-    
+    @Override
+    protected void codeGenDecl(DecacCompiler compiler) {
+        SymbolTable.Symbol symbol = getVarName().getName();
+        RegisterOffset offset = getMemoryMap().storeGlobalVariable(symbol);
+
+        getInitialization().codegenInit(compiler);
+        Register resultReg = getVarName().getRegistreUtilise();
+        compiler.addInstruction(new STORE(resultReg, offset));
+    }
+
     @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("not yet implemented");

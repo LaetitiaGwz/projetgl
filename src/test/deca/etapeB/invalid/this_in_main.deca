@@ -1,0 +1,10 @@
+// Description:
+//    Déclaration de variable
+//
+// Resultats:
+//    Ligne 9 : interdit d'utiliser this dans le programme principal
+// 
+
+{
+   this;
+}

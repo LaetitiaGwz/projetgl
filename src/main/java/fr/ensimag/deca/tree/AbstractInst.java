@@ -29,14 +29,17 @@ public abstract class AbstractInst extends Tree {
      *            in the main program.
      */
     protected abstract void verifyInst(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass, Type returnType) throws ContextualError;
+            EnvironmentExp localEnv, ClassDefinition currentClass,
+            Type returnType) throws ContextualError;
+    
 
     /**
      * Generate assembly code for the instruction.
      * 
      * @param compiler
      * @param endLabel
-     *            label following the last generated line (null if absent or unknown)
+     *            label following the last generated line 
+     *            (null if absent or unknown)
      */
     protected abstract void codeGenInst(DecacCompiler compiler);
 
@@ -44,7 +47,8 @@ public abstract class AbstractInst extends Tree {
     /**
      * Decompile the tree, considering it as an instruction.
      *
-     * In most case, this simply calls decompile(), but it may add a semicolon if needed
+     * In most case, this simply calls decompile(), but it may add a semicolon 
+     * if needed
      */
     protected void decompileInst(IndentPrintStream s) {
         decompile(s);

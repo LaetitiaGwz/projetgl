@@ -1,0 +1,13 @@
+// Description:
+//    Déclaration de variables
+//
+// Resultats:
+//    ok
+// 
+// Historique:
+//    cree le 01/01/2016
+
+{
+   boolean b = true;
+   boolean b2 = false;
+}

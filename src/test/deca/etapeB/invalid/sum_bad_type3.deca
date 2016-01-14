@@ -1,0 +1,11 @@
+// Description:
+//    Déclaration de variable
+//
+// Resultats:
+//    Ligne 11 : mauvais typage de la somme
+// 
+
+{
+    int a;
+    a = 56 + null;
+}

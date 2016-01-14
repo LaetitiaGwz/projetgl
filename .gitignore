@@ -10,3 +10,5 @@
 .settings
 .idea
 Deca.iml
+*.ass
+*.tokens

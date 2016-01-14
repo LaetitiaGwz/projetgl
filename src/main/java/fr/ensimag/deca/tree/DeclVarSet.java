@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -39,7 +36,28 @@ public class DeclVarSet extends AbstractDeclVarSet {
     protected Type verifyDeclVarSet(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        Type t = type.verifyType(compiler);
+
+        //erreur si type = void
+        if(t.isVoid()) {
+            throw new ContextualError("A variable can not be declared as void.", getLocation());
+        }
+
+
+        for(AbstractDeclVar var : declVars.getList()) {
+            var.verifyDeclVar(t, compiler, localEnv, currentClass);
+        }
+
+        return type.getType();
+    }
+
+    @Override
+    protected void codegenDeclVarSet(DecacCompiler compiler) {
+        // run codegen on each declaration
+        for(AbstractDeclVar declVar : getDeclVars().getList()){
+            declVar.codeGenDecl(compiler);
+        }
     }
 
 
@@ -60,4 +78,5 @@ public class DeclVarSet extends AbstractDeclVarSet {
         type.prettyPrint(s, prefix, false);
         declVars.prettyPrint(s, prefix, true);
     }
+
 }

@@ -1,0 +1,9 @@
+// Description:
+//    test du parseur pour les litéraux flottants
+//    vérifie la bonne formation du litéral
+//
+// Resultats:
+// erreur syntaxique
+// Ligne <9> : <syntaxError>
+
+1223.123.423

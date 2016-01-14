@@ -1,0 +1,14 @@
+// Description:
+//   Binary operation divide
+//
+// Resultats:
+//    ok
+// 
+// Historique:
+//    cree le 01/01/2016
+
+{
+    int a;
+    int b;
+    a = a / b;
+}

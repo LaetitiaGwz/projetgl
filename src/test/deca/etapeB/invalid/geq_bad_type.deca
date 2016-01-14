@@ -1,0 +1,11 @@
+// Description:
+//    Déclaration de variable
+//
+// Resultats:
+//    Ligne 9 : mauvais typage de l'inégalité
+// 
+
+{
+    if(213 >= true){
+     }
+}

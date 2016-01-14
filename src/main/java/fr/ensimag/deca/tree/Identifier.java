@@ -1,16 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.ClassType;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Definition;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.FieldDefinition;
-import fr.ensimag.deca.context.MethodDefinition;
-import fr.ensimag.deca.context.NonTypeDefinition;
-import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
@@ -25,7 +16,7 @@ import org.apache.log4j.Logger;
  * @date 01/01/2016
  */
 public class Identifier extends AbstractIdentifier {
-    
+
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -164,15 +155,44 @@ public class Identifier extends AbstractIdentifier {
         this.name = name;
     }
 
+    //TODO
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        NonTypeDefinition t = localEnv.get(this.getName());
+        if(t == null) {
+            throw new ContextualError("Undefinded variable " + getName(), getLocation());
+        }
+        setDefinition(t);
+        return t.getType();
     }
 
+    //TODO
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type t;
+        if(getName().getName().compareTo("int") == 0) {
+            t = new IntType(getName());
+        }
+        else if (getName().getName().compareTo("float") == 0) {
+            t = new FloatType(getName());
+        }
+        else if (getName().getName().compareTo("String") == 0) {
+            t = new StringType(getName());
+        }
+        else if (getName().getName().compareTo("boolean") == 0) {
+            t = new BooleanType(getName());
+        }
+        else if (getName().getName().compareTo("void") == 0) {
+            t = new VoidType(getName());
+        }
+        else {
+            throw new UnsupportedOperationException("Not implemented for variable of type " + getName().getName());
+        }
+
+        setDefinition(new TypeDefinition(t, Location.BUILTIN));
+        return t;
     }
     
     

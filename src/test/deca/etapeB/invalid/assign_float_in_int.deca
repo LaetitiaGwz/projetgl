@@ -1,0 +1,14 @@
+// Description:
+//    Tentative d'affection d'un float à un int
+//
+// Resultats:
+//    Bad assignement
+// 
+// Historique:
+//    cree le 01/01/2016
+
+{
+    int a;
+    float b;
+    a = b;
+}

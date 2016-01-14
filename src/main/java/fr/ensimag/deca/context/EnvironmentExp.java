@@ -1,6 +1,8 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Dictionary associating identifier's NonTypeDefinition to their names.
@@ -18,9 +20,13 @@ public class EnvironmentExp {
     // A FAIRE : implémenter la structure de donnée représentant un
     // environnement (association nom -> définition, avec possibilité
     // d'empilement).
-
+    
+    protected EnvironmentExp parentEnvironment;
+    protected HashMap<Symbol, NonTypeDefinition> environment ;
+    
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
-        throw new UnsupportedOperationException("not yet implemented");
+        this.parentEnvironment = parentEnvironment ;
+        this.environment = new HashMap<Symbol, NonTypeDefinition>();
     }
 
     public static class DoubleDefException extends Exception {
@@ -30,9 +36,23 @@ public class EnvironmentExp {
     /**
      * Return the definition of the symbol in the environment, or null if the
      * symbol is undefined.
+     * @param key
+     *          Name of the symbol
+     * @return 
+     *          the definition of the symbol in the environment or null if 
+     *          the symbol is undefined
      */
     public NonTypeDefinition get(Symbol key) {
-        throw new UnsupportedOperationException("not yet implemented");
+        NonTypeDefinition result = environment.get(key);
+        if (result != null) {
+            return result ;
+        }
+        else if(parentEnvironment == null) {
+            return null;
+        }
+        else{
+            return parentEnvironment.get(key);
+        }
     }
 
     /**
@@ -52,7 +72,21 @@ public class EnvironmentExp {
      *             environment.
      */
     public void declare(Symbol name, NonTypeDefinition def) throws DoubleDefException {
-        throw new UnsupportedOperationException("not yet implemented");
+        if (this.environment.get(name) != null) {
+            throw new DoubleDefException();
+        }
+        else {
+            this.environment.put(name, def);
+        }
     }
 
+    @Override
+    public String toString() {
+        String s = "Affichage de l'environnement : \n";
+
+        for (Map.Entry<Symbol, NonTypeDefinition> entry : environment.entrySet()) {
+            s += "\nSymbol : " + entry.getKey().getName() + " Definition : " + entry.getValue();
+        }
+        return s;
+    }
 }

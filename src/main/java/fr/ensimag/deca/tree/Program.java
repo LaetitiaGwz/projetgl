@@ -1,7 +1,9 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.CompilerOptions;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import java.io.PrintStream;
@@ -31,18 +33,22 @@ public class Program extends AbstractProgram {
     }
     private ListDeclClass classes;
     private AbstractMain main;
+    private EnvironmentExp environmentExp;
 
-    @Override
+    @Override//TODO priorité max !!!!!!!
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
-        throw new UnsupportedOperationException("not yet implemented");
-        // LOG.debug("verify program: end");
+        getClasses().verifyListClass(compiler);
+        getMain().verifyMain(compiler);
+        LOG.debug("verify program: end");
     }
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
+
         // A FAIRE: compléter ce squelette très rudimentaire de code
         compiler.addComment("Main program");
+        compiler.setTableRegistre(compiler.getCompilerOptions().getRegistre());//initialisation table registre
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
     }

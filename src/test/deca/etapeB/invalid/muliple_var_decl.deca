@@ -1,0 +1,13 @@
+// Description:
+//    Déclaration de variables
+//
+// Resultats:
+//    Ligne 11 : Multiple variable declaration
+// 
+// Historique:
+//    cree le 01/01/2016
+
+{
+   int a = 1;
+   int a = 5;
+}
