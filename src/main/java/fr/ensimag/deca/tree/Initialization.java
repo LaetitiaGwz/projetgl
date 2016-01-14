@@ -36,14 +36,18 @@ public class Initialization extends AbstractInitialization {
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         Type initType = expression.verifyExpr(compiler, localEnv, currentClass);
-        if(!initType.sameType(t)) {
-            throw new ContextualError("Incompatible type initialization.", this.getLocation());
+        if(initType.isInt() && t.isFloat()) {
+            expression = new ConvFloat(expression);
+            expression.verifyExpr(compiler, localEnv, currentClass);
+        }
+        else if(!initType.sameType(t)) {
+            throw new ContextualError("Incompatible type initialization. Expected " + t.getName() + ", had " + initType.getName() + ".", this.getLocation());
         }
     }
 
     @Override
     protected void codegenInit(DecacCompiler compiler) {
-        getExpression().codeGenInst(compiler);
+        getExpression().codeGenInit(compiler);
     }
 
 

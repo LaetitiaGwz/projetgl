@@ -42,6 +42,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         else {
             throw new ContextualError("Arithmetic operation on expressions which types are differents. Left : " + leftType.getName() + " Right : " + rightType.getName(), getLocation());
         }
+
         setType(opType);
         return opType;
     }

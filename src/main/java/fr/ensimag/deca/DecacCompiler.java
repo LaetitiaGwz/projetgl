@@ -9,10 +9,8 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.ima.pseudocode.AbstractLine;
-import fr.ensimag.ima.pseudocode.IMAProgram;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -56,6 +54,13 @@ public class DecacCompiler {
     /**
 	 * table des registres
      */
+    private DVal dVal ;
+    public DVal getDval(){
+        return this.dVal;
+    }
+    public void setDVal(DVal set){
+        this.dVal=set;
+    }
     private GestionRegistre tableRegistre;
 
     public GestionRegistre getTableRegistre(){
@@ -64,6 +69,16 @@ public class DecacCompiler {
 
     public void setTableRegistre(int nbRegistre){
         this.tableRegistre=new GestionRegistre(nbRegistre);
+    }
+    private int GB; // Global Pointer
+    public int getGB(){
+        return this.GB;
+    }
+    public void incrementeGB(){
+        this.GB ++;
+    }
+    public void initializeGB(){
+        this.GB=1;
     }
     /**
      * Portable newline character.

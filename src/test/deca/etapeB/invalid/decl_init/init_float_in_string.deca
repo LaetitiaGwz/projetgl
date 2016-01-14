@@ -8,5 +8,5 @@
 //    cree le 01/01/2016
 
 {
-   String s = "hello";
+   String a = 5.2;
 }

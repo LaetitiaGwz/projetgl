@@ -1,0 +1,15 @@
+// Description:
+//    Egalité entre int et String
+//
+// Resultats:
+//    Mauvais opérateurs pour l'égalité
+// 
+// Historique:
+//    cree le 01/01/2016
+
+{
+    int a = 5;
+    String d = "ok";
+
+    if(a == d) {};
+}

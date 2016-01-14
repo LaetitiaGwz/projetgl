@@ -5,6 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.FloatType;
 import fr.ensimag.deca.context.IntType;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.INT;
@@ -29,23 +31,11 @@ public class Multiply extends AbstractOpArith {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        int i= compiler.getTableRegistre().getLastregistre();
-        compiler.getTableRegistre().setEtatRegistreTrue(i);
-        if(this.getLeftOperand().getType().sameType(new IntType(compiler.getSymbols().create("int")))){
-            this.getLeftOperand().codeGenInst(compiler);
-            this.getRightOperand().codeGenInst(compiler);
-
-            compiler.addInstruction(new MUL(this.getRightOperand().getRegistreUtilise(),this.getLeftOperand().getRegistreUtilise()));
-        }
-        else if(this.getLeftOperand().getType().sameType(new IntType(compiler.getSymbols().create("float")))){
-            this.getLeftOperand().codeGenInst(compiler);
-            this.getRightOperand().codeGenInst(compiler);
-            compiler.addInstruction(new MUL(this.getRightOperand().getRegistreUtilise(),this.getLeftOperand().getRegistreUtilise()));
-
-
-        }
-
-
+        this.getLeftOperand().codeGenInst(compiler);
+        DVal left =compiler.getDval();
+        this.getRightOperand().codeGenInst(compiler);
+        GPRegister right =getRightOperand().getRegistreUtil();
+        compiler.addInstruction(new MUL(left,right));
 
     }
 

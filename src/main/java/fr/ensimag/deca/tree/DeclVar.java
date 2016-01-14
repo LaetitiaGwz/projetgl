@@ -47,7 +47,7 @@ public class DeclVar extends AbstractDeclVar {
             localEnv.declare(getVarName().getName(), new VariableDefinition(t, getLocation()));
         }
         catch (EnvironmentExp.DoubleDefException e) {
-            throw new ContextualError("Multiple declaration of variable " + getVarName(), getLocation());
+            throw new ContextualError("Multiple declaration of variable " + getVarName().getName().getName(), getLocation());
         }
 
         varName.verifyExpr(compiler, localEnv, currentClass);
@@ -56,13 +56,10 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void codeGenDecl(DecacCompiler compiler) {
-        SymbolTable.Symbol symbol = getVarName().getName();
-        RegisterOffset offset = getMemoryMap().storeGlobalVariable(symbol);
 
         getInitialization().codegenInit(compiler);
-        Register resultReg = getVarName().getRegistreUtilise();
-        compiler.addInstruction(new STORE(resultReg, offset));
-    }
+
+        }
 
     @Override
     public void decompile(IndentPrintStream s) {

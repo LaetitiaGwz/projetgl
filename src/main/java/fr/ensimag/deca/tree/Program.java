@@ -49,6 +49,7 @@ public class Program extends AbstractProgram {
         // A FAIRE: compléter ce squelette très rudimentaire de code
         compiler.addComment("Main program");
         compiler.setTableRegistre(compiler.getCompilerOptions().getRegistre());//initialisation table registre
+        compiler.initializeGB();
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
     }
