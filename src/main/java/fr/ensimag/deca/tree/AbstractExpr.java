@@ -30,7 +30,13 @@ public abstract class AbstractExpr extends AbstractInst {
     boolean isImplicit() {
         return false;
     }
-
+    private GPRegister registreUtil;
+    public void setRegistreUtil(GPRegister reg){
+        this.registreUtil=reg;
+    }
+    public GPRegister getRegistreUtil(){
+        return this.registreUtil;
+    }
      /**
      * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
      */
@@ -105,6 +111,9 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler) {
     }
 
+    protected void codeGenInit(DecacCompiler compiler){
+
+    }
 
     @Override
     protected void decompileInst(IndentPrintStream s) {

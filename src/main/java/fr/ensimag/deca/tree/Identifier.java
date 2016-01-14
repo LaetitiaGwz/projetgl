@@ -216,6 +216,14 @@ public class Identifier extends AbstractIdentifier {
         compiler.setDVal(this.getNonTypeDefinition().getOperand());
     }
     @Override
+    protected void codeGenInit(DecacCompiler compiler){
+        RegisterOffset stock = new RegisterOffset(compiler.getGB(),Register.GB);
+        this.getNonTypeDefinition().setOperand(stock);
+        compiler.incrementeGB();
+
+    }
+
+    @Override
     protected void iterChildren(TreeFunction f) {
         // leaf node => nothing to do
     }

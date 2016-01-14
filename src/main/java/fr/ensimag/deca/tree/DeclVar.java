@@ -56,13 +56,10 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void codeGenDecl(DecacCompiler compiler) {
-        RegisterOffset stock = new RegisterOffset(compiler.getGB(),Register.GB);
-        this.getVarName().getNonTypeDefinition().setOperand(stock);
-        compiler.incrementeGB();
+
         getInitialization().codegenInit(compiler);
-        Register resultReg = compiler.getRegistreUtilise();
-        compiler.libererRegistreUtilise();
-    }
+
+        }
 
     @Override
     public void decompile(IndentPrintStream s) {

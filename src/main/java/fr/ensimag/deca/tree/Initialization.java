@@ -47,7 +47,7 @@ public class Initialization extends AbstractInitialization {
 
     @Override
     protected void codegenInit(DecacCompiler compiler) {
-        getExpression().codeGenInst(compiler);
+        getExpression().codeGenInit(compiler);
     }
 
 

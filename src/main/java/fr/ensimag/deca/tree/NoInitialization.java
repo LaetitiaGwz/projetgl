@@ -29,7 +29,10 @@ public class NoInitialization extends AbstractInitialization {
         // Nothing to do
     }
 
-
+    @Override
+    protected AbstractExpr getExpression(){
+        return null;
+    }
     /**
      * Node contains no real information, nothing to check.
      */
