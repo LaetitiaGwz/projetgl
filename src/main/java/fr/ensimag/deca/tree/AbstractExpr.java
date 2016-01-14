@@ -10,6 +10,8 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.Register;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -28,12 +30,12 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
 
-    private int registreUtilise;
-    public int getRegistreUtilise(){
+    private Register registreUtilise;
+    public Register getRegistreUtilise(){
         return this.registreUtilise;
     }
     public void setRegistreUtilise(int i){
-        this.registreUtilise=i;
+        this.registreUtilise=Register.getR(i);
     }
 
     /**
