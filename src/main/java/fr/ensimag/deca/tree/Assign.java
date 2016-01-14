@@ -32,7 +32,8 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         this.getRightOperand().codeGenInst(compiler);
-        compiler.addInstruction(new STORE(this.getRightOperand().getRegistreUtilise(), new RegisterOffset(1,Register.GB)));
+        compiler.addInstruction(new STORE(getRightOperand().getRegistreUtilise(),
+                getLeftOperand().getNonTypeDefinition().getOperand()));
         compiler.getTableRegistre().resetTableRegistre();
     }
 
