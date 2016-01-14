@@ -4,6 +4,7 @@ public class Math_deca{
 	public static final float MIN_VALUE = (float)1.4E-45;
 	public static final float MAX_VALUE = (float)1.633123935319537E16;
 	public static final float PI = (float)3.141592653589793;
+        public static final float PIDIV=(float)Math.PI/8;
 	public static float power(float x, int y){
 
 		float originalX = x ;
@@ -153,5 +154,39 @@ public class Math_deca{
 	public static float sin(float x){
 		return tan(x)*cos(x) ;
 	}
-
+        
+        
+        public static float sintaylor(float x){
+            float res=x;
+            float temp=x;
+            int i=1;
+            System.out.println("test syn taylor"+x);
+            do{
+                temp=-temp*x*x/((1+2*i)*2*i);
+                res=res+temp;
+                i=i+1;
+               // System.out.println(i+"\n");
+                 //System.out.println(abs(res)/ulp((float)Math.sin(x)));
+            }
+            //while(abs(res) > ulp((float)Math.sin(x)));
+           
+            while(i < 7);
+            return res;
+        }
+        
+             public static float costaylor(float x,int n){
+            float res=1;
+            float temp=-x*x/2;
+            int i=0;
+            while(i<n){
+                temp=-temp*x*x/((-1+2*i)*2*i);
+                res=res+temp;
+            }
+            return res;
+        }
+        //     public static float sintaylor(floatx)  
+        
+        
+        
+        
 }

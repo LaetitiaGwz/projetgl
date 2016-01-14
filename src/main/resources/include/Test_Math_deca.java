@@ -99,6 +99,28 @@ public class Test_Math_deca{
 		}
 		System.out.println("fin du test de sin. Erreur rencontré : " + nbErreur + " sur " +nb+ "tests.\n");
 
-
+            System.out.println("test du DSE: \n");
+            nbErreur=0;
+            nb=0;
+            for(float x = 0.F ; x < (float)Math.PI/4 ; x = x + (float) Math.pow(2,-5)){
+			diffRelative = Math.abs(((float)Math.sin(x) - Math_deca.sintaylor(x))/(float)Math.sin(x));
+			diff = diffRelative*(float)Math.sin(x);
+			nb ++ ;
+			//if ( diffRelative >= Math.pow(10,-3)) {
+			if ( diff > Math_deca.ulp((float)Math.sin(x))){
+				 System.out.println("Erreur pour x="+x);
+				 System.out.println("Math_deca.sintaylor : "+Math_deca.sintaylor(x));
+				 System.out.println("Math.sin : "+Math.sin(x));
+				 System.out.println("différence : " + diff/Math_deca.ulp((float)Math.sin(x)));
+				 System.out.println();
+				nbErreur ++;
+			}
+                        
+		}
+            System.out.println("fin du test de sin. Erreur rencontré : " + nbErreur + " sur " +nb+ "tests.\n");
 	}
+   
+        
+        
+        
 }
