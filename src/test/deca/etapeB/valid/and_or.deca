@@ -1,0 +1,19 @@
+// Description:
+//    Opérateurs binaires d'inégalité
+//
+// Resultats:
+//    Aucune erreur
+// 
+// Historique:
+//    cree le 01/01/2016
+
+{
+    boolean c = false;
+    boolean d = true;
+
+    if(c && d) {};
+    if(c || d) {};
+    if((c || d) && d) {};
+    if((c || d) || d) {};
+    if(c || d || d) {};
+}
