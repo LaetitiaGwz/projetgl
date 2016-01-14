@@ -6,7 +6,7 @@
 // 
 
 {
-    float a;
-    String b;
-    b = b < a;
+    int a;
+    boolean b;
+    b = b <= a;
 }

@@ -1,0 +1,15 @@
+// Description:
+//    Inégalité entre bool et String
+//
+// Resultats:
+//    Mauvais opérateurs pour l'inégalité
+// 
+// Historique:
+//    cree le 01/01/2016
+
+{
+    String a = "ok";
+    boolean d = true;
+
+    if(a <= d) {};
+}

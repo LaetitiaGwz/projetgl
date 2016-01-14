@@ -8,5 +8,5 @@
 {
     float a;
     String b;
-    b = b < a;
+    b = b >= a;
 }

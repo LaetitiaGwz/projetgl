@@ -7,6 +7,6 @@
 
 {
     float a;
-    String b;
-    b = b < a;
+    boolean b;
+    b = b >= a;
 }

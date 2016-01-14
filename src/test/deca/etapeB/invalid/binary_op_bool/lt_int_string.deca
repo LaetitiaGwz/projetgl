@@ -7,6 +7,6 @@
 
 {
     int a;
-    string b;
+    String b;
     b = b < a;
 }

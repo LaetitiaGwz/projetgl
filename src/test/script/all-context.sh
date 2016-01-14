@@ -50,7 +50,7 @@ do
 done
 
 # Tests des cas valides
-for cas_de_test in "$VALID_DIR"/*.deca "$INVALID_DIR"/*/*.deca
+for cas_de_test in "$VALID_DIR"/*.deca "$VALID_DIR"/*/*.deca
 do
         filename=$(echo ${cas_de_test} | sed -e "s@${VALID_DIR}/@@g")
         result_test=$(test_context "$cas_de_test" 2>&1)
