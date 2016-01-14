@@ -65,6 +65,16 @@ public class DecacCompiler {
     public void setTableRegistre(int nbRegistre){
         this.tableRegistre=new GestionRegistre(nbRegistre);
     }
+    private int GB; // Global Pointer
+    public int getGB(){
+        return this.GB;
+    }
+    public void incrementeGB(){
+        this.GB ++;
+    }
+    public void initializeGB(){
+        this.GB=1;
+    }
     /**
      * Portable newline character.
      */

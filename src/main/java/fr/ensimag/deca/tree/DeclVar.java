@@ -56,12 +56,12 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void codeGenDecl(DecacCompiler compiler) {
-        SymbolTable.Symbol symbol = getVarName().getName();
-        RegisterOffset offset = getMemoryMap().storeGlobalVariable(symbol);
-
+        RegisterOffset stock = new RegisterOffset(compiler.getGB(),Register.GB);
+        this.getVarName().getNonTypeDefinition().setOperand(stock);
+        compiler.incrementeGB();
         getInitialization().codegenInit(compiler);
         Register resultReg = getVarName().getRegistreUtilise();
-        compiler.addInstruction(new STORE(resultReg, offset));
+        compiler.addInstruction(new STORE(resultReg, stock));
     }
 
     @Override
