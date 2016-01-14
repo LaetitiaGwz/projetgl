@@ -32,7 +32,7 @@ public class Multiply extends AbstractOpArith {
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         this.getLeftOperand().codeGenInst(compiler);
-        DVal left =compiler.getDval();
+        DVal left =getLeftOperand().getRegistreUtil();
         this.getRightOperand().codeGenInst(compiler);
         GPRegister right =getRightOperand().getRegistreUtil();
         compiler.addInstruction(new MUL(left,right));
