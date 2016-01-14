@@ -1,0 +1,15 @@
+// Description:
+//    Egalité entre float et String
+//
+// Resultats:
+//    Mauvais opérateurs pour l'égalité
+// 
+// Historique:
+//    cree le 01/01/2016
+
+{
+    float a = 5.2;
+    String d = "ok";
+
+    if(a != d) {};
+}

@@ -8,5 +8,5 @@
 //    cree le 01/01/2016
 
 {
-   float a = 1.5;
+   boolean a = 5.2;
 }
