@@ -140,7 +140,7 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     protected boolean castCompatible(EnvironmentExp env, Type from, Type to) {
-        if(!from.isVoid()) {
+        if(from.isVoid()) {
             return false;
         }
         return assignCompatible(env, from, to) || assignCompatible(env, to, from);

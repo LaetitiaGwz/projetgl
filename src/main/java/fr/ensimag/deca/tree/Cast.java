@@ -44,12 +44,14 @@ public class Cast extends AbstractCast {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // leaf node => nothing to do
+        type.iter(f);
+        expr.iter(f);
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // leaf node => nothing to do
+        type.prettyPrint(s, prefix, false);
+        expr.prettyPrint(s, prefix, true);
     }
 
 }
