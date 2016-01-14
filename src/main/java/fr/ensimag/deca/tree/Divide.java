@@ -24,7 +24,9 @@ public class Divide extends AbstractOpArith {
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         this.getLeftOperand().codeGenInst(compiler);
+        getLeftOperand().setRegistreUtilise(compiler);
         this.getRightOperand().codeGenInst(compiler);
+        getRightOperand().setRegistreUtilise(compiler);
         compiler.addInstruction(new DIV(this.getRightOperand().getRegistreUtilise(),this.getLeftOperand().getRegistreUtilise()));
 
     }
