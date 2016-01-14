@@ -1,0 +1,10 @@
+// Description:
+//   Test de la bonne utilisation des registres
+//
+// Resultats:
+//    ok
+// 
+
+{
+    int a;
+}

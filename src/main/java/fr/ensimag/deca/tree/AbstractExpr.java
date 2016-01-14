@@ -30,7 +30,7 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
 
-    private Register registreUtilise;
+    private Register registreUtilise = Register.getR(2);
     public Register getRegistreUtilise(){
         return this.registreUtilise;
     }
