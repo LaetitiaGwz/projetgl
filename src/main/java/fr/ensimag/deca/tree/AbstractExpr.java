@@ -92,7 +92,12 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        Type condType = this.verifyExpr(compiler, localEnv, currentClass);
+
+        if(!condType.isBoolean()) {
+            throw new ContextualError("Condition must be a boolean.", getLocation());
+        }
     }
 
     /**
