@@ -1,8 +1,8 @@
 // Description:
-//   Test de l'addition entre float et int
+//    Tentative d'affection d'un float à un int
 //
 // Resultats:
-//    ok
+//    Bad assignement
 // 
 // Historique:
 //    cree le 01/01/2016
@@ -10,5 +10,5 @@
 {
     int a;
     float b;
-    b = a + b;
+    a = b;
 }
