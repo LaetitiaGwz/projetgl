@@ -40,4 +40,19 @@ public class Multiply extends AbstractOpArith {
         // a <- a * b
     }
 
+    @Override
+    protected void codeGenOP(DecacCompiler compiler){
+        // a * b
+        this.getLeftOperand().codeGenOP(compiler);
+        GPRegister mulRight= this.getLeftOperand().getRegistreUtil();
+        this.getRightOperand().codeGenOP(compiler);
+        DVal mulLeft =compiler.getDval();
+        compiler.addInstruction(new MUL(mulLeft,mulRight));
+        // a <- a * b
+        this.setRegistreUtil(mulRight);
+        compiler.setDVal(mulRight);
+    }
+
+
+
 }

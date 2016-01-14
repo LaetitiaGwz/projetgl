@@ -230,6 +230,7 @@ public class Identifier extends AbstractIdentifier {
         compiler.getTableRegistre().setEtatRegistreTrue(i);
         compiler.addInstruction(new LOAD(stock,Register.getR(i)));
         this.setRegistreUtil(Register.getR(i));
+        compiler.setDVal(Register.getR(i));
     }
 
     @Override

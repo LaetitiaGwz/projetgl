@@ -34,5 +34,18 @@ public class Minus extends AbstractOpArith {
         // a <- a - b
 
     }
+    @Override
+    protected void codeGenOP(DecacCompiler compiler){
+        // a - b
+        this.getLeftOperand().codeGenOP(compiler);
+        GPRegister subRight= this.getLeftOperand().getRegistreUtil();
+        this.getRightOperand().codeGenOP(compiler);
+        DVal subLeft =compiler.getDval();
+        compiler.addInstruction(new SUB(subLeft,subRight));
+        // a <- a - b
+        this.setRegistreUtil(subRight);
+        compiler.setDVal(subRight);
+
+    }
     
 }

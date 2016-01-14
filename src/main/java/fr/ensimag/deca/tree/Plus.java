@@ -32,4 +32,17 @@ public class Plus extends AbstractOpArith {
         compiler.addInstruction(new ADD(addLeft,addRight));
         // a <- a + b
     }
+
+    @Override
+    protected void codeGenOP(DecacCompiler compiler){
+        // a + b
+        this.getLeftOperand().codeGenOP(compiler);
+        GPRegister addRight= this.getLeftOperand().getRegistreUtil();
+        this.getRightOperand().codeGenOP(compiler);
+        DVal addLeft =compiler.getDval();
+        compiler.addInstruction(new ADD(addLeft,addRight));
+        // a <- a + b
+        compiler.setDVal(addRight);
+        this.setRegistreUtil(addRight);
+    }
 }

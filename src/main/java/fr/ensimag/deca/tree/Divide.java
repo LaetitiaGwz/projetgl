@@ -6,6 +6,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.DIV;
 import fr.ensimag.ima.pseudocode.instructions.MUL;
+import fr.ensimag.ima.pseudocode.instructions.QUO;
 
 /**
  *
@@ -30,8 +31,22 @@ public class Divide extends AbstractOpArith {
         GPRegister divRight= this.getLeftOperand().getRegistreUtil();
         this.getRightOperand().codeGenOP(compiler);
         DVal divLeft =compiler.getDval();
-        compiler.addInstruction(new DIV(divLeft,divRight));
+        compiler.addInstruction(new QUO(divLeft,divRight));
         // a <- a/ b
     }
+
+    @Override
+    protected void codeGenOP(DecacCompiler compiler){
+        // a / b
+        this.getLeftOperand().codeGenOP(compiler);
+        GPRegister divRight= this.getLeftOperand().getRegistreUtil();
+        this.getRightOperand().codeGenOP(compiler);
+        DVal divLeft =compiler.getDval();
+        compiler.addInstruction(new QUO(divLeft,divRight));
+        // a <- a/ b
+        compiler.setDVal(divRight);
+        this.setRegistreUtil(divRight);
+    }
+
 
 }
