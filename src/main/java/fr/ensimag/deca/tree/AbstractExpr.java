@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 
@@ -30,8 +31,8 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
 
-    private Register registreUtilise = Register.getR(2);
-    public Register getRegistreUtilise(){
+    private GPRegister registreUtilise = Register.getR(2);
+    public GPRegister getRegistreUtilise(){
         return this.registreUtilise;
     }
     public void setRegistreUtilise(int i){
@@ -106,12 +107,10 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
     }
 
 
