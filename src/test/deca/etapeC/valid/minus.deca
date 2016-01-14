@@ -1,0 +1,12 @@
+// Description:
+//   Test de la bonne utilisation du moins
+//
+// Resultats:
+//    4
+//
+
+{
+    int a = 8;
+    a = a - 4;
+    println(a);
+}

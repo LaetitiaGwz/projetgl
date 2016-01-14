@@ -31,12 +31,13 @@ public class Multiply extends AbstractOpArith {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        this.getLeftOperand().codeGenInst(compiler);
-        DVal left =getLeftOperand().getRegistreUtil();
-        this.getRightOperand().codeGenInst(compiler);
-        GPRegister right =getRightOperand().getRegistreUtil();
-        compiler.addInstruction(new MUL(left,right));
-
+        // a * b
+        this.getLeftOperand().codeGenOP(compiler);
+        GPRegister mulRight= this.getLeftOperand().getRegistreUtil();
+        this.getRightOperand().codeGenOP(compiler);
+        DVal mulLeft =compiler.getDval();
+        compiler.addInstruction(new MUL(mulLeft,mulRight));
+        // a <- a * b
     }
 
 }

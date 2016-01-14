@@ -24,11 +24,12 @@ public class Plus extends AbstractOpArith {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        this.getLeftOperand().codeGenInst(compiler);
-        DVal left=compiler.getDval();
-        this.getRightOperand().codeGenInst(compiler);
-        GPRegister right=this.getRightOperand().getRegistreUtil();
-        compiler.addInstruction(new ADD(left,right));
-
+        // a + b
+        this.getLeftOperand().codeGenOP(compiler);
+        GPRegister addRight= this.getLeftOperand().getRegistreUtil();
+        this.getRightOperand().codeGenOP(compiler);
+        DVal addLeft =compiler.getDval();
+        compiler.addInstruction(new ADD(addLeft,addRight));
+        // a <- a + b
     }
 }

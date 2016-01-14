@@ -25,12 +25,13 @@ public class Divide extends AbstractOpArith {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        this.getLeftOperand().codeGenInst(compiler);
-        DVal left=compiler.getDval();
-        this.getRightOperand().codeGenInst(compiler);
-        GPRegister right=this.getRightOperand().getRegistreUtil();
-        compiler.addInstruction(new DIV(left,right));
-
+        // a / b
+        this.getLeftOperand().codeGenOP(compiler);
+        GPRegister divRight= this.getLeftOperand().getRegistreUtil();
+        this.getRightOperand().codeGenOP(compiler);
+        DVal divLeft =compiler.getDval();
+        compiler.addInstruction(new DIV(divLeft,divRight));
+        // a <- a/ b
     }
 
 }

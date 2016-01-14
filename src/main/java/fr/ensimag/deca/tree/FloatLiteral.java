@@ -58,10 +58,14 @@ public class FloatLiteral extends AbstractExpr {
         GPRegister target= Register.getR(i);
         compiler.setDVal(target);
         compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()),target));
-
-
-
     }
+
+    @Override
+    protected void codeGenOP(DecacCompiler compiler){
+        this.codeGenInst(compiler); // pour un litteral c'est pareil
+        compiler.setDVal(this.getRegistreUtil());
+    }
+
 
     @Override
     public void decompile(IndentPrintStream s) {

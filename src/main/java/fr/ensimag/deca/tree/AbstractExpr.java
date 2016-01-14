@@ -37,7 +37,7 @@ public abstract class AbstractExpr extends AbstractInst {
     public GPRegister getRegistreUtil(){
         return this.registreUtil;
     }
-     /**
+      /**
      * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
      */
     public Type getType() {
@@ -104,7 +104,8 @@ public abstract class AbstractExpr extends AbstractInst {
      *
      * @param compiler
      */
-    protected void codeGenPrint(DecacCompiler compiler) {
+    protected  void codeGenPrint(DecacCompiler compiler){
+
     }
 
     @Override
@@ -112,6 +113,10 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     protected void codeGenInit(DecacCompiler compiler){
+
+    }
+
+    protected void codeGenOP(DecacCompiler compiler){
 
     }
 

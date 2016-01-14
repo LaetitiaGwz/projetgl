@@ -7,6 +7,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
@@ -220,7 +221,15 @@ public class Identifier extends AbstractIdentifier {
         RegisterOffset stock = new RegisterOffset(compiler.getGB(),Register.GB);
         this.getNonTypeDefinition().setOperand(stock);
         compiler.incrementeGB();
+    }
 
+    @Override
+    protected void codeGenOP(DecacCompiler compiler){
+        DAddr stock = this.getNonTypeDefinition().getOperand();
+        int i=compiler.getTableRegistre().getLastregistre();
+        compiler.getTableRegistre().setEtatRegistreTrue(i);
+        compiler.addInstruction(new LOAD(stock,Register.getR(i)));
+        this.setRegistreUtil(Register.getR(i));
     }
 
     @Override
