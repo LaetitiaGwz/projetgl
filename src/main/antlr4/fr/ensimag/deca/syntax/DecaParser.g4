@@ -403,7 +403,7 @@ select_expr returns[AbstractExpr tree]
         )
     ;
 
-//TODO methode/cast
+//TODO methode
 primary_expr returns[AbstractExpr tree]
     : ident {
             assert($ident.tree != null);
@@ -490,6 +490,7 @@ list_classes returns[ListDeclClass tree]
 }
     :
       (c1=class_decl {
+            $tree.add($c1.tree);
         }
       )*
     ;

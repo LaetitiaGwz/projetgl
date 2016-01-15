@@ -4,6 +4,9 @@ import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
+
 import java.io.PrintStream;
 
 /**
@@ -13,6 +16,18 @@ import java.io.PrintStream;
  * @date 01/01/2016
  */
 public class DeclClass extends AbstractDeclClass {
+    private static final Logger LOG = Logger.getLogger(Class.class);
+
+    private ListDeclFieldSet declFields;
+    private ListDeclMethods methods;
+
+    public DeclClass(ListDeclField declField, ListDeclMethods methods) {
+        Validate.notNull(declField);
+        Validate.notNull(methods);
+
+        this.declFields = declFields;
+        this.methods = methods;
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {

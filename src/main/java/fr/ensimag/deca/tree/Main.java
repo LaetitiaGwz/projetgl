@@ -24,7 +24,6 @@ public class Main extends AbstractMain {
         this.insts = insts;
     }
 
-    //TODO trouver la definition de la classe main
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Main: start");
