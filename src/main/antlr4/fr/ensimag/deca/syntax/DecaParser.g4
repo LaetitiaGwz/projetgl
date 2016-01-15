@@ -490,7 +490,6 @@ list_classes returns[ListDeclClass tree]
 }
     :
       (c1=class_decl {
-            $tree.add($c1.tree);
         }
       )*
     ;
