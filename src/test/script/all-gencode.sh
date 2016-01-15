@@ -36,7 +36,7 @@ echo -e "${WHITE}"
 # On teste ici seulement la compilation (donc la génération de code),
 # pas l'éxécution
 #######################################################
-for cas_de_test in "$ETAPEB_VALID_DIR"/*.deca "$ETAPEB_VALID_DIR"/*/*.deca
+for cas_de_test in "$ETAPEB_VALID_DIR"/*.deca
 do
         line_err=$(cat ${cas_de_test} | grep Ligne | sed -e "s/[^0-9]//g")
         filename=$(echo ${cas_de_test} | xargs basename)

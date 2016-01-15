@@ -1,0 +1,16 @@
+// Description:
+//   Test d'une condition if
+//
+// Resultats:
+// ima_output: ok
+//
+
+{
+    if(false){
+        println("non");
+    }else if (false){
+        println("non");
+    }else{
+        println("ok");
+    }
+}

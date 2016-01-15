@@ -1,0 +1,12 @@
+// Description:
+//   Test d'une division par zéro de flottants
+//
+// Resultats:
+//    ima_output: DIVISION BY ZERO
+//
+
+{
+    float a = 23.4;
+    float b = 0f;
+    a = a/b;
+}

@@ -1,0 +1,15 @@
+// Description:
+//   Test d'une inégalité stricte dans une condition
+//
+// Resultats:
+//    ima_output: ok
+//
+
+{
+    if( 7 > 7 ){
+        println("non");
+    }else{
+        println("ok");
+    }
+
+}
