@@ -9,10 +9,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.INT;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.MUL;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * @author gl41
@@ -56,6 +53,19 @@ public class Multiply extends AbstractOpArith {
         this.codeGenInst(compiler);
     }
 
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+        compiler.addInstruction(new LOAD(this.getRegistreUtil(),Register.R1));
+        if(this.getType().isInt()){
+            compiler.addInstruction(new WINT());
+        }
+        else if(this.getType().isFloat()){
+            compiler.addInstruction(new LOAD(this.getRegistreUtil(),Register.R1));
+        }
+
+
+    }
 
 
 }
