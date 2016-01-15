@@ -1,0 +1,10 @@
+Tests à faire :
+
+Opérations arithmétiques :
+	*
+	+
+	-
+	/
+	%
+
+Boucles whiles
