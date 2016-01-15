@@ -1,6 +1,6 @@
 // affichage en flottant de la moitié du carré d’un entier
 {
-	int x;
+	int x = 1;
 	x = 1;
 	println(3*(x*x)*3) ;
 }
