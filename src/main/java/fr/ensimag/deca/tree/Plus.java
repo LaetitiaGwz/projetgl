@@ -25,27 +25,26 @@ public class Plus extends AbstractOpArith {
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         // a + b
-        this.getLeftOperand().codeGenOP(compiler);
+        this.getLeftOperand().codeGenOPLeft(compiler);
         GPRegister addRight= this.getLeftOperand().getRegistreUtil();
-        this.getRightOperand().codeGenOP(compiler);
+        this.getRightOperand().codeGenOPRight(compiler);
         DVal addLeft =compiler.getDval();
         compiler.addInstruction(new ADD(addLeft,addRight));
         // a <- a + b
-        // on libère le registre de b
-        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+        this.setRegistreUtil(addRight);
+        compiler.setDVal(addRight);
+        }
+
+    @Override
+    protected void codeGenOPRight(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+        if(this.getUtilisation()){
+            compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+        }
     }
 
     @Override
-    protected void codeGenOP(DecacCompiler compiler){
-        // a + b
-        this.getLeftOperand().codeGenOP(compiler);
-        GPRegister addRight= this.getLeftOperand().getRegistreUtil();
-        this.getRightOperand().codeGenOP(compiler);
-        DVal addLeft =compiler.getDval();
-        compiler.addInstruction(new ADD(addLeft,addRight));
-        // a <- a + b
-        compiler.setDVal(addRight);
-        this.setRegistreUtil(addRight);
-        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+    protected void codeGenOPLeft(DecacCompiler compiler){
+        this.codeGenInst(compiler);
     }
 }

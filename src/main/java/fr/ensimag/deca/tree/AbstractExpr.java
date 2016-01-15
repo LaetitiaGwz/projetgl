@@ -37,6 +37,13 @@ public abstract class AbstractExpr extends AbstractInst {
     public GPRegister getRegistreUtil(){
         return this.registreUtil;
     }
+    private boolean utilisation= false;
+    public void setUtilisation(){
+        this.utilisation= true;
+    }
+    public boolean getUtilisation(){
+        return this.utilisation;
+    }
       /**
      * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
      */
@@ -116,7 +123,13 @@ public abstract class AbstractExpr extends AbstractInst {
 
     }
 
-    protected void codeGenOP(DecacCompiler compiler){
+    protected void codeGenOPRight(DecacCompiler compiler){
+
+    }
+    protected void codeGenOPLeft(DecacCompiler compiler){
+
+    }
+    protected void codeGenConv(DecacCompiler compiler){
 
     }
 

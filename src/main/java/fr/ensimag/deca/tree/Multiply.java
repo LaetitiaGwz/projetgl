@@ -32,28 +32,28 @@ public class Multiply extends AbstractOpArith {
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         // a * b
-        this.getLeftOperand().codeGenOP(compiler);
+        this.getLeftOperand().codeGenOPLeft(compiler);
         GPRegister mulRight= this.getLeftOperand().getRegistreUtil();
-        this.getRightOperand().codeGenOP(compiler);
+        this.getRightOperand().codeGenOPRight(compiler);
         DVal mulLeft =compiler.getDval();
         compiler.addInstruction(new MUL(mulLeft,mulRight));
         // a <- a * b
         //on libère le registre de b
-        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+        this.setRegistreUtil(mulRight);
+        compiler.setDVal(mulRight);
+   }
+
+    @Override
+    protected void codeGenOPRight(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+        if(this.getUtilisation()){
+            compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+        }
     }
 
     @Override
-    protected void codeGenOP(DecacCompiler compiler){
-        // a * b
-        this.getLeftOperand().codeGenOP(compiler);
-        GPRegister mulRight= this.getLeftOperand().getRegistreUtil();
-        this.getRightOperand().codeGenOP(compiler);
-        DVal mulLeft =compiler.getDval();
-        compiler.addInstruction(new MUL(mulLeft,mulRight));
-        // a <- a * b
-        this.setRegistreUtil(mulRight);
-        compiler.setDVal(mulRight);
-        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+    protected void codeGenOPLeft(DecacCompiler compiler){
+        this.codeGenInst(compiler);
     }
 
 

@@ -224,13 +224,19 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
-    protected void codeGenOP(DecacCompiler compiler){
+    protected void codeGenOPLeft(DecacCompiler compiler){
         DAddr stock = this.getNonTypeDefinition().getOperand();
         int i=compiler.getTableRegistre().getLastregistre();
         compiler.getTableRegistre().setEtatRegistreTrue(i);
         compiler.addInstruction(new LOAD(stock,Register.getR(i)));
         this.setRegistreUtil(Register.getR(i));
         compiler.setDVal(Register.getR(i));
+        this.setUtilisation();
+    }
+
+    @Override
+    protected void codeGenOPRight(DecacCompiler compiler){
+        compiler.setDVal(this.getNonTypeDefinition().getOperand());
     }
 
     @Override

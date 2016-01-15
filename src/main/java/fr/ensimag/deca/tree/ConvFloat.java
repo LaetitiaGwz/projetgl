@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
+import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 
 /**
  * Conversion of an int into a float. Used for implicit conversions.
@@ -30,6 +31,12 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     protected String getOperatorName() {
         return "/* conv float */";
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler){
+        this.codeGenConv(compiler);
+        compiler.addInstruction(new FLOAT(compiler.getDval(),this.getRegistreUtil()));
     }
 
 }
