@@ -17,7 +17,9 @@ public class Print extends AbstractPrint {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        super.codeGenInst(compiler);
+        for (AbstractExpr a : getArguments().getList()) {
+            a.codeGenPrint(compiler);
+        }
     }
 
 

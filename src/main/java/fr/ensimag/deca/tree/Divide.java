@@ -27,28 +27,27 @@ public class Divide extends AbstractOpArith {
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         // a / b
-        this.getLeftOperand().codeGenOP(compiler);
+        this.getLeftOperand().codeGenOPLeft(compiler);
         GPRegister divRight= this.getLeftOperand().getRegistreUtil();
-        this.getRightOperand().codeGenOP(compiler);
+        this.getRightOperand().codeGenOPRight(compiler);
         DVal divLeft =compiler.getDval();
         compiler.addInstruction(new QUO(divLeft,divRight));
         // a <- a/ b
-        // on libère le registre de b
-        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+        this.setRegistreUtil(divRight);
+        compiler.setDVal(divRight);
     }
 
     @Override
-    protected void codeGenOP(DecacCompiler compiler){
-        // a / b
-        this.getLeftOperand().codeGenOP(compiler);
-        GPRegister divRight= this.getLeftOperand().getRegistreUtil();
-        this.getRightOperand().codeGenOP(compiler);
-        DVal divLeft =compiler.getDval();
-        compiler.addInstruction(new QUO(divLeft,divRight));
-        // a <- a/ b
-        compiler.setDVal(divRight);
-        this.setRegistreUtil(divRight);
-        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+    protected void codeGenOPRight(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+        if(this.getUtilisation()){
+            compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+        }
+    }
+
+    @Override
+    protected void codeGenOPLeft(DecacCompiler compiler){
+        this.codeGenInst(compiler);
     }
 
 

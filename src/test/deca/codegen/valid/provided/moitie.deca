@@ -2,6 +2,6 @@
 {
 	int x ;
 	x=readInt() ;
-	println(0.5*(x*x)) ;
+	println(3*(x*x)*3) ;
 }
 

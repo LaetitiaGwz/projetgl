@@ -26,29 +26,27 @@ public class Minus extends AbstractOpArith {
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         // a - b
-        this.getLeftOperand().codeGenOP(compiler);
+        this.getLeftOperand().codeGenOPLeft(compiler);
         GPRegister subRight= this.getLeftOperand().getRegistreUtil();
-        this.getRightOperand().codeGenOP(compiler);
-        DVal subLeft =compiler.getDval();
-        compiler.addInstruction(new SUB(subLeft,subRight));
-        // a <- a - b
-        //on libère le registre de b
-        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
-
-    }
-    @Override
-    protected void codeGenOP(DecacCompiler compiler){
-        // a - b
-        this.getLeftOperand().codeGenOP(compiler);
-        GPRegister subRight= this.getLeftOperand().getRegistreUtil();
-        this.getRightOperand().codeGenOP(compiler);
+        this.getRightOperand().codeGenOPRight(compiler);
         DVal subLeft =compiler.getDval();
         compiler.addInstruction(new SUB(subLeft,subRight));
         // a <- a - b
         this.setRegistreUtil(subRight);
         compiler.setDVal(subRight);
-        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
 
+    }
+    @Override
+    protected void codeGenOPRight(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+        if(this.getUtilisation()){
+            compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+        }
+    }
+
+    @Override
+    protected void codeGenOPLeft(DecacCompiler compiler){
+        this.codeGenInst(compiler);
     }
     
 }
