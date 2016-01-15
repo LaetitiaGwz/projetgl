@@ -3,6 +3,10 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.RINT;
+
 import java.io.PrintStream;
 
 /**
@@ -20,6 +24,13 @@ public class ReadInt extends AbstractReadExpr {
         setType(t);
 
         return t;
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler){
+        compiler.addInstruction(new RINT());
+        this.setRegistreUtil(Register.R1);
+
     }
 
 
