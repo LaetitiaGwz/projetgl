@@ -1,10 +1,11 @@
 import java.lang.Math ;
 
 public class Math_deca{
-	public static final float MIN_VALUE = (float)1.4E-45;
-	public static final float MAX_VALUE = (float)1.633123935319537E16;
+	public static final float MIN_VALUE = Float.MIN_VALUE;
+	public static final float MAX_VALUE = Float.MAX_VALUE;
 	public static final float PI = (float)3.141592653589793;
-        public static final float PIDIV=(float)Math.PI/8;
+	public static final float PI_4 = (float)0.7853981633974483 ;
+
 	public static float power(float x, int y){
 
 		float originalX = x ;
@@ -26,8 +27,13 @@ public class Math_deca{
 	}
 
 	public static float ulp(float x){
-		//Je ne sais pas s'il faut prendre ne compte les valeur +-infini et NaN 
+		//On ne pourra pas prendre en compte les infinis et les NaN en deca
 		int exp = 0;
+		
+		if ( x == -MAX_VALUE || x == MAX_VALUE) {
+			return power(2,104);
+		}
+
 		if(x < 0) {
 			x = -x ;
 		}	
@@ -52,7 +58,7 @@ public class Math_deca{
 	}
 	// Méthode de Cordic cf :http://www.trigofacile.com/maths/trigo/calcul/cordic/cordic.htm
 	// changement : on ne prend plus les theta_k tel que atan(theta_k) = 10^-k mais atan(theta_k)=2^-k ;
-	public static float tan(float theta){
+	public static float tanCordic(float theta){
 
 		// On se ramène à des angles entre -PI/2 et PI/2
 		while ( theta > PI/2.0 || theta < -PI/2.0){
@@ -152,49 +158,146 @@ public class Math_deca{
 		return mid/power(10,exp/2) ;
 	}
 
-	public static float cos(float x){
-		float t = tan(x/2) ;
-		return (float) 1/sqrt(1 + power(tan(x),2));
+	public static float cosCordic(float x){
+		float t = tanCordic(x/2) ;
+		return (float) 1/sqrt(1 + power(tanCordic(x),2));
 		//return (float)(1-power(t,2))/(1 + power(t,2)) ;
 
 	}
 
-	public static float sin(float x){
-		return (float) tan(x)/sqrt(1 + power(tan(x),2));
-		//return tan(x)*cos(x) ; 
+	public static float sinCordic(float x){
+		return (float) tanCordic(x)/sqrt(1 + power(tanCordic(x),2));
+		//return tanCordic(x)*cosCordic(x) ; 
 	}
-        
-        
-        public static float sintaylor(float x){
-            float res=x;
-            float temp=x;
-            int i=1;
-            System.out.println("test syn taylor"+x);
-            do{
-                temp=-temp*x*x/((1+2*i)*2*i);
-                res=res+temp;
-                i=i+1;
-               // System.out.println(i+"\n");
-                 //System.out.println(abs(res)/ulp((float)Math.sin(x)));
-            }
-            //while(abs(res) > ulp((float)Math.sin(x)));
-           
-            while(i < 7);
-            return res;
-        }
-        
-             public static float costaylor(float x,int n){
-            float res=1;
-            float temp=-x*x/2;
-            int i=0;
-            while(i<n){
-                temp=-temp*x*x/((-1+2*i)*2*i);
-                res=res+temp;
-            }
-            return res;
-        }
-        //     public static float sintaylor(floatx)  
-        
+
+
+	public static float sinTaylor(float x){
+		
+		//réduction sur ]-PI;PI]
+		x = reductionCodyAndWaite(x,PI) ;
+
+		if ( x == PI/2 || x == -PI/2){
+			return (float) 1.0;
+		}
+		//réduction sur ]-PI/2; PI/2]
+		boolean sign = true;
+		if ( x > PI/2 || x < -PI/2){
+			sign = !sign;
+			x = -reductionCodyAndWaite(x,PI/2) ;
+		}
+
+		//réduction sur [-PI/4;PI/4]
+		if ( x>PI/4 ) {
+			if(sign){
+				return cosTaylor(x-PI/2);
+			}
+			else{
+				return -cosTaylor(x-PI/2);
+			}		
+		}
+		else if ( x<-PI/4){
+			if(sign){
+				return -cosTaylor(x + PI/2);
+			}
+			else{
+				return cosTaylor(x + PI/2);
+			}
+		}
+
+		//réduction sur [0;PI/4]
+		if (x<0){
+
+			sign = !sign;
+			x=-x;
+		}
+
+		float res=x;
+		float temp=x;
+		int i=1;
+		while ( abs(temp)> ulp(res)) {
+			temp = - temp*power(x,2)/((2*i + 1)*2*i);
+			res = res + temp ;
+			i++;
+		}
+		if(sign){
+			return res ;
+		}
+		else{
+			return -res ;
+		}
+	}
+
+	public static float cosTaylor(float x){
+
+		//réduction sur ]-PI;PI]
+		x = reductionCodyAndWaite(x,PI) ;
+
+		//réduction sur ]-PI/2; PI/2]
+		boolean sign = true;
+		if ( x > PI/2 || x < -PI/2){
+			sign = !sign;
+			reductionCodyAndWaite(x,PI/2);
+		}
+
+		//réduction sur [-PI/4;PI/4]
+		if ( x>PI/4 ) {
+			if(sign){
+				return -sinTaylor(x-PI/2);
+			}
+			else{
+				return sinTaylor(x-PI/2);
+			}
+		}
+		else if ( x<-PI/4){
+			if(sign){
+				return sinTaylor(x + PI/2);
+			}
+			else{
+				return -sinTaylor(x + PI/2);
+			}
+
+		}
+
+		if (x<0){
+			x=-x;
+		}
+		float res=1;
+		float temp=-power(x,2)/2;
+		int i=0;
+		//while ( i<6 || abs(temp)> ulp(res) ) {
+		while ( i < 6) {
+			temp = -temp*power(x,2)/((2*i - 1)*2*i);
+			res=res+temp;
+			i ++ ;
+		}
+		if(sign){
+			return res ;
+		}
+		else{
+			return -res ;
+		}
+	}
+
+	//cf : 
+	//http://www.vinc17.net/research/papers/arithflottante.pdf
+	// Réduction  l'intervalle ]-PI,PI]
+	// retourne un nb positif
+	public static float reductionCodyAndWaite(float x,float lambda){
+		int k = 0 ;
+		float c1 = lambda - 10*ulp(lambda); // c1 = lambda- ulp(lambda)
+		float c2 = 10*ulp(lambda); // c2 = ulp(lambda)
+		float xTemp = x ;
+		boolean sign = ( x > 0 )? true : false ;
+		while ( xTemp >= lambda || xTemp < -lambda){
+			xTemp = (sign)?xTemp -lambda:xTemp + lambda;
+			k = (sign)?k+1:k-1 ;
+		}
+		x = x - k*c1 ;
+		x = x - k*c2 ;
+		return x ;
+	}
+
+
         
         
         
