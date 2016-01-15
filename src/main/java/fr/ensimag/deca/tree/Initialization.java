@@ -47,15 +47,7 @@ public class Initialization extends AbstractInitialization {
 
     @Override
     protected void codeGenInit(DecacCompiler compiler) {
-        if(getExpression().getType().isInt()){
-            getExpression().codeGenInst(compiler);
-        }
-        else if (getExpression().getType().isFloat()){
-            getExpression().codeGenInst(compiler);
-        }
-        else{ // boolean a gérer
-            getExpression().codeGenOP(compiler);
-        }
+        getExpression().codeGenOP(compiler);
     }
 
 
