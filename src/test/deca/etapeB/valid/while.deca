@@ -1,0 +1,16 @@
+// Description:
+//    Boucle while de 10 tours avec un int
+//
+// Resultats:
+//    Affichage de l'incrément entre 0 et 9
+// 
+// Historique:
+//    cree le 01/01/2016
+
+{
+    int i = 0;
+    while(i < 10) {
+        println(i);
+        i = i+1;
+    }
+}
