@@ -31,6 +31,8 @@ public class Plus extends AbstractOpArith {
         DVal addLeft =compiler.getDval();
         compiler.addInstruction(new ADD(addLeft,addRight));
         // a <- a + b
+        // on libère le registre de b
+        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
     }
 
     @Override
@@ -44,5 +46,6 @@ public class Plus extends AbstractOpArith {
         // a <- a + b
         compiler.setDVal(addRight);
         this.setRegistreUtil(addRight);
+        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
     }
 }

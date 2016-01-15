@@ -38,6 +38,8 @@ public class Multiply extends AbstractOpArith {
         DVal mulLeft =compiler.getDval();
         compiler.addInstruction(new MUL(mulLeft,mulRight));
         // a <- a * b
+        //on libère le registre de b
+        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
     }
 
     @Override
@@ -51,6 +53,7 @@ public class Multiply extends AbstractOpArith {
         // a <- a * b
         this.setRegistreUtil(mulRight);
         compiler.setDVal(mulRight);
+        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
     }
 
 

@@ -33,6 +33,8 @@ public class Divide extends AbstractOpArith {
         DVal divLeft =compiler.getDval();
         compiler.addInstruction(new QUO(divLeft,divRight));
         // a <- a/ b
+        // on libère le registre de b
+        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
     }
 
     @Override
@@ -46,6 +48,7 @@ public class Divide extends AbstractOpArith {
         // a <- a/ b
         compiler.setDVal(divRight);
         this.setRegistreUtil(divRight);
+        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
     }
 
 

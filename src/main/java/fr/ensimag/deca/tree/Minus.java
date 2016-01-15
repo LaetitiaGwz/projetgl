@@ -32,6 +32,8 @@ public class Minus extends AbstractOpArith {
         DVal subLeft =compiler.getDval();
         compiler.addInstruction(new SUB(subLeft,subRight));
         // a <- a - b
+        //on libère le registre de b
+        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
 
     }
     @Override
@@ -45,6 +47,7 @@ public class Minus extends AbstractOpArith {
         // a <- a - b
         this.setRegistreUtil(subRight);
         compiler.setDVal(subRight);
+        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
 
     }
     
