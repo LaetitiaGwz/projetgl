@@ -12,7 +12,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
  * @author gl41
  * @date 01/01/2016
  */
-public class ListDeclMethods extends TreeList<AbstractDeclMethod> {
+public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
 
     public void verifyMethodsMembers(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)

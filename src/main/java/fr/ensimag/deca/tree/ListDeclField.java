@@ -8,7 +8,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
  * @author gl41
  * @date 01/01/2016
  */
-public class ListDeclField extends TreeList<AbstractDeclVar> {
+public class ListDeclField extends TreeList<AbstractDeclField> {
 
     @Override
     public void decompile(IndentPrintStream s) {

@@ -490,62 +490,98 @@ list_classes returns[ListDeclClass tree]
 }
     :
       (c1=class_decl {
+            assert($c1.tree != null);
+            $tree.add($c1.tree);
         }
       )*
     ;
 
 //TODO
-class_decl
+class_decl returns[AbstractDeclClass tree]
     : CLASS name=ident superclass=class_extension OBRACE class_body CBRACE {
+            assert($class_body.tree != null);
+            assert($superclass.tree != null);
+            assert($name.tree != null);
+            $tree = $class_body.tree;
+            $tree.setClassName($name.tree);
+            $tree.setSuperClass($superclass.tree);
         }
     ;
 
 //TODO
 class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
+            assert($ident.tree != null);
+            $tree = $ident.tree;
         }
     | /* epsilon */ {
+            $tree = new Identifier(T.create("Object"));
         }
     ;
 
 //TODO
-class_body
+class_body returns[AbstractDeclClass tree]
+@init {
+    ListDeclMethod methods = new ListDeclMethod();
+    ListDeclFieldSet fields = new ListDeclFieldSet();
+}
     : (m=decl_method {
         }
       | f=decl_field_set {
+            fields.add($f.tree);
         }
-      )*
+      )*{
+        $tree = new DeclClass(fields, methods);
+      }
     ;
 
 //TODO
-decl_field_set
+decl_field_set returns[DeclFieldSet tree]
     : visibility type dv=list_decl_field SEMI {
+            $tree = new DeclFieldSet($visibility.tree, $type.tree, $list_decl_field.tree);
         }
     ;
 
 //TODO
-visibility
+visibility returns [Visibility tree]
     : /* epsilon */ {
+            $tree = Visibility.PUBLIC;
         }
     | PROTECTED {
+            $tree = Visibility.PROTECTED;
         }
     ;
 
 //TODO
-list_decl_field
+list_decl_field returns[ListDeclField tree]
+@init{
+    $tree = new ListDeclField();
+}
     : dv1=decl_field {
+            assert($dv1.tree != null);
+            $tree.add($dv1.tree);
         }  (COMMA dv2=decl_field {
+            assert($dv2.tree != null);
+            $tree.add($dv2.tree);
         }
       )*
     ;
 
 //TODO
-decl_field
+decl_field returns[DeclField tree]
+@init {
+    AbstractInitialization initialization;
+}
     : i=ident {
+            assert($i.tree != null);
+            initialization = new NoInitialization();
         }
       (EQUALS e=expr {
+            assert($e.tree != null);
+            initialization = new Initialization($e.tree);
         }
       )? {
+            $tree = new DeclField($i.tree, initialization);
         }
     ;
 
