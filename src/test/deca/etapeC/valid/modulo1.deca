@@ -1,0 +1,12 @@
+// Description:
+//   Test du modulo
+//
+// Resultats:
+// ima_output: 3
+//
+
+{
+    int a = 7;
+    a = a % 4;
+    println(a);
+}
