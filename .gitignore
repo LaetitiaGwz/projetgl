@@ -12,3 +12,8 @@
 Deca.iml
 *.ass
 *.tokens
+
+# outputs of tests
+/test/output/etapeC/invalid/*
+/test/output/etapeC/valid/*
+/test/output/etapeC/error/*

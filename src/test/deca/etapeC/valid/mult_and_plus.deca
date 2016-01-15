@@ -2,11 +2,12 @@
 //   Test de la bonne utilisation des registres
 //
 // Resultats:
-//    ima_output: 10
+//    ima_output: 23
 //
 
 {
     int a = 2;
-    a = a * 5;
-    println(a);
+    int b = 7;
+    int c = a*b + a + b;
+    println(c);
 }
