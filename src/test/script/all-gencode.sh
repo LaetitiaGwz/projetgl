@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Auteur : matthieu
-# Script d'automatisation des tests pour la g
+# Script d'automatisation des tests pour la generation de code
 
 # On se place dans le répertoire du projet (quel que soit le
 # répertoire d'où est lancé le script) :
@@ -14,6 +14,11 @@ OUTPUT_DIR_VALID=src/test/output/etapeC/valid
 OUTPUT_DIR_ERROR=src/test/output/etapeC/error
 OUTPUT_DIR_INVALID=src/test/output/etapeC/invalid
 
+
+ETAPEB_INVALID_DIR=src/test/deca/etapeB/invalid
+ETAPEB_VALID_DIR=src/test/deca/etapeB/valid
+ETAPEB_OUTPUT_DIR=src/test/output/etapeB
+
 GREEN="\e[1;32m"
 WHITE="\e[1;37m"
 RED="\e[31m"
@@ -25,6 +30,41 @@ success=0
 fail=0
 
 echo -e "${WHITE}"
+
+#######################################################
+# Test des cas de la partie B sur le compilateur complet
+# On teste ici seulement la compilation (donc la génération de code),
+# pas l'éxécution
+#######################################################
+for cas_de_test in "$ETAPEB_VALID_DIR"/*.deca "$ETAPEB_VALID_DIR"/*/*.deca
+do
+        line_err=$(cat ${cas_de_test} | grep Ligne | sed -e "s/[^0-9]//g")
+        filename=$(echo ${cas_de_test} | xargs basename)
+        result_test=$(decac "$cas_de_test" 2>&1)
+
+        if [[ "$result_test" == "" ]];
+        then
+                echo -e "$filename"" : ${GREEN}  OK ${WHITE}"
+
+                # On rassemble les fichiers .ass dans src/test/output/
+                assembly_file=$(echo "$filename" | sed -e "s/.deca/.ass/")
+                assembly_dir_new="$ETAPEB_OUTPUT_DIR""/valid/""$assembly_file"
+                assembly_dir_old=$(echo "$cas_de_test" | sed -e "s@\.deca@\.ass@")
+                mv "$assembly_dir_old" "$assembly_dir_new"
+                success=$(($success + 1))
+        else
+                echo -e "$filename"" : ${RED}  ERROR ${WHITE}"
+
+                # Ecriture d'un fichier .error
+                error_file=$(echo "$filename" | sed -e "s/.deca/.error/g")
+                echo "$result_test" > "$ETAPEB_OUTPUT_DIR""/error/""$error_file"
+                fail=$(($fail + 1))
+        fi
+done
+
+#######################################################
+# Test des cas de la partie C
+#######################################################
 
 # Test des cas invalides (erreur à l'éxécution)
 for cas_de_test in "$INVALID_DIR"/*.deca
@@ -59,11 +99,13 @@ do
 
                 echo -e "$filename"
                 echo -e "Compilation : ${GREEN}  OK ${WHITE}"
-                success=$(($success + 1))
 
                 expected_output=$(cat "$cas_de_test" | grep "ima_output:" |sed -e  "s@//@@g" | sed -e "s@ima_output:@@;s@ @@g;s@ima_output:@@")
                 real_output=$(ima "$assembly_dir")
-                if [[ "$expected_output" == "$real_output" ]];
+                return_value=$?
+
+                # Vérifie deux choses : 1) le code d'erreur est bon 2) ima retourne bien un nombre != 0
+                if [[ "$expected_output" == $(echo "$real_output" | grep -o "$expected_output")  &&  "$return_value" != 0 ]];
                 then
                     echo -e "Execution : ${GREEN}  OK ${WHITE}"
                     success=$(($success + 1))
@@ -109,10 +151,9 @@ do
 
                 echo -e "$filename"
                 echo -e "Compilation : ${GREEN}  OK ${WHITE}"
-                success=$(($success + 1))
 
                 expected_output=$(cat "$cas_de_test" | grep "ima_output:" |sed -e  "s@//@@g" | sed -e "s@ima_output:@@;s@ @@g;s@ima_output:@@")
-                real_output=$(ima "$assembly_dir")
+                real_output=$(ima "$assembly_dir" )
                 if [[ "$expected_output" == "$real_output" ]];
                 then
                     echo -e "Execution : ${GREEN}  OK ${WHITE}"

@@ -17,5 +17,9 @@ public class ManualTestLex {
         Logger.getRootLogger().setLevel(Level.DEBUG);
         DecaLexer lex = AbstractDecaLexer.createLexerFromArgs(args);
         System.exit(lex.debugTokenStream() ? 1 : 0);
+        int a = 5;
+        boolean b;
+        b = (boolean) a;
+
     }
 }

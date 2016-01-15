@@ -1,0 +1,12 @@
+// Description:
+//   Accès à des variables non initialisées
+//
+// Resultats:
+//  ima_output:  ERREUR
+//
+
+{
+    int a;
+    int b = a + 1;
+    println(a);
+}
