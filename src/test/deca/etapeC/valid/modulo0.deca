@@ -1,0 +1,12 @@
+// Description:
+//   Test du modulo
+//
+// Resultats:
+// ima_output: 0
+//
+
+{
+    int div_onze = 13607;
+    div_onze = div_onze % 11;
+    println(div_onze);
+}
