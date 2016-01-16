@@ -5,6 +5,7 @@ public class Math_deca{
 	public static final float MAX_VALUE = (float)1.633123935319537E16;
 	public static final float PI = (float)3.141592653589793;
         public static final float PIDIV=(float)Math.PI/8;
+        public static final float PIDIV2=(float)Math.PI/2;
 	public static float power(float x, int y){
 
 		float originalX = x ;
@@ -192,7 +193,7 @@ public class Math_deca{
             }
         }     
              
-        public static float asin(float x){
+        public static float asindse(float x){
             //float a1=power(x,3)/6;
             //float a2=3*power(x,5)/40;
             //float a3=5*power(x,7)/112;
@@ -208,6 +209,27 @@ public class Math_deca{
                 }
             return res;
         }
+        public static float asin(float x){
+            if(abs(x)<0.75){
+                return asindse(x);
+            }
+            else if(x>0.75){ return PIDIV2-asindse(sqrt(1-x*x));}
+            else return asindse(sqrt(1-x*x))-PIDIV2;
+            
+        }
+        
+        public static float atan(float x){
+            float temp=-power(x,3)/3;
+            float res=x+temp;
+            int i=2;
+            while(i<6){
+               temp=power(-1,i)*power(x,1+2*i)/(1+2*i);
+                res=res+temp;
+                i=i+1; 
+            }
+            return res;
+        }
+                
         
              
         

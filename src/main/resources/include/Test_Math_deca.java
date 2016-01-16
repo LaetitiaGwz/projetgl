@@ -153,10 +153,30 @@ public class Test_Math_deca{
 		}
             System.out.println("fin du test de arcsin. Erreur rencontré : " + nbErreur + " sur " +nb+ "tests.\n");
             
+            
+            System.out.println("test de arctan en dse :\n");
+            /*
+            for(float x = -1.F ; x < 1.F ; x = x + (float) Math.pow(2,-5)){
+		//	//diffRelative = Math.abs(((float)Math.atan(x) - Math_deca.atan(x))/(float)Math.asin(x));
+			diff =Math.abs(((float)Math.atan(x) - Math_deca.atan(x)));
+			nb ++ ;
+			//if ( diffRelative >= Math.pow(10,-3)) {
+			if ( diff > Math_deca.ulp((float)Math.atan(x))){
+		        	 System.out.println("Erreur pour x="+x);
+				 System.out.println("Math_deca.arctan : "+Math_deca.atan(x));
+				 System.out.println("Math.arctan : "+Math.atan(x));
+				 System.out.println("différence : " + diff/Math_deca.ulp((float)Math.atan(x)));
+				 System.out.println();
+				nbErreur ++;
+			}
+                        
+	            }
+            System.out.println("fin du test de arctan. Erreur rencontré : " + nbErreur + " sur " +nb+ "tests.\n");
+            */
+	}
 	}
    
         
         
         
 
-}
