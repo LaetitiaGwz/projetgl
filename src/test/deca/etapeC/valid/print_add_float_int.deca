@@ -1,0 +1,10 @@
+// Description:
+//   Test d'affichage
+//
+// Resultats:
+//  ima_output:  2.20000e+00
+//
+
+{
+    print(1.1 + 2);
+}

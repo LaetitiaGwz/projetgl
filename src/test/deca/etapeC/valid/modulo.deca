@@ -1,0 +1,12 @@
+// Description:
+//   Test du modulo
+//
+// Resultats:
+// ima_output: 0
+//
+
+{
+    int pair = 3123432138;
+    pair = pair % 2;
+    println(pair);
+}

@@ -18,4 +18,5 @@ public abstract class AbstractIfThen extends Tree {
             EnvironmentExp localEnv, ClassDefinition currentClass, Type returnType)
             throws ContextualError;
 
+    protected abstract void codeGenIfThen(DecacCompiler compiler);
 }

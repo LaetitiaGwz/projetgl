@@ -403,7 +403,7 @@ select_expr returns[AbstractExpr tree]
         )
     ;
 
-//TODO methode/cast
+//TODO methode
 primary_expr returns[AbstractExpr tree]
     : ident {
             assert($ident.tree != null);

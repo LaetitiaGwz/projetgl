@@ -5,6 +5,10 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 /**
  * Arithmetic binary operations (+, -, /, ...)
@@ -16,6 +20,21 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 
     public AbstractOpArith(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+        compiler.addInstruction(new LOAD(this.getRegistreUtil(), Register.R1));
+        if(this.getType().isInt()){
+            compiler.addInstruction(new WINT());
+        }
+        else if(this.getType().isFloat()){
+            compiler.addInstruction(new LOAD(this.getRegistreUtil(),Register.R1));
+            compiler.addInstruction(new WFLOAT());
+        }
+
+
     }
 
     @Override

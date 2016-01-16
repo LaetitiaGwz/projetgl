@@ -4,7 +4,9 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.MUL;
 
 /**
@@ -24,11 +26,28 @@ public class Plus extends AbstractOpArith {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        this.getLeftOperand().codeGenInst(compiler);
-        DVal left=compiler.getDval();
-        this.getRightOperand().codeGenInst(compiler);
-        GPRegister right=this.getRightOperand().getRegistreUtil();
-        compiler.addInstruction(new ADD(left,right));
+        // a + b
+        this.getLeftOperand().codeGenOPLeft(compiler);
+        GPRegister addRight= this.getLeftOperand().getRegistreUtil();
+        this.getRightOperand().codeGenOPRight(compiler);
+        DVal addLeft =compiler.getDval();
+        compiler.addInstruction(new ADD(addLeft,addRight));
+        compiler.addInstruction(new BOV(new Label("overflow_error"))); // Vérification des overflow
+        // a <- a + b
+        this.setRegistreUtil(addRight);
+        compiler.setDVal(addRight);
+        }
 
+    @Override
+    protected void codeGenOPRight(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+        if(this.getUtilisation()){
+            compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+        }
+    }
+
+    @Override
+    protected void codeGenOPLeft(DecacCompiler compiler){
+        this.codeGenInst(compiler);
     }
 }

@@ -25,7 +25,7 @@ public class NoInitialization extends AbstractInitialization {
     }
 
     @Override
-    protected void codegenInit(DecacCompiler compiler) {
+    protected void codeGenInit(DecacCompiler compiler) {
         // Nothing to do
     }
 

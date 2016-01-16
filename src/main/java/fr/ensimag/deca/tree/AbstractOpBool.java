@@ -30,4 +30,12 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         return leftType;
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler){
+
+    }
+
+    protected void codeGenBool(DecacCompiler compiler){
+    }
+
 }

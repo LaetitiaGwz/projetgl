@@ -1,6 +1,13 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.BGE;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
+
 /**
  *
  * @author gl41
@@ -18,4 +25,8 @@ public class Lower extends AbstractOpIneq {
         return "<";
     }
 
+    @Override
+    protected void codeGenCMP(DecacCompiler compiler){
+        compiler.addInstruction(new BGE(compiler.getLabel()));
+    }
 }

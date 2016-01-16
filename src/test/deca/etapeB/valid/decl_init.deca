@@ -11,9 +11,6 @@
    boolean a;
    boolean b = false;
 
-   String c;
-   String d = "ok";
-
    int e;
    int f = 5;
 

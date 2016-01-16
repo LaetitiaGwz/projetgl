@@ -9,10 +9,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.INT;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.MUL;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * @author gl41
@@ -31,12 +28,32 @@ public class Multiply extends AbstractOpArith {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        this.getLeftOperand().codeGenInst(compiler);
-        DVal left =compiler.getDval();
-        this.getRightOperand().codeGenInst(compiler);
-        GPRegister right =getRightOperand().getRegistreUtil();
-        compiler.addInstruction(new MUL(left,right));
+        // a * b
+        this.getLeftOperand().codeGenOPLeft(compiler);
+        GPRegister mulRight= this.getLeftOperand().getRegistreUtil();
+        this.getRightOperand().codeGenOPRight(compiler);
+        DVal mulLeft =compiler.getDval();
+        compiler.addInstruction(new MUL(mulLeft,mulRight));
+        // a <- a * b
+        //on libère le registre de b
+        this.setRegistreUtil(mulRight);
+        compiler.setDVal(mulRight);
+   }
 
+    @Override
+    protected void codeGenOPRight(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+        if(this.getUtilisation()){
+            compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+        }
     }
+
+    @Override
+    protected void codeGenOPLeft(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+    }
+
+
+
 
 }

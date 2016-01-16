@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.multipleinstructions.ErrorInstruction;
 import fr.ensimag.ima.pseudocode.multipleinstructions.InstructionList;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -52,8 +53,9 @@ public class DecacCompiler {
     private MemoryMap memoryMap;
 
     /**
-	 * table des registres
+	 * table des registres et données utiles
      */
+    //TODO : refactor le code ci-dessous
     private DVal dVal ;
     public DVal getDval(){
         return this.dVal;
@@ -65,6 +67,9 @@ public class DecacCompiler {
 
     public GestionRegistre getTableRegistre(){
         return this.tableRegistre;
+    }
+    public void resetTableRegistre(){
+        this.tableRegistre.resetTableRegistre();
     }
 
     public void setTableRegistre(int nbRegistre){
@@ -80,6 +85,41 @@ public class DecacCompiler {
     public void initializeGB(){
         this.GB=1;
     }
+
+    private Label label;
+    public void setLabel(Label target){
+        this.label=target;
+    }
+    public Label getLabel(){
+        return this.label;
+    }
+    private int nbIf;// pour gerer les labels
+    public void initializeIf(){
+        this.nbIf=0;
+    }
+    public void incrementeIf(){
+        this.nbIf++;
+    }
+    public int getIf(){
+        return this.nbIf;
+    }
+    private int nbWhile;
+    public void initializeWhile(){
+        this.nbWhile=0;
+    }
+    public void incrementeWhile(){
+        this.nbWhile++;
+    }
+    public int getWhile(){
+        return this.nbWhile;
+    }
+
+    public void initialize(){
+        this.initializeGB();
+        this.initializeIf();
+        this.initializeWhile();
+    }
+
     /**
      * Portable newline character.
      */
@@ -273,6 +313,8 @@ public class DecacCompiler {
                 addComment("start main program");
                 prog.codeGenProgram(this);
                 addComment("end main program");
+                addLabel(new Label("overflow_error"));
+                addInstructionList(new ErrorInstruction("Error : overflow during arithmetic operation"));
                 LOG.debug("Generated assembly code:" + nl + program.display());
                 LOG.info("Output file assembly file is: " + destName);
 

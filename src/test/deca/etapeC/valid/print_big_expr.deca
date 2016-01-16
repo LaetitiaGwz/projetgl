@@ -2,9 +2,9 @@
 //   Test d'affichage
 //
 // Resultats:
-//    1
+//  ima_output:  3
 //
 
 {
-    print(1.1);
+    print(3*(5+4+1) - 9*3);
 }

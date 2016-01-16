@@ -6,6 +6,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
 import fr.ensimag.ima.pseudocode.instructions.MUL;
+import fr.ensimag.ima.pseudocode.instructions.SUB;
 
 /**
  * @author gl41
@@ -24,12 +25,28 @@ public class Minus extends AbstractOpArith {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        this.getLeftOperand().codeGenInst(compiler);
-        DVal left =compiler.getDval();
-        this.getRightOperand().codeGenInst(compiler);
-        GPRegister right =getRightOperand().getRegistreUtil();
-        compiler.addInstruction(new ADD(left,right));
+        // a - b
+        this.getLeftOperand().codeGenOPLeft(compiler);
+        GPRegister subRight= this.getLeftOperand().getRegistreUtil();
+        this.getRightOperand().codeGenOPRight(compiler);
+        DVal subLeft =compiler.getDval();
+        compiler.addInstruction(new SUB(subLeft,subRight));
+        // a <- a - b
+        this.setRegistreUtil(subRight);
+        compiler.setDVal(subRight);
 
+    }
+    @Override
+    protected void codeGenOPRight(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+        if(this.getUtilisation()){
+            compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+        }
+    }
+
+    @Override
+    protected void codeGenOPLeft(DecacCompiler compiler){
+        this.codeGenInst(compiler);
     }
     
 }

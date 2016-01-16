@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
@@ -32,9 +33,8 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         getRightOperand().codeGenInst(compiler);
-        getRightOperand().setRegistreUtilise(compiler);
-        compiler.addInstruction(new STORE(getRightOperand().getRegistreUtilise(),
-                getLeftOperand().getNonTypeDefinition().getOperand()));
+        getLeftOperand().codeGenInst(compiler);
+        compiler.addInstruction(new STORE(getRightOperand().getRegistreUtil(),getLeftOperand().getNonTypeDefinition().getOperand()));
         compiler.getTableRegistre().resetTableRegistre();
     }
 

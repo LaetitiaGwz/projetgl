@@ -1,6 +1,7 @@
 package fr.ensimag.ima.pseudocode.multipleinstructions;
 
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.WNL;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
 /**
@@ -11,6 +12,7 @@ import fr.ensimag.ima.pseudocode.instructions.WSTR;
  */
 public class ErrorInstruction extends InstructionList {
     public ErrorInstruction(String errorMsg) {
+        addInstruction(new WNL());
         addInstruction(new WSTR(errorMsg));
         addInstruction(new ERROR());
     }

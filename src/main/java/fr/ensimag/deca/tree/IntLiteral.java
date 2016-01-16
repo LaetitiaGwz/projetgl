@@ -58,13 +58,20 @@ public class IntLiteral extends AbstractExpr {
         int i=compiler.getTableRegistre().getLastregistre();
         compiler.getTableRegistre().setEtatRegistreTrue(i);
         GPRegister target= Register.getR(i);
-        compiler.setDVal(target);
+        this.setRegistreUtil(target);
         compiler.addInstruction(new LOAD(new ImmediateInteger(this.getValue()),target));
+    }
 
+    @Override
+    protected void codeGenOPLeft(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+        compiler.setDVal(this.getRegistreUtil());
+        this.setUtilisation();
+    }
 
-
-
-
+    @Override
+    protected void codeGenOPRight(DecacCompiler compiler){
+        compiler.setDVal(new ImmediateInteger(this.getValue()));
     }
 
     @Override
