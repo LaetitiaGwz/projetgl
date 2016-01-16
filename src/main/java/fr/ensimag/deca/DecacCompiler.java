@@ -52,7 +52,7 @@ public class DecacCompiler {
     private MemoryMap memoryMap;
 
     /**
-	 * table des registres
+	 * table des registres et données utiles
      */
     private DVal dVal ;
     public DVal getDval(){
@@ -91,6 +91,33 @@ public class DecacCompiler {
     public Label getLabel(){
         return this.label;
     }
+    private int nbIf;// pour gerer les labels
+    public void initializeIf(){
+        this.nbIf=0;
+    }
+    public void incrementeIf(){
+        this.nbIf++;
+    }
+    public int getIf(){
+        return this.nbIf;
+    }
+    private int nbWhile;
+    public void initializeWhile(){
+        this.nbWhile=0;
+    }
+    public void incrementeWhile(){
+        this.nbWhile++;
+    }
+    public int getWhile(){
+        return this.nbWhile;
+    }
+
+    public void initialize(){
+        this.initializeGB();
+        this.initializeIf();
+        this.initializeWhile();
+    }
+
     /**
      * Portable newline character.
      */

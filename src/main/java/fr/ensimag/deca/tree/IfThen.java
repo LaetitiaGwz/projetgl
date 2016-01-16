@@ -7,6 +7,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.Label;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -45,7 +47,11 @@ public class IfThen extends AbstractIfThen {
     }
     @Override
     protected void codeGenIfThen(DecacCompiler compiler){
+        Label If= new Label("ifthen"+compiler.getIf());
+        compiler.incrementeIf();
         getCondition().codeGenInst(compiler);
+        getInstructions().codeGenListInst(compiler);
+        compiler.setLabel(If);
 
     }
 
