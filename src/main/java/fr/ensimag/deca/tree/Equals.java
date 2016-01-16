@@ -23,7 +23,6 @@ public class Equals extends AbstractOpExactCmp {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        this.codeGenCMPBase(compiler);
         compiler.addInstruction(new BNE(compiler.getLabel()));
 
 
