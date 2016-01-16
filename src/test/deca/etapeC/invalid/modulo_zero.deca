@@ -1,0 +1,10 @@
+// Description:
+//   Test du reste par 0
+//
+// Resultats:
+//  ima_output: overflow
+//
+
+{
+    int a = 214 % 0;
+}

@@ -7,6 +7,6 @@
 
 {
     float a = 23.4;
-    float b = 0f;
+    float b = 0.0;
     a = a/b;
 }
