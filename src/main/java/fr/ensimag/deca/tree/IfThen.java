@@ -49,9 +49,10 @@ public class IfThen extends AbstractIfThen {
     protected void codeGenIfThen(DecacCompiler compiler){
         Label If= new Label("ifthen"+compiler.getIf());
         compiler.incrementeIf();
+        compiler.setLabel(If);
         getCondition().codeGenInst(compiler);
         getInstructions().codeGenListInst(compiler);
-        compiler.setLabel(If);
+        compiler.addLabel(If);
 
     }
 
