@@ -118,6 +118,26 @@ public class Test_Math_deca{
                         
 		}
             System.out.println("fin du test de sin. Erreur rencontré : " + nbErreur + " sur " +nb+ "tests.\n");
+            
+            
+            System.out.println("test de arcsin en dse :\n");
+            for(float x = -1.F ; x < 1.F ; x = x + (float) Math.pow(2,-5)){
+			diffRelative = Math.abs(((float)Math.asin(x) - Math_deca.asin(x))/(float)Math.asin(x));
+			diff =Math.abs(((float)Math.asin(x) - Math_deca.asin(x)));
+			nb ++ ;
+			//if ( diffRelative >= Math.pow(10,-3)) {
+			if ( diff > Math_deca.ulp((float)Math.asin(x))){
+				 System.out.println("Erreur pour x="+x);
+				 System.out.println("Math_deca.arcsin : "+Math_deca.asin(x));
+				 System.out.println("Math.arcsin : "+Math.asin(x));
+				 System.out.println("différence : " + diff/Math_deca.ulp((float)Math.asin(x)));
+				 System.out.println();
+				nbErreur ++;
+			}
+                        
+		}
+            System.out.println("fin du test de arcsin. Erreur rencontré : " + nbErreur + " sur " +nb+ "tests.\n");
+            
 	}
    
         
