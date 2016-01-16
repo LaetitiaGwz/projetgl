@@ -33,9 +33,15 @@ public class Divide extends AbstractOpArith {
         GPRegister divRight= this.getLeftOperand().getRegistreUtil();
         this.getRightOperand().codeGenOPRight(compiler);
         DVal divLeft =compiler.getDval();
-        compiler.addInstruction(new QUO(divLeft,divRight));
-        compiler.addInstruction(new BOV(new Label("overflow_error"))); // Vérification overflow
-        // a <- a/ b
+        if(this.getType().isFloat()) {
+            // Instruction DIV pour les flottants
+            compiler.addInstruction(new DIV(divLeft,divRight));
+        }else{
+            // Instruction QUO pour les entiers
+            compiler.addInstruction(new QUO(divLeft, divRight));
+        }
+        compiler.addInstruction(new BOV(new Label("overflow_error")));
+        // a <- a/b
         this.setRegistreUtil(divRight);
         compiler.setDVal(divRight);
     }

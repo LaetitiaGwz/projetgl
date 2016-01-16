@@ -6,6 +6,7 @@ import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.BGE;
+import fr.ensimag.ima.pseudocode.instructions.BLT;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 /**
@@ -28,5 +29,10 @@ public class Lower extends AbstractOpIneq {
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
         compiler.addInstruction(new BGE(compiler.getLabel()));
+    }
+
+    @Override
+    protected void codeGenNot(DecacCompiler compiler){
+        compiler.addInstruction(new BLT(compiler.getLabel()));
     }
 }

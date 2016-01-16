@@ -1,0 +1,11 @@
+// Description:
+//   Test d'un overflow de flottant
+//
+// Resultats:
+//  ima_output: overflow
+//
+
+{
+    float a = 3.2 * 10000000000000000000000000000000000000.0;
+    a = a*a*a*a*a;
+}

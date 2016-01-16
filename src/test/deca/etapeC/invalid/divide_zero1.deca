@@ -9,6 +9,6 @@
     int a = 1;
     int b = 5;
     int c = 2;
-    int d = 5;
+    int d = 7;
     c = a/(b+c-d);
 }

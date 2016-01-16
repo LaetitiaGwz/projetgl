@@ -132,6 +132,9 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenConv(DecacCompiler compiler){
 
     }
+    protected void codeGenNot(DecacCompiler compiler){
+
+    }
 
 
     @Override

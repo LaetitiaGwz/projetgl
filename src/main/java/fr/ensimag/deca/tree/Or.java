@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
+
 /**
  *
  * @author gl41
@@ -15,6 +17,12 @@ public class Or extends AbstractOpBool {
     @Override
     protected String getOperatorName() {
         return "||";
+    }
+
+    @Override
+    protected void codeGenBool(DecacCompiler compiler){
+        AbstractExpr byPass= new Not(new And(new Not(getLeftOperand()),new Not(getRightOperand())));
+        byPass.codeGenInst(compiler);
     }
 
 
