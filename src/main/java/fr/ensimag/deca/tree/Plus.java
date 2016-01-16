@@ -32,7 +32,9 @@ public class Plus extends AbstractOpArith {
         this.getRightOperand().codeGenOPRight(compiler);
         DVal addLeft =compiler.getDval();
         compiler.addInstruction(new ADD(addLeft,addRight));
-        compiler.addInstruction(new BOV(new Label("overflow_error"))); // Vérification des overflow
+        // Vérification des overflow pour les flottants
+        if(this.getType().isFloat())
+            compiler.addInstruction(new BOV(new Label("overflow_error")));
         // a <- a + b
         this.setRegistreUtil(addRight);
         compiler.setDVal(addRight);

@@ -5,10 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.FloatType;
 import fr.ensimag.deca.context.IntType;
 import fr.ensimag.deca.tools.SymbolTable;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
@@ -34,6 +31,8 @@ public class Multiply extends AbstractOpArith {
         this.getRightOperand().codeGenOPRight(compiler);
         DVal mulLeft =compiler.getDval();
         compiler.addInstruction(new MUL(mulLeft,mulRight));
+        if(this.getType().isFloat())
+            compiler.addInstruction(new BOV(new Label("overflow_error")));
         // a <- a * b
         //on libère le registre de b
         this.setRegistreUtil(mulRight);
