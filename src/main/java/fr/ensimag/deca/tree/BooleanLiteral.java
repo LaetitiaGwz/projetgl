@@ -67,4 +67,9 @@ public class BooleanLiteral extends AbstractExpr {
         compiler.addInstruction(new LOAD(new ImmediateInteger(convBool), target));
         boolean a = true,b =false;
     }
+
+    @Override
+    protected void codeGenNot(DecacCompiler compiler){
+        this.value=!this.getValue();
+    }
 }

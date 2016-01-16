@@ -29,6 +29,11 @@ public class Not extends AbstractUnaryExpr {
         return type;
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler){
+            getOperand().codeGenNot(compiler);
+    }
+
 
     @Override
     protected String getOperatorName() {
