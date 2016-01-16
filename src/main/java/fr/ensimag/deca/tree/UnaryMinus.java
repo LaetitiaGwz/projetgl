@@ -10,6 +10,8 @@ import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.SUB;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 /**
  * @author gl41
@@ -54,6 +56,17 @@ public class UnaryMinus extends AbstractUnaryExpr {
         this.codeGenInst(compiler);
     }
 
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+        compiler.addInstruction(new LOAD(compiler.getDval(),Register.R1));
+        if(this.getType().isInt()){
+            compiler.addInstruction(new WINT());
+        }
+        else if(this.getType().isFloat()){
+            compiler.addInstruction(new WFLOAT());
+        }
+    }
 
     @Override
     protected String getOperatorName() {
