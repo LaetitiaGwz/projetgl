@@ -1,0 +1,13 @@
+// Description:
+//    Déclaration de booléens
+//
+// Resultats:
+//    ok
+// 
+
+{
+   boolean a;
+   boolean b = false;
+   boolean c = true,d = false;
+   boolean e,f,g;
+}

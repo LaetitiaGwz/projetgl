@@ -90,7 +90,7 @@ do
                 return_status=1
 
 
-        #########TESTS QUI COMPILENT################
+        ######### TESTS QUI COMPILENT ################
         else
                 # On rassemble les fichiers .ass dans src/test/output/
                 assembly_file=$(echo "$filename" | sed -e "s/.deca/.ass/g")
