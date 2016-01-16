@@ -1,6 +1,9 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+
 /**
  *
  * @author gl41
@@ -16,6 +19,13 @@ public class NotEquals extends AbstractOpExactCmp {
     @Override
     protected String getOperatorName() {
         return "!=";
+    }
+
+    @Override
+    protected void codeGenCMP(DecacCompiler compiler){
+        this.codeGenCMP(compiler);
+        compiler.addInstruction(new BEQ(compiler.getLabel()));
+
     }
 
 }

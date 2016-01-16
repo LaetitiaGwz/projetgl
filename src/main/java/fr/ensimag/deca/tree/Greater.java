@@ -1,6 +1,9 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.instructions.BLE;
+
 /**
  *
  * @author gl41
@@ -16,6 +19,12 @@ public class Greater extends AbstractOpIneq {
     @Override
     protected String getOperatorName() {
         return ">";
+    }
+
+    @Override
+    protected void codeGenCMP(DecacCompiler compiler){
+        this.codeGenCMPBase(compiler);
+        compiler.addInstruction(new BLE(compiler.getLabel()));
     }
 
 }

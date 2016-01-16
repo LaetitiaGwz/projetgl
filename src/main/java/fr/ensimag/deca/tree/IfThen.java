@@ -43,7 +43,10 @@ public class IfThen extends AbstractIfThen {
         instructions.verifyListInst(compiler, localEnv, currentClass, returnType);
 
     }
+    @Override
+    protected void codeGenIfThen(DecacCompiler compiler){
 
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {

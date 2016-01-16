@@ -83,6 +83,14 @@ public class DecacCompiler {
     public void initializeGB(){
         this.GB=1;
     }
+
+    private Label label;
+    public void setLabel(Label target){
+        this.label=target;
+    }
+    public Label getLabel(){
+        return this.label;
+    }
     /**
      * Portable newline character.
      */
