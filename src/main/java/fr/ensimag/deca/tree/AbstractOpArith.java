@@ -30,7 +30,6 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             compiler.addInstruction(new WINT());
         }
         else if(this.getType().isFloat()){
-            compiler.addInstruction(new LOAD(this.getRegistreUtil(),Register.R1));
             compiler.addInstruction(new WFLOAT());
         }
 
