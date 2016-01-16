@@ -58,6 +58,8 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         DVal cmpLeft = compiler.getDval();
         compiler.addInstruction(new CMP(cmpLeft,cmpRight));
         this.codeGenCMP(compiler);
+        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+        //on libère quoi qu'il arrive
     }
 
     protected void codeGenCMP(DecacCompiler compiler){// pour que chacun fasse sa suite

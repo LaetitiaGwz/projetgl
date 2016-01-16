@@ -43,7 +43,7 @@ public class Minus extends AbstractOpArith {
     @Override
     protected void codeGenOPRight(DecacCompiler compiler){
         this.codeGenInst(compiler);
-        if(this.getUtilisation()){
+        if(getRightOperand().getUtilisation()){
             compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
         }
     }

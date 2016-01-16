@@ -231,7 +231,6 @@ public class Identifier extends AbstractIdentifier {
         compiler.addInstruction(new LOAD(stock,Register.getR(i)));
         this.setRegistreUtil(Register.getR(i));
         compiler.setDVal(Register.getR(i));
-        this.setUtilisation();
     }
 
     @Override

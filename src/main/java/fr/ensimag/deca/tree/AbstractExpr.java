@@ -33,6 +33,7 @@ public abstract class AbstractExpr extends AbstractInst {
     private GPRegister registreUtil;
     public void setRegistreUtil(GPRegister reg){
         this.registreUtil=reg;
+        this.setUtilisation();
     }
     public GPRegister getRegistreUtil(){
         return this.registreUtil;

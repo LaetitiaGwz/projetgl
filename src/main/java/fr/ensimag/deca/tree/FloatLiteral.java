@@ -64,8 +64,7 @@ public class FloatLiteral extends AbstractExpr {
     protected void codeGenOPLeft(DecacCompiler compiler){
         this.codeGenInst(compiler); // pour un litteral c'est pareil
         compiler.setDVal(this.getRegistreUtil());
-        this.setUtilisation();
-    }
+        }
 
     @Override
     protected void codeGenOPRight(DecacCompiler compiler){
