@@ -2,7 +2,7 @@
 //   Test d'une division par zéro de flottants
 //
 // Resultats:
-//    ima_output: DIVISION BY ZERO
+//    ima_output: overflow
 //
 
 {

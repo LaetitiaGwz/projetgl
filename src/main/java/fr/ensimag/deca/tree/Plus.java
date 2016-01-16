@@ -4,7 +4,9 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.MUL;
 
 /**
@@ -30,6 +32,7 @@ public class Plus extends AbstractOpArith {
         this.getRightOperand().codeGenOPRight(compiler);
         DVal addLeft =compiler.getDval();
         compiler.addInstruction(new ADD(addLeft,addRight));
+        compiler.addInstruction(new BOV(new Label("overflow_error"))); // Vérification des overflow
         // a <- a + b
         this.setRegistreUtil(addRight);
         compiler.setDVal(addRight);

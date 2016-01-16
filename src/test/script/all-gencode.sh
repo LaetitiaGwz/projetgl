@@ -29,7 +29,7 @@ return_status=0
 success=0
 fail=0
 
-echo -e "${WHITE}"
+echo -e "${WHITE} ------------- TESTS DE LA PARTIE B (COMPILATION SEULEMENT) ----------------------"
 
 #######################################################
 # Test des cas de la partie B sur le compilateur complet
@@ -62,6 +62,7 @@ do
         fi
 done
 
+echo -e "${WHITE} ------------- TESTS DE LA PARTIE C : COMPILATION + EXECUTION ----------------------"
 #######################################################
 # Test des cas de la partie C
 #######################################################
