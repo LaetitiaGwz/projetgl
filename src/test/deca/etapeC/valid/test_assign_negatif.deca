@@ -1,0 +1,11 @@
+// Description:
+//   Test de la bonne utilisation des registres
+//
+// Resultats:
+//  ima_output: -120
+//
+
+{
+    int a = -1;
+    print(a);
+}
