@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
@@ -14,4 +15,10 @@ public class ListIfThen extends TreeList<AbstractIfThen> {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    protected void codeGenListIfThen(DecacCompiler compiler){
+        for (AbstractIfThen i: getList()){
+            i.codeGenIfThen(compiler);
+        }
+
+    }
 }
