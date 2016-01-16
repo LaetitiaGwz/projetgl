@@ -49,13 +49,16 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         setType(t);
         return t;
     }
-        protected void codeGenCMPBase(DecacCompiler compiler){// pour l'héritage
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler){
         this.getLeftOperand().codeGenOPLeft(compiler);
         GPRegister cmpRight= getLeftOperand().getRegistreUtil();
         this.getRightOperand().codeGenOPRight(compiler);
         DVal cmpLeft = compiler.getDval();
         compiler.addInstruction(new CMP(cmpLeft,cmpRight));
-        }
+        this.codeGenCMP(compiler);
+    }
 
     protected void codeGenCMP(DecacCompiler compiler){// pour que chacun fasse sa suite
 

@@ -23,7 +23,6 @@ public class NotEquals extends AbstractOpExactCmp {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        this.codeGenCMP(compiler);
         compiler.addInstruction(new BEQ(compiler.getLabel()));
 
     }

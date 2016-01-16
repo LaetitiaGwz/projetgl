@@ -133,9 +133,6 @@ public abstract class AbstractExpr extends AbstractInst {
 
     }
 
-    protected void codeGenRead(DecacCompiler compiler){
-
-    }
 
     @Override
     protected void decompileInst(IndentPrintStream s) {

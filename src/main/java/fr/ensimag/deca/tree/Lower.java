@@ -27,7 +27,6 @@ public class Lower extends AbstractOpIneq {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        this.codeGenCMPBase(compiler);
         compiler.addInstruction(new BGE(compiler.getLabel()));
     }
 }

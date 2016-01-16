@@ -24,7 +24,6 @@ public class GreaterOrEqual extends AbstractOpIneq {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        this.codeGenCMPBase(compiler);
         compiler.addInstruction(new BLT(compiler.getLabel()));
     }
 

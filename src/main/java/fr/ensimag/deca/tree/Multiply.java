@@ -53,19 +53,7 @@ public class Multiply extends AbstractOpArith {
         this.codeGenInst(compiler);
     }
 
-    @Override
-    protected void codeGenPrint(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(this.getRegistreUtil(),Register.R1));
-        if(this.getType().isInt()){
-            compiler.addInstruction(new WINT());
-        }
-        else if(this.getType().isFloat()){
-            compiler.addInstruction(new LOAD(this.getRegistreUtil(),Register.R1));
-        }
 
-
-    }
 
 
 }

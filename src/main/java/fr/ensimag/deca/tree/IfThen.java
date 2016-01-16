@@ -45,6 +45,7 @@ public class IfThen extends AbstractIfThen {
     }
     @Override
     protected void codeGenIfThen(DecacCompiler compiler){
+        getCondition().codeGenInst(compiler);
 
     }
 

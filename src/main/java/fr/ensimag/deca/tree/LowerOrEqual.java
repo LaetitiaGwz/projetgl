@@ -23,7 +23,6 @@ public class LowerOrEqual extends AbstractOpIneq {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        this.codeGenCMPBase(compiler);
         compiler.addInstruction(new BGT(compiler.getLabel()));
     }
 
