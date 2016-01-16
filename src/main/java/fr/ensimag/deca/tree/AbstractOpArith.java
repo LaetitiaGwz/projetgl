@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 /**
@@ -30,6 +31,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         }
         else if(this.getType().isFloat()){
             compiler.addInstruction(new LOAD(this.getRegistreUtil(),Register.R1));
+            compiler.addInstruction(new WFLOAT());
         }
 
 
