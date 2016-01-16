@@ -4,6 +4,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.DIV;
 import fr.ensimag.ima.pseudocode.instructions.MUL;
 import fr.ensimag.ima.pseudocode.instructions.QUO;
@@ -32,6 +34,7 @@ public class Divide extends AbstractOpArith {
         this.getRightOperand().codeGenOPRight(compiler);
         DVal divLeft =compiler.getDval();
         compiler.addInstruction(new QUO(divLeft,divRight));
+        compiler.addInstruction(new BOV(new Label("overflow_error"))); // Vérification overflow
         // a <- a/ b
         this.setRegistreUtil(divRight);
         compiler.setDVal(divRight);

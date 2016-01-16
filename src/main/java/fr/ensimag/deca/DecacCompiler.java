@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.multipleinstructions.ErrorInstruction;
 import fr.ensimag.ima.pseudocode.multipleinstructions.InstructionList;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -54,6 +55,7 @@ public class DecacCompiler {
     /**
 	 * table des registres et données utiles
      */
+    //TODO : refactor le code ci-dessous
     private DVal dVal ;
     public DVal getDval(){
         return this.dVal;
@@ -311,6 +313,8 @@ public class DecacCompiler {
                 addComment("start main program");
                 prog.codeGenProgram(this);
                 addComment("end main program");
+                addLabel(new Label("overflow_error"));
+                addInstructionList(new ErrorInstruction("Error : overflow during arithmetic operation"));
                 LOG.debug("Generated assembly code:" + nl + program.display());
                 LOG.info("Output file assembly file is: " + destName);
 

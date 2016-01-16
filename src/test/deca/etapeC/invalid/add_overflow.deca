@@ -6,9 +6,6 @@
 //
 
 {
-    int a = 1;
-    int b = 5;
-    int c = 2;
-    int d = 5;
-    c = a/(b+c-d);
+    int a = 2147483647; // Plus grand nombre représentable sur 32 bits
+    a = a + 1;
 }

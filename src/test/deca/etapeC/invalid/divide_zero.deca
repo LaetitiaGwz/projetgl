@@ -2,7 +2,7 @@
 //   Test de la division par zéro
 //
 // Resultats:
-//  ima_output: DIVISION BY ZERO
+//  ima_output: overflow
 //
 
 {
