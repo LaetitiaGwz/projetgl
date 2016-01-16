@@ -2,9 +2,9 @@
 //   Test d'affichage
 //
 // Resultats:
-//  ima_output:  3.10000e+00
+//  ima_output:  0x856
 //
 
 {
-    print(1.1 + 2);
+    printx(2134);
 }

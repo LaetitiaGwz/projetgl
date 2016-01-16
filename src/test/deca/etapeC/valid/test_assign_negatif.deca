@@ -1,8 +1,8 @@
 // Description:
-//   Test de la bonne utilisation des registres
+//   Test d'une assignation négative
 //
 // Resultats:
-//  ima_output: -120
+//  ima_output: -1
 //
 
 {

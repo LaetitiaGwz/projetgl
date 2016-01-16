@@ -43,8 +43,7 @@ public class Modulo extends AbstractOpArith {
         this.getRightOperand().codeGenOPRight(compiler);
         DVal modLeft =compiler.getDval();
         compiler.addInstruction(new REM(modLeft,modRight));
-        if(this.getType().isFloat())
-            compiler.addInstruction(new BOV(new Label("overflow_error")));
+        compiler.addInstruction(new BOV(new Label("overflow_error")));
         // a <- a % b
         //on libère le registre de b
         this.setRegistreUtil(modRight);

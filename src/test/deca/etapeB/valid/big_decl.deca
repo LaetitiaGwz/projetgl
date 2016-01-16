@@ -1,0 +1,12 @@
+// Description:
+//   Test d'une déclaration de grande taille
+//
+// Resultats:
+//    ok
+// 
+
+{
+    int a = 4;
+    int b = 9;
+    float c = (a + b/a)*67*(b - 3/(a % 4) );
+}
