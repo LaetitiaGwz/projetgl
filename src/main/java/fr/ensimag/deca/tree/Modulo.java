@@ -37,7 +37,7 @@ public class Modulo extends AbstractOpArith {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        // a * b
+        // a % b
         this.getLeftOperand().codeGenOPLeft(compiler);
         GPRegister modRight= this.getLeftOperand().getRegistreUtil();
         this.getRightOperand().codeGenOPRight(compiler);
@@ -45,7 +45,7 @@ public class Modulo extends AbstractOpArith {
         compiler.addInstruction(new REM(modLeft,modRight));
         if(this.getType().isFloat())
             compiler.addInstruction(new BOV(new Label("overflow_error")));
-        // a <- a * b
+        // a <- a % b
         //on libère le registre de b
         this.setRegistreUtil(modRight);
         compiler.setDVal(modRight);
