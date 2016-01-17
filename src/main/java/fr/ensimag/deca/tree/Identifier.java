@@ -235,7 +235,6 @@ public class Identifier extends AbstractIdentifier {
     }
     @Override
     protected void codeGenNot(DecacCompiler compiler){
-        if(this.getType().isBoolean()){
             int i = compiler.getTableRegistre().getLastregistre();
             GPRegister target= Register.getR(i);
             compiler.getTableRegistre().setEtatRegistreTrue(i);
@@ -244,10 +243,6 @@ public class Identifier extends AbstractIdentifier {
             compiler.addInstruction(new REM(new ImmediateInteger(2),target));
             this.setRegistreUtil(target);
             compiler.setDVal(target);
-        }
-        else{
-            throw new DecacInternalError("ne peux appliquer not a un non boolean");
-        }
     }
 
     @Override
