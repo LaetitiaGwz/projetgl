@@ -158,6 +158,11 @@ public abstract class AbstractExpr extends AbstractInst {
             s.print(t);
             s.println();
         }
+        else {
+            s.print(prefix);
+            s.print("/!\\ no type");
+            s.println();
+        }
     }
 
     protected boolean subtype(EnvironmentExp env, Type parent, Type child) {

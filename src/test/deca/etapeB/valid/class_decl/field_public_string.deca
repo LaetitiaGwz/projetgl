@@ -7,10 +7,10 @@
 // Historique:
 //    cree le 01/01/2016
 
-{
-
+class test {
+	String a;
 }
 
-class {
-	public String a;
+{
+
 }

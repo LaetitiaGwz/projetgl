@@ -174,28 +174,14 @@ public class Identifier extends AbstractIdentifier {
     //TODO
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        Type t;
-        if(getName().getName().compareTo("int") == 0) {
-            t = new IntType(getName());
-        }
-        else if (getName().getName().compareTo("float") == 0) {
-            t = new FloatType(getName());
-        }
-        else if (getName().getName().compareTo("String") == 0) {
-            t = new StringType(getName());
-        }
-        else if (getName().getName().compareTo("boolean") == 0) {
-            t = new BooleanType(getName());
-        }
-        else if (getName().getName().compareTo("void") == 0) {
-            t = new VoidType(getName());
-        }
-        else {
-            throw new UnsupportedOperationException("Not implemented for variable of type " + getName().getName());
+        TypeDefinition t = compiler.getRootEnv().getTypeDef(compiler.getSymbols().create(getName().getName()));
+
+        if(t == null) {
+            throw new DecacInternalError("Type " + getName().getName() + " undefinded.");
         }
 
-        setDefinition(new TypeDefinition(t, Location.BUILTIN));
-        return t;
+        setDefinition(new TypeDefinition(t.getType(), Location.BUILTIN));
+        return t.getType();
     }
     
     
@@ -276,6 +262,9 @@ public class Identifier extends AbstractIdentifier {
             s.print("definition: ");
             s.print(d);
             s.println();
+        }
+        else {
+            s.println("/!\\No definition");
         }
     }
 

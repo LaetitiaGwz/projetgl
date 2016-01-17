@@ -1,7 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -32,29 +32,53 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        ClassDefinition superClassDef = compiler.getRootEnv().getClassDef(compiler.getSymbols().create(superClass.getName().getName()));
+
+        // Erreur si la superClass n'existe pas
+        if(superClassDef == null) {
+            throw new ContextualError("Unexistant superClass " + superClass.getName().getName(), getLocation());
+        }
+
+        //name.verifyClass();
+        //superclass.verifyClass();
+
+        ClassType classType = new ClassType(compiler.getSymbols().create(name.getName().getName()), getLocation(), superClassDef);
+        this.name.setDefinition(new ClassDefinition(classType, getLocation(), null));
+        this.name.setType(classType);
+
+        try {
+            compiler.getRootEnv().declareClass(name.getName(), name.getClassDefinition());
+        } catch (EnvironmentExp.DoubleDefException $e) {
+            throw new ContextualError("Class " + name.getName().getName() + " twice declared.", getLocation());
+        }
     }
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
     }
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
     }
 
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        throw new UnsupportedOperationException("Not yet supported");
+        name.prettyPrint(s, prefix, false);
+        superClass.prettyPrint(s, prefix, false);
+        methods.prettyPrint(s, prefix, false);
+        declFields.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not yet supported");
+        name.iter(f);
+        superClass.iter(f);
+        methods.iter(f);
+        declFields.iter(f);
     }
 
 }

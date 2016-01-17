@@ -22,11 +22,11 @@ public class EnvironmentExp {
     // d'empilement).
     
     protected EnvironmentExp parentEnvironment;
-    protected HashMap<Symbol, NonTypeDefinition> environment ;
+    protected HashMap<Symbol, Definition> environment ;
     
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment ;
-        this.environment = new HashMap<Symbol, NonTypeDefinition>();
+        this.environment = new HashMap<Symbol, Definition>();
     }
 
     public static class DoubleDefException extends Exception {
@@ -38,20 +38,46 @@ public class EnvironmentExp {
      * symbol is undefined.
      * @param key
      *          Name of the symbol
-     * @return 
+     * @return
      *          the definition of the symbol in the environment or null if 
      *          the symbol is undefined
      */
     public NonTypeDefinition get(Symbol key) {
-        NonTypeDefinition result = environment.get(key);
-        if (result != null) {
-            return result ;
+        Definition result = environment.get(key);
+        if (result != null && (result instanceof NonTypeDefinition)) {
+            return (NonTypeDefinition) result ;
         }
         else if(parentEnvironment == null) {
             return null;
         }
         else{
             return parentEnvironment.get(key);
+        }
+    }
+
+    public TypeDefinition getTypeDef(Symbol key) {
+        Definition result = environment.get(key);
+        if (result != null && (result instanceof TypeDefinition)) {
+            return (TypeDefinition) result ;
+        }
+        else if(parentEnvironment == null) {
+            return null;
+        }
+        else{
+            return parentEnvironment.getTypeDef(key);
+        }
+    }
+
+    public ClassDefinition getClassDef(Symbol key) {
+        Definition result = environment.get(key);
+        if (result != null && (result instanceof ClassDefinition)) {
+            return (ClassDefinition) result ;
+        }
+        else if(parentEnvironment == null) {
+            return null;
+        }
+        else{
+            return parentEnvironment.getClassDef(key);
         }
     }
 
@@ -72,7 +98,23 @@ public class EnvironmentExp {
      *             environment.
      */
     public void declare(Symbol name, NonTypeDefinition def) throws DoubleDefException {
-        if (this.environment.get(name) != null) {
+        if (this.get(name) != null) {
+            throw new DoubleDefException();
+        }
+        else {
+            this.environment.put(name, def);
+        }
+    }
+    public void declareClass(Symbol name, ClassDefinition def) throws DoubleDefException {
+        if (this.getClassDef(name) != null) {
+            throw new DoubleDefException();
+        }
+        else {
+            this.environment.put(name, def);
+        }
+    }
+    public void declareType(Symbol name, TypeDefinition def) throws DoubleDefException {
+        if (this.getTypeDef(name) != null) {
             throw new DoubleDefException();
         }
         else {
@@ -84,7 +126,7 @@ public class EnvironmentExp {
     public String toString() {
         String s = "Affichage de l'environnement : \n";
 
-        for (Map.Entry<Symbol, NonTypeDefinition> entry : environment.entrySet()) {
+        for (Map.Entry<Symbol, Definition> entry : environment.entrySet()) {
             s += "\nSymbol : " + entry.getKey().getName() + " Definition : " + entry.getValue();
         }
         return s;

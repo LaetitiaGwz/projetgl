@@ -2,6 +2,7 @@ package fr.ensimag.deca;
 
 import fr.ensimag.deca.codegen.GestionRegistre;
 import fr.ensimag.deca.codegen.MemoryMap;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -41,9 +42,18 @@ import org.apache.log4j.Logger;
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
 
+    public EnvironmentExp getRootEnv() {
+        return rootEnv;
+    }
+
+    public void setRootEnv(EnvironmentExp rootEnv) {
+        this.rootEnv = rootEnv;
+    }
+
+    private EnvironmentExp rootEnv;
+
     /**
      * Les symboles du programme.
-     * @author matthias
      */
     private SymbolTable symbols;
 
