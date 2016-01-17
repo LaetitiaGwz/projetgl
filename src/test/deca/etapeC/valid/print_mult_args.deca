@@ -1,10 +1,10 @@
 // Description:
-//   Test d'affichage
+//   Test d'affichage avec plusieurs arguments
 //
 // Resultats:
-//  ima_output:  123.3
+//  ima_output:  1234
 //
 
 {
-    print(1,2,3.3);
+    print(1,2,3,4);
 }

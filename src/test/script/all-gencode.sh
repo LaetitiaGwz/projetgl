@@ -89,6 +89,15 @@ do
                 echo -e "$filename"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
                 fail=$(($fail + 1))
                 return_status=1
+        elif [[ "$result_test" != "" ]]
+        then
+             # Ecriture du résultat dans un fichier .error
+                error_file=$(echo "$filename" | sed -e "s/.deca/.error/g")
+                echo "$result_test" > "$OUTPUT_DIR_ERROR"/"$error_file"
+
+                echo -e "$filename"" : ${RED} EXCEPTION FROM ANOTHER PART (CONTEXT, PARSER OR LEXER ) ${WHITE}"
+                fail=$(($fail + 1))
+                return_status=1
 
 
         ######### TESTS QUI COMPILENT ################
@@ -141,6 +150,15 @@ do
 
                 echo -e "$filename"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
                 fail=$(($fail + 1))
+        elif [[ "$result_test" != "" ]]
+        then
+             # Ecriture du résultat dans un fichier .error
+                error_file=$(echo "$filename" | sed -e "s/.deca/.error/g")
+                echo "$result_test" > "$OUTPUT_DIR_ERROR"/"$error_file"
+
+                echo -e "$filename"" : ${RED} EXCEPTION FROM ANOTHER PART ( CONTEXT, PARSER OR LEXER ) ${WHITE}"
+                fail=$(($fail + 1))
+                return_status=1
 
 
         #########TESTS QUI COMPILENT################

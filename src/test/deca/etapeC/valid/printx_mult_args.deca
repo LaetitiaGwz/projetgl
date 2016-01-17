@@ -1,10 +1,10 @@
 // Description:
-//   Test d'affichage
+//   Test d'affichage avec plusieurs arguments
 //
 // Resultats:
-//  ima_output:  0x10x20x30x4
+//  ima_output:  0x1.0acp+11555
 //
 
 {
-    print(1,2,3,4);
+    printx(2134.0,555);
 }
