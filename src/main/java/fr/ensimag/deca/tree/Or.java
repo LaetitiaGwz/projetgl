@@ -2,6 +2,8 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
 
 /**
  *
@@ -24,6 +26,5 @@ public class Or extends AbstractOpBool {
         AbstractExpr byPass= new Not(new And(new Not(getLeftOperand()),new Not(getRightOperand())));
         byPass.codeGenInst(compiler);
     }
-
 
 }

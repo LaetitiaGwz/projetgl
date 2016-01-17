@@ -142,6 +142,10 @@ public abstract class AbstractExpr extends AbstractInst {
 
     }
 
+    protected void codeGenBranch(DecacCompiler compiler, Label label){
+
+    }
+
 
     @Override
     protected void decompileInst(IndentPrintStream s) {

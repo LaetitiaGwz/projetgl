@@ -5,7 +5,9 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
@@ -65,11 +67,15 @@ public class BooleanLiteral extends AbstractExpr {
         this.setRegistreUtil(target);
         int convBool = (getValue()) ? 1 : 0; // Conversion booléen -> integer
         compiler.addInstruction(new LOAD(new ImmediateInteger(convBool), target));
-        boolean a = true,b =false;
     }
 
     @Override
     protected void codeGenNot(DecacCompiler compiler){
         this.value=!this.getValue();
+    }
+
+    @Override
+    protected void codeGenBranch(DecacCompiler compiler, Label label) {
+        compiler.addInstruction(new BEQ(label));
     }
 }

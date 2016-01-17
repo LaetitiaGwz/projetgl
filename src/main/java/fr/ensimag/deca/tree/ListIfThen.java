@@ -2,6 +2,8 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 
 /**
  *
@@ -16,8 +18,11 @@ public class ListIfThen extends TreeList<AbstractIfThen> {
     }
 
     protected void codeGenListIfThen(DecacCompiler compiler){
-        for (AbstractIfThen i: getList()){
+
+        int lastLabelNb = compiler.getIf() + getList().size() + 1;
+        for (AbstractIfThen i: getList()) {
             i.codeGenIfThen(compiler);
+            compiler.addInstruction(new BRA(new Label("fin_if" + lastLabelNb)));
         }
 
     }

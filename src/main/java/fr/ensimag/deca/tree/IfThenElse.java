@@ -50,16 +50,12 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        Label endIf= new Label("EndIf"+compiler.getIf());
-        compiler.addLabel(endIf);
-        Label endElse = new Label("EndElse"+compiler.getIf());
-        compiler.incrementeIf();
-        compiler.setLabel(endIf);
         getIfThen().codeGenListIfThen(compiler);
-        compiler.addInstruction(new BRA(endElse));
-        compiler.addLabel(endIf);
+        compiler.addLabel(new Label("if" + compiler.getIf()));
+        compiler.incrementeIf();
         getElseBranch().codeGenListInst(compiler);
-        compiler.addLabel(endElse);
+        compiler.addLabel(new Label("fin_if" + compiler.getIf()));
+        compiler.incrementeIf();
     }
 
     @Override

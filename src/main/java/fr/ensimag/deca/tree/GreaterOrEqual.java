@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BGE;
 import fr.ensimag.ima.pseudocode.instructions.BLT;
 
@@ -31,5 +32,10 @@ public class GreaterOrEqual extends AbstractOpIneq {
     @Override
     protected void codeGenNot(DecacCompiler compiler){
         compiler.addInstruction(new BGE(compiler.getLabel()));
+    }
+
+    @Override
+    protected void codeGenBranch(DecacCompiler compiler, Label label) {
+        compiler.addInstruction(new BGE(label));
     }
 }

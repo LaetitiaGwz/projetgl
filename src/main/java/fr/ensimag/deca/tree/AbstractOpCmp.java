@@ -4,6 +4,7 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 /**
@@ -66,7 +67,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     }
 
-
-
-
+    @Override
+    protected void codeGenBranch(DecacCompiler compiler, Label label) {
+    }
 }

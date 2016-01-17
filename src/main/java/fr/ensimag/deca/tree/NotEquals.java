@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
 
@@ -33,4 +34,8 @@ public class NotEquals extends AbstractOpExactCmp {
         compiler.addInstruction(new BNE(compiler.getLabel()));
     }
 
+    @Override
+    protected void codeGenBranch(DecacCompiler compiler, Label label) {
+        compiler.addInstruction(new BNE(label));
+    }
 }
