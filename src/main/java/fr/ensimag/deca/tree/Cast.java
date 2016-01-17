@@ -87,6 +87,7 @@ public class Cast extends AbstractCast {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
+        expr.codeGenInst(compiler);
         if(this.getType().isFloat()) {
             compiler.addInstruction(new FLOAT(expr.getRegistreUtil(), Register.R1));
             compiler.addInstruction(new WFLOAT());
@@ -99,7 +100,8 @@ public class Cast extends AbstractCast {
     @Override
     protected void codeGenPrintX(DecacCompiler compiler){
         Validate.isTrue(this.getType().isFloat());
-        compiler.addInstruction(new FLOAT(compiler.getDval(), Register.R1));
+        expr.codeGenInst(compiler);
+        compiler.addInstruction(new FLOAT(expr.getRegistreUtil(), Register.R1));
         compiler.addInstruction(new WFLOATX());
     }
 }
