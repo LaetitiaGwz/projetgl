@@ -102,7 +102,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
         Type condType = this.verifyExpr(compiler, localEnv, currentClass);
 
-        if(!condType.isBoolean()) {
+        if(!condType.isBoolean())   {
             throw new ContextualError("Condition must be a boolean.", getLocation());
         }
     }

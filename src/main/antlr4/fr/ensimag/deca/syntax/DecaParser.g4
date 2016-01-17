@@ -27,6 +27,7 @@ options {
     import fr.ensimag.deca.tree.*;
     import java.io.PrintStream;
     import fr.ensimag.deca.tools.SymbolTable;
+    import fr.ensimag.deca.context.ContextualError;
 }
 
 @members {
@@ -183,9 +184,9 @@ if_then_else returns[AbstractInst tree]
             list_ifthen.add(var);
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
-            IfThen var1 = new IfThen($condition.tree, $li_if.tree);
+            IfThen var1 = new IfThen($elsif_cond.tree, $elsif_li.tree);
             setLocation(var1, $elsif_cond.start);
-            list_ifthen.add(var);
+            list_ifthen.add(var1);
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
