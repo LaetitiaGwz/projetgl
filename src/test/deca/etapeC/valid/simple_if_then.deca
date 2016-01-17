@@ -9,4 +9,7 @@
     if(true){
         println("ok");
     }
+    if(false){
+        println("non");
+    }
 }
