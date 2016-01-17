@@ -178,10 +178,14 @@ if_then_else returns[AbstractInst tree]
     ListInst list_else = new ListInst();
 }
     : if1=IF OPARENT condition=expr CPARENT OBRACE li_if=list_inst CBRACE {
-            list_ifthen.add(new IfThen($condition.tree, $li_if.tree));
+            IfThen var = new IfThen($condition.tree, $li_if.tree);
+            setLocation(var, $condition.start);
+            list_ifthen.add(var);
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
-            list_ifthen.add(new IfThen($condition.tree, $li_if.tree));
+            IfThen var1 = new IfThen($condition.tree, $li_if.tree);
+            setLocation(var1, $elsif_cond.start);
+            list_ifthen.add(var);
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
@@ -492,6 +496,7 @@ list_classes returns[ListDeclClass tree]
       (c1=class_decl {
             assert($c1.tree != null);
             $tree.add($c1.tree);
+            setLocation($c1.tree, $c1.start);
         }
       )*
     ;
