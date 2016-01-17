@@ -1,0 +1,10 @@
+// Description:
+//   test de l'affichage d'une conversion implicite
+//
+// Resultats:
+//    ima_output: 27
+//
+
+{
+    print(55/2);
+}

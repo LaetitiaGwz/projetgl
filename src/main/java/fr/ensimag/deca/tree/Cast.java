@@ -5,8 +5,8 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.FLOAT;
-import fr.ensimag.ima.pseudocode.instructions.INT;
+import fr.ensimag.ima.pseudocode.instructions.*;
+import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
 
@@ -82,5 +82,26 @@ public class Cast extends AbstractCast {
     @Override
     protected void codeGenOPRight(DecacCompiler compiler) {
         this.codeGenInst(compiler);
+    }
+
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler){
+        expr.codeGenInst(compiler);
+        if(this.getType().isFloat()) {
+            compiler.addInstruction(new FLOAT(expr.getRegistreUtil(), Register.R1));
+            compiler.addInstruction(new WFLOAT());
+        }else {
+            compiler.addInstruction(new INT(expr.getRegistreUtil(), Register.R1));
+            compiler.addInstruction(new WINT());
+        }
+    }
+
+    @Override
+    protected void codeGenPrintX(DecacCompiler compiler){
+        Validate.isTrue(this.getType().isFloat());
+        expr.codeGenInst(compiler);
+        compiler.addInstruction(new FLOAT(expr.getRegistreUtil(), Register.R1));
+        compiler.addInstruction(new WFLOATX());
     }
 }
