@@ -1,23 +1,37 @@
 #! /bin/bash
 
 # Auteur : matthieu
-# Script d'automatisation des tests pour la generation de code
+# Script d'automatisation des tests pour la generation de code (compilateur complet decac)
+# Lance deux types de tests :
+# 1 - les tests valides de l'étape B qui sont seulement vérifiés pour la compilation
+# 2 - les tests de l'étape C qui sont vérifiés pour la compilation ET l'éxécution avec IMA
 
 # On se place dans le répertoire du projet (quel que soit le
 # répertoire d'où est lancé le script) :
 cd "$(dirname "$0")"/../../.. || exit 1
 
+
 PATH=./src/test/script/launchers:"$PATH"
-INVALID_DIR=src/test/deca/etapeC/invalid
-VALID_DIR=src/test/deca/etapeC/valid
-OUTPUT_DIR_VALID=src/test/output/etapeC/valid
-OUTPUT_DIR_ERROR=src/test/output/etapeC/error
-OUTPUT_DIR_INVALID=src/test/output/etapeC/invalid
+
+# Etape C : dossiers source des tests
+ETAPEC_INVALID_DIR=src/test/deca/etapeC/invalid
+ETAPEC_VALID_DIR=src/test/deca/etapeC/valid
+# Etape C : dossiers des résultats
+ETAPEC_OUTPUT_DIR_VALID=src/test/output/etapeC/valid
+ETAPEC_OUTPUT_DIR_ERROR=src/test/output/etapeC/error
+ETAPEC_OUTPUT_DIR_INVALID=src/test/output/etapeC/invalid
 
 
-ETAPEB_INVALID_DIR=src/test/deca/etapeB/invalid
+
+# Etape B : dossiers source des tests
 ETAPEB_VALID_DIR=src/test/deca/etapeB/valid
-ETAPEB_OUTPUT_DIR=src/test/output/etapeB
+# Etape B : dossiers des résultats
+ETAPEB_OUTPUT_DIR_VALID=src/test/output/etapeB/valid/
+ETAPEB_OUTPUT_DIR_ERROR=src/test/output/etapeB/error/
+
+# Création des répertoires pour stocker les résultats des tests
+mkdir -p "$ETAPEC_OUTPUT_DIR_VALID" "$ETAPEC_OUTPUT_DIR_INVALID" "$ETAPEC_OUTPUT_DIR_ERROR"
+mkdir -p "$ETAPEB_VALID_DIR"
 
 GREEN="\e[1;32m"
 WHITE="\e[1;37m"
@@ -48,7 +62,7 @@ do
 
                 # On rassemble les fichiers .ass dans src/test/output/
                 assembly_file=$(echo "$filename" | sed -e "s/.deca/.ass/")
-                assembly_dir_new="$ETAPEB_OUTPUT_DIR""/valid/""$assembly_file"
+                assembly_dir_new="$ETAPEB_OUTPUT_DIR_VALID""$assembly_file"
                 assembly_dir_old=$(echo "$cas_de_test" | sed -e "s@\.deca@\.ass@")
                 mv "$assembly_dir_old" "$assembly_dir_new"
                 success=$(($success + 1))
@@ -57,7 +71,7 @@ do
 
                 # Ecriture d'un fichier .error
                 error_file=$(echo "$filename" | sed -e "s/.deca/.error/g")
-                echo "$result_test" > "$ETAPEB_OUTPUT_DIR""/error/""$error_file"
+                echo "$result_test" > "$ETAPEB_OUTPUT_DIR_ERROR""$error_file"
                 fail=$(($fail + 1))
         fi
 done
@@ -68,11 +82,11 @@ echo -e "${WHITE} ------------- TESTS DE LA PARTIE C : COMPILATION + EXECUTION -
 #######################################################
 
 # Test des cas invalides (erreur à l'éxécution)
-for cas_de_test in "$INVALID_DIR"/*.deca
+for cas_de_test in "$ETAPEC_INVALID_DIR"/*.deca
 do
         # Récupération de la ligne ou se produit l'erreur, à partir des commentaires
         # du fichier de test
-        filename=$(echo ${cas_de_test} | sed -e "s@${INVALID_DIR}/@@g")
+        filename=$(echo ${cas_de_test} | sed -e "s@${ETAPEC_INVALID_DIR}/@@g")
         result_test=$(decac "$cas_de_test" 2>&1)
 
         ######### TESTS QUI NE COMPILENT PAS ################
@@ -84,7 +98,7 @@ do
         then
                 # Ecriture du résultat dans un fichier .error
                 error_file=$(echo "$filename" | sed -e "s/.deca/.error/g")
-                echo "$result_test" > "$OUTPUT_DIR_ERROR"/"$error_file"
+                echo "$result_test" > "$ETAPEC_OUTPUT_DIR_ERROR"/"$error_file"
 
                 echo -e "$filename"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
                 fail=$(($fail + 1))
@@ -93,7 +107,7 @@ do
         then
              # Ecriture du résultat dans un fichier .error
                 error_file=$(echo "$filename" | sed -e "s/.deca/.error/g")
-                echo "$result_test" > "$OUTPUT_DIR_ERROR"/"$error_file"
+                echo "$result_test" > "$ETAPEC_OUTPUT_DIR_ERROR"/"$error_file"
 
                 echo -e "$filename"" : ${RED} EXCEPTION FROM ANOTHER PART (CONTEXT, PARSER OR LEXER ) ${WHITE}"
                 fail=$(($fail + 1))
@@ -104,8 +118,8 @@ do
         else
                 # On rassemble les fichiers .ass dans src/test/output/
                 assembly_file=$(echo "$filename" | sed -e "s/.deca/.ass/g")
-                assembly_dir="$OUTPUT_DIR_INVALID"'/'"$assembly_file"
-                mv "$INVALID_DIR"/"$assembly_file" "$assembly_dir"
+                assembly_dir="$ETAPEC_OUTPUT_DIR_INVALID"'/'"$assembly_file"
+                mv "$ETAPEC_INVALID_DIR"/"$assembly_file" "$assembly_dir"
 
                 echo -e "$filename"
                 echo -e "Compilation : ${GREEN}  OK ${WHITE}"
@@ -132,9 +146,9 @@ done
 
 
 # Test des cas valides
-for cas_de_test in "$VALID_DIR"/*.deca
+for cas_de_test in "$ETAPEC_VALID_DIR"/*.deca
 do
-        filename=$(echo ${cas_de_test} | sed -e "s@${VALID_DIR}/@@g")
+        filename=$(echo ${cas_de_test} | sed -e "s@${ETAPEC_VALID_DIR}/@@g")
         result_test=$(decac "$cas_de_test" 2>&1)
 
         ######### TESTS QUI NE COMPILENT PAS ################
@@ -146,7 +160,7 @@ do
         then
                 # Ecriture du résultat dans un fichier .error
                 error_file=$(echo "$filename" | sed -e "s/.deca/.error/g")
-                echo "$result_test" > "$OUTPUT_DIR_ERROR"/"$error_file"
+                echo "$result_test" > "$ETAPEC_OUTPUT_DIR_ERROR"/"$error_file"
 
                 echo -e "$filename"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
                 fail=$(($fail + 1))
@@ -154,7 +168,7 @@ do
         then
              # Ecriture du résultat dans un fichier .error
                 error_file=$(echo "$filename" | sed -e "s/.deca/.error/g")
-                echo "$result_test" > "$OUTPUT_DIR_ERROR"/"$error_file"
+                echo "$result_test" > "$ETAPEC_OUTPUT_DIR_ERROR"/"$error_file"
 
                 echo -e "$filename"" : ${RED} EXCEPTION FROM ANOTHER PART ( CONTEXT, PARSER OR LEXER ) ${WHITE}"
                 fail=$(($fail + 1))
@@ -165,8 +179,8 @@ do
         else
                 # On rassemble les fichiers .ass dans src/test/output/
                 assembly_file=$(echo "$filename" | sed -e "s/.deca/.ass/g")
-                assembly_dir="$OUTPUT_DIR_VALID"'/'"$assembly_file"
-                mv "$VALID_DIR"/"$assembly_file" "$assembly_dir"
+                assembly_dir="$ETAPEC_OUTPUT_DIR_VALID"'/'"$assembly_file"
+                mv "$ETAPEC_VALID_DIR"/"$assembly_file" "$assembly_dir"
 
                 echo -e "$filename"
                 echo -e "Compilation : ${GREEN}  OK ${WHITE}"
