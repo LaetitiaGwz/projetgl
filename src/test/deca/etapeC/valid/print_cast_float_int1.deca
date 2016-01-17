@@ -2,9 +2,9 @@
 //   Cast d'une expression
 //
 // Resultats:
-//    ima_output: 33.00000e+00
+//    ima_output: 34
 //
 
 {
-    print((float) (33));
+    print((int) (33.9));
 }
