@@ -235,6 +235,16 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
+    protected void codeGenCMP(DecacCompiler compiler){
+        int i = compiler.getTableRegistre().getLastregistre();
+        GPRegister target= Register.getR(i);
+        compiler.getTableRegistre().setEtatRegistreTrue(i);
+        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),target));
+        compiler.addInstruction(new CMP(new ImmediateInteger(0),target));
+        compiler.addInstruction(new BEQ(compiler.getLabel()));
+    }
+
+    @Override
     protected void iterChildren(TreeFunction f) {
         // leaf node => nothing to do
     }

@@ -139,6 +139,15 @@ public abstract class AbstractExpr extends AbstractInst {
 
     }
 
+    protected void codeGenCMP(DecacCompiler compiler){
+        // pour les booleens
+    }
+
+    protected  void codeGenCMPOP(DecacCompiler compiler){
+        
+    }
+
+
 
     @Override
     protected void decompileInst(IndentPrintStream s) {

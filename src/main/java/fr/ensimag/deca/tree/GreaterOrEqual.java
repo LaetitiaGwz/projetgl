@@ -25,7 +25,7 @@ public class GreaterOrEqual extends AbstractOpIneq {
     }
 
     @Override
-    protected void codeGenCMP(DecacCompiler compiler){
+    protected void codeGenCMPOP(DecacCompiler compiler){
         compiler.addInstruction(new BLT(compiler.getLabel()));
     }
 

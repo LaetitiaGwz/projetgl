@@ -8,6 +8,7 @@ import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
@@ -74,5 +75,16 @@ public class BooleanLiteral extends AbstractExpr {
         this.value=!this.getValue();
     }
 
-
+    @Override
+    protected void codeGenCMP(DecacCompiler compiler){
+        int i=compiler.getTableRegistre().getLastregistre();
+        compiler.getTableRegistre().setEtatRegistreTrue(i);
+        GPRegister target= Register.getR(i);
+        compiler.addInstruction(new LOAD(new ImmediateInteger(0),target));
+        this.codeGenInst(compiler);
+        compiler.addInstruction(new CMP(this.getRegistreUtil(),target));
+        compiler.addInstruction(new BEQ(compiler.getLabel()));
+        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+        compiler.getTableRegistre().setEtatRegistreFalse(i); // on libère les deux
+    }
 }

@@ -33,7 +33,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler){
+    protected void codeGenCMP(DecacCompiler compiler){
 
     }
 

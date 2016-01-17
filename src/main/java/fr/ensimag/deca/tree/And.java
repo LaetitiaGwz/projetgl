@@ -20,9 +20,9 @@ public class And extends AbstractOpBool {
     }
 
     @Override
-    protected void codeGenBool(DecacCompiler compiler){
-        getLeftOperand().codeGenInst(compiler);
-        getRightOperand().codeGenInst(compiler);
+    protected void codeGenCMP(DecacCompiler compiler){
+        getLeftOperand().codeGenCMP(compiler);
+        getRightOperand().codeGenCMP(compiler);
     }
 
 }

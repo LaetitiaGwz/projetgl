@@ -24,7 +24,7 @@ public class Greater extends AbstractOpIneq {
     }
 
     @Override
-    protected void codeGenCMP(DecacCompiler compiler){
+    protected void codeGenCMPOP(DecacCompiler compiler){
         compiler.addInstruction(new BLE(compiler.getLabel()));
     }
 

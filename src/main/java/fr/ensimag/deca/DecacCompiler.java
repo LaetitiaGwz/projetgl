@@ -123,11 +123,22 @@ public class DecacCompiler {
     public int getWhile(){
         return this.nbWhile;
     }
+    private int nbOr;
+    public void initializeOR(){
+        this.nbOr=0;
+    }
+    public void incrementeOr(){
+        this.nbOr++;
+    }
+    public int getOr(){
+        return this.nbOr;
+    }
 
     public void initialize(){
         this.initializeGB();
         this.initializeIf();
         this.initializeWhile();
+        this.initializeOR();
     }
 
     /**
