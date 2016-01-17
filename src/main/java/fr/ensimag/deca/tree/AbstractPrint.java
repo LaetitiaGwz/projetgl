@@ -35,8 +35,8 @@ public abstract class AbstractPrint extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
 
-        if(arguments.size() != 1) {
-            throw new ContextualError("Print take only one argument.", getLocation());
+        if(arguments.size() == 0) {
+            throw new ContextualError("Print take at least one argument.", getLocation());
         }
 
         AbstractExpr firstArg = arguments.iterator().next();

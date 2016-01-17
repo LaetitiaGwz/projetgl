@@ -2,10 +2,7 @@
 //    Utilisation ud println
 //
 // Resultats:
-//    Ligne 11 : trop d'arguments
-// 
-// Historique:
-//    cree le 01/01/2016
+//    ok
 
 {
    println("hello", "my", "world");
