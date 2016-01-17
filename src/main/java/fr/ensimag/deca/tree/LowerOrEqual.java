@@ -33,8 +33,5 @@ public class LowerOrEqual extends AbstractOpIneq {
         compiler.addInstruction(new BLE(compiler.getLabel()));
     }
 
-    @Override
-    protected void codeGenBranch(DecacCompiler compiler, Label label) {
-        compiler.addInstruction(new BLE(label));
-    }
+
 }

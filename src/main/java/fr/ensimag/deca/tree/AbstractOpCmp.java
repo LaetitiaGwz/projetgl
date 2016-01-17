@@ -67,7 +67,5 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     }
 
-    @Override
-    protected void codeGenBranch(DecacCompiler compiler, Label label) {
-    }
+
 }

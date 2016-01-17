@@ -10,6 +10,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -48,13 +49,8 @@ public class IfThen extends AbstractIfThen {
     }
     @Override
     protected void codeGenIfThen(DecacCompiler compiler){
-        // label:
-        compiler.addLabel(new Label("if" + compiler.getIf()));
-        compiler.incrementeIf();
         // Calcul de la condition
         getCondition().codeGenInst(compiler);
-        // Branch on condition
-        getCondition().codeGenBranch(compiler,new Label("if" + compiler.getIf()));
         // Instructions
         getInstructions().codeGenListInst(compiler);
 

@@ -37,8 +37,5 @@ public class Lower extends AbstractOpIneq {
         compiler.addInstruction(new BLT(compiler.getLabel()));
     }
 
-    @Override
-    protected void codeGenBranch(DecacCompiler compiler, Label label) {
-        compiler.addInstruction(new BLT(label));
-    }
+
 }

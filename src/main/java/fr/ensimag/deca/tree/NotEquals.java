@@ -34,8 +34,5 @@ public class NotEquals extends AbstractOpExactCmp {
         compiler.addInstruction(new BNE(compiler.getLabel()));
     }
 
-    @Override
-    protected void codeGenBranch(DecacCompiler compiler, Label label) {
-        compiler.addInstruction(new BNE(label));
-    }
+
 }

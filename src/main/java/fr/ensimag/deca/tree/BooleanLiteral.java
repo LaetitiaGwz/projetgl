@@ -74,8 +74,5 @@ public class BooleanLiteral extends AbstractExpr {
         this.value=!this.getValue();
     }
 
-    @Override
-    protected void codeGenBranch(DecacCompiler compiler, Label label) {
-        compiler.addInstruction(new BEQ(label));
-    }
+
 }

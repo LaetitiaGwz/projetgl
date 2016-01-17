@@ -135,14 +135,7 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenOPLeft(DecacCompiler compiler){
 
     }
-    protected void codeGenConv(DecacCompiler compiler){
-
-    }
     protected void codeGenNot(DecacCompiler compiler){
-
-    }
-
-    protected void codeGenBranch(DecacCompiler compiler, Label label){
 
     }
 

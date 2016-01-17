@@ -19,10 +19,9 @@ public class ListIfThen extends TreeList<AbstractIfThen> {
 
     protected void codeGenListIfThen(DecacCompiler compiler){
 
-        int lastLabelNb = compiler.getIf() + getList().size() + 1;
         for (AbstractIfThen i: getList()) {
             i.codeGenIfThen(compiler);
-            compiler.addInstruction(new BRA(new Label("fin_if" + lastLabelNb)));
+
         }
 
     }

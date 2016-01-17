@@ -34,8 +34,4 @@ public class GreaterOrEqual extends AbstractOpIneq {
         compiler.addInstruction(new BGE(compiler.getLabel()));
     }
 
-    @Override
-    protected void codeGenBranch(DecacCompiler compiler, Label label) {
-        compiler.addInstruction(new BGE(label));
-    }
 }
