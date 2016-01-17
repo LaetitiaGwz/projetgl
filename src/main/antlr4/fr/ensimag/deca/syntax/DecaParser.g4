@@ -193,6 +193,7 @@ if_then_else returns[AbstractInst tree]
         }
       )? {
             $tree = new IfThenElse(list_ifthen, list_else);
+            setLocation($tree, $condition.start);
         }
     ;
 
