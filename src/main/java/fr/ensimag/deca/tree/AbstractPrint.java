@@ -43,7 +43,7 @@ public abstract class AbstractPrint extends AbstractInst {
         for(AbstractExpr arg : arguments.getList()){
             Type argType = arg.verifyExpr(compiler, localEnv, currentClass);
             if(!(argType.isFloat() || argType.isString() || argType.isInt())) {
-                String errorMsg = String.format("The argument number %d of function print(ln) must be a string, an int or a float. Got a",argNumber);
+                String errorMsg = String.format("The argument number %d of function print(ln) must be a string, an int or a float. Got a ",argNumber);
                 throw new ContextualError(errorMsg + argType.getName(), getLocation());
             }
             argNumber++;
