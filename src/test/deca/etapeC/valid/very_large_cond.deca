@@ -8,8 +8,5 @@
 {
     if( ( ( 23.3 < 42) && (7 > 3) && (true && false) ) || ( (7-2 == 5) && !(false && (false || true) ) )  ){
         println("ok");
-    }else{
-        println("non");
     }
-
 }

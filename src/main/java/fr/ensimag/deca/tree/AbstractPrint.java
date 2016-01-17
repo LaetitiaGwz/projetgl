@@ -36,7 +36,7 @@ public abstract class AbstractPrint extends AbstractInst {
             throws ContextualError {
 
         if(arguments.size() == 0) {
-            throw new ContextualError("Print take at least one argument.", getLocation());
+            throw new ContextualError("Print takes at least one argument.", getLocation());
         }
 
         AbstractExpr firstArg = arguments.iterator().next();
@@ -51,14 +51,14 @@ public abstract class AbstractPrint extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         for (AbstractExpr a : getArguments().getList()) {
-            if(printHex)
+            if(getPrintHex())
                 a.codeGenPrintX(compiler);
             else
                 a.codeGenPrint(compiler);
         }
     }
 
-    protected boolean getPrintHex() {
+    private boolean getPrintHex() {
         return printHex;
     }
 
