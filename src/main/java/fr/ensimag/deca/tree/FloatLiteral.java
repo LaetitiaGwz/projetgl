@@ -9,10 +9,7 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.FLOAT;
-import fr.ensimag.ima.pseudocode.instructions.INT;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -49,6 +46,13 @@ public class FloatLiteral extends AbstractExpr {
 
         compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()), Register.getR(1))); //on passe par R1
         compiler.addInstruction(new WFLOAT());
+    }
+
+    @Override
+    protected void codeGenPrintX(DecacCompiler compiler){
+
+        compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()), Register.getR(1))); //on passe par R1
+        compiler.addInstruction(new WFLOATX());
     }
 
     @Override

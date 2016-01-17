@@ -204,7 +204,10 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
         compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),Register.R1));
-        compiler.addInstruction(new WINT());
+        if(definition.getType().isInt())
+            compiler.addInstruction(new WINT());
+        else
+            compiler.addInstruction(new WFLOAT());
 
 
     }
