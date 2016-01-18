@@ -26,9 +26,6 @@
     if(e == f) {};
     if(e != f) {};
 
-    if("toto" == "titi") {};
-    if("toto" != "toto") {};
-
     //Conversion int to float
     if(a == e) {};
     if(a != e) {};
