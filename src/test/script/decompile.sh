@@ -75,7 +75,6 @@ do
 
 done
 
-return_status=0
 
 exit "$return_status"
 

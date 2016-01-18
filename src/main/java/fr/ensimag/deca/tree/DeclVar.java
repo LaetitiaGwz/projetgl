@@ -6,6 +6,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
@@ -60,8 +61,9 @@ public class DeclVar extends AbstractDeclVar {
         getVarName().codeGenInit(compiler);
         if(getInitialization().getExpression()!=null){
             getInitialization().codeGenInit(compiler);
-            compiler.addInstruction(new STORE(this.getInitialization().getExpression().getRegistreUtil(),
-                    this.getVarName().getNonTypeDefinition().getOperand()));
+            Register regLeft = (Register) this.getInitialization().getExpression().getRegistreUtil();
+            DAddr adress = this.getVarName().getNonTypeDefinition().getOperand();
+            compiler.addInstruction(new STORE(regLeft, adress));
             compiler.resetTableRegistre();
         }
     }

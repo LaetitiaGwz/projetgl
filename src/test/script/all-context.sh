@@ -78,5 +78,4 @@ done
 echo "Test réussis : $success"
 echo "Test failed : $fail"
 
-# exit ${return_status}
-exit 0
+exit ${return_status}

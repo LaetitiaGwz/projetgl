@@ -204,6 +204,5 @@ done
 echo "Test réussis : $success"
 echo "Test failed : $fail"
 
-# exit "$fail"
-exit 0
+ exit "$fail"
 

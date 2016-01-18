@@ -2,11 +2,11 @@
 //   Test de la fonction de fibonacci en itératif
 //
 // Resultats:
-//    ima_output: ok
+//    ima_output: 75025
 //
 
 {
-    int n = 50;
+    int n = 25;
     int i = 1;
     int first = 0;
     int second = 1;
@@ -17,5 +17,5 @@
         second = tmp;
         i = i + 1;
     }
-    print("Fibo(50) = ",first);
+    print(first);
 }

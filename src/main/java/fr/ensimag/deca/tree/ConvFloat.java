@@ -43,8 +43,7 @@ public class ConvFloat extends AbstractUnaryExpr {
         getOperand().codeGenOPRight(compiler);
         GPRegister target = Register.getR(compiler.getTableRegistre().getLastregistre());
         compiler.getTableRegistre().setEtatRegistreTrue(compiler.getTableRegistre().getLastregistre());
-        compiler.addInstruction(new FLOAT(compiler.getDval(),target));
-        compiler.setDVal(target);
+        compiler.addInstruction(new FLOAT(getOperand().getRegistreUtil(), target));
         this.setRegistreUtil(target);
     }
 
@@ -60,13 +59,13 @@ public class ConvFloat extends AbstractUnaryExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
-        compiler.addInstruction(new FLOAT(compiler.getDval(),Register.R1));
+        compiler.addInstruction(new FLOAT(getOperand().getRegistreUtil(), Register.R1));
         compiler.addInstruction(new WFLOAT());
     }
 
     @Override
     protected void codeGenPrintX(DecacCompiler compiler){
-        compiler.addInstruction(new FLOAT(compiler.getDval(),Register.R1));
+        compiler.addInstruction(new FLOAT(getOperand().getRegistreUtil(), Register.R1));
         compiler.addInstruction(new WFLOATX());
     }
 

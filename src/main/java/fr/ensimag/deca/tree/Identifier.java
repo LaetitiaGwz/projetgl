@@ -209,11 +209,15 @@ public class Identifier extends AbstractIdentifier {
     }
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        compiler.setDVal(this.getNonTypeDefinition().getOperand());
+        int i = compiler.getTableRegistre().getLastregistre();
+        GPRegister reg = Register.getR(i);
+        compiler.getTableRegistre().setEtatRegistreTrue(i);
+        this.setRegistreUtil(reg);
+        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(), reg));
     }
     @Override
     protected void codeGenInit(DecacCompiler compiler){
-        RegisterOffset stock = new RegisterOffset(compiler.getGB(),Register.GB);
+        RegisterOffset stock = new RegisterOffset(compiler.getGB(), Register.GB);
         this.getNonTypeDefinition().setOperand(stock);
         compiler.incrementeGB();
     }
@@ -225,12 +229,11 @@ public class Identifier extends AbstractIdentifier {
         compiler.getTableRegistre().setEtatRegistreTrue(i);
         compiler.addInstruction(new LOAD(stock,Register.getR(i)));
         this.setRegistreUtil(Register.getR(i));
-        compiler.setDVal(Register.getR(i));
     }
 
     @Override
     protected void codeGenOPRight(DecacCompiler compiler){
-        compiler.setDVal(this.getNonTypeDefinition().getOperand());
+        this.setRegistreUtil(this.getNonTypeDefinition().getOperand());
     }
     @Override
     protected void codeGenNot(DecacCompiler compiler){
@@ -241,7 +244,6 @@ public class Identifier extends AbstractIdentifier {
             compiler.addInstruction(new ADD(new ImmediateInteger(1),target));
             compiler.addInstruction(new REM(new ImmediateInteger(2),target));
             this.setRegistreUtil(target);
-            compiler.setDVal(target);
     }
 
     @Override

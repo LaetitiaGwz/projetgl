@@ -29,15 +29,14 @@ public class Minus extends AbstractOpArith {
     protected void codeGenInst(DecacCompiler compiler){
         // a - b
         this.getLeftOperand().codeGenOPLeft(compiler);
-        GPRegister subRight= this.getLeftOperand().getRegistreUtil();
+        GPRegister subRight= (GPRegister) this.getLeftOperand().getRegistreUtil();
         this.getRightOperand().codeGenOPRight(compiler);
-        DVal subLeft =compiler.getDval();
+        DVal subLeft = getRightOperand().getRegistreUtil();
         compiler.addInstruction(new SUB(subLeft,subRight));
         if(this.getType().isFloat())
             compiler.addInstruction(new BOV(new Label("overflow_error")));
         // a <- a - b
         this.setRegistreUtil(subRight);
-        compiler.setDVal(subRight);
 
     }
     @Override

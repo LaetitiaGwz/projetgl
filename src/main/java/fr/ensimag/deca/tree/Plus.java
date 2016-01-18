@@ -28,16 +28,15 @@ public class Plus extends AbstractOpArith {
     protected void codeGenInst(DecacCompiler compiler){
         // a + b
         this.getLeftOperand().codeGenOPLeft(compiler);
-        GPRegister addRight= this.getLeftOperand().getRegistreUtil();
+        GPRegister addRight= (GPRegister) this.getLeftOperand().getRegistreUtil();
         this.getRightOperand().codeGenOPRight(compiler);
-        DVal addLeft =compiler.getDval();
-        compiler.addInstruction(new ADD(addLeft,addRight));
+        DVal addLeft = this.getRightOperand().getRegistreUtil();
+        compiler.addInstruction(new ADD(addLeft, addRight));
         // Vérification des overflow pour les flottants
         if(this.getType().isFloat())
             compiler.addInstruction(new BOV(new Label("overflow_error")));
         // a <- a + b
         this.setRegistreUtil(addRight);
-        compiler.setDVal(addRight);
         }
 
     @Override

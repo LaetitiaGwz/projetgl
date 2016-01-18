@@ -72,10 +72,9 @@ public class Cast extends AbstractCast {
         compiler.getTableRegistre().setEtatRegistreTrue(compiler.getTableRegistre().getLastregistre());
         // Cast de l'expression
         if(this.getType().isFloat())
-            compiler.addInstruction(new FLOAT(compiler.getDval(),target));
+            compiler.addInstruction(new FLOAT(expr.getRegistreUtil(),target));
         else
-            compiler.addInstruction(new INT(compiler.getDval(),target));
-        compiler.setDVal(target);
+            compiler.addInstruction(new INT(expr.getRegistreUtil(),target));
         this.setRegistreUtil(target);
 
     }

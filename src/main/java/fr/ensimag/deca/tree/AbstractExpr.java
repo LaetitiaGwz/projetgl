@@ -30,12 +30,12 @@ public abstract class AbstractExpr extends AbstractInst {
     boolean isImplicit() {
         return false;
     }
-    private GPRegister registreUtil;
-    public void setRegistreUtil(GPRegister reg){
-        this.registreUtil=reg;
+    private DVal registreUtil;
+    public void setRegistreUtil(DVal dval){
+        this.registreUtil=dval;
         this.setUtilisation();
     }
-    public GPRegister getRegistreUtil(){
+    public DVal getRegistreUtil(){
         return this.registreUtil;
     }
     private boolean utilisation= false;

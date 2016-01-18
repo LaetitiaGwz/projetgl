@@ -30,9 +30,9 @@ public class Divide extends AbstractOpArith {
     protected void codeGenInst(DecacCompiler compiler){
         // a / b
         this.getLeftOperand().codeGenOPLeft(compiler);
-        GPRegister divRight= this.getLeftOperand().getRegistreUtil();
+        GPRegister divRight= (GPRegister) this.getLeftOperand().getRegistreUtil();
         this.getRightOperand().codeGenOPRight(compiler);
-        DVal divLeft =compiler.getDval();
+        DVal divLeft = this.getRightOperand().getRegistreUtil();
         if(this.getType().isFloat()) {
             // Instruction DIV pour les flottants
             compiler.addInstruction(new DIV(divLeft,divRight));
@@ -43,7 +43,6 @@ public class Divide extends AbstractOpArith {
         compiler.addInstruction(new BOV(new Label("overflow_error")));
         // a <- a/b
         this.setRegistreUtil(divRight);
-        compiler.setDVal(divRight);
     }
 
     @Override

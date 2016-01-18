@@ -67,12 +67,11 @@ public class IntLiteral extends AbstractExpr {
     @Override
     protected void codeGenOPLeft(DecacCompiler compiler){
         this.codeGenInst(compiler);
-        compiler.setDVal(this.getRegistreUtil());
-        }
+    }
 
     @Override
     protected void codeGenOPRight(DecacCompiler compiler){
-        compiler.setDVal(new ImmediateInteger(this.getValue()));
+        this.setRegistreUtil(new ImmediateInteger(this.getValue()));
     }
 
     @Override
