@@ -507,12 +507,12 @@ list_classes returns[ListDeclClass tree]
 //TODO
 class_decl returns[AbstractDeclClass tree]
     : CLASS name=ident superclass=class_extension OBRACE class_body CBRACE {
-            assert($class_body.tree != null);
+            assert($class_body.methods != null);
+            assert($class_body.fields != null);
             assert($superclass.tree != null);
             assert($name.tree != null);
-            $tree = $class_body.tree;
-            $tree.setClassName($name.tree);
-            $tree.setSuperClass($superclass.tree);
+            $tree = new DeclClass($name.tree, $superclass.tree, $class_body.fields, $class_body.methods);
+            setLocation($tree, $name.start);
         }
     ;
 
@@ -528,19 +528,17 @@ class_extension returns[AbstractIdentifier tree]
     ;
 
 //TODO
-class_body returns[AbstractDeclClass tree]
+class_body returns[ListDeclMethod methods, ListDeclFieldSet fields]
 @init {
-    ListDeclMethod methods = new ListDeclMethod();
-    ListDeclFieldSet fields = new ListDeclFieldSet();
+    $methods = new ListDeclMethod();
+    $fields = new ListDeclFieldSet();
 }
     : (m=decl_method {
         }
       | f=decl_field_set {
-            fields.add($f.tree);
+            $fields.add($f.tree);
         }
-      )*{
-        $tree = new DeclClass(fields, methods);
-      }
+      )*
     ;
 
 //TODO
