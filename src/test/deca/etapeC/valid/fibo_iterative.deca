@@ -1,0 +1,19 @@
+// Description:
+//   Test de la fonction de fibonacci en itératif
+//
+// Resultats:
+//    ima_output: ok
+//
+
+{
+    int n = 50;
+    int i = 1;
+    int first,second,tmp;
+    while(i <= n){
+        tmp = first + second;
+        first = second;
+        second = tmp;
+        i = i + 1;
+    }
+    print("Fibo(50) = ",first);
+}
