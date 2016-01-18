@@ -4,8 +4,6 @@
 // Resultats:
 //    Bad assignement
 // 
-// Historique:
-//    cree le 01/01/2016
 
 {
     int a;
