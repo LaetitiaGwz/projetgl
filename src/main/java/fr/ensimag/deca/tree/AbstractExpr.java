@@ -27,21 +27,28 @@ public abstract class AbstractExpr extends AbstractInst {
     boolean isImplicit() {
         return false;
     }
+
     private DVal dValue;
+
     public void setdValue(DVal dval){
         this.dValue =dval;
         this.setUtilisation();
     }
+
     public DVal getdValue(){
         return this.dValue;
     }
+
     private boolean utilisation= false;
+
     public void setUtilisation(){
         this.utilisation= true;
     }
+
     public boolean getUtilisation(){
         return this.utilisation;
     }
+
       /**
      * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
      */
