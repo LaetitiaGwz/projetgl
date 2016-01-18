@@ -123,6 +123,7 @@ list_inst returns[ListInst tree]
 }
     : (inst {
             $tree.add($inst.tree);
+            setLocation($inst.tree, $inst.start);
         }
       )*
     ;
