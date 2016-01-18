@@ -26,8 +26,8 @@ public class DecacMain {
             System.exit(1);
         }
         if (options.getPrintBanner()) {
-            System.err.println("Le groupe est  ProjetGL41");
-            System.exit(1);
+            System.out.println("Le groupe est  ProjetGL41");
+            System.exit(0);
         }
         if (options.getSourceFiles().isEmpty()) {
             System.err.println("Il n'y a pas de fichier source");
