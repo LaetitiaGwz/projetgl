@@ -2,10 +2,7 @@
 //    Déclaration de variables
 //
 // Resultats:
-//    ok
-// 
-// Historique:
-//    cree le 01/01/2016
+//    Line 8 : Incompatible type initialization
 
 {
    boolean a = null;

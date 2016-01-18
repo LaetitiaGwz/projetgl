@@ -1,10 +1,10 @@
 // Description:
-//    Déclaration de variables
+//    Déclaration d'un type primitif à null
 //
 // Resultats:
 //    Line 9 : Incompatible type initialization
-//
+// 
 
 {
-   String a = false;
+   int a = null;
 }

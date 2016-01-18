@@ -112,7 +112,6 @@ SEPARATEUR: (ESPACE
 /* 
  * Inclusion de fichier
 */
-// TODO : règle pour l'inlusion circulaire (apeller doIclude)
 fragment FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
 INCLUDE : '#include' (' ')* '"' FILENAME '"';
 
