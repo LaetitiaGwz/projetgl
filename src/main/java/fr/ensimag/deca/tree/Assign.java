@@ -33,7 +33,7 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        getRightOperand().codeGenInst(compiler);
+        getRightOperand().codeGenOPLeft(compiler);
         getLeftOperand().codeGenInst(compiler);
         Register regLeft = (Register) getRightOperand().getRegistreUtil();
         DAddr adress = this.getLeftOperand().getNonTypeDefinition().getOperand();
