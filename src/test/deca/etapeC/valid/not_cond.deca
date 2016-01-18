@@ -16,9 +16,9 @@
     }
 
     if(!b){
-
-    }else{
         println("non");
+    }else{
+
     }
 
 
