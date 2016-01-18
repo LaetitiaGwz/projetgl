@@ -242,6 +242,19 @@ public class Identifier extends AbstractIdentifier {
         compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),target));
         compiler.addInstruction(new CMP(new ImmediateInteger(0),target));
         compiler.addInstruction(new BEQ(compiler.getLabel()));
+        compiler.getTableRegistre().setEtatRegistreFalse(i);
+    }
+
+    @Override
+    protected void codeGenCMPNot(DecacCompiler compiler){
+        int i = compiler.getTableRegistre().getLastregistre();
+        GPRegister target= Register.getR(i);
+        compiler.getTableRegistre().setEtatRegistreTrue(i);
+        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),target));
+        compiler.addInstruction(new CMP(new ImmediateInteger(0),target));
+        compiler.addInstruction(new BNE(compiler.getLabel()));
+        compiler.getTableRegistre().setEtatRegistreFalse(i);
+
     }
 
     @Override

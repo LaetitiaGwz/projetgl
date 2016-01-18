@@ -10,9 +10,9 @@
     boolean b = false;
     boolean c = true;
     if( a || b && c ){
-        println("ok");
-    }else{
         println("non");
+    }else{
+        println("ok");
     }
 
 }

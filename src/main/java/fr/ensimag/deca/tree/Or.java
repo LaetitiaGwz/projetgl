@@ -24,14 +24,10 @@ public class Or extends AbstractOpBool {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        Label endOr = new Label("endOr"+ compiler.getOr());
-        compiler.incrementeOr();
-        getLeftOperand().codeGenCMP(compiler);
-        compiler.addInstruction(new BRA(endOr));
-        getRightOperand().codeGenCMP(compiler);
-        compiler.addLabel(endOr);
-
-        //AbstractExpr byPass= new Not(new And(new Not(getLeftOperand()),new Not(getRightOperand())));
+        AbstractExpr Left= new Not(getLeftOperand());
+        AbstractExpr Right = new Not(getLeftOperand());
+        AbstractExpr byPass= new Not(new And(Left,Right));
+        byPass.codeGenCMP(compiler);
     }
 
 }
