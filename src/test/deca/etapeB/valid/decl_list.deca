@@ -1,0 +1,15 @@
+// Description:
+//   Test des déclarations en liste
+//
+// Resultats:
+//    ok
+// 
+
+{
+    int a,b,c,d;
+    float e,f,g;
+    boolean h,i;
+
+    int j = 3,k = 5;
+    float l,m = 2.3,o = 231.3;
+}

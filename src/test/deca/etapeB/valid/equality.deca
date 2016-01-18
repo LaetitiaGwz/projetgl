@@ -17,9 +17,6 @@
     float e = 3.5;
     float f = 4.0;
 
-    String g = "ok";
-    String h = "hi !";
-
     if(a == b) {};
     if(a != b) {};
 
@@ -29,8 +26,8 @@
     if(e == f) {};
     if(e != f) {};
 
-    if(g == h) {};
-    if(g != h) {};
+    if("toto" == "titi") {};
+    if("toto" != "toto") {};
 
     //Conversion int to float
     if(a == e) {};
