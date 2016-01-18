@@ -17,10 +17,8 @@ ETAPEC_OUTPUT_DIR_INVALID=src/test/output/etapeC/invalid
 
 # Etape B : dossiers source des tests
 ETAPEB_VALID_DIR=src/test/deca/etapeB/valid
-# Etape B : dossiers des résultats
-ETAPEB_OUTPUT_DIR_VALID=src/test/output/etapeB/valid/
-ETAPEB_OUTPUT_DIR_ERROR=src/test/output/etapeB/error
 
+# Dossiers ou l'on stocke les résultats de la décompilation
 DECOMPILE_DIR=src/test/output/decompile
 DECOMPILE_DIR_ERROR=src/test/output/decompile/error
 DECOMPILE_DIR_DECA=src/test/output/decompile/deca

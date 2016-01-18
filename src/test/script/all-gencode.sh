@@ -14,24 +14,24 @@ cd "$(dirname "$0")"/../../.. || exit 1
 PATH=./src/test/script/launchers:"$PATH"
 
 # Etape C : dossiers source des tests
-ETAPEC_INVALID_DIR=src/test/deca/etapeC/invalid
-ETAPEC_VALID_DIR=src/test/deca/etapeC/valid
+ETAPEC_INVALID_DIR=src/test/deca/gencode/invalid
+ETAPEC_VALID_DIR=src/test/deca/gencode/valid
 # Etape C : dossiers des résultats
-ETAPEC_OUTPUT_DIR_VALID=src/test/output/etapeC/valid
-ETAPEC_OUTPUT_DIR_ERROR=src/test/output/etapeC/error
-ETAPEC_OUTPUT_DIR_INVALID=src/test/output/etapeC/invalid
+ETAPEC_OUTPUT_DIR_VALID=src/test/output/gencode/valid
+ETAPEC_OUTPUT_DIR_ERROR=src/test/output/gencode/error
+ETAPEC_OUTPUT_DIR_INVALID=src/test/output/gencode/invalid
 
 
 
 # Etape B : dossiers source des tests
-ETAPEB_VALID_DIR=src/test/deca/etapeB/valid
+ETAPEB_VALID_DIR=src/test/deca/context/valid
 # Etape B : dossiers des résultats
-ETAPEB_OUTPUT_DIR_VALID=src/test/output/etapeB/valid/
-ETAPEB_OUTPUT_DIR_ERROR=src/test/output/etapeB/error/
+ETAPEB_OUTPUT_DIR_VALID=src/test/output/context/valid/
+ETAPEB_OUTPUT_DIR_ERROR=src/test/output/context/error/
 
 # Création des répertoires pour stocker les résultats des tests
 mkdir -p "$ETAPEC_OUTPUT_DIR_VALID" "$ETAPEC_OUTPUT_DIR_INVALID" "$ETAPEC_OUTPUT_DIR_ERROR"
-mkdir -p "$ETAPEB_VALID_DIR"
+mkdir -p "$ETAPEB_OUTPUT_DIR_VALID" "$ETAPEB_OUTPUT_DIR_ERROR"
 
 GREEN="\e[1;32m"
 WHITE="\e[1;37m"
