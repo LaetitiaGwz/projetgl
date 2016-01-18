@@ -158,6 +158,9 @@ public abstract class AbstractExpr extends AbstractInst {
         s.print(";");
     }
 
+    protected void decompileCMP(IndentPrintStream s ){
+        decompile(s);
+    }
     @Override
     protected void prettyPrintType(PrintStream s, String prefix) {
         Type t = getType();

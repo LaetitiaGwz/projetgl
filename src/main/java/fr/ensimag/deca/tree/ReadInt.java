@@ -42,7 +42,7 @@ public class ReadInt extends AbstractReadExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("readInt()");
+        s.println("readInt();");
     }
 
     @Override

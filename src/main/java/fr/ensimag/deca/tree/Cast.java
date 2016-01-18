@@ -43,7 +43,13 @@ public class Cast extends AbstractCast {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print("(");
+        type.decompile(s);
+        s.print(") (");
+        expr.decompile(s);
+        s.println(")");
+
+
     }
 
     @Override
