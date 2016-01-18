@@ -17,10 +17,20 @@ import java.io.PrintStream;
 public class DeclClass extends AbstractDeclClass {
     private static final Logger LOG = Logger.getLogger(Class.class);
 
-    public DeclClass(ListDeclFieldSet declFields, ListDeclMethod methods) {
+    protected AbstractIdentifier name;
+    protected AbstractIdentifier superClass;
+
+    protected ListDeclFieldSet declFields;
+    protected ListDeclMethod methods;
+
+    public DeclClass(AbstractIdentifier name, AbstractIdentifier superClass, ListDeclFieldSet declFields, ListDeclMethod methods) {
+        Validate.notNull(name);
+        Validate.notNull(superClass);
         Validate.notNull(declFields);
         Validate.notNull(methods);
 
+        this.name = name;
+        this.superClass = superClass;
         this.declFields = declFields;
         this.methods = methods;
     }

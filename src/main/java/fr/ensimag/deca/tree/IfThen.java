@@ -70,7 +70,12 @@ public class IfThen extends AbstractIfThen {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print("if(");
+        getCondition().decompileCMP(s);
+        s.println("){");
+        getInstructions().decompile(s);
+        s.println("}");
+
     }
 
     @Override
