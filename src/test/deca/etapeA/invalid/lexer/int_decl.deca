@@ -1,0 +1,9 @@
+// Description:
+//   Test entier trop grand
+//
+// Resultats:
+// Ligne <8> : entier trop grand
+
+{
+    int pair = 3123432138;
+}
