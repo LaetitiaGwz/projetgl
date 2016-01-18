@@ -113,7 +113,9 @@ SEPARATEUR: (ESPACE
  * Inclusion de fichier
 */
 fragment FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
-INCLUDE : '#include' (' ')* '"' FILENAME '"';
+INCLUDE : '#include' (' ')* '"' FILENAME '"' {
+    doInclude(getText());
+};
 
 /* 
  * Identifiant
