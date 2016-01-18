@@ -8,6 +8,6 @@
 //    cree le 01/01/2016
 
 {
-   boolean a = true;
-   boolean b = !a;
+   boolean a = false;
+    a = ! a ;
 }

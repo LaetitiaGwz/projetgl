@@ -1,0 +1,11 @@
+// Description:
+//  Instruction readFloat
+//
+// Resultats:
+//    affiche le float entré
+//
+
+{
+        println("Enter an float :");
+        print(readFloat());
+}

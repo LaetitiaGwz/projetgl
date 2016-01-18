@@ -6,7 +6,7 @@
 //
 
 {
-    int pair = 3123432138;
+    int pair = 31234;
     pair = pair % 2;
     println(pair);
 }

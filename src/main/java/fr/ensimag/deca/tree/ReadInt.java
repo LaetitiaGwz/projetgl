@@ -6,6 +6,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.RINT;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 import java.io.PrintStream;
 
@@ -33,6 +34,11 @@ public class ReadInt extends AbstractReadExpr {
 
     }
 
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        this.codeGenInst(compiler);
+        compiler.addInstruction(new WINT());
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {

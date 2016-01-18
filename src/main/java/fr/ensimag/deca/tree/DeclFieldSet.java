@@ -16,23 +16,23 @@ import java.io.PrintStream;
  */
 public class DeclFieldSet extends AbstractDeclVarSet {
 
-    public AbstractIdentifier getVisibility() {
+    public Visibility getVisibility() {
         return visibility;
     }
 
-    public AbstractIdentifier getType() {
+    public AbstractIdentifier getFieldType() {
         return type;
     }
 
-    public ListDeclVar getDeclVars() {
+    public ListDeclField getDeclVars() {
         return declVars;
     }
 
-    private AbstractIdentifier visibility;
+    private Visibility visibility;
     private AbstractIdentifier type;
-    private ListDeclVar declVars;
+    private ListDeclField declVars;
 
-    public DeclFieldSet(AbstractIdentifier visibility, AbstractIdentifier type, ListDeclVar declVars) {
+    public DeclFieldSet(Visibility visibility, AbstractIdentifier type, ListDeclField declVars) {
         super();
         Validate.notNull(visibility);
         Validate.notNull(type);

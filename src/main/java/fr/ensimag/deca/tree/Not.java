@@ -29,6 +29,12 @@ public class Not extends AbstractUnaryExpr {
         return type;
     }
 
+    @Override
+    protected void codeGenCMPOP(DecacCompiler compiler){
+            getOperand().codeGenNot(compiler);
+        this.setRegistreUtil(getOperand().getRegistreUtil());
+    }
+
 
     @Override
     protected String getOperatorName() {

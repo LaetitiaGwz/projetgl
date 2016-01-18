@@ -1,0 +1,12 @@
+// Description:
+//   Cast d'une expression int -> float
+//
+// Resultats:
+//    ima_output: 5.30000e+01
+//
+
+{
+    int a = 53;
+    float b = (float) (a);
+    print(b);
+}

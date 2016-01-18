@@ -2,6 +2,8 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
 
 /**
  *
@@ -28,6 +30,14 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
         setType(leftType);
         return leftType;
+    }
+
+    @Override
+    protected void codeGenCMP(DecacCompiler compiler){
+
+    }
+
+    protected void codeGenBool(DecacCompiler compiler){
     }
 
 }

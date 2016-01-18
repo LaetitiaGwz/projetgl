@@ -8,6 +8,6 @@
 
 {
     int a;
-    String b;
-    b = b >= a;
+    boolean c;
+    c = "toto" >= a;
 }

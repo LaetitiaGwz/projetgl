@@ -7,12 +7,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -178,28 +174,14 @@ public class Identifier extends AbstractIdentifier {
     //TODO
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        Type t;
-        if(getName().getName().compareTo("int") == 0) {
-            t = new IntType(getName());
-        }
-        else if (getName().getName().compareTo("float") == 0) {
-            t = new FloatType(getName());
-        }
-        else if (getName().getName().compareTo("String") == 0) {
-            t = new StringType(getName());
-        }
-        else if (getName().getName().compareTo("boolean") == 0) {
-            t = new BooleanType(getName());
-        }
-        else if (getName().getName().compareTo("void") == 0) {
-            t = new VoidType(getName());
-        }
-        else {
-            throw new UnsupportedOperationException("Not implemented for variable of type " + getName().getName());
+        TypeDefinition t = compiler.getRootEnv().getTypeDef(compiler.getSymbols().create(getName().getName()));
+
+        if(t == null) {
+            throw new DecacInternalError("Type " + getName().getName() + " undefinded.");
         }
 
-        setDefinition(new TypeDefinition(t, Location.BUILTIN));
-        return t;
+        setDefinition(new TypeDefinition(t.getType(), Location.BUILTIN));
+        return t.getType();
     }
     
     
@@ -208,7 +190,10 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
         compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),Register.R1));
-        compiler.addInstruction(new WINT());
+        if(definition.getType().isInt())
+            compiler.addInstruction(new WINT());
+        else
+            compiler.addInstruction(new WFLOAT());
 
 
     }
@@ -231,12 +216,32 @@ public class Identifier extends AbstractIdentifier {
         compiler.addInstruction(new LOAD(stock,Register.getR(i)));
         this.setRegistreUtil(Register.getR(i));
         compiler.setDVal(Register.getR(i));
-        this.setUtilisation();
     }
 
     @Override
     protected void codeGenOPRight(DecacCompiler compiler){
         compiler.setDVal(this.getNonTypeDefinition().getOperand());
+    }
+    @Override
+    protected void codeGenNot(DecacCompiler compiler){
+            int i = compiler.getTableRegistre().getLastregistre();
+            GPRegister target= Register.getR(i);
+            compiler.getTableRegistre().setEtatRegistreTrue(i);
+            compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),target));
+            compiler.addInstruction(new ADD(new ImmediateInteger(1),target));
+            compiler.addInstruction(new REM(new ImmediateInteger(2),target));
+            this.setRegistreUtil(target);
+            compiler.setDVal(target);
+    }
+
+    @Override
+    protected void codeGenCMP(DecacCompiler compiler){
+        int i = compiler.getTableRegistre().getLastregistre();
+        GPRegister target= Register.getR(i);
+        compiler.getTableRegistre().setEtatRegistreTrue(i);
+        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),target));
+        compiler.addInstruction(new CMP(new ImmediateInteger(0),target));
+        compiler.addInstruction(new BEQ(compiler.getLabel()));
     }
 
     @Override
@@ -267,6 +272,9 @@ public class Identifier extends AbstractIdentifier {
             s.print("definition: ");
             s.print(d);
             s.println();
+        }
+        else {
+            s.println("/!\\No definition");
         }
     }
 

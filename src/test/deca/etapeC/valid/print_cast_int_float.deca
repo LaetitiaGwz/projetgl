@@ -1,0 +1,10 @@
+// Description:
+//   Cast d'une expression
+//
+// Resultats:
+//    ima_output: 3.30000e+01
+//
+
+{
+    print((float) (33));
+}

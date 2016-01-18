@@ -7,6 +7,6 @@
 
 {
     int a;
-    String b;
-    b = b <= a;
+    boolean b;
+    b = "toto" <= a;
 }

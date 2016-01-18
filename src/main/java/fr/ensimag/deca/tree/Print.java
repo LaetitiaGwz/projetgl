@@ -1,7 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.DecacCompiler;
-
 /**
  * @author gl41
  * @date 01/01/2016
@@ -14,15 +12,6 @@ public class Print extends AbstractPrint {
     public Print(boolean printHex, ListExpr arguments) {
         super(printHex, arguments);
     }
-
-    @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        for (AbstractExpr a : getArguments().getList()) {
-            a.codeGenPrint(compiler);
-        }
-    }
-
-
 
     @Override
     String getSuffix() {

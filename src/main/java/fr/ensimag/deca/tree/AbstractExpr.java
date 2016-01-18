@@ -33,6 +33,7 @@ public abstract class AbstractExpr extends AbstractInst {
     private GPRegister registreUtil;
     public void setRegistreUtil(GPRegister reg){
         this.registreUtil=reg;
+        this.setUtilisation();
     }
     public GPRegister getRegistreUtil(){
         return this.registreUtil;
@@ -101,7 +102,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
         Type condType = this.verifyExpr(compiler, localEnv, currentClass);
 
-        if(!condType.isBoolean()) {
+        if(!condType.isBoolean())   {
             throw new ContextualError("Condition must be a boolean.", getLocation());
         }
     }
@@ -114,6 +115,11 @@ public abstract class AbstractExpr extends AbstractInst {
     protected  void codeGenPrint(DecacCompiler compiler){
 
     }
+
+    protected  void codeGenPrintX(DecacCompiler compiler){
+        codeGenPrint(compiler);
+    }
+
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
@@ -129,13 +135,19 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenOPLeft(DecacCompiler compiler){
 
     }
-    protected void codeGenConv(DecacCompiler compiler){
+    protected void codeGenNot(DecacCompiler compiler){
 
     }
 
-    protected void codeGenRead(DecacCompiler compiler){
-
+    protected void codeGenCMP(DecacCompiler compiler){
+        // pour les booleens
     }
+
+    protected  void codeGenCMPOP(DecacCompiler compiler){
+        
+    }
+
+
 
     @Override
     protected void decompileInst(IndentPrintStream s) {
@@ -150,6 +162,11 @@ public abstract class AbstractExpr extends AbstractInst {
             s.print(prefix);
             s.print("type: ");
             s.print(t);
+            s.println();
+        }
+        else {
+            s.print(prefix);
+            s.print("/!\\ no type");
             s.println();
         }
     }

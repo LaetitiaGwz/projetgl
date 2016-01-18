@@ -6,5 +6,5 @@
 // 
 
 {
-    bool a;
+    boolean a;
 }

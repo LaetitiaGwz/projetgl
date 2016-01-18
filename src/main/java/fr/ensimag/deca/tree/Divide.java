@@ -4,6 +4,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.DIV;
 import fr.ensimag.ima.pseudocode.instructions.MUL;
 import fr.ensimag.ima.pseudocode.instructions.QUO;
@@ -31,8 +33,15 @@ public class Divide extends AbstractOpArith {
         GPRegister divRight= this.getLeftOperand().getRegistreUtil();
         this.getRightOperand().codeGenOPRight(compiler);
         DVal divLeft =compiler.getDval();
-        compiler.addInstruction(new QUO(divLeft,divRight));
-        // a <- a/ b
+        if(this.getType().isFloat()) {
+            // Instruction DIV pour les flottants
+            compiler.addInstruction(new DIV(divLeft,divRight));
+        }else{
+            // Instruction QUO pour les entiers
+            compiler.addInstruction(new QUO(divLeft, divRight));
+        }
+        compiler.addInstruction(new BOV(new Label("overflow_error")));
+        // a <- a/b
         this.setRegistreUtil(divRight);
         compiler.setDVal(divRight);
     }
@@ -40,7 +49,7 @@ public class Divide extends AbstractOpArith {
     @Override
     protected void codeGenOPRight(DecacCompiler compiler){
         this.codeGenInst(compiler);
-        if(this.getUtilisation()){
+        if(getRightOperand().getUtilisation()){
             compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
         }
     }

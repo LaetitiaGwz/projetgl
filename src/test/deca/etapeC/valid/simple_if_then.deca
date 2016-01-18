@@ -1,0 +1,15 @@
+// Description:
+//   Test d'un simple if
+//
+// Resultats:
+// ima_output: ok
+//
+
+{
+    if(true){
+        println("ok");
+    }
+    if(false){
+        println("non");
+    }
+}

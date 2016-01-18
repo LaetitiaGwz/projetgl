@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.CLIException;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -12,6 +13,7 @@ import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.INT;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
+import sun.tools.java.SyntaxError;
 
 import java.io.PrintStream;
 
@@ -66,8 +68,7 @@ public class IntLiteral extends AbstractExpr {
     protected void codeGenOPLeft(DecacCompiler compiler){
         this.codeGenInst(compiler);
         compiler.setDVal(this.getRegistreUtil());
-        this.setUtilisation();
-    }
+        }
 
     @Override
     protected void codeGenOPRight(DecacCompiler compiler){

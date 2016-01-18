@@ -133,6 +133,14 @@
 
           <!-- Tests pour le lexer -->
           <execution>
+            <id>basic-lex</id>
+            <configuration>
+              <executable>./src/test/script/basic-lex.sh</executable>
+            </configuration>
+            <phase>test</phase>
+            <goals><goal>exec</goal></goals>
+          </execution>
+          <execution>
             <id>all-lex</id>
             <configuration>
               <executable>./src/test/script/all-lex.sh</executable>
@@ -141,7 +149,7 @@
             <goals><goal>exec</goal></goals>
           </execution>
 
-            <!-- Tests pour le parser-->
+          <!-- Tests pour le parser-->
             <execution>
                 <id>basic-synt</id>
                 <configuration><executable>./src/test/script/basic-synt.sh</executable></configuration>
@@ -166,14 +174,29 @@
                 <phase>test</phase>
                 <goals><goal>exec</goal></goals>
             </execution>
-            <execution>
-                <id>basic-gencode</id>
-                <configuration><executable>./src/test/script/basic-gencode.sh</executable></configuration>
-                <phase>test</phase>
-                <goals><goal>exec</goal></goals>
-            </execution>
+                    <execution>
+            <id>basic-context</id>
+            <configuration><executable>./src/test/script/basic-context.sh</executable></configuration>
+            <phase>test</phase>
+            <goals><goal>exec</goal></goals>
+          </execution>
 
-            <execution>
+
+          <!-- Tests pour la génération de code -->
+          <execution>
+            <id>basic-gencode</id>
+            <configuration><executable>./src/test/script/basic-gencode.sh</executable></configuration>
+            <phase>test</phase>
+            <goals><goal>exec</goal></goals>
+          </execution>
+          <execution>
+            <id>all-gencode</id>
+            <configuration><executable>./src/test/script/all-gencode.sh</executable></configuration>
+            <phase>test</phase>
+            <goals><goal>exec</goal></goals>
+          </execution>
+
+          <execution>
             <!-- run a unit test by defining our own class with a main
                  function -->
             <!-- warning: java assertions are not enabled -->

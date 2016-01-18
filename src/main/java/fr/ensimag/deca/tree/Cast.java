@@ -3,6 +3,10 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
+import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
 
@@ -54,4 +58,50 @@ public class Cast extends AbstractCast {
         expr.prettyPrint(s, prefix, true);
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        expr.codeGenInst(compiler); // Calcul de l'expression
+        // Récupération de l'expression calculée
+        GPRegister target = Register.getR(compiler.getTableRegistre().getLastregistre());
+        compiler.getTableRegistre().setEtatRegistreTrue(compiler.getTableRegistre().getLastregistre());
+        // Cast de l'expression
+        if(this.getType().isFloat())
+            compiler.addInstruction(new FLOAT(compiler.getDval(),target));
+        else
+            compiler.addInstruction(new INT(compiler.getDval(),target));
+        compiler.setDVal(target);
+        this.setRegistreUtil(target);
+
+    }
+
+    @Override
+    protected void codeGenOPLeft(DecacCompiler compiler) {
+        this.codeGenInst(compiler);
+    }
+
+    @Override
+    protected void codeGenOPRight(DecacCompiler compiler) {
+        this.codeGenInst(compiler);
+    }
+
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler){
+        expr.codeGenInst(compiler);
+        if(this.getType().isFloat()) {
+            compiler.addInstruction(new FLOAT(expr.getRegistreUtil(), Register.R1));
+            compiler.addInstruction(new WFLOAT());
+        }else {
+            compiler.addInstruction(new INT(expr.getRegistreUtil(), Register.R1));
+            compiler.addInstruction(new WINT());
+        }
+    }
+
+    @Override
+    protected void codeGenPrintX(DecacCompiler compiler){
+        Validate.isTrue(this.getType().isFloat());
+        expr.codeGenInst(compiler);
+        compiler.addInstruction(new FLOAT(expr.getRegistreUtil(), Register.R1));
+        compiler.addInstruction(new WFLOATX());
+    }
 }

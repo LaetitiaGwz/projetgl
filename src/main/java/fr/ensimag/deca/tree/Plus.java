@@ -4,7 +4,9 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.MUL;
 
 /**
@@ -30,6 +32,9 @@ public class Plus extends AbstractOpArith {
         this.getRightOperand().codeGenOPRight(compiler);
         DVal addLeft =compiler.getDval();
         compiler.addInstruction(new ADD(addLeft,addRight));
+        // Vérification des overflow pour les flottants
+        if(this.getType().isFloat())
+            compiler.addInstruction(new BOV(new Label("overflow_error")));
         // a <- a + b
         this.setRegistreUtil(addRight);
         compiler.setDVal(addRight);
@@ -38,7 +43,7 @@ public class Plus extends AbstractOpArith {
     @Override
     protected void codeGenOPRight(DecacCompiler compiler){
         this.codeGenInst(compiler);
-        if(this.getUtilisation()){
+        if(getRightOperand().getUtilisation()){
             compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
         }
     }

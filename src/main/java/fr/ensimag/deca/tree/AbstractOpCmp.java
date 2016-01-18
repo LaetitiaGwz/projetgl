@@ -2,6 +2,10 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 /**
  *
@@ -22,24 +26,21 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
 
         if (leftType.sameType(rightType)) {
-            if(!leftType.isInt() && !rightType.isFloat() && (this instanceof AbstractOpIneq)) {
+            if (!leftType.isInt() && !rightType.isFloat() && (this instanceof AbstractOpIneq)) {
                 throw new ContextualError("Inequality on non-numbers. Left : " + leftType.getName() + " Right : " + rightType.getName(), getLocation());
             }
-        }
-        else {
+        } else {
             if (leftType.isInt() && rightType.isFloat()) {
                 // on convertit le leftoperand int -> float
                 getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
                 setLeftOperand(new ConvFloat(getLeftOperand()));
                 getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-            }
-            else if (leftType.isFloat() && rightType.isInt()) {
+            } else if (leftType.isFloat() && rightType.isInt()) {
                 // on convertit le rightoperand int -> float
                 getRightOperand().verifyExpr(compiler, localEnv, currentClass);
                 setRightOperand(new ConvFloat(getRightOperand()));
                 getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-            }
-            else {
+            } else {
                 throw new ContextualError("Comparison on variables which types are differents and non-castable. Left : " + leftType.getName() + " Right : " + rightType.getName(), getLocation());
             }
         }
@@ -48,7 +49,18 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
         setType(t);
         return t;
+    }
 
+    @Override
+    protected void codeGenCMP(DecacCompiler compiler){
+        this.getLeftOperand().codeGenOPLeft(compiler);
+        GPRegister cmpRight= getLeftOperand().getRegistreUtil();
+        this.getRightOperand().codeGenOPRight(compiler);
+        DVal cmpLeft = compiler.getDval();
+        compiler.addInstruction(new CMP(cmpLeft,cmpRight));
+        this.codeGenCMPOP(compiler);
+        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+        //on libère quoi qu'il arrive
     }
 
 

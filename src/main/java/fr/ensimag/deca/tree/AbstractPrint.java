@@ -35,23 +35,29 @@ public abstract class AbstractPrint extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
 
-        if(arguments.size() != 1) {
-            throw new ContextualError("Print take only one argument.", getLocation());
+        if(arguments.size() == 0) {
+            throw new ContextualError("Print takes at least one argument.", getLocation());
         }
 
-        AbstractExpr firstArg = arguments.iterator().next();
-
-        Type argType = firstArg.verifyExpr(compiler, localEnv, currentClass);
-
-        if(!(argType.isFloat() || argType.isString() || argType.isInt())) {
-            throw new ContextualError("The argument of function print(ln) must be a string, an int or a float. Got a " + argType.getName(), getLocation());
+        int argNumber = 1;
+        for(AbstractExpr arg : arguments.getList()){
+            Type argType = arg.verifyExpr(compiler, localEnv, currentClass);
+            if(!(argType.isFloat() || argType.isString() || argType.isInt())) {
+                String errorMsg = String.format("The argument number %d of function print(ln) must be a string, an int or a float. Got a ",argNumber);
+                throw new ContextualError(errorMsg + argType.getName(), getLocation());
+            }
+            argNumber++;
         }
+
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         for (AbstractExpr a : getArguments().getList()) {
-            a.codeGenPrint(compiler);
+            if(getPrintHex())
+                a.codeGenPrintX(compiler);
+            else
+                a.codeGenPrint(compiler);
         }
     }
 

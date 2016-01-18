@@ -7,10 +7,11 @@
 // Historique:
 //    cree le 01/01/2016
 
+class test {
+	int a;
+}
+
 {
 
 }
 
-class {
-	public int a;
-}

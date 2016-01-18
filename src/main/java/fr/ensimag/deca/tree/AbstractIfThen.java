@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.Label;
 
 /**
  * Pair (condition, instructions) representing one element of an
@@ -18,4 +19,5 @@ public abstract class AbstractIfThen extends Tree {
             EnvironmentExp localEnv, ClassDefinition currentClass, Type returnType)
             throws ContextualError;
 
+    protected abstract void codeGenIfThen(DecacCompiler compiler);
 }

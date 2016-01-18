@@ -5,10 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.FloatType;
 import fr.ensimag.deca.context.IntType;
 import fr.ensimag.deca.tools.SymbolTable;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
@@ -34,6 +31,8 @@ public class Multiply extends AbstractOpArith {
         this.getRightOperand().codeGenOPRight(compiler);
         DVal mulLeft =compiler.getDval();
         compiler.addInstruction(new MUL(mulLeft,mulRight));
+        if(this.getType().isFloat())
+            compiler.addInstruction(new BOV(new Label("overflow_error")));
         // a <- a * b
         //on libère le registre de b
         this.setRegistreUtil(mulRight);
@@ -43,7 +42,7 @@ public class Multiply extends AbstractOpArith {
     @Override
     protected void codeGenOPRight(DecacCompiler compiler){
         this.codeGenInst(compiler);
-        if(this.getUtilisation()){
+        if(getRightOperand().getUtilisation()){
             compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
         }
     }
@@ -53,19 +52,7 @@ public class Multiply extends AbstractOpArith {
         this.codeGenInst(compiler);
     }
 
-    @Override
-    protected void codeGenPrint(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(this.getRegistreUtil(),Register.R1));
-        if(this.getType().isInt()){
-            compiler.addInstruction(new WINT());
-        }
-        else if(this.getType().isFloat()){
-            compiler.addInstruction(new LOAD(this.getRegistreUtil(),Register.R1));
-        }
 
-
-    }
 
 
 }

@@ -1,0 +1,11 @@
+// Description:
+//    Déclaration de variable
+//
+// Resultats:
+//    Ligne 11 : définition double
+// 
+
+{
+    int a = 5;
+    int a = 3;
+}

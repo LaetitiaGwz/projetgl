@@ -1,0 +1,10 @@
+// Description:
+//   Cast d'une expression
+//
+// Resultats:
+//    ima_output: 33
+//
+
+{
+    print((int) (33.1));
+}

@@ -48,4 +48,5 @@ do
     fi
 done
 
-exit ${return_status}
+# exit ${return_status}
+exit 0

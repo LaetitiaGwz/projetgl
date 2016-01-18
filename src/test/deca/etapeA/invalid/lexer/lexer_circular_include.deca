@@ -1,0 +1,10 @@
+// Description:
+//    test du parser pour les identificateurs
+//    vérifie qu'aucun identificateur ne commence par un nombre
+//
+// Resultats:
+// inclusion circulaire
+// Ligne <11> : <Circular include for fichier.java>
+
+#include "fichier.java"
+#include "fichier.java"

@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -7,6 +8,9 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -43,7 +47,23 @@ public class IfThen extends AbstractIfThen {
         instructions.verifyListInst(compiler, localEnv, currentClass, returnType);
 
     }
+    @Override
+    protected void codeGenIfThen(DecacCompiler compiler){
+        Label finIf = new Label("fin_if" + compiler.getIf()); // à la suite du else
+        compiler.incrementeIf(); // on s'assure qu'on en ai pas d'autre
+        // Calcul de la condition
+        Label braSuite= compiler.getLabel();
+        compiler.setLabel(finIf);
 
+        getCondition().codeGenCMP(compiler);
+
+        // Instructions
+        getInstructions().codeGenListInst(compiler);
+        compiler.setLabel(braSuite);
+        compiler.addInstruction(new BRA(braSuite));
+        compiler.addLabel(finIf);
+
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
