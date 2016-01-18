@@ -6,7 +6,7 @@
 //
 
 {
-    int n = 50;
+    int n = 25;
     int i = 1;
     int first = 0;
     int second = 1;

@@ -44,6 +44,10 @@ public class Not extends AbstractUnaryExpr {
     protected void codeGenInst(DecacCompiler compiler) {
         this.codeGenCMPOP(compiler);
     }
+    @Override
+    protected void codeGenOPLeft(DecacCompiler compiler){
+        this.codeGenCMPOP(compiler);
+    }
 
     @Override
     protected String getOperatorName() {
