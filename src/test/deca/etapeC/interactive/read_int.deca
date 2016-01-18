@@ -1,0 +1,11 @@
+// Description:
+//  Instruction readInt
+//
+// Resultats:
+//    affiche l'entier entré
+//
+
+{
+        println("Enter an integer :");
+        print(readInt());
+}

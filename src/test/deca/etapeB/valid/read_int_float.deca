@@ -1,0 +1,13 @@
+// Description:
+//  Instruction readInt
+//
+// Resultats:
+//    ok
+// 
+// Historique:
+//    cree le 01/01/2016
+
+{
+    int a = readInt();
+    float b = readFloat();
+}
