@@ -9,7 +9,6 @@
 
 {
     float a = 5.2;
-    String d = "ok";
 
-    if(a != d) {};
+    if(a != "ok") {};
 }
