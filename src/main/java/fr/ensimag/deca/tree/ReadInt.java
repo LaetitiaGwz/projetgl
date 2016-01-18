@@ -4,7 +4,6 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.RINT;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 
@@ -30,7 +29,7 @@ public class ReadInt extends AbstractReadExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         compiler.addInstruction(new RINT());
-        this.setRegistreUtil(Register.R1);
+        this.setdValue(Register.R1);
 
     }
 

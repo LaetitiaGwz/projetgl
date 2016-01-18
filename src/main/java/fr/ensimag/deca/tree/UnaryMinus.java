@@ -5,14 +5,9 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.SUB;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
+import org.apache.commons.lang.Validate;
 
 /**
  * @author gl41
@@ -41,15 +36,18 @@ public class UnaryMinus extends AbstractUnaryExpr {
         getOperand().codeGenOPRight(compiler);
         GPRegister unRight= Register.getR(compiler.getTableRegistre().getLastregistre());
         if(getType().isInt())
-            compiler.addInstruction(new LOAD(new ImmediateInteger(0),unRight));
+            compiler.addInstruction(new LOAD(new ImmediateInteger(0), unRight));
         else
-            compiler.addInstruction(new LOAD(new ImmediateFloat(0),unRight));
+            compiler.addInstruction(new LOAD(new ImmediateFloat(0), unRight));
         compiler.getTableRegistre().setEtatRegistreTrue(compiler.getTableRegistre().getLastregistre());
-        compiler.addInstruction(new SUB(compiler.getDval(),unRight));
-        this.setRegistreUtil(unRight);
+        compiler.addInstruction(new SUB(getOperand().getdValue(), unRight));
+
+        int a = 1 + (-5);
+
+        this.setdValue(unRight);
         this.setUtilisation();
-        compiler.setDVal(unRight);
     }
+
     @Override
     protected void codeGenOPRight(DecacCompiler compiler){
         this.codeGenInst(compiler);
@@ -62,14 +60,26 @@ public class UnaryMinus extends AbstractUnaryExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(compiler.getDval(),Register.R1));
+        getOperand().codeGenInst(compiler);
         if(this.getType().isInt()){
+            compiler.addInstruction(new LOAD(new ImmediateInteger(0), Register.R1));
+            compiler.addInstruction(new SUB(getOperand().getdValue(), Register.R1));
             compiler.addInstruction(new WINT());
         }
         else if(this.getType().isFloat()){
+            compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.R1));
+            compiler.addInstruction(new SUB(getOperand().getdValue(), Register.R1));
             compiler.addInstruction(new WFLOAT());
         }
+    }
+
+    @Override
+    protected void codeGenPrintX(DecacCompiler compiler) {
+        Validate.isTrue(getType().isFloat());
+        getOperand().codeGenInst(compiler);
+        compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.R1));
+        compiler.addInstruction(new SUB(getOperand().getdValue(), Register.R1));
+        compiler.addInstruction(new WFLOATX());
     }
 
     @Override

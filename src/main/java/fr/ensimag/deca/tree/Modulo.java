@@ -9,7 +9,6 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
-import fr.ensimag.ima.pseudocode.instructions.MUL;
 import fr.ensimag.ima.pseudocode.instructions.REM;
 
 /**
@@ -48,15 +47,14 @@ public class Modulo extends AbstractOpArith {
     protected void codeGenInst(DecacCompiler compiler){
         // a % b
         this.getLeftOperand().codeGenOPLeft(compiler);
-        GPRegister modRight= this.getLeftOperand().getRegistreUtil();
+        GPRegister modRight= (GPRegister) this.getLeftOperand().getdValue();
         this.getRightOperand().codeGenOPRight(compiler);
-        DVal modLeft =compiler.getDval();
+        DVal modLeft = this.getRightOperand().getdValue();
         compiler.addInstruction(new REM(modLeft,modRight));
         compiler.addInstruction(new BOV(new Label("overflow_error")));
         // a <- a % b
         //on libère le registre de b
-        this.setRegistreUtil(modRight);
-        compiler.setDVal(modRight);
+        this.setdValue(modRight);
     }
 
     @Override

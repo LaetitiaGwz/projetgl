@@ -66,13 +66,6 @@ public class DecacCompiler {
 	 * table des registres et données utiles
      */
     //TODO : refactor le code ci-dessous
-    private DVal dVal ;
-    public DVal getDval(){
-        return this.dVal;
-    }
-    public void setDVal(DVal set){
-        this.dVal=set;
-    }
     private GestionRegistre tableRegistre;
 
     public GestionRegistre getTableRegistre(){

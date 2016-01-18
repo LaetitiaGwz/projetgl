@@ -25,7 +25,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
         this.codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(this.getRegistreUtil(), Register.R1));
+        compiler.addInstruction(new LOAD(this.getdValue(), Register.R1));
         if(this.getType().isInt()){
             compiler.addInstruction(new WINT());
         }

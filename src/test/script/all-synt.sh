@@ -8,8 +8,8 @@
 cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:"$PATH"
-INVALID_DIR=src/test/deca/etapeA/invalid/parser
-VALID_DIR=src/test/deca/etapeA/valid/parser
+INVALID_DIR=src/test/deca/syntax/invalid/parser
+VALID_DIR=src/test/deca/syntax/valid/parser
 
 GREEN="\e[1;32m"
 WHITE="\e[1;37m"

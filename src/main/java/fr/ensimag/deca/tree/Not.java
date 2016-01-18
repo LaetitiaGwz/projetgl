@@ -32,7 +32,7 @@ public class Not extends AbstractUnaryExpr {
     @Override
     protected void codeGenCMPOP(DecacCompiler compiler){
             getOperand().codeGenNot(compiler);
-        this.setRegistreUtil(getOperand().getRegistreUtil());
+        this.setdValue(getOperand().getdValue());
     }
 
     @Override
@@ -42,6 +42,10 @@ public class Not extends AbstractUnaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        this.codeGenCMPOP(compiler);
+    }
+    @Override
+    protected void codeGenOPLeft(DecacCompiler compiler){
         this.codeGenCMPOP(compiler);
     }
 

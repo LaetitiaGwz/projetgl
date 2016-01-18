@@ -7,7 +7,6 @@ import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
@@ -60,19 +59,18 @@ public class FloatLiteral extends AbstractExpr {
         int i=compiler.getTableRegistre().getLastregistre();
         compiler.getTableRegistre().setEtatRegistreTrue(i);
         GPRegister target= Register.getR(i);
-        this.setRegistreUtil(target);
+        this.setdValue(target);
         compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()),target));
     }
 
     @Override
     protected void codeGenOPLeft(DecacCompiler compiler){
         this.codeGenInst(compiler); // pour un litteral c'est pareil
-        compiler.setDVal(this.getRegistreUtil());
         }
 
     @Override
     protected void codeGenOPRight(DecacCompiler compiler){
-        compiler.setDVal(new ImmediateFloat(this.getValue()));
+        this.setdValue(new ImmediateFloat(this.getValue()));
     }
 
 

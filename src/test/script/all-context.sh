@@ -8,8 +8,8 @@
 cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:"$PATH"
-INVALID_DIR=src/test/deca/etapeB/invalid
-VALID_DIR=src/test/deca/etapeB/valid
+INVALID_DIR=src/test/deca/context/invalid
+VALID_DIR=src/test/deca/context/valid
 
 GREEN="\e[1;32m"
 WHITE="\e[1;37m"
@@ -78,5 +78,4 @@ done
 echo "Test réussis : $success"
 echo "Test failed : $fail"
 
-# exit ${return_status}
-exit 0
+exit ${return_status}
