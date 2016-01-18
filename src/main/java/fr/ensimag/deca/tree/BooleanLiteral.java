@@ -91,14 +91,7 @@ public class BooleanLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenCMPNot(DecacCompiler compiler){
-        int i=compiler.getTableRegistre().getLastregistre();
-        compiler.getTableRegistre().setEtatRegistreTrue(i);
-        GPRegister target= Register.getR(i);
-        compiler.addInstruction(new LOAD(new ImmediateInteger(0),target));
-        this.codeGenInst(compiler);
-        compiler.addInstruction(new CMP(this.getRegistreUtil(),target));
-        compiler.addInstruction(new BNE(compiler.getLabel()));
-        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
-        compiler.getTableRegistre().setEtatRegistreFalse(i); // on libère les deux
+        this.codeGenNot(compiler);
+        this.codeGenCMP(compiler);
     }
 }
