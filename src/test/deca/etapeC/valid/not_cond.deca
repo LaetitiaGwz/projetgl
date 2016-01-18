@@ -7,10 +7,19 @@
 
 {
     boolean a = false;
+    boolean b = true;
+
     if( !a ){
         println("ok");
     }else{
         println("non");
     }
+
+    if(!b){
+
+    }else{
+        println("non");
+    }
+
 
 }
