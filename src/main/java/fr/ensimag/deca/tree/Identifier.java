@@ -158,7 +158,6 @@ public class Identifier extends AbstractIdentifier {
         this.name = name;
     }
 
-    //TODO
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -171,7 +170,6 @@ public class Identifier extends AbstractIdentifier {
         return t.getType();
     }
 
-    //TODO
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         TypeDefinition t = compiler.getRootEnv().getTypeDef(compiler.getSymbols().create(getName().getName()));
@@ -180,8 +178,20 @@ public class Identifier extends AbstractIdentifier {
             throw new DecacInternalError("Type " + getName().getName() + " undefinded.");
         }
 
-        setDefinition(new TypeDefinition(t.getType(), Location.BUILTIN));
+        setDefinition(t);
         return t.getType();
+    }
+
+    @Override
+    public Type verifyClass(DecacCompiler compiler) throws ContextualError {
+        ClassDefinition c = compiler.getRootEnv().getClassDef(compiler.getSymbols().create(getName().getName()));
+
+        if(c == null) {
+            throw new ContextualError("Class " + getName().getName() + " undefinded.", this.getLocation());
+        }
+
+        setDefinition(c);
+        return c.getType();
     }
     
     
@@ -286,6 +296,7 @@ public class Identifier extends AbstractIdentifier {
             s.print(d);
             s.println();
         }
+        //TODO enlever le debug
         else {
             s.println("/!\\No definition");
         }

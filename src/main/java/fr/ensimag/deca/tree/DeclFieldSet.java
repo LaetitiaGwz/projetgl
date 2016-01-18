@@ -38,7 +38,7 @@ public class DeclFieldSet extends AbstractDeclVarSet {
         Validate.notNull(type);
         Validate.notNull(declVars);
         Validate.isTrue(!declVars.isEmpty(),
-                "A list of variable declarations cannot be empty");
+                "A list of field declarations cannot be empty");
         this.visibility = visibility;
         this.type = type;
         this.declVars = declVars;

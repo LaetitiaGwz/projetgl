@@ -12,7 +12,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
  * @author gl41
  * @date 01/01/2016
  */
-public class ListDeclFieldSet extends TreeList<AbstractDeclVarSet> {
+public class ListDeclFieldSet extends TreeList<AbstractDeclFieldSet> {
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -21,7 +21,9 @@ public class ListDeclFieldSet extends TreeList<AbstractDeclVarSet> {
 
     void verifyMembers(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        for(AbstractDeclFieldSet field : getList()) {
+            field.verifyDeclFieldSet(compiler, localEnv, currentClass);
+        }
     }
 
     void verifyBody(DecacCompiler compiler, EnvironmentExp localEnv,

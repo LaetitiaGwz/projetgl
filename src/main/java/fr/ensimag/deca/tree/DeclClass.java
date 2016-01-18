@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import com.sun.tools.doclint.Env;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -16,6 +17,8 @@ import java.io.PrintStream;
  */
 public class DeclClass extends AbstractDeclClass {
     private static final Logger LOG = Logger.getLogger(Class.class);
+
+    EnvironmentExp classEnv;
 
     protected AbstractIdentifier name;
     protected AbstractIdentifier superClass;
@@ -42,31 +45,34 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
+
+        // On récupère la définition de la superClass dans ce contexte également (nécessaire pour la déclaration du type)
         ClassDefinition superClassDef = compiler.getRootEnv().getClassDef(compiler.getSymbols().create(superClass.getName().getName()));
 
-        // Erreur si la superClass n'existe pas
-        if(superClassDef == null) {
-            throw new ContextualError("Unexistant superClass " + superClass.getName().getName(), getLocation());
-        }
-
-        //name.verifyClass();
-        //superclass.verifyClass();
-
         ClassType classType = new ClassType(compiler.getSymbols().create(name.getName().getName()), getLocation(), superClassDef);
-        this.name.setDefinition(new ClassDefinition(classType, getLocation(), null));
         this.name.setType(classType);
 
+        name.setDefinition(new ClassDefinition(classType, getLocation(), superClassDef));
+
+        // On déclare la class dans l'envRoot
+        // Erreur si déjà existante
         try {
-            compiler.getRootEnv().declareClass(name.getName(), name.getClassDefinition());
+            compiler.getRootEnv().declareClass(compiler.getSymbols().create(name.getName().getName()), name.getClassDefinition());
         } catch (EnvironmentExp.DoubleDefException $e) {
             throw new ContextualError("Class " + name.getName().getName() + " twice declared.", getLocation());
         }
+
+        // On met en place les définitions
+        name.verifyClass(compiler);
+        superClass.verifyClass(compiler);
     }
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-
+        this.classEnv = new EnvironmentExp(compiler.getRootEnv());
+        methods.verifyMethodsMembers(compiler, classEnv, name.getClassDefinition());
+        declFields.verifyMembers(compiler, classEnv, name.getClassDefinition());
     }
     
     @Override

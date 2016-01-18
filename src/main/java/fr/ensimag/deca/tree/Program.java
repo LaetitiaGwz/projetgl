@@ -47,7 +47,7 @@ public class Program extends AbstractProgram {
             env.declareType(compiler.getSymbols().create("boolean"), new TypeDefinition(new BooleanType(compiler.getSymbols().create("boolean")), Location.BUILTIN));
             env.declareType(compiler.getSymbols().create("void"), new TypeDefinition(new VoidType(compiler.getSymbols().create("void")), Location.BUILTIN));
 
-            env.declareType(compiler.getSymbols().create("Object"), new ClassDefinition(new ClassType(compiler.getSymbols().create("Object"), getLocation(), null), getLocation(), null));
+            env.declareType(compiler.getSymbols().create("Object"), new ClassDefinition(new ClassType(compiler.getSymbols().create("Object"), Location.BUILTIN, null), Location.BUILTIN, null));
         }
         catch (EnvironmentExp.DoubleDefException $e) {
             throw new DecacInternalError("Double definition of builtin types.");

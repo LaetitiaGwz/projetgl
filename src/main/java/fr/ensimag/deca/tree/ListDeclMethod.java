@@ -15,9 +15,11 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
 
     public void verifyMethodsMembers(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType)
+            ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        for(AbstractDeclMethod method : getList()) {
+            method.verifyMember(compiler, localEnv, currentClass);
+        }
     }
     public void codeGenListInst(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");

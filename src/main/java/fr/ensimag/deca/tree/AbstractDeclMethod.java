@@ -23,13 +23,9 @@ public abstract class AbstractDeclMethod extends Tree {
      * @param currentClass
      *            Definition of the class containing the instruction, or null in
      *            the main program.
-     * @param returnType
-     *            Return type of the method being analyzed (may be void). void
-     *            in the main program.
      */
     protected abstract void verifyMember(DecacCompiler compiler,
-           EnvironmentExp localEnv, ClassDefinition currentClass,
-           Type returnType) throws ContextualError;
+           EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
     /**
      * Verify the method body for contextual error.
      *
@@ -52,9 +48,6 @@ public abstract class AbstractDeclMethod extends Tree {
      * Generate assembly code for the instruction.
      * 
      * @param compiler
-     * @param endLabel
-     *            label following the last generated line 
-     *            (null if absent or unknown)
      */
     protected abstract void codeGenMethod(DecacCompiler compiler);
 
