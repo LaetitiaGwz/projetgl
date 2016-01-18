@@ -96,12 +96,26 @@ public class DecacCompiler {
         this.GB=1;
     }
 
-    private Label label;
-    public void setLabel(Label target){
-        this.label=target;
-    }
     public Label getLabel(){
-        return this.label;
+        return this.getLabelFalse();
+    }
+    public void setLabel(Label target){
+        this.setLabelFalse(target);
+    }
+
+    private Label labelTrue;
+    public void setLabelTrue(Label target){
+        this.labelTrue=target;
+    }
+    public Label getLabelTrue(){
+        return this.labelTrue;
+    }
+    private Label labelFalse;
+    public void setLabelFalse(Label target){
+        this.labelFalse=target;
+    }
+    public Label getLabelFalse(){
+        return this.labelFalse;
     }
     private int nbIf;// pour gerer les labels
     public void initializeIf(){
