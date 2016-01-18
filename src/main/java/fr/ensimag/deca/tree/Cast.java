@@ -72,10 +72,10 @@ public class Cast extends AbstractCast {
         compiler.getTableRegistre().setEtatRegistreTrue(compiler.getTableRegistre().getLastregistre());
         // Cast de l'expression
         if(this.getType().isFloat())
-            compiler.addInstruction(new FLOAT(expr.getRegistreUtil(),target));
+            compiler.addInstruction(new FLOAT(expr.getdValue(),target));
         else
-            compiler.addInstruction(new INT(expr.getRegistreUtil(),target));
-        this.setRegistreUtil(target);
+            compiler.addInstruction(new INT(expr.getdValue(),target));
+        this.setdValue(target);
 
     }
 
@@ -94,10 +94,10 @@ public class Cast extends AbstractCast {
     protected void codeGenPrint(DecacCompiler compiler){
         expr.codeGenInst(compiler);
         if(this.getType().isFloat()) {
-            compiler.addInstruction(new FLOAT(expr.getRegistreUtil(), Register.R1));
+            compiler.addInstruction(new FLOAT(expr.getdValue(), Register.R1));
             compiler.addInstruction(new WFLOAT());
         }else {
-            compiler.addInstruction(new INT(expr.getRegistreUtil(), Register.R1));
+            compiler.addInstruction(new INT(expr.getdValue(), Register.R1));
             compiler.addInstruction(new WINT());
         }
     }
@@ -106,7 +106,7 @@ public class Cast extends AbstractCast {
     protected void codeGenPrintX(DecacCompiler compiler){
         Validate.isTrue(this.getType().isFloat());
         expr.codeGenInst(compiler);
-        compiler.addInstruction(new FLOAT(expr.getRegistreUtil(), Register.R1));
+        compiler.addInstruction(new FLOAT(expr.getdValue(), Register.R1));
         compiler.addInstruction(new WFLOATX());
     }
 }

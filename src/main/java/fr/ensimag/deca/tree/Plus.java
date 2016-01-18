@@ -7,7 +7,6 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
-import fr.ensimag.ima.pseudocode.instructions.MUL;
 
 /**
  * @author gl41
@@ -28,15 +27,15 @@ public class Plus extends AbstractOpArith {
     protected void codeGenInst(DecacCompiler compiler){
         // a + b
         this.getLeftOperand().codeGenOPLeft(compiler);
-        GPRegister addRight= (GPRegister) this.getLeftOperand().getRegistreUtil();
+        GPRegister addRight= (GPRegister) this.getLeftOperand().getdValue();
         this.getRightOperand().codeGenOPRight(compiler);
-        DVal addLeft = this.getRightOperand().getRegistreUtil();
+        DVal addLeft = this.getRightOperand().getdValue();
         compiler.addInstruction(new ADD(addLeft, addRight));
         // Vérification des overflow pour les flottants
         if(this.getType().isFloat())
             compiler.addInstruction(new BOV(new Label("overflow_error")));
         // a <- a + b
-        this.setRegistreUtil(addRight);
+        this.setdValue(addRight);
         }
 
     @Override

@@ -40,10 +40,10 @@ public class UnaryMinus extends AbstractUnaryExpr {
         else
             compiler.addInstruction(new LOAD(new ImmediateFloat(0), unRight));
         compiler.getTableRegistre().setEtatRegistreTrue(compiler.getTableRegistre().getLastregistre());
-        compiler.addInstruction(new SUB(getOperand().getRegistreUtil(), unRight));
+        compiler.addInstruction(new SUB(getOperand().getdValue(), unRight));
 
 
-        this.setRegistreUtil(unRight);
+        this.setdValue(unRight);
         this.setUtilisation();
     }
 
@@ -62,12 +62,12 @@ public class UnaryMinus extends AbstractUnaryExpr {
         getOperand().codeGenInst(compiler);
         if(this.getType().isInt()){
             compiler.addInstruction(new LOAD(new ImmediateInteger(0), Register.R1));
-            compiler.addInstruction(new SUB(getOperand().getRegistreUtil(), Register.R1));
+            compiler.addInstruction(new SUB(getOperand().getdValue(), Register.R1));
             compiler.addInstruction(new WINT());
         }
         else if(this.getType().isFloat()){
             compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.R1));
-            compiler.addInstruction(new SUB(getOperand().getRegistreUtil(), Register.R1));
+            compiler.addInstruction(new SUB(getOperand().getdValue(), Register.R1));
             compiler.addInstruction(new WFLOAT());
         }
     }
@@ -77,7 +77,7 @@ public class UnaryMinus extends AbstractUnaryExpr {
         Validate.isTrue(getType().isFloat());
         getOperand().codeGenInst(compiler);
         compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.R1));
-        compiler.addInstruction(new SUB(getOperand().getRegistreUtil(), Register.R1));
+        compiler.addInstruction(new SUB(getOperand().getdValue(), Register.R1));
         compiler.addInstruction(new WFLOATX());
     }
 

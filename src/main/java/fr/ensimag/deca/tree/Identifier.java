@@ -10,7 +10,6 @@ import java.io.PrintStream;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
 
 /**
  * Deca Identifier
@@ -212,7 +211,7 @@ public class Identifier extends AbstractIdentifier {
         int i = compiler.getTableRegistre().getLastregistre();
         GPRegister reg = Register.getR(i);
         compiler.getTableRegistre().setEtatRegistreTrue(i);
-        this.setRegistreUtil(reg);
+        this.setdValue(reg);
         compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(), reg));
     }
     @Override
@@ -228,12 +227,12 @@ public class Identifier extends AbstractIdentifier {
         int i=compiler.getTableRegistre().getLastregistre();
         compiler.getTableRegistre().setEtatRegistreTrue(i);
         compiler.addInstruction(new LOAD(stock,Register.getR(i)));
-        this.setRegistreUtil(Register.getR(i));
+        this.setdValue(Register.getR(i));
     }
 
     @Override
     protected void codeGenOPRight(DecacCompiler compiler){
-        this.setRegistreUtil(this.getNonTypeDefinition().getOperand());
+        this.setdValue(this.getNonTypeDefinition().getOperand());
     }
     @Override
     protected void codeGenNot(DecacCompiler compiler){
@@ -243,7 +242,7 @@ public class Identifier extends AbstractIdentifier {
             compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),target));
             compiler.addInstruction(new ADD(new ImmediateInteger(1),target));
             compiler.addInstruction(new REM(new ImmediateInteger(2),target));
-            this.setRegistreUtil(target);
+            this.setdValue(target);
     }
 
     @Override

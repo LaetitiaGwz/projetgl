@@ -5,7 +5,6 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 /**
@@ -55,9 +54,9 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
         this.getLeftOperand().codeGenOPLeft(compiler);
-        GPRegister cmpRight= (GPRegister) getLeftOperand().getRegistreUtil();
+        GPRegister cmpRight= (GPRegister) getLeftOperand().getdValue();
         this.getRightOperand().codeGenOPRight(compiler);
-        DVal cmpLeft = getRightOperand().getRegistreUtil();
+        DVal cmpLeft = getRightOperand().getdValue();
         compiler.addInstruction(new CMP(cmpLeft, cmpRight));
         this.codeGenCMPOP(compiler);
         if(getRightOperand().getUtilisation()){

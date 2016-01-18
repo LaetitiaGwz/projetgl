@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.MemoryMap;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -9,11 +8,9 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.Register;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -30,13 +27,13 @@ public abstract class AbstractExpr extends AbstractInst {
     boolean isImplicit() {
         return false;
     }
-    private DVal registreUtil;
-    public void setRegistreUtil(DVal dval){
-        this.registreUtil=dval;
+    private DVal dValue;
+    public void setdValue(DVal dval){
+        this.dValue =dval;
         this.setUtilisation();
     }
-    public DVal getRegistreUtil(){
-        return this.registreUtil;
+    public DVal getdValue(){
+        return this.dValue;
     }
     private boolean utilisation= false;
     public void setUtilisation(){
