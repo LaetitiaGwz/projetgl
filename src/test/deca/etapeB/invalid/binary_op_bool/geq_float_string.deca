@@ -7,6 +7,5 @@
 
 {
     float a;
-    String b;
-    b = b >= a;
+    a = a >= "ok"
 }

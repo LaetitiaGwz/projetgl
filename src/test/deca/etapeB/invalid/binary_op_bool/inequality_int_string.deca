@@ -9,7 +9,6 @@
 
 {
     int a = 5;
-    String d = "ok";
 
-    if(a != d) {};
+    if(a != "ok") {};
 }

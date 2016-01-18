@@ -2,10 +2,8 @@
 //    Déclaration de variables
 //
 // Resultats:
-//    ok
-// 
-// Historique:
-//    cree le 01/01/2016
+//    Line 9 : Incompatible type initialization
+//
 
 {
    float a = false;

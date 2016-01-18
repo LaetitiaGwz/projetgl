@@ -4,8 +4,6 @@
 // Resultats:
 //    Ligne 11 : impossible de déclarer une variable de type void
 // 
-// Historique:
-//    cree le 01/01/2016
 
 {
    void my_var;

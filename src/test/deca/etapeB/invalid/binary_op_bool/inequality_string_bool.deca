@@ -8,8 +8,7 @@
 //    cree le 01/01/2016
 
 {
-    String a = "ok";
     boolean d = true;
 
-    if(a != d) {};
+    if("ok" != d) {};
 }
