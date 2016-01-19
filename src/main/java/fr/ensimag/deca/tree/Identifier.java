@@ -189,7 +189,7 @@ public class Identifier extends AbstractIdentifier {
         TypeDefinition t = compiler.getRootEnv().getTypeDef(compiler.getSymbols().create(getName().getName()));
 
         if(t == null) {
-            throw new DecacInternalError("Type " + getName().getName() + " undefinded.");
+            throw new ContextualError("Type " + getName().getName() + " undefinded.", getLocation());
         }
 
         setDefinition(t);
