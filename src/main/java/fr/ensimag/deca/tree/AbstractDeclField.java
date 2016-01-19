@@ -22,6 +22,10 @@ public abstract class AbstractDeclField extends Tree {
                                           Visibility visibility, DecacCompiler compiler, EnvironmentExp localEnv,
                                           ClassDefinition currentClass) throws ContextualError;
 
+    protected abstract void verifyDeclField(Type t, Visibility visibility, DecacCompiler compiler,
+                                   EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError;
+
     /**
      * Generates the code for the declaration
      * @param compiler

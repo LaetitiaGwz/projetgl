@@ -20,9 +20,16 @@ import org.apache.commons.lang.Validate;
 public class Identifier extends AbstractIdentifier {
 
     private int nbMethod=0;
+    private int nbGB;
+    @Override
+    public int getNbGB(){
+        return this.nbGB;
+    }
+    @Override
     public int getNbMethod(){
         return this.nbMethod;
     }
+    @Override
     public void setNbMethod(int enplus){
         this.nbMethod=enplus;
     }
@@ -230,6 +237,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenInitClass(DecacCompiler compiler, int nbMethode){
+        this.nbGB=compiler.getRegManager().getGB();
         this.codeGenInit(compiler);
         this.setNbMethod(nbMethode);
 

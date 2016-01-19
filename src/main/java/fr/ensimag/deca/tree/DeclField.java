@@ -54,6 +54,12 @@ public class DeclField extends AbstractDeclField {
             throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
+    @Override
+    protected void verifyDeclField(Type t, Visibility visibility, DecacCompiler compiler,
+                                            EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError{
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
     @Override
     protected void codeGenDecl(DecacCompiler compiler) {

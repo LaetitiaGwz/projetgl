@@ -38,6 +38,19 @@ public class DeclParam extends AbstractDeclField {
     }
 
     @Override
+    protected  void verifyBody(Type typeDeclaration,
+                                       Visibility visibility, DecacCompiler compiler, EnvironmentExp localEnv,
+                                       ClassDefinition currentClass) throws ContextualError{
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+    @Override
+    protected void verifyMembers(Type typeDeclaration,
+                                          Visibility visibility, DecacCompiler compiler, EnvironmentExp localEnv,
+                                          ClassDefinition currentClass) throws ContextualError{
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
     protected void codeGenDecl(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }

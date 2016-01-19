@@ -1,7 +1,5 @@
 package fr.ensimag.deca.tree;
 
-//import com.sun.tools.doclint.Env;
-import com.sun.tools.doclint.Env;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.ListeMethodeClasse;
 import fr.ensimag.deca.context.*;
@@ -118,13 +116,18 @@ public class DeclClass extends AbstractDeclClass {
         //ensuite, c'est pareil pour les deux, on ajoute les labels des méthodes
         if(superClass!=null){// on rajoute les méthodes de la superclasse
             for(int i=0;i<superClass.getNbMethod();i++){
-                superClass.getNonTypeDefinition().getOperand(); //on recupère l'adresse du début de la superclasse
-                //compiler.addInstruction(new LOAD());
+                RegisterOffset source= new RegisterOffset(superClass.getNbGB()+1+i,Register.GB);
+                compiler.addInstruction(new LOAD(source,Register.R0));
+                compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
+                compiler.getRegManager().incrementGB();
             }
 
         }
-        for(AbstractDeclMethod a : methods.getList()) {
+        for(AbstractDeclMethod a : methods.getList()) {// on ajoute enfin les methodes de la classe
             LabelOperand ajout = new LabelOperand(new Label("code." + name.getName().getClass().toString() + a.getName()));
+            compiler.addInstruction(new LOAD(ajout,Register.R0));
+            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
+            compiler.getRegManager().incrementGB();
         }
 
     }

@@ -87,6 +87,7 @@ public abstract class AbstractIdentifier extends AbstractLValue {
     protected abstract void codeGenInitClass(DecacCompiler compiler,int nbMethode);
     public abstract int getNbMethod();
     public abstract void setNbMethod(int enplus);
+    public abstract int getNbGB();
 
 
 
