@@ -1,0 +1,10 @@
+// Description:
+//    Déclaration d'un type primitif à null
+//
+// Resultats:
+//    Line 9 : Incompatible type initialization
+// 
+
+{
+   int a = null;
+}

@@ -4,11 +4,9 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 /**
@@ -32,9 +30,11 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        getRightOperand().codeGenInst(compiler);
+        getRightOperand().codeGenOPLeft(compiler);
         getLeftOperand().codeGenInst(compiler);
-        compiler.addInstruction(new STORE(getRightOperand().getRegistreUtil(),getLeftOperand().getNonTypeDefinition().getOperand()));
+        Register regLeft = (Register) getRightOperand().getdValue();
+        DAddr adress = this.getLeftOperand().getNonTypeDefinition().getOperand();
+        compiler.addInstruction(new STORE(regLeft, adress));
         compiler.getTableRegistre().resetTableRegistre();
     }
 
@@ -43,7 +43,6 @@ public class Assign extends AbstractBinaryExpr {
             ClassDefinition currentClass) throws ContextualError {
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-
         Type t;
 
         if(rightType.sameType(leftType)) {

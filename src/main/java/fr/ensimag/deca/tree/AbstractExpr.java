@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.MemoryMap;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -9,11 +8,9 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.Register;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -30,21 +27,28 @@ public abstract class AbstractExpr extends AbstractInst {
     boolean isImplicit() {
         return false;
     }
-    private GPRegister registreUtil;
-    public void setRegistreUtil(GPRegister reg){
-        this.registreUtil=reg;
+
+    private DVal dValue;
+
+    public void setdValue(DVal dval){
+        this.dValue =dval;
         this.setUtilisation();
     }
-    public GPRegister getRegistreUtil(){
-        return this.registreUtil;
+
+    public DVal getdValue(){
+        return this.dValue;
     }
+
     private boolean utilisation= false;
+
     public void setUtilisation(){
         this.utilisation= true;
     }
+
     public boolean getUtilisation(){
         return this.utilisation;
     }
+
       /**
      * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
      */
@@ -142,6 +146,9 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenCMP(DecacCompiler compiler){
         // pour les booleens
     }
+    protected void codeGenCMPNot(DecacCompiler compiler){
+        // pour le or
+    }
 
     protected  void codeGenCMPOP(DecacCompiler compiler){
         
@@ -155,6 +162,9 @@ public abstract class AbstractExpr extends AbstractInst {
         s.print(";");
     }
 
+    protected void decompileCMP(IndentPrintStream s ){
+        decompile(s);
+    }
     @Override
     protected void prettyPrintType(PrintStream s, String prefix) {
         Type t = getType();

@@ -1,0 +1,11 @@
+// Description:
+//    Déclaration de variable
+//
+// Resultats:
+//    Ligne 13 : cast impossible
+// 
+
+{
+    int a = 4;
+    int b = (void) (a);
+}

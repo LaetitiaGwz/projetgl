@@ -1,0 +1,32 @@
+// Description:
+//    Opérateurs binaires d'inégalité
+//
+// Resultats:
+//    Aucune erreur
+// 
+
+{
+    int a = 5;
+    int b = 2;
+
+    boolean c = false;
+    boolean d = true;
+
+    float e = 3.5;
+    float f = 4.0;
+
+    if(a == b) {};
+    if(a != b) {};
+
+    if(c == d) {};
+    if(c != d) {};
+
+    if(e == f) {};
+    if(e != f) {};
+
+    //Conversion int to float
+    if(a == e) {};
+    if(a != e) {};
+    if(e == b) {};
+    if(e != b) {};
+}

@@ -1,0 +1,18 @@
+// Description:
+//   Test d'une expression booléenne
+//
+// Resultats:
+//    ima_output: ok
+//
+
+{
+    boolean a = false;
+    boolean b = false;
+    boolean c = true;
+    if( a || b && c ){
+        println("non");
+    }else{
+        println("ok");
+    }
+
+}

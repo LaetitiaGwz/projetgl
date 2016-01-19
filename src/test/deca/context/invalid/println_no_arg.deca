@@ -1,0 +1,10 @@
+// Description:
+//    Utilisation ud println
+//
+// Resultats:
+//    Ligne 11 : pas assez d'argument
+// 
+
+{
+   println();
+}

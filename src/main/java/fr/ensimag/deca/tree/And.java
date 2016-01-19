@@ -2,6 +2,8 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 
 /**
  *
@@ -21,8 +23,16 @@ public class And extends AbstractOpBool {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
+        Label endAnd = new Label("endAnd"+compiler.getOr());
+        compiler.incrementeOr();
+        Label stock= compiler.getLabelFalse();
+        Label stockTrue= compiler.getLabelTrue();
+        compiler.setLabelFalse(endAnd);
         getLeftOperand().codeGenCMP(compiler);
         getRightOperand().codeGenCMP(compiler);
+        compiler.addInstruction(new BRA(stockTrue));
+        compiler.addLabel(endAnd);
+        compiler.addInstruction(new BRA(stock));
+        compiler.setLabelFalse(stock);
     }
-
 }

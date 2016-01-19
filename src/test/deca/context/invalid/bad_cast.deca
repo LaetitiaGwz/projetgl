@@ -1,0 +1,13 @@
+// Description:
+//    Déclaration de variable
+//
+// Resultats:
+//    Ligne 13 : cast impossible
+// 
+
+{
+   int a;
+   boolean b;
+   b = (int) a;
+
+}

@@ -5,7 +5,6 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
@@ -65,7 +64,7 @@ public class BooleanLiteral extends AbstractExpr {
         int i=compiler.getTableRegistre().getLastregistre();
         compiler.getTableRegistre().setEtatRegistreTrue(i);
         GPRegister target= Register.getR(i);
-        this.setRegistreUtil(target);
+        this.setdValue(target);
         int convBool = (getValue()) ? 1 : 0; // Conversion booléen -> integer
         compiler.addInstruction(new LOAD(new ImmediateInteger(convBool), target));
     }
@@ -82,9 +81,15 @@ public class BooleanLiteral extends AbstractExpr {
         GPRegister target= Register.getR(i);
         compiler.addInstruction(new LOAD(new ImmediateInteger(0),target));
         this.codeGenInst(compiler);
-        compiler.addInstruction(new CMP(this.getRegistreUtil(),target));
+        compiler.addInstruction(new CMP(this.getdValue(),target));
         compiler.addInstruction(new BEQ(compiler.getLabel()));
         compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
         compiler.getTableRegistre().setEtatRegistreFalse(i); // on libère les deux
+    }
+
+    @Override
+    protected void codeGenCMPNot(DecacCompiler compiler){
+        this.codeGenNot(compiler);
+        this.codeGenCMP(compiler);
     }
 }

@@ -2,9 +2,9 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 /**
@@ -54,14 +54,24 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
         this.getLeftOperand().codeGenOPLeft(compiler);
-        GPRegister cmpRight= getLeftOperand().getRegistreUtil();
+        GPRegister cmpRight= (GPRegister) getLeftOperand().getdValue();
         this.getRightOperand().codeGenOPRight(compiler);
-        DVal cmpLeft = compiler.getDval();
-        compiler.addInstruction(new CMP(cmpLeft,cmpRight));
+        DVal cmpLeft = getRightOperand().getdValue();
+        compiler.addInstruction(new CMP(cmpLeft, cmpRight));
         this.codeGenCMPOP(compiler);
+        if(getRightOperand().getUtilisation()){
+            compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+
+        }
         compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
         //on libère quoi qu'il arrive
     }
 
+    @Override
+    public void decompile(IndentPrintStream s){
+        getLeftOperand().decompile(s);
+        s.print(this.getOperatorName());
+        getRightOperand().decompile(s);
+    }
 
 }

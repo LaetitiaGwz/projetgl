@@ -1,0 +1,10 @@
+// Description:
+//    Déclaration de variables
+//
+// Resultats:
+//    Line 9 : Incompatible type initialization
+//
+
+{
+   String a = false;
+}

@@ -1,0 +1,12 @@
+// Description:
+//    Tentative d'affection d'un float à un int
+//
+// Resultats:
+//    Bad assignement
+// 
+
+{
+    int a;
+    float b;
+    a = b;
+}

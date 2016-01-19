@@ -2,11 +2,9 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 
@@ -43,30 +41,24 @@ public class ConvFloat extends AbstractUnaryExpr {
         getOperand().codeGenOPRight(compiler);
         GPRegister target = Register.getR(compiler.getTableRegistre().getLastregistre());
         compiler.getTableRegistre().setEtatRegistreTrue(compiler.getTableRegistre().getLastregistre());
-        compiler.addInstruction(new FLOAT(compiler.getDval(),target));
-        compiler.setDVal(target);
-        this.setRegistreUtil(target);
-    }
-
-    @Override
-    protected void codeGenOPLeft(DecacCompiler compiler) {
-        this.codeGenInst(compiler);
-    }
-
-    @Override
-    protected void codeGenOPRight(DecacCompiler compiler) {
-        this.codeGenInst(compiler);
+        compiler.addInstruction(new FLOAT(getOperand().getdValue(), target));
+        this.setdValue(target);
     }
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
-        compiler.addInstruction(new FLOAT(compiler.getDval(),Register.R1));
+        compiler.addInstruction(new FLOAT(getOperand().getdValue(), Register.R1));
         compiler.addInstruction(new WFLOAT());
     }
 
     @Override
     protected void codeGenPrintX(DecacCompiler compiler){
-        compiler.addInstruction(new FLOAT(compiler.getDval(),Register.R1));
+        compiler.addInstruction(new FLOAT(getOperand().getdValue(), Register.R1));
         compiler.addInstruction(new WFLOATX());
+    }
+
+    @Override
+    protected void codeGenCMP(DecacCompiler compiler) {
+        this.codeGenInst(compiler);
     }
 }

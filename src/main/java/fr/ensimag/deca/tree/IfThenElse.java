@@ -60,7 +60,16 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        for(AbstractIfThen a : getIfThen().getList()){
+            a.decompile(s);
+        }
+        s.print("esle{");
+        for(AbstractInst b : getElseBranch().getList()){
+            b.decompile(s);
+
+        }
+        s.println("}");
+
     }
 
     @Override

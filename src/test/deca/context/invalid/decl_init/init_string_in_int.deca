@@ -1,0 +1,9 @@
+// Description:
+//    Déclaration de variables
+//
+// Resultats:
+//    Line 8 : Incompatible type initialization
+
+{
+   int a = "test";
+}

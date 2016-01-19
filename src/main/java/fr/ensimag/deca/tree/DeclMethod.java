@@ -29,8 +29,7 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     protected void verifyMember(DecacCompiler compiler,
-                                EnvironmentExp localEnv, ClassDefinition currentClass,
-                                Type returnType)
+                                EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
