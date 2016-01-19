@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -39,4 +40,13 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         operand.prettyPrint(s, prefix, true);
     }
 
+    @Override
+    protected void codeGenOPLeft(DecacCompiler compiler) {
+        this.codeGenInst(compiler);
+    }
+
+    @Override
+    protected void codeGenOPRight(DecacCompiler compiler) {
+        this.codeGenInst(compiler);
+    }
 }

@@ -33,7 +33,6 @@ public class Program extends AbstractProgram {
     }
     private ListDeclClass classes;
     private AbstractMain main;
-    private EnvironmentExp environmentExp;
 
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
@@ -41,13 +40,8 @@ public class Program extends AbstractProgram {
 
         EnvironmentExp env = new EnvironmentExp(null);
         try {
-            env.declareType(compiler.getSymbols().create("int"), new TypeDefinition(new IntType(compiler.getSymbols().create("int")), Location.BUILTIN));
-            env.declareType(compiler.getSymbols().create("float"), new TypeDefinition(new FloatType(compiler.getSymbols().create("float")), Location.BUILTIN));
-            env.declareType(compiler.getSymbols().create("String"), new TypeDefinition(new StringType(compiler.getSymbols().create("String")), Location.BUILTIN));
-            env.declareType(compiler.getSymbols().create("boolean"), new TypeDefinition(new BooleanType(compiler.getSymbols().create("boolean")), Location.BUILTIN));
-            env.declareType(compiler.getSymbols().create("void"), new TypeDefinition(new VoidType(compiler.getSymbols().create("void")), Location.BUILTIN));
-
-            env.declareType(compiler.getSymbols().create("Object"), new ClassDefinition(new ClassType(compiler.getSymbols().create("Object"), Location.BUILTIN, null), Location.BUILTIN, null));
+            declareTypes(compiler, env);
+            declareObject(compiler, env);
         }
         catch (EnvironmentExp.DoubleDefException $e) {
             throw new DecacInternalError("Double definition of builtin types.");
@@ -60,13 +54,41 @@ public class Program extends AbstractProgram {
         LOG.debug("verify program: end");
     }
 
+    private void declareTypes(DecacCompiler compiler, EnvironmentExp env) throws EnvironmentExp.DoubleDefException {
+        env.declareType(compiler.getSymbols().create("int"), new TypeDefinition(new IntType(compiler.getSymbols().create("int")), Location.BUILTIN));
+        env.declareType(compiler.getSymbols().create("float"), new TypeDefinition(new FloatType(compiler.getSymbols().create("float")), Location.BUILTIN));
+        env.declareType(compiler.getSymbols().create("String"), new TypeDefinition(new StringType(compiler.getSymbols().create("String")), Location.BUILTIN));
+        env.declareType(compiler.getSymbols().create("boolean"), new TypeDefinition(new BooleanType(compiler.getSymbols().create("boolean")), Location.BUILTIN));
+        env.declareType(compiler.getSymbols().create("void"), new TypeDefinition(new VoidType(compiler.getSymbols().create("void")), Location.BUILTIN));
+    }
+
+    private void declareObject(DecacCompiler compiler, EnvironmentExp env) throws EnvironmentExp.DoubleDefException {
+
+        // Definition de la classe Object
+        ClassDefinition objDef = new ClassDefinition(new ClassType(compiler.getSymbols().create("Object"), Location.BUILTIN, null), Location.BUILTIN, null);
+
+        // Définition de la méthode Equals
+        int equalIndex = objDef.incNumberOfMethods();
+        Type returnType = env.getTypeDef(compiler.getSymbols().create("boolean")).getType();
+        Signature signature = new Signature();
+        signature.add(objDef.getType());
+        MethodDefinition equalDef = new MethodDefinition(returnType, Location.BUILTIN, signature, equalIndex);
+
+
+        /* On ajoute le tout aux environnements */
+
+        // Object à l'environnement root
+        env.declareType(compiler.getSymbols().create("Object"), objDef);
+        // la méthode equals() à l'environnement de la Object
+        objDef.getMembers().declare(compiler.getSymbols().create("Equals"), equalDef);
+
+    }
+
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
 
         // A FAIRE: compléter ce squelette très rudimentaire de code
         compiler.addComment("Main program");
-        compiler.setTableRegistre(compiler.getCompilerOptions().getRegistre());//initialisation table registre
-        compiler.initialize();
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
     }

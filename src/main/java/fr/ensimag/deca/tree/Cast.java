@@ -68,8 +68,8 @@ public class Cast extends AbstractCast {
     protected void codeGenInst(DecacCompiler compiler) {
         expr.codeGenInst(compiler); // Calcul de l'expression
         // Récupération de l'expression calculée
-        GPRegister target = Register.getR(compiler.getTableRegistre().getLastregistre());
-        compiler.getTableRegistre().setEtatRegistreTrue(compiler.getTableRegistre().getLastregistre());
+        GPRegister target = Register.getR(compiler.getRegManager().getLastregistre());
+        compiler.getRegManager().setEtatRegistreTrue(compiler.getRegManager().getLastregistre());
         // Cast de l'expression
         if(this.getType().isFloat())
             compiler.addInstruction(new FLOAT(expr.getdValue(),target));

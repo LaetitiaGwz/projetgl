@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import com.sun.tools.doclint.Env;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -13,33 +14,56 @@ import java.io.PrintStream;
  */
 public class DeclMethod extends AbstractDeclMethod {
 
-    Identifier ret;
+    AbstractIdentifier name;
+    AbstractIdentifier ret;
     ListDeclParam params;
     ListInst body;
+    ListDeclVarSet declVars;
 
-    public DeclMethod(Identifier ret, ListDeclParam params, ListInst body) {
+    EnvironmentExp methodEnv;
+
+    public DeclMethod(AbstractIdentifier name, AbstractIdentifier ret, ListDeclParam params, ListInst body, ListDeclVarSet declVars) {
+        Validate.notNull(name);
         Validate.notNull(ret);
         Validate.notNull(params);
         Validate.notNull(body);
+        Validate.notNull(declVars);
 
+        this.name = name;
         this.ret = ret;
         this.params = params;
         this.body = body;
+        this.declVars = declVars;
     }
 
     @Override
-    protected void verifyMember(DecacCompiler compiler,
+    protected void verifyMembers(DecacCompiler compiler,
                                 EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        Type returnType = ret.verifyType(compiler);
+        Signature signature = params.verifyMembers(compiler, localEnv, currentClass);
+
+        MethodDefinition methodDef = new MethodDefinition(returnType, getLocation(), signature, currentClass.incNumberOfMethods());
+
+        try {
+            localEnv.declare(compiler.getSymbols().create(name.getName().getName()), methodDef);
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new ContextualError("Double declaration of method " + name.getName().getName(), getLocation());
+        }
     }
 
     @Override
     protected void verifyBody(DecacCompiler compiler,
-                              EnvironmentExp localEnv, ClassDefinition currentClass,
-                              Type returnType)
+                              EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        // On instancie l'environnement de la méthode dont l'env parent est celui de la classe
+        methodEnv = new EnvironmentExp(currentClass.getMembers());
+
+        params.verifyBody(compiler, methodEnv, currentClass);
+        body.verifyListInst(compiler, methodEnv, currentClass, ret.getType());
+        declVars.verifyListDeclVariable(compiler, methodEnv, currentClass);
     }
 
     @Override
@@ -52,6 +76,10 @@ public class DeclMethod extends AbstractDeclMethod {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    @Override
+    protected String getName(){
+        return ret.getName().toString();
+    }
     @Override
     protected
     void iterChildren(TreeFunction f) {
@@ -66,4 +94,5 @@ public class DeclMethod extends AbstractDeclMethod {
         params.prettyPrint(s, prefix, false);
         body.prettyPrint(s, prefix, true);
     }
+
 }

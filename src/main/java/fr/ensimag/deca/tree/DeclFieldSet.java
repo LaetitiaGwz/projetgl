@@ -14,7 +14,7 @@ import java.io.PrintStream;
  * @author gl41
  * @date 01/01/2016
  */
-public class DeclFieldSet extends AbstractDeclVarSet {
+public class DeclFieldSet extends AbstractDeclFieldSet {
 
     public Visibility getVisibility() {
         return visibility;
@@ -24,35 +24,50 @@ public class DeclFieldSet extends AbstractDeclVarSet {
         return type;
     }
 
-    public ListDeclField getDeclVars() {
-        return declVars;
+    public ListDeclField getDeclFields() {
+        return declFields;
     }
 
     private Visibility visibility;
     private AbstractIdentifier type;
-    private ListDeclField declVars;
+    private ListDeclField declFields;
 
-    public DeclFieldSet(Visibility visibility, AbstractIdentifier type, ListDeclField declVars) {
+    public DeclFieldSet(Visibility visibility, AbstractIdentifier type, ListDeclField declFields) {
         super();
         Validate.notNull(visibility);
         Validate.notNull(type);
-        Validate.notNull(declVars);
-        Validate.isTrue(!declVars.isEmpty(),
+        Validate.notNull(declFields);
+        Validate.isTrue(!declFields.isEmpty(),
                 "A list of field declarations cannot be empty");
         this.visibility = visibility;
         this.type = type;
-        this.declVars = declVars;
+        this.declFields = declFields;
     }
 
     @Override
-    protected Type verifyDeclVarSet(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass)
+    protected void verifyMembers(DecacCompiler compiler,
+                                 EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        Type t = type.verifyType(compiler);
+        this.type.setType(t);
+
+        for(AbstractDeclField field : declFields.getList()) {
+            field.verifyMembers(t, visibility, compiler, localEnv, currentClass);
+        }
     }
 
     @Override
-    protected void codegenDeclVarSet(DecacCompiler compiler) {
+    protected void verifyBody(DecacCompiler compiler,
+                                 EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
+        for(AbstractDeclField field : declFields.getList()) {
+            field.verifyBody(type.getType(), visibility, compiler, localEnv, currentClass);
+        }
+    }
+
+    @Override
+    protected void codegenDeclFieldSet(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
@@ -66,13 +81,13 @@ public class DeclFieldSet extends AbstractDeclVarSet {
     protected
     void iterChildren(TreeFunction f) {
         type.iter(f);
-        declVars.iter(f);
+        declFields.iter(f);
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         type.prettyPrint(s, prefix, false);
-        declVars.prettyPrint(s, prefix, true);
+        declFields.prettyPrint(s, prefix, true);
     }
 
 }

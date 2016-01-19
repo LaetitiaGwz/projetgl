@@ -33,10 +33,27 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
-    protected void verifyDeclField(Type t, Visibility visibility, DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass)
+    protected void verifyMembers(Type t, Visibility visibility, DecacCompiler compiler,
+                                 EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        FieldDefinition fieldDef = new FieldDefinition(t, getLocation(), visibility, currentClass, currentClass.incNumberOfFields());
+
+        try {
+            currentClass.getMembers().declare(compiler.getSymbols().create(varName.getName().getName()), fieldDef);
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new ContextualError("Double definition of variable " + getVarName().getName().getName(), getLocation());
+        }
+
+        varName.verifyExpr(compiler, localEnv, currentClass);
+    }
+
+    @Override
+    protected void verifyBody(Type t, Visibility visibility, DecacCompiler compiler,
+                                 EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
+
+        initialization.verifyInitialization(compiler, t, localEnv, currentClass);
     }
 
     @Override

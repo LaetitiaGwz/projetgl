@@ -4,10 +4,6 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.LabelOperand;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -100,11 +96,5 @@ public class DeclClass extends AbstractDeclClass {
         methods.iter(f);
         declFields.iter(f);
     }
-
-    protected void codeGenTest(DecacCompiler compiler){
-        compiler.addInstruction(new LOAD(new LabelOperand(new Label("test")), Register.R1));
-    }
-
-
 
 }
