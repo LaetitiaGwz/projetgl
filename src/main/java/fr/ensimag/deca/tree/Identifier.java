@@ -167,8 +167,8 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-
-        NonTypeDefinition t = localEnv.get(this.getName());
+        NonTypeDefinition t = localEnv.get(compiler.getSymbols().create(getName().getName()));
+        
         if(t == null) {
             throw new ContextualError("Undefinded variable " + getName(), getLocation());
         }
