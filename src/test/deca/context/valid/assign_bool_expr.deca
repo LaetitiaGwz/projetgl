@@ -1,0 +1,11 @@
+// Description:
+//   Test d'une assignation avec une expression booléenne
+//
+// Resultats:
+//    ok
+// 
+
+{
+    int a = 3;
+    boolean b = (a == 5)
+}

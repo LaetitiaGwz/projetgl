@@ -1,0 +1,10 @@
+// Description:
+//    Déclaration d'une variable par elle meme
+//
+// Resultats:
+//    Line 9 : Type non défini
+// 
+
+{
+    int a = a;
+}
