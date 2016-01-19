@@ -44,7 +44,6 @@ public class DeclVarSet extends AbstractDeclVarSet {
             throw new ContextualError("A variable can not be declared as void.", getLocation());
         }
 
-
         for(AbstractDeclVar var : declVars.getList()) {
             var.verifyDeclVar(t, compiler, localEnv, currentClass);
         }
