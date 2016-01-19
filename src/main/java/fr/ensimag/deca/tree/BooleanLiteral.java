@@ -61,8 +61,8 @@ public class BooleanLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        int i=compiler.getTableRegistre().getLastregistre();
-        compiler.getTableRegistre().setEtatRegistreTrue(i);
+        int i=compiler.getRegManager().getLastregistre();
+        compiler.getRegManager().setEtatRegistreTrue(i);
         GPRegister target= Register.getR(i);
         this.setdValue(target);
         int convBool = (getValue()) ? 1 : 0; // Conversion booléen -> integer
@@ -76,15 +76,15 @@ public class BooleanLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        int i=compiler.getTableRegistre().getLastregistre();
-        compiler.getTableRegistre().setEtatRegistreTrue(i);
+        int i=compiler.getRegManager().getLastregistre();
+        compiler.getRegManager().setEtatRegistreTrue(i);
         GPRegister target= Register.getR(i);
         compiler.addInstruction(new LOAD(new ImmediateInteger(0),target));
         this.codeGenInst(compiler);
         compiler.addInstruction(new CMP(this.getdValue(),target));
-        compiler.addInstruction(new BEQ(compiler.getLabelFalse()));
-        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
-        compiler.getTableRegistre().setEtatRegistreFalse(i); // on libère les deux
+        compiler.addInstruction(new BEQ(compiler.getLblManager().getLabelFalse()));
+        compiler.getRegManager().setEtatRegistreFalse(compiler.getRegManager().getLastregistre()-1);
+        compiler.getRegManager().setEtatRegistreFalse(i); // on libère les deux
     }
 
     @Override

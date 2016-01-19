@@ -26,12 +26,12 @@ public class GreaterOrEqual extends AbstractOpIneq {
 
     @Override
     protected void codeGenCMPOP(DecacCompiler compiler){
-        compiler.addInstruction(new BLT(compiler.getLabelFalse()));
+        compiler.addInstruction(new BLT(compiler.getLblManager().getLabelFalse()));
     }
 
     @Override
     protected void codeGenNot(DecacCompiler compiler){
-        compiler.addInstruction(new BGE(compiler.getLabelFalse()));
+        compiler.addInstruction(new BGE(compiler.getLblManager().getLabelFalse()));
     }
 
 }

@@ -2,16 +2,26 @@ package fr.ensimag.deca.codegen;
 
 /**
  * Created by florentin on 12/01/16.
+ * Classe permettant de gérer l'état des registres
  */
-public class GestionRegistre {
+public class RegisterManager {
 
 	private boolean tableRegistre[];
 
-	public GestionRegistre(int nbRegistre){ //nbRegistre >4 <17
+	private int GB; // Global Pointer
+    public int getGB(){
+        return this.GB;
+    }
+    public void incrementGB(){
+        this.GB ++;
+    }
+
+	public RegisterManager(int nbRegistre){ //nbRegistre >4 <17
 		this.tableRegistre=new boolean[nbRegistre];
 		for(int i=0; i<nbRegistre;i++){
 			this.tableRegistre[i]=false;
 		}
+		this.GB = 1;
 	}
 
 	public int getTailleTable(){ // pour recupérer la dimension

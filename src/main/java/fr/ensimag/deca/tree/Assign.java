@@ -35,7 +35,7 @@ public class Assign extends AbstractBinaryExpr {
         Register regLeft = (Register) getRightOperand().getdValue();
         DAddr adress = this.getLeftOperand().getNonTypeDefinition().getOperand();
         compiler.addInstruction(new STORE(regLeft, adress));
-        compiler.getTableRegistre().resetTableRegistre();
+        compiler.getRegManager().resetTableRegistre();
     }
 
     @Override

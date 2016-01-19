@@ -69,7 +69,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     protected void codeGenOPRight(DecacCompiler compiler){
         this.codeGenInst(compiler);
         if(getRightOperand().getUtilisation()){
-            compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+            compiler.getRegManager().setEtatRegistreFalse(compiler.getRegManager().getLastregistre()-1);
         }
     }
 
