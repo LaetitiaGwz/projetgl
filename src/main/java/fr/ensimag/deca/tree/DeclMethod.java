@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import com.sun.tools.doclint.Env;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -51,6 +50,8 @@ public class DeclMethod extends AbstractDeclMethod {
         } catch (EnvironmentExp.DoubleDefException e) {
             throw new ContextualError("Double declaration of method " + name.getName().getName(), getLocation());
         }
+
+        name.verifyExpr(compiler, localEnv, currentClass);
     }
 
     @Override
@@ -83,15 +84,19 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     protected
     void iterChildren(TreeFunction f) {
+        name.iter(f);
         ret.iter(f);
         params.iter(f);
+        declVars.iter(f);
         body.iter(f);
     }
     
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         ret.prettyPrint(s, prefix, false);
+        name.prettyPrint(s, prefix, false);
         params.prettyPrint(s, prefix, false);
+        declVars.prettyPrint(s, prefix, false);
         body.prettyPrint(s, prefix, true);
     }
 
