@@ -41,7 +41,7 @@ public class While extends AbstractInst {
         Label DebutWhile = new Label("DebutWhile"+compiler.getWhile());
         Label EndWhile = new Label("EndWhile"+compiler.getWhile());
         compiler.incrementeWhile();
-        compiler.setLabel(EndWhile);
+        compiler.setLabelFalse(EndWhile);
         compiler.addLabel(DebutWhile);
         condition.codeGenCMP(compiler);
         body.codeGenListInst(compiler);

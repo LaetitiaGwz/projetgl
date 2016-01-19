@@ -53,8 +53,8 @@ public class IfThen extends AbstractIfThen {
         Label debutIf= new Label("debutIf"+compiler.getIf());
         compiler.incrementeIf(); // on s'assure qu'on en ai pas d'autre
         // Calcul de la condition
-        Label braSuite= compiler.getLabel();
-        compiler.setLabel(finIf);
+        Label braSuite= compiler.getLabelFalse();
+        compiler.setLabelFalse(finIf);
         compiler.setLabelTrue(debutIf);
 
         getCondition().codeGenCMP(compiler);
@@ -62,7 +62,7 @@ public class IfThen extends AbstractIfThen {
         // Instructions
         compiler.addLabel(debutIf);
         getInstructions().codeGenListInst(compiler);
-        compiler.setLabel(braSuite);
+        compiler.setLabelFalse(braSuite);
         compiler.addInstruction(new BRA(braSuite));
         compiler.addLabel(finIf);
 

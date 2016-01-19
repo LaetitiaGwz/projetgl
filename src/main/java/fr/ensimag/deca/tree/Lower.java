@@ -29,12 +29,12 @@ public class Lower extends AbstractOpIneq {
 
     @Override
     protected void codeGenCMPOP(DecacCompiler compiler){
-        compiler.addInstruction(new BGE(compiler.getLabel()));
+        compiler.addInstruction(new BGE(compiler.getLabelFalse()));
     }
 
     @Override
     protected void codeGenNot(DecacCompiler compiler){
-        compiler.addInstruction(new BLT(compiler.getLabel()));
+        compiler.addInstruction(new BLT(compiler.getLabelFalse()));
     }
 
 

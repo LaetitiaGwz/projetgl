@@ -71,7 +71,7 @@ public class BooleanLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenNot(DecacCompiler compiler){
-        this.value=!this.getValue();
+        this.value = !this.getValue();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class BooleanLiteral extends AbstractExpr {
         compiler.addInstruction(new LOAD(new ImmediateInteger(0),target));
         this.codeGenInst(compiler);
         compiler.addInstruction(new CMP(this.getdValue(),target));
-        compiler.addInstruction(new BEQ(compiler.getLabel()));
+        compiler.addInstruction(new BEQ(compiler.getLabelFalse()));
         compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
         compiler.getTableRegistre().setEtatRegistreFalse(i); // on libère les deux
     }

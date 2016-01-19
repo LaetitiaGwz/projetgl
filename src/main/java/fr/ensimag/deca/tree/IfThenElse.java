@@ -52,7 +52,7 @@ public class IfThenElse extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler) {
         Label finIf = new Label("fin_if" + compiler.getIf()); // à la suite du else
         compiler.incrementeIf(); // on s'assure qu'on en ai pas d'autre
-        compiler.setLabel(finIf); // on le sécurise pour la suite
+        compiler.setLabelFalse(finIf); // on le sécurise pour la suite
         getIfThen().codeGenListIfThen(compiler);
         getElseBranch().codeGenListInst(compiler);
         compiler.addLabel(finIf);

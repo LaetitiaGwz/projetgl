@@ -25,7 +25,7 @@ public class And extends AbstractOpBool {
     protected void codeGenCMP(DecacCompiler compiler){
         Label endAnd = new Label("endAnd"+compiler.getOr());
         compiler.incrementeOr();
-        Label stock= compiler.getLabelFalse();
+        Label stock = compiler.getLabelFalse();
         Label stockTrue= compiler.getLabelTrue();
         compiler.setLabelFalse(endAnd);
         getLeftOperand().codeGenCMP(compiler);

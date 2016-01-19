@@ -24,11 +24,11 @@ public class Or extends AbstractOpBool {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        Label suiteOr= new Label("suiteOr"+compiler.getOr());
-        Label finOr= new Label("finOr"+compiler.getOr());
-        Label elseOr= new Label ("elseOr"+compiler.getOr());
+        Label suiteOr = new Label("suiteOr"+compiler.getOr());
+        Label finOr = new Label("finOr"+compiler.getOr());
+        Label elseOr = new Label ("elseOr"+compiler.getOr());
         compiler.incrementeOr();
-        Label stock=compiler.getLabelFalse();
+        Label stock = compiler.getLabelFalse();
         Label stockTrue=compiler.getLabelTrue();
         compiler.setLabelFalse(suiteOr); // on test premier si faux, on test deuxième
         getLeftOperand().codeGenCMP(compiler);

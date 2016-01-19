@@ -89,13 +89,6 @@ public class DecacCompiler {
         this.GB=1;
     }
 
-    public Label getLabel(){
-        return this.getLabelFalse();
-    }
-    public void setLabel(Label target){
-        this.setLabelFalse(target);
-    }
-
     private Label labelTrue;
     public void setLabelTrue(Label target){
         this.labelTrue=target;

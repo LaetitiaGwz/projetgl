@@ -252,7 +252,7 @@ public class Identifier extends AbstractIdentifier {
         compiler.getTableRegistre().setEtatRegistreTrue(i);
         compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),target));
         compiler.addInstruction(new CMP(new ImmediateInteger(0),target));
-        compiler.addInstruction(new BEQ(compiler.getLabel()));
+        compiler.addInstruction(new BEQ(compiler.getLabelFalse()));
         compiler.getTableRegistre().setEtatRegistreFalse(i);
     }
 
@@ -263,7 +263,7 @@ public class Identifier extends AbstractIdentifier {
         compiler.getTableRegistre().setEtatRegistreTrue(i);
         compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),target));
         compiler.addInstruction(new CMP(new ImmediateInteger(0),target));
-        compiler.addInstruction(new BNE(compiler.getLabel()));
+        compiler.addInstruction(new BNE(compiler.getLabelFalse()));
         compiler.getTableRegistre().setEtatRegistreFalse(i);
 
     }
