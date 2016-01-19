@@ -107,19 +107,20 @@ public class DeclClass extends AbstractDeclClass {
     protected void codePreGen1(DecacCompiler compiler){
         if(superClass==null){
             compiler.addInstruction(new LOAD(new NullOperand(),Register.R0));
-            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getGB(),Register.GB)));
+            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
             name.codeGenInitClass(compiler,methods.size());
 
             //on stock dans l'identifier l'adresse de start, cela incremente GB
         }
         else{// on recupère l'adresse de la superclasse
             compiler.addInstruction(new LEA(superClass.getNonTypeDefinition().getOperand(),Register.R0));
-            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getGB(),Register.GB)));
+            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
             name.codeGenInitClass(compiler,superClass.getNbMethod()+methods.size());
         }
         //ensuite, c'est pareil pour les deux, on ajoute les labels des méthodes
         if(superClass!=null){// on rajoute les méthodes de la superclasse
             for(int i=0;i<superClass.getNbMethod();i++){
+                superClass.getNonTypeDefinition().getOperand();
                 //compiler.addInstruction(new LOAD());
             }
 

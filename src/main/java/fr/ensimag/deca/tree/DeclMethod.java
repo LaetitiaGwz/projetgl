@@ -70,7 +70,5 @@ public class DeclMethod extends AbstractDeclMethod {
         params.prettyPrint(s, prefix, false);
         body.prettyPrint(s, prefix, true);
     }
-    protected void codePreGen1(DecacCompiler compiler){
 
-    }
 }
