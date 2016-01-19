@@ -4,8 +4,8 @@
 //
 // Resultats:
 //    inclusion des methodes de la superclass dans celle de la classe
-//    avec les indices correspondant
-//    1 pour incremente, getX et getY intouché et ajout de getZ
+//    avec les indices correspondant 1 objet
+//    2 pour incremente, 3 getX et 4 getY intouché et ajout de 5 getZ
 //
 // Historique:
 //    cree le 19/01/2016
