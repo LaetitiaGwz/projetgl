@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 //import com.sun.tools.doclint.Env;
+import com.sun.tools.doclint.Env;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -17,8 +18,6 @@ import java.io.PrintStream;
  */
 public class DeclClass extends AbstractDeclClass {
     private static final Logger LOG = Logger.getLogger(Class.class);
-
-    EnvironmentExp classEnv;
 
     protected AbstractIdentifier name;
     protected AbstractIdentifier superClass;
@@ -52,7 +51,8 @@ public class DeclClass extends AbstractDeclClass {
         ClassType classType = new ClassType(compiler.getSymbols().create(name.getName().getName()), getLocation(), superClassDef);
         this.name.setType(classType);
 
-        name.setDefinition(new ClassDefinition(classType, getLocation(), superClassDef));
+        ClassDefinition classDef = new ClassDefinition(classType, getLocation(), superClassDef);
+        name.setDefinition(classDef);
 
         // On déclare la class dans l'envRoot
         // Erreur si déjà existante
@@ -70,14 +70,12 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        this.classEnv = new EnvironmentExp(compiler.getRootEnv());
-        methods.verifyMethodsMembers(compiler, classEnv, name.getClassDefinition());
-        declFields.verifyMembers(compiler, classEnv, name.getClassDefinition());
+        methods.verifyMethodsMembers(compiler, name.getClassDefinition().getMembers(), name.getClassDefinition());
+        declFields.verifyMembers(compiler, name.getClassDefinition().getMembers(), name.getClassDefinition());
     }
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-
     }
 
 

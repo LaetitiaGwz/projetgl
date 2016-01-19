@@ -22,7 +22,7 @@ public class ListDeclFieldSet extends TreeList<AbstractDeclFieldSet> {
     void verifyMembers(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         for(AbstractDeclFieldSet field : getList()) {
-            field.verifyDeclFieldSet(compiler, localEnv, currentClass);
+            field.verifyMembers(compiler, localEnv, currentClass);
         }
     }
 
