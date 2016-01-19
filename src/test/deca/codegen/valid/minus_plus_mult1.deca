@@ -1,0 +1,11 @@
+// Description:
+//   Test d'une expression arithmétique complexe
+//
+// Resultats:
+// ima_output: 30
+//
+
+{
+    int a = 3*3*4 - 2*7 + 16/2;
+    println(a);
+}

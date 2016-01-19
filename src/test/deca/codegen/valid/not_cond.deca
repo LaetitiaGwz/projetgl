@@ -1,0 +1,25 @@
+// Description:
+//   Test de l'opérateur not
+//
+// Resultats:
+//    ima_output: ok
+//
+
+{
+    boolean a = false;
+    boolean b = true;
+
+    if( !a ){
+        println("ok");
+    }else{
+        println("non");
+    }
+
+    if(!b){
+        println("non");
+    }else{
+
+    }
+
+
+}

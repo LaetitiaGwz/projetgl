@@ -1,0 +1,10 @@
+// Description:
+//   Test d'une declaration
+//
+// Resultats:
+//    ok
+// 
+
+{
+    float a;
+}

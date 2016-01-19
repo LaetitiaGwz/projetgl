@@ -1,0 +1,11 @@
+// Description:
+//   Test d'une assignation négative
+//
+// Resultats:
+//  ima_output: -1
+//
+
+{
+    int a = -1;
+    print(a);
+}

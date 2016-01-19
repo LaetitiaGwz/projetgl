@@ -1,0 +1,10 @@
+// Description:
+//   Test d'affichage
+//
+// Resultats:
+//  ima_output:  0x1.0acp+11
+//
+
+{
+    printx(2134.0);
+}

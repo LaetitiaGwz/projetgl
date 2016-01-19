@@ -1,0 +1,10 @@
+// Description:
+//   Test d'affichage
+//
+// Resultats:
+//  ima_output:  -4
+//
+
+{
+    print(1 + (-5));
+}

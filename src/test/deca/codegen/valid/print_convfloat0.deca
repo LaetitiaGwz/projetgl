@@ -1,0 +1,10 @@
+// Description:
+//   test de l'affichage d'une conversion implicite
+//
+// Resultats:
+//    ima_output: 3.30000e+01
+//
+
+{
+    print(1.0 + 32);
+}
