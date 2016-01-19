@@ -7,5 +7,5 @@
 
 {
     int a = 3;
-    boolean b = (a == 5)
+    boolean b = (a == 5);
 }
