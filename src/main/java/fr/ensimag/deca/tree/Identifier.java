@@ -19,6 +19,13 @@ import org.apache.commons.lang.Validate;
  */
 public class Identifier extends AbstractIdentifier {
 
+    private int nbMethod=0;
+    public int getNbMethod(){
+        return this.nbMethod;
+    }
+    public void setNbMethod(int enplus){
+        this.nbMethod=enplus;
+    }
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -219,6 +226,13 @@ public class Identifier extends AbstractIdentifier {
         RegisterOffset stock = new RegisterOffset(compiler.getGB(), Register.GB);
         this.getNonTypeDefinition().setOperand(stock);
         compiler.incrementeGB();
+    }
+
+    @Override
+    protected void codeGenInitClass(DecacCompiler compiler, int nbMethode){
+        this.codeGenInit(compiler);
+        this.setNbMethod(nbMethode);
+
     }
 
     @Override

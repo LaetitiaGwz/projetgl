@@ -51,6 +51,8 @@ public abstract class AbstractDeclMethod extends Tree {
      */
     protected abstract void codeGenMethod(DecacCompiler compiler);
 
+    protected abstract String getName();
+
 
     /**
      * Decompile the tree, considering it as an instruction.

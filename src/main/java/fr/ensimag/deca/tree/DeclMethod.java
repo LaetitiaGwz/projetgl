@@ -53,6 +53,10 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
+    protected String getName(){
+        return ret.getName().toString();
+    }
+    @Override
     protected
     void iterChildren(TreeFunction f) {
         ret.iter(f);
@@ -65,5 +69,8 @@ public class DeclMethod extends AbstractDeclMethod {
         ret.prettyPrint(s, prefix, false);
         params.prettyPrint(s, prefix, false);
         body.prettyPrint(s, prefix, true);
+    }
+    protected void codePreGen1(DecacCompiler compiler){
+
     }
 }

@@ -84,6 +84,10 @@ public abstract class AbstractIdentifier extends AbstractLValue {
 
     public abstract void setDefinition(Definition definition);
 
+    protected abstract void codeGenInitClass(DecacCompiler compiler,int nbMethode);
+    public abstract int getNbMethod();
+    public abstract void setNbMethod(int enplus);
+
 
 
     public abstract Type verifyType(DecacCompiler compiler) throws ContextualError;
