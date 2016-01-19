@@ -52,6 +52,10 @@ public class DeclMethodAss extends AbstractDeclMethod {
     protected void codeGenMethod(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
+    @Override
+    protected String getName(){
+        return name.getName().toString();
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
