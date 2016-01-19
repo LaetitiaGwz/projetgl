@@ -120,7 +120,7 @@ public class DeclClass extends AbstractDeclClass {
         //ensuite, c'est pareil pour les deux, on ajoute les labels des méthodes
         if(superClass!=null){// on rajoute les méthodes de la superclasse
             for(int i=0;i<superClass.getNbMethod();i++){
-                superClass.getNonTypeDefinition().getOperand();
+                superClass.getNonTypeDefinition().getOperand(); //on recupère l'adresse du début de la superclasse
                 //compiler.addInstruction(new LOAD());
             }
 
