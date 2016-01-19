@@ -1,10 +1,13 @@
 import java.lang.Math ;
-
+/*liens : 
+valeur cody and waite : http://arxiv.org/pdf/0708.3722.pdf
+Cordic : http://www.trigofacile.com/maths/trigo/calcul/cordic/cordic.htm
+*/
 public class Math_deca{
 
 	public static final float MIN_VALUE = Float.MIN_VALUE;
 	public static final float MAX_VALUE = Float.MAX_VALUE;
-	public static final float PI = (float)3.141592653589793;
+	public static final float PI =(float)3.141592653589793;
 	public static final float PI_4 = (float)0.7853981633974483 ;
 	public static final float PIDIV=(float)Math.PI/8;
 	public static final float PIDIV2=(float)Math.PI/2;
@@ -59,7 +62,6 @@ public class Math_deca{
 		}
 		return power(2,exp - 23) ;	
 	}
-	// Méthode de Cordic cf :http://www.trigofacile.com/maths/trigo/calcul/cordic/cordic.htm
 	// changement : on ne prend plus les theta_k tel que atan(theta_k) = 10^-k mais atan(theta_k)=2^-k ;
 	public static float tanCordic(float theta){
 
@@ -179,6 +181,7 @@ public class Math_deca{
 		}
 		//réduction sur ]-PI;PI]
 		x = reductionCodyAndWaite(x) ;
+
 		if ( x == PI/2 || x == -PI/2){
 			if ( x>0){
 				return (float) 1.0 ;
@@ -187,75 +190,99 @@ public class Math_deca{
 				return (float) -1.0;
 			}
 		}
+
 		//réduction sur ]-PI/2; PI/2]
-		boolean sign = true;
+		boolean minus = false;
 		// float c1 = (float)3.1415863; // meilleur valeur : 3.1415863
 		// float c2 = (float)0.00000635358;//0.00000635358
-		float c1 = (float)3.125; // meilleur valeur : 3.125
-		float c2 = (float)0.016571045;// 0.016571045;
-		float c3 = (float)0.00002160858;//0.00002160858
-
+		// float c1 = (float)3.125; // meilleur valeur : 3.125
+		// float c2 = (float)0.016571045;// 0.016571045;
+		// float c3 = (float)0.00002160858;//0.00002160858
+		float c1 = (float)13176796*power(2,-22);
+		float c2 = (float)-11464520*power(2,-45);
+		float c3 = (float)-15186280*power(2,-67);
 		if ( x > PI/2 || x < -PI/2){
-			sign = !sign;
+			minus = !minus;
 			if(x>0){
 				x = x-c1;
 				x = x-c2;
 				x = x-c3;
 			}
 			else{
-				x = x+c3;
-				x = x+c2;
 				x = x+c1;
+				x = x+c2;
+				x = x+c3;
 			}
 		}
 		//réduction sur [-PI/4;PI/4]
-		c1 = (float)1.5707855; // meilleur valeur :1.5707855
-		c2 = (float)0.00001082679; // 0.00001082679
-		// c1=(float);
-		// c2 = (float);
-		// float c3 = (float);
+		// c1 = (float)1.5707855 ; // meilleur valeur :1.5707855
+		// c2 = (float)0.00001082679; // 0.00001082679
+		// test : 618 erreurs
+		c1 = (float)13176796*power(2,-23);
+		c2 = (float)-11464520*power(2,-46);
+		c3 = (float)-15186280*power(2,-68);
+
 		if ( x>PI/4 ) {
 			x = x -c1;
 			x = x -c2;
-			if(sign){
-				return cosTaylor(x);
+			x = x -c3;
+			if(minus){
+				return -cosTaylor(x);
 			}
 			else{
-				return -cosTaylor(x);
+				return cosTaylor(x);
 			}		
 		}
 		else if ( x<-PI/4){
 			x = x + c1;
 			x = x + c2;
+			x = x + c3;
 
-			if(sign){
-				return -cosTaylor(x);
+			if(minus){
+				return cosTaylor(x);
 			}
 			else{
-				return cosTaylor(x);
+				return -cosTaylor(x);
 			}
 		}
 
 		//réduction sur [0;PI/4]
 		if (x<0){
 
-			sign = !sign;
+			minus = !minus;
 			x=-x;
 		}
 
+		//réduction sur [O;PI/8]
+		// c1 = (float)13176796*power(2,-25);
+		// c2 = (float)-11464520*power(2,-48);
+		// c3 = (float)-15186280*power(2,-70);
+		// if ( x>PI/8 ) {
+		// 	x = x -c1;
+		// 	x = x -c2;
+		// 	x = x -c3;
+		// 	if(minus){
+		// 		return -sinTaylor(x)*cosTaylor(PI/8) - cosTaylor(x)*sinTaylor(PI/8);
+		// 	}
+		// 	else{
+		// 		return sinTaylor(x)*cosTaylor(PI/8) + cosTaylor(x)*sinTaylor(PI/8);
+		// 	}		
+		// }
+		
 		float res=x;
 		float temp=x;
 		int i=1;
 		while ( abs(temp)> ulp(res)) {
+		//while ( i < 4){
 			temp = - temp*power(x,2)/((2*i + 1)*2*i);
 			res = res + temp ;
 			i++;
 		}
-		if(sign){
-			return res ;
+		if(minus){
+			return -res ;
 		}
 		else{
-			return -res ;
+			return res ;
 		}
 	}
 
@@ -265,50 +292,84 @@ public class Math_deca{
 		x = reductionCodyAndWaite(x) ;
 
 		//réduction sur ]-PI/2; PI/2]
-		boolean sign = true;
-		float c1 = (float)3.0; //PI-epsilon
-		float c2 = (float)0.14159265359;
+		boolean minus = false;
+		// float c1 = (float)3.125; // meilleur valeur : 3.125
+		// float c2 = (float)0.016571045;// 0.016571045;
+		// float c3 = (float)0.00002160858;//0.00002160858
+
+		float c1 = (float)13176796*power(2,-22);
+		float c2 = (float)-11464520*power(2,-45);
+		float c3 = (float)-15186280*power(2,-67);
+
+
 		if ( x > PI/2 || x < -PI/2 ){
-			sign = !sign;
+			minus = !minus;
 			if (x>0){
-				x = x -c1;
-				x = x -c2;
+				x = x - c1;
+				x = x - c2;
+				x = x - c3;
 			}
 			else{
-				x = x +c1;
-				x = x +c2;
+				x = x + c1;
+				x = x + c2;
+				x = x + c3;
 			}
 		}
 
 		//réduction sur [-PI/4;PI/4]
-		c1 = (float)1.5;
-		c2 = (float) 0.07079632679;
+		//meilleurs valeurs :
+		// c1 = (float)1.5703125;
+		// c2 = (float)4.825592E-4;
+		// c3 = (float)0.00000126759;
+
+		c1 = (float)13176796*power(2,-23);
+		c2 = (float)-11464520*power(2,-46);
+		c3 = (float)-15186280*power(2,-68);
+
+
+		
 		if ( x > PI/4 ) {
-			x=x-c1;
-			x=x-c2;
-			if(sign){
-				return -sinTaylor(x);
+			x = x - c1;
+			x = x - c2;
+			x = x - c3;
+			if(minus){
+				return sinTaylor(x);
 			}
 			else{
 
-				return sinTaylor(x);
+				return -sinTaylor(x);
 			}
 		}
 		else if ( x < -PI/4 ){
-			x=x+c1;
-			x=x+c2;
-			if(sign){
-				return sinTaylor(x);
+			x = x + c1;
+			x = x + c2;
+			x = x + c3;
+			if(minus){
+				return -sinTaylor(x);
 			}
 			else{
-				return -sinTaylor(x);
+				return sinTaylor(x);
 			}
 		}
 
 		if (x<0){
 			x=-x;
 		}
-
+		// c1 = (float)13176796*power(2,-25);
+		// c2 = (float)-11464520*power(2,-48);
+		// c3 = (float)-15186280*power(2,-70);
+		// if ( x>PI/8 ) {
+		// 	x = x -c1;
+		// 	x = x -c2;
+		// 	x = x -c3;
+		// 	if(minus){
+		// 		return -cosTaylor(x)*cosTaylor(PI/8) + sinTaylor(x)*sinTaylor(PI/8);
+		// 	}
+		// 	else{
+		// 		return cosTaylor(x)*cosTaylor(PI/8) - sinTaylor(x)*sinTaylor(PI/8);
+		// 	}		
+		// }
+		
 		float res = 1;
 		float temp=1;
 		int i=1;
@@ -319,12 +380,11 @@ public class Math_deca{
 			res=res+temp;
 			i ++ ;
 		}
-		if(sign){
-		return res ;
-
+		if(minus){
+			return -res ;
 		}
 		else{
-			return -res ;
+			return res ;
 		}
 	}
 
@@ -333,23 +393,22 @@ public class Math_deca{
 	// Réduction  l'intervalle ]-PI,PI]
 	// retourne un nb positif
 	public static float reductionCodyAndWaite(float x){
-		if(abs(x)<PI){
+		if(abs(x)<= 2*PI){
 			return x ;
 		}
 		int k = 0 ;
-		float c1 = (float)3.125; // meilleur valeur : 3.140625
-		float c2 = (float)0.016571045;// 9.676218E-4
-		float c3 = (float)0.00002160858;//3.17897931e-8
+		float c1 = (float)13176796*power(2,-21);
+		float c2 = (float)-11464520*power(2,-44);
+		float c3 = (float)-15186280*power(2,-66);
 		float xTemp = abs(x) ;
 		boolean sign = ( x > 0 )? true : false ;
-		while ( xTemp >= PI){
-			xTemp = xTemp -PI;
+		while ( xTemp >= 2*PI){
+			xTemp = xTemp -(float)2*PI;
 			k = (sign)?k+1:k-1 ;
 		}
 		x = x - k*c1 ;
 		x = x - k*c2 ;
 		x = x - k*c3 ;
-		
 		return x ;
 	}
 

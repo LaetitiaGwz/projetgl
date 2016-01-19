@@ -10,48 +10,48 @@ public class Test_Math_deca{
 
 	public static void main(String args[]){
 
-		System.out.println(ANSI_GREEN+ "debut du test pour ulp\n" + ANSI_RESET);
+		// System.out.println(ANSI_GREEN+ "debut du test pour ulp\n" + ANSI_RESET);
 		int nbErreur = 0 ;
 		int nb = 0 ;		
-		for (float x = new Float(-Math.pow(2,-5)) ; x<Math.pow(2,-5); x = x + (float)Math.pow(2,-25)){ 
-		// avec un pas de pow(2,-14), il y a un problème pour 1024 + pas = 1024 -> boucle infini
-			nb ++ ;
-			if (Math.ulp(x) != Math_deca.ulp(x)) {
-				System.out.println("Erreur pour x="+x);
-				System.out.println("Math.ulp donne : " + Math.ulp(x));
-				System.out.println("Math_deca donne : " + Math_deca.ulp(x));
-				System.out.println();
-				nbErreur ++;
-			}
-		}
-		System.out.println(ANSI_GREEN + "fin du test pour ulp. Erreur rencontré : " 
-			+ANSI_RED+ nbErreur + ANSI_GREEN +"sur " +nb+" tests.\n "+ ANSI_RESET);
+		// for (float x = new Float(-Math.pow(2,-5)) ; x<Math.pow(2,-5); x = x + (float)Math.pow(2,-25)){ 
+		// // avec un pas de pow(2,-14), il y a un problème pour 1024 + pas = 1024 -> boucle infini
+		// 	nb ++ ;
+		// 	if (Math.ulp(x) != Math_deca.ulp(x)) {
+		// 		System.out.println("Erreur pour x="+x);
+		// 		System.out.println("Math.ulp donne : " + Math.ulp(x));
+		// 		System.out.println("Math_deca donne : " + Math_deca.ulp(x));
+		// 		System.out.println();
+		// 		nbErreur ++;
+		// 	}
+		// }
+		// System.out.println(ANSI_GREEN + "fin du test pour ulp. Erreur rencontré : " 
+		// 	+ANSI_RED+ nbErreur + ANSI_GREEN +"sur " +nb+" tests.\n "+ ANSI_RESET);
 		
-		System.out.println(ANSI_GREEN+ "début du test de tan \n"+ ANSI_RESET);
-		nbErreur = 0 ;
-		nb = 0 ;
+		// System.out.println(ANSI_GREEN+ "début du test de tan \n"+ ANSI_RESET);
+		// nbErreur = 0 ;
+		// nb = 0 ;
 		float diffRelative = (float) 0.0 ;
 		float diff = (float) 0.0 ;
-		long temps = System.nanoTime();
-		for (float x = (float)0.0 ; x < (float)Math.PI/2; x = x + (float)Math.pow(2,-13)){ 
-			nb ++ ;
-			diffRelative = Math.abs(((float)Math_deca.tanCordic(x) - (float)Math.tan(x))/(float)Math.tan(x));
-			diff = Math.abs(((float)Math_deca.tanCordic(x) - (float)Math.tan(x))) ;
-			if ( diff >= 10*Math_deca.ulp((float)Math.tan(x))){ 
-			//if ( diffRelative >= Math.pow(10,-3)) {
-				// System.out.println("Précision (10.ulp(tan(x))) : " + 10*Math_deca.ulp((float)Math.tan(x)));
-				// System.out.println("Erreur pour x="+x);
-				// System.out.println("Math_deca.tanCordic : "+Math_deca.tanCordic(x));
-				// System.out.println("Math.tan : "+(float)Math.tan(x));
-				// System.out.println("différence : " + diff);
-				// System.out.println("différence relative: " + diffRelative);
-				// System.out.println();
-				nbErreur ++;
-			}
-		}	
-		System.out.println(ANSI_GREEN+"fin du test de tan. Erreur rencontré : " 
-			+ANSI_RED+ nbErreur +  ANSI_GREEN+ "sur " +nb+
-			" tests. \n" +ANSI_RESET);
+		// long temps = System.nanoTime();
+		// for (float x = (float)0.0 ; x < (float)Math.PI/2; x = x + (float)Math.pow(2,-13)){ 
+		// 	nb ++ ;
+		// 	diffRelative = Math.abs(((float)Math_deca.tanCordic(x) - (float)Math.tan(x))/(float)Math.tan(x));
+		// 	diff = Math.abs(((float)Math_deca.tanCordic(x) - (float)Math.tan(x))) ;
+		// 	if ( diff >= 10*Math_deca.ulp((float)Math.tan(x))){ 
+		// 	//if ( diffRelative >= Math.pow(10,-3)) {
+		// 		// System.out.println("Précision (10.ulp(tan(x))) : " + 10*Math_deca.ulp((float)Math.tan(x)));
+		// 		// System.out.println("Erreur pour x="+x);
+		// 		// System.out.println("Math_deca.tanCordic : "+Math_deca.tanCordic(x));
+		// 		// System.out.println("Math.tan : "+(float)Math.tan(x));
+		// 		// System.out.println("différence : " + diff);
+		// 		// System.out.println("différence relative: " + diffRelative);
+		// 		// System.out.println();
+		// 		nbErreur ++;
+		// 	}
+		// }	
+		// System.out.println(ANSI_GREEN+"fin du test de tan. Erreur rencontré : " 
+		// 	+ANSI_RED+ nbErreur +  ANSI_GREEN+ "sur " +nb+
+		// 	" tests. \n" +ANSI_RESET);
 		
 		nbErreur = 0 ;
 		nb = 0 ;
@@ -117,27 +117,27 @@ public class Test_Math_deca{
 		// 	+ANSI_RED+ nbErreur + ANSI_GREEN+" sur " +nb+ "tests.\n"+ANSI_RESET);
 
 
-		System.out.println(ANSI_GREEN+"début du test de sinTaylor\n"+ANSI_RESET);
-		nbErreur=0;
-		nb=0;
+		// System.out.println(ANSI_GREEN+"début du test de sinTaylor\n"+ANSI_RESET);
+		// nbErreur=0;
+		// nb=0;
 		double diffMean = 0 ;
 		float diffMax = 0 ;
-		for(float x = (float)Math.PI/4; x <(float)Math.PI*2 ;x += (float) Math.pow(2,-13)){
-		//for(float x = 100; x <105 ;x += (float) Math.pow(2,-13)){
+		for(float x = (float)Math.PI*3/2; x <(float)Math.PI*5/2 ;x += (float) Math.pow(2,-15)){
+		//for(float x = 0; x <(float)Math.PI/8 ;x += (float) Math.pow(2,-23)){
 			diffRelative = Math.abs(((float)Math.sin(x) - Math_deca.sinTaylor(x))/(float)Math.sin(x));
 			diff =Math.abs(((float)Math.sin(x) - Math_deca.sinTaylor(x)));
 			nb ++ ;
-			//if ( diffRelative >= Math.pow(10,-3)) {
-			if ( diff > 2*(float)Math.ulp((float)Math.sin(x))){
-				diffMax = (diff/Math_deca.ulp((float)Math.sin(x)) >diffMax)?diff/Math_deca.ulp((float)Math.sin(x)):diffMax;
-				diffMean += diff/Math_deca.ulp((float)Math.sin(x));
+			diffMax = (diff/Math_deca.ulp((float)Math.sin(x)) >diffMax)?diff/Math_deca.ulp((float)Math.sin(x)):diffMax;
+			diffMean += diff/Math_deca.ulp((float)Math.sin(x));
+			if ( diff > 30*(float)Math.ulp((float)Math.sin(x))){
+				
 				nbErreur ++;
-				System.out.println(diffMean);
-				System.out.println("Erreur pour x="+x);
-				System.out.println("Math_deca.sinTaylor : "+Math_deca.sinTaylor(x));
-				System.out.println("Math.sin : "+(float)Math.sin(x));
-				System.out.println("différence en ulp : " + diff/Math_deca.ulp((float)Math.sin(x)));
-				System.out.println();
+				// System.out.println(diffMean);
+				// System.out.println("Erreur pour x="+x);
+				// System.out.println("Math_deca.sinTaylor : "+Math_deca.sinTaylor(x));
+				// System.out.println("Math.sin : "+(float)Math.sin(x));
+				// System.out.println("différence en ulp : " + diff/Math_deca.ulp((float)Math.sin(x)));
+				// System.out.println();
 
 
 			}
@@ -147,34 +147,33 @@ public class Test_Math_deca{
 			+ANSI_RED+ nbErreur + ANSI_GREEN+" sur " +nb+ "tests.\n"+ANSI_GREEN+"Erreur moyenne en ulp : " 
 			+ANSI_RED+ diffMean+ANSI_GREEN+", Erreur max en ulp : " 
 			+ANSI_RED+ diffMax+ANSI_RESET);
-
 		
 		System.out.println(ANSI_GREEN+"début du test de cosTaylor\n"+ANSI_RESET);
 		nbErreur=0;
 		nb=0;
 		diffMax = 0 ;
-		for(float x = -(float)Math.PI/4 ; x < (float)Math.PI/4 ; x = x + (float) Math.pow(2,-20)){
+		diffMean = 0 ;
+		for(float x = 0 ; x < (float)Math.PI/2  ; x = x + (float) Math.pow(2,-15)){
 
 			diffRelative = Math.abs(((float)Math.cos(x) - Math_deca.cosTaylor(x))/(float)Math.cos(x));
 			diff =Math.abs(((float)Math.cos(x) - Math_deca.cosTaylor(x)));
 			diffMax = (diff/Math_deca.ulp((float)Math.cos(x)) >diffMax)?diff/Math_deca.ulp((float)Math.cos(x)):diffMax;
-				
+			diffMean += diff/Math_deca.ulp((float)Math.cos(x));	
 			nb ++ ;
-			//if ( diffRelative >= Math.pow(10,-3)) {
-
-			if ( diff > 2*(float)Math.ulp((float)Math.cos(x))){
-				System.out.println("Erreur pour x="+x);
-				System.out.println("Math_deca.cosTaylor : "+Math_deca.cosTaylor(x));
-				System.out.println("Math.cos : "+(float)Math.cos(x));
-				System.out.println("différence en ulp : " + diff/Math_deca.ulp((float)Math.cos(x)));
-				System.out.println();
+			if ( diff > (float)Math.ulp((float)Math.cos(x))){
+				// System.out.println("Erreur pour x="+x);
+				// System.out.println("Math_deca.cosTaylor : "+Math_deca.cosTaylor(x));
+				// System.out.println("Math.cos : "+(float)Math.cos(x));
+				// System.out.println("différence en ulp : " + diff/Math_deca.ulp((float)Math.cos(x)));
+				// System.out.println();
 				nbErreur ++;
 			}
 			
 		}
-
+		diffMean/=(nbErreur);
 		System.out.println(ANSI_GREEN+"fin du test de cosTaylor. Erreur rencontré : "
-		 +ANSI_RED+ nbErreur + ANSI_GREEN+" sur " +nb+ "tests.\n"+ANSI_GREEN+"Erreur max en ulp : " 
+			+ANSI_RED+ nbErreur + ANSI_GREEN+" sur " +nb+ "tests.\n"+ANSI_GREEN+"Erreur moyenne en ulp : " 
+			+ANSI_RED+ diffMean+ANSI_GREEN+", Erreur max en ulp : " 
 			+ANSI_RED+ diffMax+ANSI_RESET);
 
 
