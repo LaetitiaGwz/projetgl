@@ -64,4 +64,17 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         setType(opType);
         return opType;
     }
+
+    @Override
+    protected void codeGenOPRight(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+        if(getRightOperand().getUtilisation()){
+            compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+        }
+    }
+
+    @Override
+    protected void codeGenOPLeft(DecacCompiler compiler) {
+        this.codeGenInst(compiler);
+    }
 }

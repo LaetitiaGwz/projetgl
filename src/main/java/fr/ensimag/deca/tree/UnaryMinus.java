@@ -42,20 +42,8 @@ public class UnaryMinus extends AbstractUnaryExpr {
         compiler.getTableRegistre().setEtatRegistreTrue(compiler.getTableRegistre().getLastregistre());
         compiler.addInstruction(new SUB(getOperand().getdValue(), unRight));
 
-        int a = 1 + (-5);
-
         this.setdValue(unRight);
         this.setUtilisation();
-    }
-
-    @Override
-    protected void codeGenOPRight(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-    }
-
-    @Override
-    protected void codeGenOPLeft(DecacCompiler compiler){
-        this.codeGenInst(compiler);
     }
 
     @Override

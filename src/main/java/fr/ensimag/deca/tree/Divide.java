@@ -44,18 +44,4 @@ public class Divide extends AbstractOpArith {
         this.setdValue(divRight);
     }
 
-    @Override
-    protected void codeGenOPRight(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-        if(getRightOperand().getUtilisation()){
-            compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
-        }
-    }
-
-    @Override
-    protected void codeGenOPLeft(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-    }
-
-
 }

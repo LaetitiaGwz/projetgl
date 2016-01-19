@@ -57,19 +57,4 @@ public class Modulo extends AbstractOpArith {
         this.setdValue(modRight);
     }
 
-    @Override
-    protected void codeGenOPRight(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-        if(this.getUtilisation()){
-            compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
-        }
-    }
-
-    @Override
-    protected void codeGenOPLeft(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-    }
-
-
-
 }
