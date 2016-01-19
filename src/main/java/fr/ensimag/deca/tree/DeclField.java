@@ -3,6 +3,13 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.FLOAT;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
@@ -58,7 +65,30 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     protected void codeGenDecl(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        getVarName().codeGenInit(compiler);
+        DAddr adress = this.getVarName().getNonTypeDefinition().getOperand();
+        if(getInitialization().getExpression()!=null){
+            getInitialization().codeGenInit(compiler);
+            Register regLeft = (Register) this.getInitialization().getExpression().getdValue();
+            compiler.addInstruction(new LOAD(regLeft,Register.R0));
+            compiler.addInstruction(new STORE(Register.R0, adress));
+        }
+        else{
+
+            if(getVarName().getType().isInt()){
+                compiler.addInstruction(new LOAD(new ImmediateInteger(0),Register.R0));
+                compiler.addInstruction(new STORE(Register.R0, adress));
+            }
+            else if(getVarName().getType().isFloat()){
+                compiler.addInstruction(new LOAD(new ImmediateFloat(0),Register.R0));
+                compiler.addInstruction(new STORE(Register.R0, adress));
+            }
+            else if(getVarName().getType().isBoolean()){
+                compiler.addInstruction(new LOAD(new ImmediateInteger(0),Register.R0));
+                compiler.addInstruction(new STORE(Register.R0, adress));
+            }
+        }
+        compiler.resetTableRegistre();
     }
 
     @Override
