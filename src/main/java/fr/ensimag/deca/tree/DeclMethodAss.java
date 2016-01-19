@@ -1,7 +1,10 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -11,26 +14,23 @@ import java.io.PrintStream;
  * @author gl41
  * @date 01/01/2016
  */
-public class DeclMethod extends AbstractDeclMethod {
+public class DeclMethodAss extends AbstractDeclMethod {
 
     AbstractIdentifier name;
     AbstractIdentifier ret;
     ListDeclParam params;
-    ListInst body;
-    ListDeclVarSet declVars;
+    String code;
 
-    public DeclMethod(AbstractIdentifier name, AbstractIdentifier ret, ListDeclParam params, ListInst body, ListDeclVarSet declVars) {
+    public DeclMethodAss(AbstractIdentifier name, AbstractIdentifier ret, ListDeclParam params, String code) {
         Validate.notNull(name);
         Validate.notNull(ret);
         Validate.notNull(params);
-        Validate.notNull(body);
-        Validate.notNull(declVars);
+        Validate.notNull(code);
 
         this.name = name;
         this.ret = ret;
         this.params = params;
-        this.body = body;
-        this.declVars = declVars;
+        this.code = code;
     }
 
     @Override
@@ -61,15 +61,17 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     protected
     void iterChildren(TreeFunction f) {
+        name.iter(f);
         ret.iter(f);
         params.iter(f);
-        body.iter(f);
+        //code.iter(f);
     }
     
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
+        name.prettyPrint(s, prefix, false);
         ret.prettyPrint(s, prefix, false);
         params.prettyPrint(s, prefix, false);
-        body.prettyPrint(s, prefix, true);
+        //code.prettyPrint(s, prefix, true);
     }
 }

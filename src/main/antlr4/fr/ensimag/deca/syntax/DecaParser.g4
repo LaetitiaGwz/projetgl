@@ -535,6 +535,7 @@ class_body returns[ListDeclMethod methods, ListDeclFieldSet fields]
     $fields = new ListDeclFieldSet();
 }
     : (m=decl_method {
+            $methods.add($m.tree);
         }
       | f=decl_field_set {
             $fields.add($f.tree);
@@ -600,21 +601,29 @@ decl_field returns[AbstractDeclField tree]
     ;
 
 //TODO
-decl_method
+decl_method returns[AbstractDeclMethod tree]
 @init {
 }
     : type ident OPARENT params=list_params CPARENT (block {
+            $tree = new DeclMethod($ident.tree, $type.tree, $list_params.tree, $block.insts, $block.decls);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
+            $tree = new DeclMethodAss($ident.tree, $type.tree, $list_params.tree, $code.text);
         }
       ) {
+            setLocation($tree, $type.start);
         }
     ;
 
 //TODO
-list_params
+list_params returns[ListDeclParam tree]
+@init {
+    $tree = new ListDeclParam();
+}
     : (p1=param {
+            $tree.add($p1.tree);
         } (COMMA p2=param {
+            $tree.add($p2.tree);
         }
       )*)?
     ;
@@ -631,7 +640,10 @@ multi_line_string returns[String text, Location location]
     ;
 
 //TODO
-param
+param returns[AbstractDeclParam tree]
     : type ident {
+            $tree = new DeclParam($type.tree, $ident.tree);
+            setLocation($tree, $type.start);
+            setLocation($ident.tree, $type.start);
         }
     ;

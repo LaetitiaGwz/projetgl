@@ -14,7 +14,7 @@ import java.io.PrintStream;
  * @author gl41
  * @date 01/01/2016
  */
-public class DeclParam extends AbstractDeclField {
+public class DeclParam extends AbstractDeclParam {
 
     public AbstractIdentifier getVarName() {
         return varName;
@@ -23,7 +23,7 @@ public class DeclParam extends AbstractDeclField {
     private AbstractIdentifier type;
     private AbstractIdentifier varName;
 
-    public DeclParam(AbstractIdentifier varName, Identifier type) {
+    public DeclParam(AbstractIdentifier varName, AbstractIdentifier type) {
         Validate.notNull(varName);
         Validate.notNull(type);
         this.varName = varName;
@@ -31,8 +31,15 @@ public class DeclParam extends AbstractDeclField {
     }
 
     @Override
-    protected void verifyDeclField(Type t, Visibility visibility, DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass)
+    protected void verifyMembers(Type typeDeclaration, DecacCompiler compiler,
+                                 EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    protected void verifyBody(Type typeDeclaration, DecacCompiler compiler,
+                                 EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
