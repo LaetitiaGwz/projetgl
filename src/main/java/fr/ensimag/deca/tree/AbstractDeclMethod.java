@@ -40,8 +40,7 @@ public abstract class AbstractDeclMethod extends Tree {
      *            in the main program.
      */
     protected abstract void verifyBody(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass,
-            Type returnType) throws ContextualError;
+            EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
     
 
     /**

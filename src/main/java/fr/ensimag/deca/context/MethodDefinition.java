@@ -41,7 +41,13 @@ public class MethodDefinition extends NonTypeDefinition {
 
     private final Signature signature;
     private Label label;
-    
+
+    private EnvironmentExp body;
+
+    public EnvironmentExp getBody() {
+        return body;
+    }
+
     /**
      * 
      * @param type Return type of the method

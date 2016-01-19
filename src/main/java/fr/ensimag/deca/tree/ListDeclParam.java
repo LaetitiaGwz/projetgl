@@ -32,7 +32,9 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
 
     void verifyBody(DecacCompiler compiler, EnvironmentExp localEnv,
                             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        for(AbstractDeclParam p : getList()) {
+            p.verifyBody(compiler, localEnv, currentClass);
+        }
     }
 
     public void codeGenListDecl(DecacCompiler compiler) {

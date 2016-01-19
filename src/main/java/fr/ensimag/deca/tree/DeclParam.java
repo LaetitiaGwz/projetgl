@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -34,14 +31,24 @@ public class DeclParam extends AbstractDeclParam {
     protected Type verifyMembers(DecacCompiler compiler,
                                  EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+
         return type.verifyType(compiler);
     }
 
     @Override
-    protected void verifyBody(Type typeDeclaration, DecacCompiler compiler,
+    protected void verifyBody(DecacCompiler compiler,
                                  EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        VariableDefinition paramDef = new VariableDefinition(type.getType(), getLocation());
+
+        try {
+            localEnv.declare(compiler.getSymbols().create(varName.getName().getName()), paramDef);
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new ContextualError("Double definition of variable " + varName.getName().getName(), getLocation());
+        }
+        
+        varName.verifyExpr(compiler, localEnv, currentClass);
     }
 
 

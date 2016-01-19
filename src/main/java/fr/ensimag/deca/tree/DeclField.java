@@ -52,13 +52,8 @@ public class DeclField extends AbstractDeclField {
     protected void verifyBody(Type t, Visibility visibility, DecacCompiler compiler,
                                  EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-    @Override
-    protected void verifyDeclField(Type t, Visibility visibility, DecacCompiler compiler,
-                                            EnvironmentExp localEnv, ClassDefinition currentClass)
-            throws ContextualError{
-        throw new UnsupportedOperationException("not yet implemented");
+
+        initialization.verifyInitialization(compiler, t, localEnv, currentClass);
     }
 
     @Override

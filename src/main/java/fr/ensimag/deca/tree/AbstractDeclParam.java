@@ -17,7 +17,7 @@ public abstract class AbstractDeclParam extends Tree {
     protected abstract Type verifyMembers(DecacCompiler compiler,
                                           EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
 
-    protected abstract void verifyBody(Type typeDeclaration, DecacCompiler compiler,
+    protected abstract void verifyBody(DecacCompiler compiler,
                                           EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
 
     /**

@@ -45,23 +45,25 @@ public class DeclFieldSet extends AbstractDeclFieldSet {
     }
 
     @Override
-    protected Type verifyMembers(DecacCompiler compiler,
+    protected void verifyMembers(DecacCompiler compiler,
                                  EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
 
         Type t = type.verifyType(compiler);
+        this.type.setType(t);
 
         for(AbstractDeclField field : declFields.getList()) {
             field.verifyMembers(t, visibility, compiler, localEnv, currentClass);
         }
-        return t;
     }
 
     @Override
-    protected Type verifyBody(DecacCompiler compiler,
+    protected void verifyBody(DecacCompiler compiler,
                                  EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        for(AbstractDeclField field : declFields.getList()) {
+            field.verifyBody(type.getType(), visibility, compiler, localEnv, currentClass);
+        }
     }
 
     @Override

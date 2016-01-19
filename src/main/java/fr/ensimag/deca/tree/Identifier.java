@@ -180,6 +180,7 @@ public class Identifier extends AbstractIdentifier {
             throw new ContextualError("Undefinded variable " + getName(), getLocation());
         }
         setDefinition(t);
+        setType(t.getType());
         return t.getType();
     }
 
@@ -192,6 +193,7 @@ public class Identifier extends AbstractIdentifier {
         }
 
         setDefinition(t);
+        setType(t.getType());
         return t.getType();
     }
 
@@ -204,6 +206,7 @@ public class Identifier extends AbstractIdentifier {
         }
 
         setDefinition(c);
+        setType(c.getType());
         return c.getType();
     }
     

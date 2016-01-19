@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import com.sun.tools.doclint.Env;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -18,6 +19,8 @@ public class DeclMethod extends AbstractDeclMethod {
     ListDeclParam params;
     ListInst body;
     ListDeclVarSet declVars;
+
+    EnvironmentExp methodEnv;
 
     public DeclMethod(AbstractIdentifier name, AbstractIdentifier ret, ListDeclParam params, ListInst body, ListDeclVarSet declVars) {
         Validate.notNull(name);
@@ -52,10 +55,15 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     protected void verifyBody(DecacCompiler compiler,
-                              EnvironmentExp localEnv, ClassDefinition currentClass,
-                              Type returnType)
+                              EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        // On instancie l'environnement de la méthode dont l'env parent est celui de la classe
+        methodEnv = new EnvironmentExp(currentClass.getMembers());
+
+        params.verifyBody(compiler, methodEnv, currentClass);
+        body.verifyListInst(compiler, methodEnv, currentClass, ret.getType());
+        declVars.verifyListDeclVariable(compiler, methodEnv, currentClass);
     }
 
     @Override
