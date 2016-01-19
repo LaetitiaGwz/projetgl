@@ -115,22 +115,7 @@ public class DeclClass extends AbstractDeclClass {
             compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
             name.codeGenInitClass(compiler,superClass.getNbMethod()+methods.size());
         }
-        //ensuite, c'est pareil pour les deux, on ajoute les labels des méthodes
-        if(superClass!=null){// on rajoute les méthodes de la superclasse
-            for(int i=0;i<superClass.getNbMethod();i++){
-                RegisterOffset source= new RegisterOffset(superClass.getNbGB()+1+i,Register.GB);
-                compiler.addInstruction(new LOAD(source,Register.R0));
-                compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
-                compiler.getRegManager().incrementGB();
-            }
 
-        }
-        for(AbstractDeclMethod a : methods.getList()) {// on ajoute enfin les methodes de la classe
-            LabelOperand ajout = new LabelOperand(new Label("code." + name.getName().getClass().toString() + a.getName()));
-            compiler.addInstruction(new LOAD(ajout,Register.R0));
-            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
-            compiler.getRegManager().incrementGB();
-        }
 
     }
 

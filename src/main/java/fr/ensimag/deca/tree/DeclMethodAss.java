@@ -42,8 +42,7 @@ public class DeclMethodAss extends AbstractDeclMethod {
 
     @Override
     protected void verifyBody(DecacCompiler compiler,
-                              EnvironmentExp localEnv, ClassDefinition currentClass,
-                              Type returnType)
+                              EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }

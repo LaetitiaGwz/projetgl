@@ -1,0 +1,28 @@
+// Description:
+//    Déclaration d'une classe avec methode
+//
+// Resultats:
+//    doit pouvoir visualiser l'arbre avec les 3 methodes et la method de la classe objet
+//
+// Historique:
+//    cree le 19/01/2016
+
+class Point2D{
+
+        protected int x;
+        protected int y;
+
+        void incremente(){
+           x = x + 1;
+            y = y + 1;
+        }
+
+        int getX(){
+            return x;
+        }
+
+        int getY(){
+            return y;
+        }
+
+}
