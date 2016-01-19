@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
