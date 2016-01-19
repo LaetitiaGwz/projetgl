@@ -1,13 +1,18 @@
 package fr.ensimag.deca.tree;
 
-//import com.sun.tools.doclint.Env;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.ListeMethodeClasse;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
+import java.lang.reflect.Method;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -18,10 +23,9 @@ import java.io.PrintStream;
 public class DeclClass extends AbstractDeclClass {
     private static final Logger LOG = Logger.getLogger(Class.class);
 
-    EnvironmentExp classEnv;
-
     protected AbstractIdentifier name;
     protected AbstractIdentifier superClass;
+    private ListeMethodeClasse tableMethode;
 
     protected ListDeclFieldSet declFields;
     protected ListDeclMethod methods;
@@ -52,7 +56,8 @@ public class DeclClass extends AbstractDeclClass {
         ClassType classType = new ClassType(compiler.getSymbols().create(name.getName().getName()), getLocation(), superClassDef);
         this.name.setType(classType);
 
-        name.setDefinition(new ClassDefinition(classType, getLocation(), superClassDef));
+        ClassDefinition classDef = new ClassDefinition(classType, getLocation(), superClassDef);
+        name.setDefinition(classDef);
 
         // On déclare la class dans l'envRoot
         // Erreur si déjà existante
@@ -70,14 +75,14 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        this.classEnv = new EnvironmentExp(compiler.getRootEnv());
-        methods.verifyMethodsMembers(compiler, classEnv, name.getClassDefinition());
-        declFields.verifyMembers(compiler, classEnv, name.getClassDefinition());
+        methods.verifyMethodsMembers(compiler, name.getClassDefinition().getMembers(), name.getClassDefinition());
+        declFields.verifyMembers(compiler, name.getClassDefinition().getMembers(), name.getClassDefinition());
     }
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-
+        methods.verifyMethodsBody(compiler, name.getClassDefinition().getMembers(), name.getClassDefinition());
+        declFields.verifyBody(compiler, name.getClassDefinition().getMembers(), name.getClassDefinition());
     }
 
 
@@ -97,4 +102,38 @@ public class DeclClass extends AbstractDeclClass {
         declFields.iter(f);
     }
 
+    protected void codePreGen1(DecacCompiler compiler){
+        if(superClass==null){
+            compiler.addInstruction(new LOAD(new NullOperand(),Register.R0));
+            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
+            name.codeGenInitClass(compiler,methods.size());
+
+            //on stock dans l'identifier l'adresse de start, cela incremente GB
+        }
+        else{// on recupère l'adresse de la superclasse
+            compiler.addInstruction(new LEA(superClass.getNonTypeDefinition().getOperand(),Register.R0));
+            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
+            name.codeGenInitClass(compiler,superClass.getNbMethod()+methods.size());
+        }
+        //ensuite, c'est pareil pour les deux, on ajoute les labels des méthodes
+        if(superClass!=null){// on rajoute les méthodes de la superclasse
+            for(int i=0;i<superClass.getNbMethod();i++){
+                RegisterOffset source= new RegisterOffset(superClass.getNbGB()+1+i,Register.GB);
+                compiler.addInstruction(new LOAD(source,Register.R0));
+                compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
+                compiler.getRegManager().incrementGB();
+            }
+
+        }
+        for(AbstractDeclMethod a : methods.getList()) {// on ajoute enfin les methodes de la classe
+            LabelOperand ajout = new LabelOperand(new Label("code." + name.getName().getClass().toString() + a.getName()));
+            compiler.addInstruction(new LOAD(ajout,Register.R0));
+            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
+            compiler.getRegManager().incrementGB();
+        }
+
+    }
+
+    protected void codeGenRemplir(DecacCompiler compiler){
+    }
 }
