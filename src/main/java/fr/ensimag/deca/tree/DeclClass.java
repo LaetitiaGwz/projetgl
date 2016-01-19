@@ -1,14 +1,18 @@
 package fr.ensimag.deca.tree;
 
-//import com.sun.tools.doclint.Env;
-import com.sun.tools.doclint.Env;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.ListeMethodeClasse;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
+import java.lang.reflect.Method;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -21,6 +25,7 @@ public class DeclClass extends AbstractDeclClass {
 
     protected AbstractIdentifier name;
     protected AbstractIdentifier superClass;
+    private ListeMethodeClasse tableMethode;
 
     protected ListDeclFieldSet declFields;
     protected ListDeclMethod methods;
@@ -76,6 +81,8 @@ public class DeclClass extends AbstractDeclClass {
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
+        methods.verifyMethodsBody(compiler, name.getClassDefinition().getMembers(), name.getClassDefinition());
+        declFields.verifyBody(compiler, name.getClassDefinition().getMembers(), name.getClassDefinition());
     }
 
 
@@ -95,4 +102,23 @@ public class DeclClass extends AbstractDeclClass {
         declFields.iter(f);
     }
 
+    protected void codePreGen1(DecacCompiler compiler){
+        if(superClass==null){
+            compiler.addInstruction(new LOAD(new NullOperand(),Register.R0));
+            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
+            name.codeGenInitClass(compiler,methods.size());
+
+            //on stock dans l'identifier l'adresse de start, cela incremente GB
+        }
+        else{// on recupère l'adresse de la superclasse
+            compiler.addInstruction(new LEA(superClass.getNonTypeDefinition().getOperand(),Register.R0));
+            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
+            name.codeGenInitClass(compiler,superClass.getNbMethod()+methods.size());
+        }
+
+
+    }
+
+    protected void codeGenRemplir(DecacCompiler compiler){
+    }
 }

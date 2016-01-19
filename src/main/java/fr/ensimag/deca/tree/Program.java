@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import com.sun.tools.doclint.Env;
 import fr.ensimag.deca.CompilerOptions;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;

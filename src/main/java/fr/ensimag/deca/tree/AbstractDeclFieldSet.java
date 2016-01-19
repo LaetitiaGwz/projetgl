@@ -14,11 +14,11 @@ import fr.ensimag.deca.context.Type;
  */
 public abstract class AbstractDeclFieldSet extends Tree {
 
-    protected abstract Type verifyMembers(DecacCompiler compiler,
+    protected abstract void verifyMembers(DecacCompiler compiler,
                       EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError;
 
-    protected abstract Type verifyBody(DecacCompiler compiler,
+    protected abstract void verifyBody(DecacCompiler compiler,
                                           EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError;
 

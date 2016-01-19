@@ -1,0 +1,27 @@
+// Description:
+//    Déclaration d'une classe avec methodes
+//    Etendant une autre classe
+//
+// Resultats:
+//    inclusion des methodes de la superclass dans celle de la classe
+//    avec les indices correspondant 1 objet
+//    2 pour incremente, 3 getX et 4 getY intouché et ajout de 5 getZ
+//
+// Historique:
+//    cree le 19/01/2016
+#include Point2D.deca
+
+class Point3D extends Point2D{
+
+        protected int z;
+
+        void incremente(){
+            x = x + 1;
+            y = y + 1;
+            z = z + 1;
+        }
+
+        int getZ(){
+            return z;
+        }
+}

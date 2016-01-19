@@ -28,7 +28,9 @@ public class ListDeclFieldSet extends TreeList<AbstractDeclFieldSet> {
 
     void verifyBody(DecacCompiler compiler, EnvironmentExp localEnv,
                     ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        for(AbstractDeclFieldSet field : getList()) {
+            field.verifyBody(compiler, localEnv, currentClass);
+        }
     }
 
     public void codeGenListDecl(DecacCompiler compiler) {

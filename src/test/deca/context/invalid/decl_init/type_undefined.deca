@@ -1,0 +1,10 @@
+// Description:
+//    Déclaration d'une variable de type non défini
+//
+// Resultats:
+//    Line 9 : Type non défini
+// 
+
+{
+    TypeNonDef a;
+}

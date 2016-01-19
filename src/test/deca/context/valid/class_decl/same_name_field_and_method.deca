@@ -1,5 +1,5 @@
 // Description:
-//    Déclaration d'une classe avec un attribut float
+//    Déclaration d'une classe avec un attribut int
 //
 // Resultats:
 //    Aucune erreur
@@ -7,10 +7,14 @@
 // Historique:
 //    cree le 01/01/2016
 
-class test {
-	float a;
+class Test {
+	int b;
+	void b() {
+		c = 2;
+	}
 }
 
 {
 
 }
+

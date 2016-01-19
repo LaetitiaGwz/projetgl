@@ -98,7 +98,8 @@ public class EnvironmentExp {
      *             environment.
      */
     public void declare(Symbol name, NonTypeDefinition def) throws DoubleDefException {
-        if (this.get(name) != null) {
+        Definition res = environment.get(name);
+        if (res != null && (res instanceof NonTypeDefinition)) {
             throw new DoubleDefException();
         }
         else {
@@ -106,7 +107,8 @@ public class EnvironmentExp {
         }
     }
     public void declareClass(Symbol name, ClassDefinition def) throws DoubleDefException {
-        if (this.getClassDef(name) != null) {
+        Definition res = environment.get(name);
+        if (res != null && (res instanceof ClassDefinition)) {
             throw new DoubleDefException();
         }
         else {
@@ -114,7 +116,8 @@ public class EnvironmentExp {
         }
     }
     public void declareType(Symbol name, TypeDefinition def) throws DoubleDefException {
-        if (this.getTypeDef(name) != null) {
+        Definition res = environment.get(name);
+        if (res != null && (res instanceof TypeDefinition)) {
             throw new DoubleDefException();
         }
         else {
