@@ -23,7 +23,7 @@ public class DeclParam extends AbstractDeclParam {
     private AbstractIdentifier type;
     private AbstractIdentifier varName;
 
-    public DeclParam(AbstractIdentifier varName, AbstractIdentifier type) {
+    public DeclParam(AbstractIdentifier type, AbstractIdentifier varName) {
         Validate.notNull(varName);
         Validate.notNull(type);
         this.varName = varName;
@@ -31,10 +31,10 @@ public class DeclParam extends AbstractDeclParam {
     }
 
     @Override
-    protected void verifyMembers(Type typeDeclaration, DecacCompiler compiler,
+    protected Type verifyMembers(DecacCompiler compiler,
                                  EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        return type.verifyType(compiler);
     }
 
     @Override

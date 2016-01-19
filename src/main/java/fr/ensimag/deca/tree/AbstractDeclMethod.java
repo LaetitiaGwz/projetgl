@@ -24,7 +24,7 @@ public abstract class AbstractDeclMethod extends Tree {
      *            Definition of the class containing the instruction, or null in
      *            the main program.
      */
-    protected abstract void verifyMember(DecacCompiler compiler,
+    protected abstract void verifyMembers(DecacCompiler compiler,
            EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
     /**
      * Verify the method body for contextual error.

@@ -18,7 +18,7 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
             ClassDefinition currentClass)
             throws ContextualError {
         for(AbstractDeclMethod method : getList()) {
-            method.verifyMember(compiler, localEnv, currentClass);
+            method.verifyMembers(compiler, localEnv, currentClass);
         }
     }
     public void codeGenListInst(DecacCompiler compiler) {

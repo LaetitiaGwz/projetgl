@@ -34,10 +34,20 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    protected void verifyMember(DecacCompiler compiler,
+    protected void verifyMembers(DecacCompiler compiler,
                                 EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        Type returnType = ret.verifyType(compiler);
+        Signature signature = params.verifyMembers(compiler, localEnv, currentClass);
+
+        MethodDefinition methodDef = new MethodDefinition(returnType, getLocation(), signature, currentClass.incNumberOfMethods());
+
+        try {
+            localEnv.declare(compiler.getSymbols().create(name.getName().getName()), methodDef);
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new ContextualError("Double declaration of method " + name.getName().getName(), getLocation());
+        }
     }
 
     @Override
