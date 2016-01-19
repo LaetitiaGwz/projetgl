@@ -8,12 +8,9 @@
 //    cree le 01/01/2016
 
 class Test {
-	void methodeVide() {
-	}
-	void methodeAvecArgs(int a, float b, boolean c, String d) {
-	}
-	int methodeAvecRetour() {
-		return 0;
+	int b;
+	void b() {
+		c = 2;
 	}
 }
 
