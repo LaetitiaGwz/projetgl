@@ -537,6 +537,7 @@ class_body returns[ListDeclMethod methods, ListDeclFieldSet fields]
     : (m=decl_method {
         }
       | f=decl_field_set {
+            $fields.add($f.tree);
         }
       )*
     ;
@@ -544,6 +545,11 @@ class_body returns[ListDeclMethod methods, ListDeclFieldSet fields]
 //TODO
 decl_field_set returns[AbstractDeclFieldSet tree]
     : visibility type dv=list_decl_field SEMI {
+            assert($visibility.tree != null);
+            assert($type.tree != null);
+            assert($dv.tree != null);
+            $tree = new DeclFieldSet($visibility.tree, $type.tree, $dv.tree);
+            setLocation($tree, $visibility.start);
         }
     ;
 
@@ -587,6 +593,9 @@ decl_field returns[AbstractDeclField tree]
         }
       )? {
             $tree = new DeclField($i.tree, initialization);
+            setLocation($tree, $i.start);
+            setLocation(initialization, $i.start);
+            setLocation($i.tree, $i.start);
         }
     ;
 

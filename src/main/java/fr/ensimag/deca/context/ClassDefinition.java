@@ -21,8 +21,9 @@ public class ClassDefinition extends TypeDefinition {
         return numberOfFields;
     }
 
-    public void incNumberOfFields() {
+    public int incNumberOfFields() {
         this.numberOfFields++;
+        return this.numberOfFields;
     }
 
     public int getNumberOfMethods() {
@@ -59,7 +60,7 @@ public class ClassDefinition extends TypeDefinition {
     }
 
     private final EnvironmentExp members;
-    private final ClassDefinition superClass; 
+    private final ClassDefinition superClass;
 
     public EnvironmentExp getMembers() {
         return members;
@@ -70,6 +71,8 @@ public class ClassDefinition extends TypeDefinition {
         EnvironmentExp parent;
         if (superClass != null) {
             parent = superClass.getMembers();
+            setNumberOfFields(superClass.getNumberOfFields());
+            setNumberOfMethods(superClass.getNumberOfMethods());
         } else {
             parent = null;
         }

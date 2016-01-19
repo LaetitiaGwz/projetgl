@@ -25,13 +25,13 @@ public class NotEquals extends AbstractOpExactCmp {
 
     @Override
     protected void codeGenCMPOP(DecacCompiler compiler){
-        compiler.addInstruction(new BEQ(compiler.getLabel()));
+        compiler.addInstruction(new BEQ(compiler.getLblManager().getLabelFalse()));
 
     }
 
     @Override
     protected void codeGenNot(DecacCompiler compiler){
-        compiler.addInstruction(new BNE(compiler.getLabel()));
+        compiler.addInstruction(new BNE(compiler.getLblManager().getLabelFalse()));
     }
 
 

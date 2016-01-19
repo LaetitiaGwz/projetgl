@@ -34,12 +34,12 @@ public class UnaryMinus extends AbstractUnaryExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         getOperand().codeGenOPRight(compiler);
-        GPRegister unRight= Register.getR(compiler.getTableRegistre().getLastregistre());
+        GPRegister unRight= Register.getR(compiler.getRegManager().getLastregistre());
         if(getType().isInt())
             compiler.addInstruction(new LOAD(new ImmediateInteger(0), unRight));
         else
             compiler.addInstruction(new LOAD(new ImmediateFloat(0), unRight));
-        compiler.getTableRegistre().setEtatRegistreTrue(compiler.getTableRegistre().getLastregistre());
+        compiler.getRegManager().setEtatRegistreTrue(compiler.getRegManager().getLastregistre());
         compiler.addInstruction(new SUB(getOperand().getdValue(), unRight));
 
         this.setdValue(unRight);

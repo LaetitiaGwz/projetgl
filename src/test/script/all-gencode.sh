@@ -14,12 +14,12 @@ cd "$(dirname "$0")"/../../.. || exit 1
 PATH=./src/test/script/launchers:"$PATH"
 
 # Etape C : dossiers source des tests
-ETAPEC_INVALID_DIR=src/test/deca/gencode/invalid
-ETAPEC_VALID_DIR=src/test/deca/gencode/valid
+ETAPEC_INVALID_DIR=src/test/deca/codegen/invalid
+ETAPEC_VALID_DIR=src/test/deca/codegen/valid
 # Etape C : dossiers des résultats
-ETAPEC_OUTPUT_DIR_VALID=src/test/output/gencode/valid
-ETAPEC_OUTPUT_DIR_ERROR=src/test/output/gencode/error
-ETAPEC_OUTPUT_DIR_INVALID=src/test/output/gencode/invalid
+ETAPEC_OUTPUT_DIR_VALID=src/test/output/codegen/valid
+ETAPEC_OUTPUT_DIR_ERROR=src/test/output/codegen/error
+ETAPEC_OUTPUT_DIR_INVALID=src/test/output/codegen/invalid
 
 
 

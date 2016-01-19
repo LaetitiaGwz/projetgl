@@ -1,6 +1,7 @@
 package fr.ensimag.deca;
 
-import fr.ensimag.deca.codegen.GestionRegistre;
+import fr.ensimag.deca.codegen.LabelManager;
+import fr.ensimag.deca.codegen.RegisterManager;
 import fr.ensimag.deca.codegen.MemoryMap;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.syntax.DecaLexer;
@@ -65,87 +66,20 @@ public class DecacCompiler {
     /**
 	 * table des registres et données utiles
      */
-    //TODO : refactor le code ci-dessous
-    private GestionRegistre tableRegistre;
-
-    public GestionRegistre getTableRegistre(){
-        return this.tableRegistre;
+    private RegisterManager regManager;
+    public RegisterManager getRegManager(){
+        return this.regManager;
     }
     public void resetTableRegistre(){
-        this.tableRegistre.resetTableRegistre();
+        this.regManager.resetTableRegistre();
     }
 
-    public void setTableRegistre(int nbRegistre){
-        this.tableRegistre=new GestionRegistre(nbRegistre);
-    }
-    private int GB; // Global Pointer
-    public int getGB(){
-        return this.GB;
-    }
-    public void incrementeGB(){
-        this.GB ++;
-    }
-    public void initializeGB(){
-        this.GB=1;
-    }
-
-    public Label getLabel(){
-        return this.getLabelFalse();
-    }
-    public void setLabel(Label target){
-        this.setLabelFalse(target);
-    }
-
-    private Label labelTrue;
-    public void setLabelTrue(Label target){
-        this.labelTrue=target;
-    }
-    public Label getLabelTrue(){
-        return this.labelTrue;
-    }
-    private Label labelFalse;
-    public void setLabelFalse(Label target){
-        this.labelFalse=target;
-    }
-    public Label getLabelFalse(){
-        return this.labelFalse;
-    }
-    private int nbIf;// pour gerer les labels
-    public void initializeIf(){
-        this.nbIf=0;
-    }
-    public void incrementeIf(){
-        this.nbIf++;
-    }
-    public int getIf(){
-        return this.nbIf;
-    }
-    private int nbWhile;
-    public void initializeWhile(){
-        this.nbWhile=0;
-    }
-    public void incrementeWhile(){
-        this.nbWhile++;
-    }
-    public int getWhile(){
-        return this.nbWhile;
-    }
-    private int nbOr;
-    public void initializeOR(){
-        this.nbOr=0;
-    }
-    public void incrementeOr(){
-        this.nbOr++;
-    }
-    public int getOr(){
-        return this.nbOr;
-    }
-
-    public void initialize(){
-        this.initializeGB();
-        this.initializeIf();
-        this.initializeWhile();
-        this.initializeOR();
+    /**
+     * Gesttion des labels
+     */
+    LabelManager labelManager;
+    public LabelManager getLblManager(){
+        return this.labelManager;
     }
 
     /**
@@ -157,6 +91,8 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        this.regManager = new RegisterManager(compilerOptions.getRegistre());
+        this.labelManager = new LabelManager();
 
         /**
          * Ajouts des symboles prédéfinis
