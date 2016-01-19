@@ -189,15 +189,21 @@ public class Math_deca{
 		}
 		//réduction sur ]-PI/2; PI/2]
 		boolean sign = true;
-		float c1 = (float)3.1415863; // meilleur valeur : 3.1415863
-		float c2 = (float)0.00000635358;//0.00000635358
+		// float c1 = (float)3.1415863; // meilleur valeur : 3.1415863
+		// float c2 = (float)0.00000635358;//0.00000635358
+		float c1 = (float)3.125; // meilleur valeur : 3.125
+		float c2 = (float)0.016571045;// 0.016571045;
+		float c3 = (float)0.00002160858;//0.00002160858
+
 		if ( x > PI/2 || x < -PI/2){
 			sign = !sign;
 			if(x>0){
 				x = x-c1;
 				x = x-c2;
+				x = x-c3;
 			}
 			else{
+				x = x+c3;
 				x = x+c2;
 				x = x+c1;
 			}
@@ -205,6 +211,9 @@ public class Math_deca{
 		//réduction sur [-PI/4;PI/4]
 		c1 = (float)1.5707855; // meilleur valeur :1.5707855
 		c2 = (float)0.00001082679; // 0.00001082679
+		// c1=(float);
+		// c2 = (float);
+		// float c3 = (float);
 		if ( x>PI/4 ) {
 			x = x -c1;
 			x = x -c2;
@@ -216,8 +225,9 @@ public class Math_deca{
 			}		
 		}
 		else if ( x<-PI/4){
-			x = x + c2;
 			x = x + c1;
+			x = x + c2;
+
 			if(sign){
 				return -cosTaylor(x);
 			}
@@ -326,17 +336,19 @@ public class Math_deca{
 		if(abs(x)<PI){
 			return x ;
 		}
-		int k = 1 ;
-		float c1 = (float) 3.1414795; // c1 = lambda- ulp(lambda)
-		float c2 = PI - c1; // c2 = ulp(lambda)
+		int k = 0 ;
+		float c1 = (float)3.125; // meilleur valeur : 3.140625
+		float c2 = (float)0.016571045;// 9.676218E-4
+		float c3 = (float)0.00002160858;//3.17897931e-8
 		float xTemp = abs(x) ;
 		boolean sign = ( x > 0 )? true : false ;
-		while ( xTemp >= PI || xTemp < -PI){
-			xTemp = (sign)?xTemp -PI:xTemp + PI;
+		while ( xTemp >= PI){
+			xTemp = xTemp -PI;
 			k = (sign)?k+1:k-1 ;
 		}
 		x = x - k*c1 ;
 		x = x - k*c2 ;
+		x = x - k*c3 ;
 		
 		return x ;
 	}

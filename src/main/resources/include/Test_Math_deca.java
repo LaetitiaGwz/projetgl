@@ -121,13 +121,15 @@ public class Test_Math_deca{
 		nbErreur=0;
 		nb=0;
 		double diffMean = 0 ;
-		for(float x = -(float)Math.PI/2; x <(float)Math.PI ;x += (float) Math.pow(2,-13)){
+		float diffMax = 0 ;
+		for(float x = (float)Math.PI/4; x <(float)Math.PI*2 ;x += (float) Math.pow(2,-13)){
+		//for(float x = 100; x <105 ;x += (float) Math.pow(2,-13)){
 			diffRelative = Math.abs(((float)Math.sin(x) - Math_deca.sinTaylor(x))/(float)Math.sin(x));
 			diff =Math.abs(((float)Math.sin(x) - Math_deca.sinTaylor(x)));
 			nb ++ ;
 			//if ( diffRelative >= Math.pow(10,-3)) {
-			if ( diff > (float)Math.ulp((float)Math.sin(x))){
-
+			if ( diff > 2*(float)Math.ulp((float)Math.sin(x))){
+				diffMax = (diff/Math_deca.ulp((float)Math.sin(x)) >diffMax)?diff/Math_deca.ulp((float)Math.sin(x)):diffMax;
 				diffMean += diff/Math_deca.ulp((float)Math.sin(x));
 				nbErreur ++;
 				System.out.println(diffMean);
@@ -143,32 +145,37 @@ public class Test_Math_deca{
 		diffMean/=(nbErreur);
 		System.out.println(ANSI_GREEN+"fin du test de sinTaylor. Erreur rencontré : " 
 			+ANSI_RED+ nbErreur + ANSI_GREEN+" sur " +nb+ "tests.\n"+ANSI_GREEN+"Erreur moyenne en ulp : " 
-			+ANSI_RED+ diffMean+ANSI_RESET);
+			+ANSI_RED+ diffMean+ANSI_GREEN+", Erreur max en ulp : " 
+			+ANSI_RED+ diffMax+ANSI_RESET);
 
 		
-		// System.out.println(ANSI_GREEN+"début du test de cosTaylor\n"+ANSI_RESET);
-		// nbErreur=0;
-		// nb=0;
-		// for(float x = -(float)Math.PI/4 ; x < (float)Math.PI/4 ; x = x + (float) Math.pow(2,-10)){
+		System.out.println(ANSI_GREEN+"début du test de cosTaylor\n"+ANSI_RESET);
+		nbErreur=0;
+		nb=0;
+		diffMax = 0 ;
+		for(float x = -(float)Math.PI/4 ; x < (float)Math.PI/4 ; x = x + (float) Math.pow(2,-20)){
 
-		// 	diffRelative = Math.abs(((float)Math.cos(x) - Math_deca.cosTaylor(x))/(float)Math.cos(x));
-		// 	diff =Math.abs(((float)Math.cos(x) - Math_deca.cosTaylor(x)));
+			diffRelative = Math.abs(((float)Math.cos(x) - Math_deca.cosTaylor(x))/(float)Math.cos(x));
+			diff =Math.abs(((float)Math.cos(x) - Math_deca.cosTaylor(x)));
+			diffMax = (diff/Math_deca.ulp((float)Math.cos(x)) >diffMax)?diff/Math_deca.ulp((float)Math.cos(x)):diffMax;
 				
-		// 	nb ++ ;
-		// 	//if ( diffRelative >= Math.pow(10,-3)) {
+			nb ++ ;
+			//if ( diffRelative >= Math.pow(10,-3)) {
 
-		// 	if ( diff > (float)Math.ulp((float)Math.cos(x))){
-		// 		System.out.println("Erreur pour x="+x);
-		// 		System.out.println("Math_deca.cosTaylor : "+Math_deca.cosTaylor(x));
-		// 		System.out.println("Math.cos : "+(float)Math.cos(x));
-		// 		System.out.println("différence en ulp : " + diff/Math_deca.ulp((float)Math.cos(x)));
-		// 		System.out.println();
-		// 		nbErreur ++;
-		// 	}
+			if ( diff > 2*(float)Math.ulp((float)Math.cos(x))){
+				System.out.println("Erreur pour x="+x);
+				System.out.println("Math_deca.cosTaylor : "+Math_deca.cosTaylor(x));
+				System.out.println("Math.cos : "+(float)Math.cos(x));
+				System.out.println("différence en ulp : " + diff/Math_deca.ulp((float)Math.cos(x)));
+				System.out.println();
+				nbErreur ++;
+			}
 			
-		// }
-		// System.out.println(ANSI_GREEN+"fin du test de cosTaylor. Erreur rencontré : "
-		//  +ANSI_RED+ nbErreur + ANSI_GREEN+" sur " +nb+ "tests.\n"+ANSI_RESET);
+		}
+
+		System.out.println(ANSI_GREEN+"fin du test de cosTaylor. Erreur rencontré : "
+		 +ANSI_RED+ nbErreur + ANSI_GREEN+" sur " +nb+ "tests.\n"+ANSI_GREEN+"Erreur max en ulp : " 
+			+ANSI_RED+ diffMax+ANSI_RESET);
 
 
 
