@@ -141,6 +141,10 @@ public class DeclClass extends AbstractDeclClass {
 
     }
 
-    protected void codeGenRemplir(DecacCompiler compiler){
+    protected void codeGenDeclMethod(DecacCompiler compiler){
+        for(AbstractDeclFieldSet a : declFields.getList()){
+
+        }
     }
+
 }

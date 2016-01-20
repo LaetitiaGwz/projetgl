@@ -114,6 +114,13 @@ public class Program extends AbstractProgram {
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
+
+        //on ecrit maintenant les instructions des methodes
+        compiler.addLabel(new Label("code.Object.equals"));
+        //TODO checker s'il faut mettre du code
+        for(AbstractDeclClass a: classes.getList()){
+
+        }
     }
 
     @Override

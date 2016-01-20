@@ -29,6 +29,10 @@ public class RegisterManager {
 	public void setLBfixe(int i){
 		this.LBfixe=i;
 	}
+	public void initialiseLB(int i){
+		this.LBfixe=i;
+		this.LB=i;
+	}
 	public RegisterManager(int nbRegistre){ //nbRegistre >4 <17
 		this.tableRegistre=new boolean[nbRegistre];
 		for(int i=0; i<nbRegistre;i++){

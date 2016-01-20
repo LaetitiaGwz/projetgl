@@ -40,7 +40,7 @@ public class Main extends AbstractMain {
     protected void codeGenMain(DecacCompiler compiler) {
         declVariables.codeGenListDecl(compiler);
         int gb=compiler.getRegManager().getGB();
-        compiler.getRegManager().setLBfixe(gb+5);
+        compiler.getRegManager().initialiseLB(gb+5);
         compiler.addComment("Beginning of main instructions:");
 
         insts.codeGenListInst(compiler);
