@@ -120,9 +120,9 @@ public class Program extends AbstractProgram {
         //on ecrit maintenant les instructions des methodes
         compiler.addLabel(new Label("code.Object.equals"));
         //TODO checker s'il faut mettre du code
-        //for(AbstractDeclClass a: classes.getList()){
-
-       // }
+        for(AbstractDeclClass a: classes.getList()){
+            a.codeGenDeclMethod(compiler);
+        }
     }
 
     @Override

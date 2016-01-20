@@ -33,5 +33,8 @@ public abstract class AbstractDeclClass extends Tree {
             throws ContextualError;
 
     protected abstract void codePreGen1(DecacCompiler compiler);
+
+    protected abstract void codeGenDeclMethod(DecacCompiler compiler);
+
     public abstract AbstractIdentifier returnIdentifier();
 }
