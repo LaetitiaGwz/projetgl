@@ -1,0 +1,9 @@
+// Description:
+//   Test entier trop grand
+//
+// Resultats:
+// Ligne <8> : Floating point number too large
+
+{
+    float a = 320193212312382137213797989783972173982173972187389217983298139827938219873982719837219837981271111111119.3231f;
+}

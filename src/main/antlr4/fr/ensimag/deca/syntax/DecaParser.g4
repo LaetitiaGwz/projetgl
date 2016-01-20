@@ -460,10 +460,18 @@ type returns[AbstractIdentifier tree]
 //TODO THIS
 literal returns[AbstractExpr tree]
     : INT {
+            try{
             $tree = new IntLiteral(Integer.parseInt($INT.getText()));
+            }catch(NumberFormatException e){
+                System.out.println("Integer number too large");
+            }
         }
     | fd=FLOAT {
+            try{
             $tree = new FloatLiteral(Float.parseFloat($fd.getText()));
+             }catch(IllegalArgumentException e){
+                System.out.println("Floating point number too large");
+            }
         }
     | STRING {
             $tree = new StringLiteral($STRING.getText());

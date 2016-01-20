@@ -2,8 +2,8 @@
 //   Test entier trop grand
 //
 // Resultats:
-// Ligne <8> : entier trop grand
+// Ligne <8> : Integer number too large
 
 {
-    int pair = 3123432138;
+    int a = 3123432138;
 }
