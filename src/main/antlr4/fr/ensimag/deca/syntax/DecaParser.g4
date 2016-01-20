@@ -525,6 +525,8 @@ class_decl returns[AbstractDeclClass tree]
             assert($name.tree != null);
             $tree = new DeclClass($name.tree, $superclass.tree, $class_body.fields, $class_body.methods);
             setLocation($tree, $name.start);
+            setLocation($name.tree, $name.start);
+            setLocation($superclass.tree, $superclass.start);
         }
     ;
 
@@ -533,7 +535,7 @@ class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
             assert($ident.tree != null);
             $tree = $ident.tree;
-            setLocation($tree, $ident.start);
+            setLocation($ident.tree, $ident.start);
         }
     | /* epsilon */ {
             $tree = new Identifier(T.create("Object"));
