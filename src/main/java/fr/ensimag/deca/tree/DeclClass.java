@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.ListeMethodeClasse;
+import fr.ensimag.deca.codegen.TableField;
 import fr.ensimag.deca.codegen.TableMethode;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -26,7 +27,6 @@ public class DeclClass extends AbstractDeclClass {
 
     protected AbstractIdentifier name;
     protected AbstractIdentifier superClass;
-    private TableMethode tableMethode;
 
     @Override
     public AbstractIdentifier returnIdentifier(){
@@ -136,9 +136,9 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     protected void codeGenDeclMethod(DecacCompiler compiler){
-        //for(AbstractDeclFieldSet a : declFields.getList()){
+        for(AbstractDeclFieldSet a : declFields.getList()){
 
-//        }
+        }
     }
 
 }
