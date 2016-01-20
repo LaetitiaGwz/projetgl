@@ -388,7 +388,6 @@ unary_expr returns[AbstractExpr tree]
         }
     ;
 
-//TODO attributs de classe
 select_expr returns[AbstractExpr tree]
     : e=primary_expr {
             assert($e.tree != null);
@@ -406,8 +405,10 @@ select_expr returns[AbstractExpr tree]
             setLocation($i.tree, $i.start);
         }
         | /* epsilon */ {
-            // we matched "e.i"
-            //TODO
+            // we matched "e1.i"
+            $tree = new Selection($e1.tree, $i.tree);
+            setLocation($tree, $e1.start);
+            setLocation($i.tree, $i.start);
         }
         )
     ;
