@@ -46,7 +46,18 @@ public class DeclMethod extends AbstractDeclMethod {
         Type returnType = ret.verifyType(compiler);
         Signature signature = params.verifyMembers(compiler, localEnv, currentClass);
 
-        MethodDefinition methodDef = new MethodDefinition(returnType, getLocation(), signature, currentClass.incNumberOfMethods());
+        // On vérifie d'abord que la méthode n'est pas
+        //  déjà déclarée dans l'environnement parent
+        MethodDefinition parentDef = localEnv.getMethodDef(compiler.getSymbols().create(name.getName().getName()));
+        int index;
+        if(parentDef == null) {
+            index = currentClass.incNumberOfMethods();
+        }
+        else {
+            index = parentDef.getIndex();
+        }
+
+        MethodDefinition methodDef = new MethodDefinition(returnType, getLocation(), signature, index);
 
         try {
             localEnv.declareMethod(compiler.getSymbols().create(name.getName().getName()), methodDef);
