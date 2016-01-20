@@ -7,8 +7,21 @@
 // Historique:
 //    cree le 01/01/2016
 
-class A {
-	A a = new A();
+class Socrate{
+
+}
+
+class Platon {
+	Platon p = new Platon();
+	Socrate s = new Socrate();
+
+	Platon retourneNewPlaton(){
+        return new Platon();
+	}
+
+	Socrate retourneNewSocr(){
+	    return new Socrate();
+	}
 }
 
 {

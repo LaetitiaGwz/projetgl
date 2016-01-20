@@ -1,23 +1,43 @@
 // Description:
-//    Déclaration d'une classe avec un attribut int
+//    Test des méthodes dans les classes
 //
 // Resultats:
 //    Aucune erreur
 // 
-// Historique:
-//    cree le 01/01/2016
 
-class Test {
-	void methodeVide() {
-	}
-	void methodeAvecArgs(int a, float b, boolean c, String d) {
-	}
-	int methodeAvecRetour() {
-		return 0;
-	}
-	Test m() {}
+class Socrate{
+
 }
 
+class Aristote {
+    void methodeVide() {
+    }
+
+    void methodeAvecArgs(int a, float b, boolean c, float d) {
+    }
+
+    int methodeRetourInt() {
+        return 0;
+    }
+
+    boolean methodeRetourBool() {
+        return true;
+    }
+
+    float methodeRetourFloat() {
+        return 7.3;
+    }
+
+    Socrate retourneElleMeme() {
+        Socrate s = new Socrate();
+        return s;
+    }
+
+    Aristote retourneAutreClasse(){
+        Aristote a = new Aristote();
+        return a;
+    }
+}
 {
 
 }
