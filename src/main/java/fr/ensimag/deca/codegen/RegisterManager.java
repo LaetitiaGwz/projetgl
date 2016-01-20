@@ -9,13 +9,26 @@ public class RegisterManager {
 	private boolean tableRegistre[];
 
 	private int GB; // Global Pointer
+	private int LB;
+	private int LBfixe;
     public int getGB(){
         return this.GB;
     }
     public void incrementGB(){
         this.GB ++;
     }
-
+	public int getLB(){
+		return this.LB;
+	}
+	public void incrementLB(){
+		this.LB ++;
+	}
+	public void setLB(int i){
+		this.LB=i;
+	}
+	public void setLBfixe(int i){
+		this.LBfixe=i;
+	}
 	public RegisterManager(int nbRegistre){ //nbRegistre >4 <17
 		this.tableRegistre=new boolean[nbRegistre];
 		for(int i=0; i<nbRegistre;i++){

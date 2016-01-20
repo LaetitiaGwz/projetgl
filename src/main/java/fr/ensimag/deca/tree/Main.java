@@ -39,6 +39,8 @@ public class Main extends AbstractMain {
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
         declVariables.codeGenListDecl(compiler);
+        int gb=compiler.getRegManager().getGB();
+        compiler.getRegManager().setLBfixe(gb+5);
         compiler.addComment("Beginning of main instructions:");
 
         insts.codeGenListInst(compiler);
