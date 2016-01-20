@@ -19,6 +19,12 @@ public abstract class Definition {
             res += " defined at " + location;
         }
         res += ", type=" + type;
+        if(isMethod()) {
+            res += ", index=" + ((MethodDefinition) this).getIndex();
+        }
+        else if(isField()) {
+            res += ", index=" + ((FieldDefinition) this).getIndex();
+        }
         return res;
     }
 

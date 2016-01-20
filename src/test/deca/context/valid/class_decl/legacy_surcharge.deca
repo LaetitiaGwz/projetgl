@@ -1,0 +1,26 @@
+// Description:
+//    Héritage d'une classe
+//
+// Resultats:
+//    Aucune erreur
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class A {
+	void m() {
+		println("Erreur");
+	}
+}
+
+class B extends A {
+	void m() {
+		println("Ok");
+	}
+}
+
+{
+	B b;
+	b.m();
+}
+
