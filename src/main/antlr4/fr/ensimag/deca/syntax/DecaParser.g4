@@ -288,7 +288,6 @@ eq_neq_expr returns[AbstractExpr tree]
         }
     ;
 
-//TODO instanceof
 inequality_expr returns[AbstractExpr tree]
     : e=sum_expr {
             assert($e.tree != null);
@@ -389,7 +388,7 @@ unary_expr returns[AbstractExpr tree]
         }
     ;
 
-//TODO methode/attributs de classe
+//TODO attributs de classe
 select_expr returns[AbstractExpr tree]
     : e=primary_expr {
             assert($e.tree != null);
@@ -413,7 +412,6 @@ select_expr returns[AbstractExpr tree]
         )
     ;
 
-//TODO methode
 primary_expr returns[AbstractExpr tree]
     : ident {
             assert($ident.tree != null);
@@ -502,7 +500,6 @@ ident returns[AbstractIdentifier tree]
 
 /****     Class related rules     ****/
 
-//TODO ajout de classe dans la liste
 list_classes returns[ListDeclClass tree]
 @init {
     $tree = new ListDeclClass();
@@ -516,7 +513,6 @@ list_classes returns[ListDeclClass tree]
       )*
     ;
 
-//TODO
 class_decl returns[AbstractDeclClass tree]
     : CLASS name=ident superclass=class_extension OBRACE class_body CBRACE {
             assert($class_body.methods != null);
@@ -530,7 +526,6 @@ class_decl returns[AbstractDeclClass tree]
         }
     ;
 
-//TODO
 class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
             assert($ident.tree != null);
@@ -542,7 +537,6 @@ class_extension returns[AbstractIdentifier tree]
         }
     ;
 
-//TODO
 class_body returns[ListDeclMethod methods, ListDeclFieldSet fields]
 @init {
     $methods = new ListDeclMethod();
@@ -557,7 +551,6 @@ class_body returns[ListDeclMethod methods, ListDeclFieldSet fields]
       )*
     ;
 
-//TODO
 decl_field_set returns[AbstractDeclFieldSet tree]
     : visibility type dv=list_decl_field SEMI {
             assert($visibility.tree != null);
@@ -568,7 +561,6 @@ decl_field_set returns[AbstractDeclFieldSet tree]
         }
     ;
 
-//TODO
 visibility returns [Visibility tree]
     : /* epsilon */ {
             $tree = Visibility.PUBLIC;
@@ -578,7 +570,6 @@ visibility returns [Visibility tree]
         }
     ;
 
-//TODO
 list_decl_field returns[ListDeclField tree]
 @init{
     $tree = new ListDeclField();
@@ -593,7 +584,6 @@ list_decl_field returns[ListDeclField tree]
       )*
     ;
 
-//TODO
 decl_field returns[AbstractDeclField tree]
 @init {
     AbstractInitialization initialization;
@@ -614,7 +604,6 @@ decl_field returns[AbstractDeclField tree]
         }
     ;
 
-//TODO
 decl_method returns[AbstractDeclMethod tree]
 @init {
 }
@@ -630,7 +619,6 @@ decl_method returns[AbstractDeclMethod tree]
         }
     ;
 
-//TODO
 list_params returns[ListDeclParam tree]
 @init {
     $tree = new ListDeclParam();
@@ -654,7 +642,6 @@ multi_line_string returns[String text, Location location]
         }
     ;
 
-//TODO
 param returns[AbstractDeclParam tree]
     : type ident {
             $tree = new DeclParam($type.tree, $ident.tree);

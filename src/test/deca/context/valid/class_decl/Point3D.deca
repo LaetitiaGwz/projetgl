@@ -9,7 +9,7 @@
 //
 // Historique:
 //    cree le 19/01/2016
-#include Point2D.deca
+#include "Point2D.deca"
 
 class Point3D extends Point2D{
 
