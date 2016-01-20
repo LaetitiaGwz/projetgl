@@ -1,0 +1,18 @@
+// Description:
+//    Utilisation de new
+//
+// Resultats:
+//    Aucune erreur
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class A {
+	A a = new A();
+}
+
+{
+	int a = 5;
+	a = a + a;
+}
+
