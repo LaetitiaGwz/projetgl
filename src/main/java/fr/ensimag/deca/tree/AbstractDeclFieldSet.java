@@ -22,5 +22,5 @@ public abstract class AbstractDeclFieldSet extends Tree {
                                           EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError;
 
-    protected abstract void codegenDeclFieldSet(DecacCompiler compiler);
+    protected abstract void codeGenFieldSet(DecacCompiler compiler);
 }

@@ -67,9 +67,15 @@ public class DeclFieldSet extends AbstractDeclFieldSet {
     }
 
     @Override
-    protected void codegenDeclFieldSet(DecacCompiler compiler) {
+    protected void codeGenFieldSet(DecacCompiler compiler) {
         for( AbstractDeclField a : declFields.getList()){
-            a.codeGenDecl(compiler);
+            if(getFieldType().getName().toString().equals("float")){
+                a.codeGenFieldFloat(compiler);
+            }
+            else{
+                a.codeGenFieldInt(compiler);
+            }
+
         }
     }
 

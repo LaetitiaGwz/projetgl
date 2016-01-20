@@ -107,7 +107,7 @@ public class DeclClass extends AbstractDeclClass {
         declFields.iter(f);
     }
     @Override
-    protected void codePreGen1(DecacCompiler compiler){
+    protected void codePreGenMethod(DecacCompiler compiler){
         // on recupère l'adresse de la superclasse
         compiler.addInstruction(new LEA(superClass.getClassDefinition().getOperand(),Register.R0));
         compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
@@ -134,11 +134,17 @@ public class DeclClass extends AbstractDeclClass {
 
 
     }
-
-    protected void codeGenDeclMethod(DecacCompiler compiler){
+    @Override
+    protected void codeGenFieldClass(DecacCompiler compiler){
+        compiler.addLabel(new Label("init."+name.getName().toString())); //pour s'en rappeler
         for(AbstractDeclFieldSet a : declFields.getList()){
-
+            a.codeGenFieldSet(compiler);
         }
+    }
+
+    @Override
+    protected void codeGenMethodClass(DecacCompiler compiler){
+
     }
 
 }

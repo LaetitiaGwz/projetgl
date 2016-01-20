@@ -97,7 +97,7 @@ public class Program extends AbstractProgram {
 
         //pile initial
         for(AbstractDeclClass a: classes.getList()){
-            a.codePreGen1(compiler);
+            a.codePreGenMethod(compiler);
             compiler.addInstruction(new LOAD(new LabelOperand(new Label("code.Object.equals")), Register.R0));
             compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
             compiler.getRegManager().incrementGB();
@@ -121,7 +121,8 @@ public class Program extends AbstractProgram {
         compiler.addLabel(new Label("code.Object.equals"));
         //TODO checker s'il faut mettre du code
         for(AbstractDeclClass a: classes.getList()){
-            a.codeGenDeclMethod(compiler);
+            a.codeGenFieldClass(compiler);
+            a.codeGenMethodClass(compiler);
         }
     }
 

@@ -3,10 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
@@ -65,30 +62,18 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     protected void codeGenDecl(DecacCompiler compiler) {
-        getVarName().codeGenInit(compiler);
-        DAddr adress = this.getVarName().getNonTypeDefinition().getOperand();
-        if(getInitialization().getExpression()!=null){
-            getInitialization().codeGenInit(compiler);
-            Register regLeft = (Register) this.getInitialization().getExpression().getdValue();
-            compiler.addInstruction(new LOAD(regLeft,Register.R0));
-            compiler.addInstruction(new STORE(Register.R0, adress));
-        }
-        else{
 
-            if(getVarName().getType().isInt()){
-                compiler.addInstruction(new LOAD(new ImmediateInteger(0),Register.R0));
-                compiler.addInstruction(new STORE(Register.R0, adress));
-            }
-            else if(getVarName().getType().isFloat()){
-                compiler.addInstruction(new LOAD(new ImmediateFloat(0),Register.R0));
-                compiler.addInstruction(new STORE(Register.R0, adress));
-            }
-            else if(getVarName().getType().isBoolean()){
-                compiler.addInstruction(new LOAD(new ImmediateInteger(0),Register.R0));
-                compiler.addInstruction(new STORE(Register.R0, adress));
-            }
-        }
-        compiler.resetTableRegistre();
+    }
+    @Override
+    protected void codeGenFieldFloat(DecacCompiler compiler){ // on met tout dans R1, on recupere de R0
+        initialization.codeGenInitFieldFloat(compiler);
+        compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(this.getVarName().getFieldDefinition().getIndex(),Register.R1)));
+    }
+
+    @Override
+    protected void codeGenFieldInt(DecacCompiler compiler){
+        initialization.codeGenInitFieldInt(compiler);
+        compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(this.getVarName().getFieldDefinition().getIndex(),Register.R1)));
     }
 
     @Override

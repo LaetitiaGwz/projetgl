@@ -50,6 +50,16 @@ public class Initialization extends AbstractInitialization {
         getExpression().codeGenInst(compiler);
     }
 
+    //TODO gestion registre tout mettre à true?
+    @Override
+    protected void codeGenInitFieldFloat(DecacCompiler compiler){
+
+    }//TODO gestion registre tout mettre à true?
+    @Override
+    protected void codeGenInitFieldInt(DecacCompiler compiler){
+
+    }
+
 
     @Override
     public void decompile(IndentPrintStream s) {
