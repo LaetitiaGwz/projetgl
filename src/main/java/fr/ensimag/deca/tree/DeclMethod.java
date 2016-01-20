@@ -21,6 +21,10 @@ public class DeclMethod extends AbstractDeclMethod {
 
     EnvironmentExp methodEnv;
 
+    @Override
+    public AbstractIdentifier getIdentifier(){
+        return this.name;
+    }
     public DeclMethod(AbstractIdentifier name, AbstractIdentifier ret, ListDeclParam params, ListInst body, ListDeclVarSet declVars) {
         Validate.notNull(name);
         Validate.notNull(ret);

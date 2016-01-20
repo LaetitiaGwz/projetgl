@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.TableMethode;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -19,19 +20,18 @@ import org.apache.commons.lang.Validate;
  */
 public class Identifier extends AbstractIdentifier {
 
-    private int nbMethod=0;
-    private int nbGB;
+    private TableMethode tableMethode;
     @Override
-    public int getNbGB(){
-        return this.nbGB;
+    public void ajoutMethod(AbstractDeclMethod ajout){
+        tableMethode.addMethode(ajout);
     }
     @Override
-    public int getNbMethod(){
-        return this.nbMethod;
+    public AbstractDeclMethod getMethod(Integer j){
+        return tableMethode.getIndex(j);
     }
     @Override
-    public void setNbMethod(int enplus){
-        this.nbMethod=enplus;
+    public boolean containKey(Integer i){
+        return tableMethode.containKey(i);
     }
     @Override
     protected void checkDecoration() {
@@ -239,10 +239,8 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
-    protected void codeGenInitClass(DecacCompiler compiler, int nbMethode){
-        this.nbGB=compiler.getRegManager().getGB();
+    protected void codeGenInitClass(DecacCompiler compiler){
         this.codeGenInit(compiler);
-        this.setNbMethod(nbMethode);
 
     }
 

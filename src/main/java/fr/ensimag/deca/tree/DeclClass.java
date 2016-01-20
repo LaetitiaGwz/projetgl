@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.ListeMethodeClasse;
+import fr.ensimag.deca.codegen.TableMethode;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
@@ -25,7 +26,7 @@ public class DeclClass extends AbstractDeclClass {
 
     protected AbstractIdentifier name;
     protected AbstractIdentifier superClass;
-    private ListeMethodeClasse tableMethode;
+    private TableMethode tableMethode;
 
     protected ListDeclFieldSet declFields;
     protected ListDeclMethod methods;
@@ -104,17 +105,33 @@ public class DeclClass extends AbstractDeclClass {
 
     protected void codePreGen1(DecacCompiler compiler){
         if(superClass==null){
-            compiler.addInstruction(new LOAD(new NullOperand(),Register.R0));
+            compiler.addInstruction(new LOAD(new RegisterOffset(1,Register.GB),Register.R0)); //on sous-entend la superclasse object alors
             compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
-            name.codeGenInitClass(compiler,methods.size());
+            name.codeGenInitClass(compiler);
 
             //on stock dans l'identifier l'adresse de start, cela incremente GB
         }
         else{// on recupère l'adresse de la superclasse
             compiler.addInstruction(new LEA(superClass.getNonTypeDefinition().getOperand(),Register.R0));
             compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
-            name.codeGenInitClass(compiler,superClass.getNbMethod()+methods.size());
+            name.codeGenInitClass(compiler);
         }
+        //ne va commencer qu'à 2 , code.Object.equals a rajouter à la main par la suite
+        for(AbstractDeclMethod a : methods.getList()){
+            a.codeGenMethod(compiler); // on en profite pour regler la methode
+            name.ajoutMethod(a);
+        }
+        // on a ajouté les éléments de la classe verifions la superclasse si présente
+        if(superClass!=null){// besoin de récupérer éléments de la super classe que si elle existe
+            int i=2;
+            while(superClass.containKey(i) || name.containKey(i) ){
+                if(!name.containKey(i)){
+                    name.ajoutMethod(superClass.getMethod(i));
+                }
+                i++;
+            }
+        }
+        // le tableau est rempli.
 
 
     }

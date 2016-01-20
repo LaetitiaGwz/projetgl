@@ -84,12 +84,12 @@ public abstract class AbstractIdentifier extends AbstractLValue {
 
     public abstract void setDefinition(Definition definition);
 
-    protected abstract void codeGenInitClass(DecacCompiler compiler,int nbMethode);
-    public abstract int getNbMethod();
-    public abstract void setNbMethod(int enplus);
-    public abstract int getNbGB();
+    protected abstract void codeGenInitClass(DecacCompiler compiler);
 
+    public abstract AbstractDeclMethod getMethod(Integer j);
 
+    public abstract void ajoutMethod(AbstractDeclMethod ajout);
+    public abstract boolean containKey(Integer i);
 
     public abstract Type verifyType(DecacCompiler compiler) throws ContextualError;
 
