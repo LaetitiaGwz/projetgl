@@ -199,10 +199,22 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     public Type verifyClass(DecacCompiler compiler) throws ContextualError {
-        ClassDefinition c = compiler.getRootEnv().getClassDef(compiler.getSymbols().create(getName().getName()));
+        TypeDefinition c = compiler.getRootEnv().getTypeDef(compiler.getSymbols().create(getName().getName()));
+
+        if(c == null || (!(c instanceof ClassDefinition))) {
+            throw new ContextualError("Class " + getName().getName() + " undefinded.", this.getLocation());
+        }
+
+        setDefinition(c);
+        setType(c.getType());
+        return c.getType();
+    }
+
+    public Type verifyMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        MethodDefinition c = localEnv.getMethodDef(compiler.getSymbols().create(getName().getName()));
 
         if(c == null) {
-            throw new ContextualError("Class " + getName().getName() + " undefinded.", this.getLocation());
+            throw new ContextualError("Method " + getName().getName() + " undefinded.", this.getLocation());
         }
 
         setDefinition(c);

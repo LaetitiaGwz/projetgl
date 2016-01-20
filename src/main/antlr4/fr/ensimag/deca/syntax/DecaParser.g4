@@ -620,6 +620,7 @@ decl_method returns[AbstractDeclMethod tree]
         }
       ) {
             setLocation($tree, $type.start);
+            setLocation($ident.tree, $type.start);
         }
     ;
 

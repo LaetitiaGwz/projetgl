@@ -43,19 +43,18 @@ public class DeclMethod extends AbstractDeclMethod {
     protected void verifyMembers(DecacCompiler compiler,
                                 EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-
         Type returnType = ret.verifyType(compiler);
         Signature signature = params.verifyMembers(compiler, localEnv, currentClass);
 
         MethodDefinition methodDef = new MethodDefinition(returnType, getLocation(), signature, currentClass.incNumberOfMethods());
 
         try {
-            localEnv.declare(compiler.getSymbols().create(name.getName().getName()), methodDef);
+            localEnv.declareMethod(compiler.getSymbols().create(name.getName().getName()), methodDef);
         } catch (EnvironmentExp.DoubleDefException e) {
             throw new ContextualError("Double declaration of method " + name.getName().getName(), getLocation());
         }
 
-        name.verifyExpr(compiler, localEnv, currentClass);
+        name.verifyMethod(compiler, localEnv, currentClass);
     }
 
     @Override

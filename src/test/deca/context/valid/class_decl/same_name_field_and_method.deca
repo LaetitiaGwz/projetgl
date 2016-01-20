@@ -10,7 +10,7 @@
 class Test {
 	int b;
 	void b() {
-		c = 2;
+		int c = 2;
 	}
 }
 
