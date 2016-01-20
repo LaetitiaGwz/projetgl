@@ -20,19 +20,7 @@ import org.apache.commons.lang.Validate;
  */
 public class Identifier extends AbstractIdentifier {
 
-    private TableMethode tableMethode;
-    @Override
-    public void ajoutMethod(AbstractDeclMethod ajout){
-        tableMethode.addMethode(ajout);
-    }
-    @Override
-    public AbstractDeclMethod getMethod(Integer j){
-        return tableMethode.getIndex(j);
-    }
-    @Override
-    public boolean containKey(Integer i){
-        return tableMethode.containKey(i);
-    }
+
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -252,7 +240,9 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenInitClass(DecacCompiler compiler){
-        this.codeGenInit(compiler);
+        RegisterOffset stock = new RegisterOffset(compiler.getRegManager().getGB(), Register.GB);
+        this.getClassDefinition().setOperand(stock);
+        compiler.getRegManager().incrementGB();
 
     }
 

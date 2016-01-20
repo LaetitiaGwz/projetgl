@@ -108,30 +108,24 @@ public class DeclClass extends AbstractDeclClass {
     }
     @Override
     protected void codePreGen1(DecacCompiler compiler){
-        if(superClass==null){
-            compiler.addInstruction(new LOAD(new RegisterOffset(1,Register.GB),Register.R0)); //on sous-entend la superclasse object alors
-            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
-            name.codeGenInitClass(compiler);
+        // on recupère l'adresse de la superclasse
+        compiler.addInstruction(new LEA(superClass.getClassDefinition().getOperand(),Register.R0));
+        compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
+        name.codeGenInitClass(compiler);
+        name.getClassDefinition().initialiseTable();
 
-            //on stock dans l'identifier l'adresse de start, cela incremente GB
-        }
-        else{// on recupère l'adresse de la superclasse
-            compiler.addInstruction(new LEA(superClass.getNonTypeDefinition().getOperand(),Register.R0));
-            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
-            name.codeGenInitClass(compiler);
-        }
         //ne va commencer qu'à 2 , code.Object.equals a rajouter à la main par la suite
         for(AbstractDeclMethod a : methods.getList()){
-            compiler.getLblManager().setLabelFalse(new Label("code."+name.getName().toString()+"."+a.getName()));
+            compiler.getLblManager().setLabelFalse(new Label("code."+name.getName().toString()+"."+a.getIdentifier().getName()));
             a.codeGenMethod(compiler); // on en profite pour regler la methode
-            name.ajoutMethod(a);
+            name.getClassDefinition().ajoutMethod(a);
         }
         // on a ajouté les éléments de la classe verifions la superclasse si présente
-        if(superClass!=null){// besoin de récupérer éléments de la super classe que si elle existe
-            int i=2;
-            while(superClass.containKey(i) || name.containKey(i) ){
-                if(!name.containKey(i)){
-                    name.ajoutMethod(superClass.getMethod(i));
+        if(!superClass.getName().toString().equals("Object")){// besoin de récupérer éléments de la super classe que si elle existe
+            Integer i=2;
+            while(superClass.getClassDefinition().containKey(i) || name.getClassDefinition().containKey(i) ){
+                if(!name.getClassDefinition().containKey(i)){
+                    name.getClassDefinition().ajoutMethod(superClass.getClassDefinition().getMethod(i));
                 }
                 i++;
             }
@@ -142,9 +136,9 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     protected void codeGenDeclMethod(DecacCompiler compiler){
-        for(AbstractDeclFieldSet a : declFields.getList()){
+        //for(AbstractDeclFieldSet a : declFields.getList()){
 
-        }
+//        }
     }
 
 }

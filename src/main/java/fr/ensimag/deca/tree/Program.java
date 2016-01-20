@@ -66,22 +66,23 @@ public class Program extends AbstractProgram {
     private void declareObject(DecacCompiler compiler, EnvironmentExp env) throws EnvironmentExp.DoubleDefException {
 
         // Definition de la classe Object
-        ClassDefinition objDef = new ClassDefinition(new ClassType(compiler.getSymbols().create("Object"), Location.BUILTIN, null), Location.BUILTIN, null);
+        ClassDefinition Object = new ClassDefinition(new ClassType(compiler.getSymbols().create("Object"), Location.BUILTIN, null), Location.BUILTIN, null);
+        Object.setOperand(new RegisterOffset(1,Register.GB));
 
         // Définition de la méthode Equals
-        int equalIndex = objDef.incNumberOfMethods();
+        int equalIndex = Object.incNumberOfMethods();
         Type returnType = env.getTypeDef(compiler.getSymbols().create("boolean")).getType();
         Signature signature = new Signature();
-        signature.add(objDef.getType());
+        signature.add(Object.getType());
         MethodDefinition equalDef = new MethodDefinition(returnType, Location.BUILTIN, signature, equalIndex);
 
 
         /* On ajoute le tout aux environnements */
 
         // Object à l'environnement root
-        env.declareType(compiler.getSymbols().create("Object"), objDef);
+        env.declareType(compiler.getSymbols().create("Object"),Object);
         // la méthode equals() à l'environnement de la Object
-        objDef.getMembers().declare(compiler.getSymbols().create("Equals"), equalDef);
+        Object.getMembers().declare(compiler.getSymbols().create("equals"), equalDef);
 
     }
 
@@ -100,13 +101,14 @@ public class Program extends AbstractProgram {
             compiler.addInstruction(new LOAD(new LabelOperand(new Label("code.Object.equals")), Register.R0));
             compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
             compiler.getRegManager().incrementGB();
-            int i=2;
-            while(a.returnIdentifier().containKey(i)){
+            Integer i=2;
+            while(a.returnIdentifier().getClassDefinition().containKey(i)){
                 compiler.addInstruction(new LOAD(new LabelOperand(
-                        a.returnIdentifier().getMethod(i).getIdentifier().getMethodDefinition().getLabel()),
+                        a.returnIdentifier().getClassDefinition().getMethod(i).getIdentifier().getMethodDefinition().getLabel()),
                         Register.R0));
                 compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
                 compiler.getRegManager().incrementGB();
+                i++;
             }
 
 
@@ -118,9 +120,9 @@ public class Program extends AbstractProgram {
         //on ecrit maintenant les instructions des methodes
         compiler.addLabel(new Label("code.Object.equals"));
         //TODO checker s'il faut mettre du code
-        for(AbstractDeclClass a: classes.getList()){
+        //for(AbstractDeclClass a: classes.getList()){
 
-        }
+       // }
     }
 
     @Override

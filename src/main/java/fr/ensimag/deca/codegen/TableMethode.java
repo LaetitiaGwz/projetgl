@@ -12,7 +12,10 @@ import java.util.Map;
  */
 public class TableMethode {
 
-    private Map<Integer,AbstractDeclMethod> tableMethode = new HashMap<Integer, AbstractDeclMethod>();
+    private Map<Integer,AbstractDeclMethod> tableMethode;
+    public TableMethode(){
+        tableMethode=new HashMap<Integer, AbstractDeclMethod>();
+    }
 
 
     public void addMethode(AbstractDeclMethod ajout){
