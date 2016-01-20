@@ -73,7 +73,7 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     protected void codeGenMethod(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        name.getMethodDefinition().setLabel(compiler.getLblManager().getLabelFalse());
     }
 
     @Override

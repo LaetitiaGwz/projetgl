@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -86,8 +87,30 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+        compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
+        compiler.getRegManager().incrementGB();
+        compiler.addInstruction(new LOAD(new LabelOperand(new Label("code.Object.equals")), Register.R0));
+        compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
+        compiler.getRegManager().incrementGB();
 
-        // A FAIRE: compléter ce squelette très rudimentaire de code
+        //pile initial
+        for(AbstractDeclClass a: classes.getList()){
+            a.codePreGen1(compiler);
+            compiler.addInstruction(new LOAD(new LabelOperand(new Label("code.Object.equals")), Register.R0));
+            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
+            compiler.getRegManager().incrementGB();
+            int i=2;
+            while(a.returnIdentifier().containKey(i)){
+                compiler.addInstruction(new LOAD(new LabelOperand(
+                        a.returnIdentifier().getMethod(i).getIdentifier().getMethodDefinition().getLabel()),
+                        Register.R0));
+                compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
+                compiler.getRegManager().incrementGB();
+            }
+
+
+        }
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());

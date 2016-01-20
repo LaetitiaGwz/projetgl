@@ -28,6 +28,11 @@ public class DeclClass extends AbstractDeclClass {
     protected AbstractIdentifier superClass;
     private TableMethode tableMethode;
 
+    @Override
+    public AbstractIdentifier returnIdentifier(){
+        return name;
+    }
+
     protected ListDeclFieldSet declFields;
     protected ListDeclMethod methods;
 
@@ -102,7 +107,7 @@ public class DeclClass extends AbstractDeclClass {
         methods.iter(f);
         declFields.iter(f);
     }
-
+    @Override
     protected void codePreGen1(DecacCompiler compiler){
         if(superClass==null){
             compiler.addInstruction(new LOAD(new RegisterOffset(1,Register.GB),Register.R0)); //on sous-entend la superclasse object alors
@@ -118,6 +123,7 @@ public class DeclClass extends AbstractDeclClass {
         }
         //ne va commencer qu'à 2 , code.Object.equals a rajouter à la main par la suite
         for(AbstractDeclMethod a : methods.getList()){
+            compiler.getLblManager().setLabelFalse(new Label("code."+name.getName().toString()+"."+a.getName()));
             a.codeGenMethod(compiler); // on en profite pour regler la methode
             name.ajoutMethod(a);
         }
