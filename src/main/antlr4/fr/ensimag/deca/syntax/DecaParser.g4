@@ -322,7 +322,8 @@ inequality_expr returns[AbstractExpr tree]
     | e1=inequality_expr INSTANCEOF type {
             assert($e1.tree != null);
             assert($type.tree != null);
-            // TODO
+            $tree = new InstanceOf($type.tree, $e1.tree);
+            setLocation($tree, $e1.start);
         }
     ;
 
@@ -459,7 +460,6 @@ type returns[AbstractIdentifier tree]
         }
     ;
 
-//TODO THIS
 literal returns[AbstractExpr tree]
     : INT {
             try{
