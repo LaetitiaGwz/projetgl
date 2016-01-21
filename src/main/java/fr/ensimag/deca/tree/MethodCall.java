@@ -4,6 +4,13 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.SUBSP;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -37,6 +44,36 @@ public class MethodCall extends AbstractExpr{
         return retType;
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler){
+        int i = compiler.getRegManager().getLastregistre();
+        GPRegister reg = Register.getR(i);
+        compiler.getRegManager().setEtatRegistreTrue(i);
+        this.setdValue(reg);
+        if(!params.isEmpty()){
+            for(int j=params.size();j>0;j--){
+                params.getList().get(j).codeGenInst(compiler);
+                compiler.addInstruction(new LOAD(params.getList().get(j).getdValue(),reg));
+                compiler.addInstruction(new PUSH(reg));
+            }
+        }
+        obj.codeGenInst(compiler);
+        compiler.addInstruction(new LOAD(obj.getdValue(),reg));
+        compiler.addInstruction(new PUSH(reg));
+        compiler.addInstruction(new BRA(method.getMethodDefinition().getLabel()));
+        compiler.addInstruction(new SUBSP(1+params.size()));
+        compiler.getRegManager().setEtatRegistreFalse(i);
+        this.setdValue(Register.R0); // on sauvergarde toujours au cas où
+    }
+
+    @Override
+    protected void codeGenOPRight(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+    }
+    @Override
+    protected void codeGenOPLeft(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+    }
     @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("not yet implemented");

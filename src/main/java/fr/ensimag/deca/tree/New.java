@@ -6,6 +6,13 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.NEW;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.SUBSP;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -29,7 +36,14 @@ public class New extends AbstractNew {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        int i = compiler.getRegManager().getLastregistre();
+        GPRegister reg = Register.getR(i);
+        compiler.getRegManager().setEtatRegistreTrue(i);
+        this.setdValue(reg);
+        compiler.addInstruction(new NEW(className.getClassDefinition().getOperand(),reg));
+        compiler.addInstruction(new PUSH(reg));
+        compiler.addInstruction(new BRA(new Label("init."+className.getName().toString())));
+        compiler.addInstruction(new SUBSP(1));
     }
 
     @Override

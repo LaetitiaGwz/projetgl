@@ -24,5 +24,7 @@ public abstract class AbstractLValue extends AbstractExpr{
 
         public abstract SymbolTable.Symbol getName();
 
+        public abstract VariableDefinition getVariableDefinition();
+
 
 }
