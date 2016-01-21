@@ -3,28 +3,38 @@
 //
 // Resultats:
 //    Aucune erreur
-// 
+//
+
+class C {}
 
 class A {
     void a() {
         int a;
-        float b;
-        float c = a + b;
-        A d;
-        boolean e = true;
-        String f;
-        if(e) {
-            f = "Ok";
-        }
-        else {
-            f = "Erreur";
-        }
-        d = new A();
-        if(!(d instanceof A)) {
-            f = "Erreur";
-        }
-    }
+        boolean b;
+        float c;
+        String d;
+
+        int e = 5;
+        boolean f = false;
+        float g = 5.3;
+        String h = "ok";
+
+        B q;
+        B r = new B();
+
+        C u;
+        C v = new C();
+
+        if(a == 5) {}
+        else if(f) {}
+        else {}
+
+        e = 2;
+	}
 }
+
+class B {}
+
 {
 
 }

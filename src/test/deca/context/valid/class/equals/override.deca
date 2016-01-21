@@ -1,0 +1,15 @@
+// Description:
+//    Override de la methode equals
+//
+// Resultats:
+//    Aucune erreur
+
+class A {
+	boolean equals(A a) {
+		return true;
+	}
+}
+
+{
+
+}

@@ -65,6 +65,7 @@ block returns[ListDeclVarSet decls, ListInst insts]
             assert($list_inst.tree != null);
             $decls = $list_decl.tree;
             $insts = $list_inst.tree;
+            setLocation($list_inst.tree, $list_inst.start);
         }
     ;
 

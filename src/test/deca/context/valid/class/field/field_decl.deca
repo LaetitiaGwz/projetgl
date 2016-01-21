@@ -7,6 +7,8 @@
 // Historique:
 //    cree le 01/01/2016
 
+class C {}
+
 class A {
 	int a;
 	boolean b;
@@ -27,7 +29,19 @@ class A {
 	protected boolean n = true;
 	protected float o = 5.1234;
 	protected String p = "Hello";
+
+	B q;
+	B r = new B();
+	protected B s;
+	protected B t = new B();
+
+	C u;
+	C v = new C();
+	protected C w;
+	protected C x = new C();
 }
+
+class B {}
 
 {
 	int a = 5;
