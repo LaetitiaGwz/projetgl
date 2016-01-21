@@ -3,9 +3,6 @@
 //
 // Resultats:
 //    undefined method
-// 
-// Historique:
-//    cree le 01/01/2016
 
 class A {
 	void a(int a) {}
