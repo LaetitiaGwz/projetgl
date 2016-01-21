@@ -1,0 +1,15 @@
+// Description:
+//    Tests de débordement de la pile
+//
+// Resultats:
+//   ima_output: stack overflow
+//
+
+class Platon {
+    Platon p = new Platon();
+}
+
+{
+    Platon p = new Platon();
+}
+

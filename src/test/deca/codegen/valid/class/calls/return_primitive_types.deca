@@ -1,0 +1,27 @@
+// Description:
+//    Utilisation de la selection et affichage
+//
+// Resultats:
+//    ima_output: 56.00000e+00ok
+// 
+
+class A {
+	int retourneCinq(){
+	    return 5;
+	}
+	float retourneSix(){
+	    return 6.0;
+	}
+	boolean retourneTrue(){
+           return true;
+	}
+}
+
+{
+	A b = new A();
+	print(b.retourneCinq(),b.retourneSix());
+	if(b.retourneTrue()){
+	    print("ok");
+	}
+}
+

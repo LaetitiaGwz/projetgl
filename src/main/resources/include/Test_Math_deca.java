@@ -13,21 +13,20 @@ public class Test_Math_deca{
 		// System.out.println(ANSI_GREEN+ "debut du test pour ulp\n" + ANSI_RESET);
 		int nbErreur = 0 ;
 		int nb = 0 ;		
-		for (float x = new Float(-Math.pow(2,-5)) ; x<Math.pow(2,-5); x = x + (float)Math.pow(2,-25)){ 
-		// avec un pas de pow(2,-14), il y a un problème pour 1024 + pas = 1024 -> boucle infini
-			nb ++ ;
-			if (Math.ulp(x) != Math_deca.ulp(x)) {
-				System.out.println("Erreur pour x="+x);
-				System.out.println("Math.ulp donne : " + Math.ulp(x));
-				System.out.println("Math_deca donne : " + Math_deca.ulp(x));
-				System.out.println();
-				nbErreur ++;
-			}
-		}
-		System.out.println(ANSI_GREEN + "fin du test pour ulp. Erreur rencontré : " 
-			+ANSI_RED+ nbErreur + ANSI_GREEN +"sur " +nb+" tests.\n "+ ANSI_RESET);
+		// for (float x = new Float(-Math.pow(2,-5)) ; x<Math.pow(2,-5); x = x + (float)Math.pow(2,-25)){ 
+		// // avec un pas de pow(2,-14), il y a un problème pour 1024 + pas = 1024 -> boucle infini
+		// 	nb ++ ;
+		// 	if (Math.ulp(x) != Math_deca.ulp(x)) {
+		// 		System.out.println("Erreur pour x="+x);
+		// 		System.out.println("Math.ulp donne : " + Math.ulp(x));
+		// 		System.out.println("Math_deca donne : " + Math_deca.ulp(x));
+		// 		System.out.println();
+		// 		nbErreur ++;
+		// 	}
+		// }
+		// System.out.println(ANSI_GREEN + "fin du test pour ulp. Erreur rencontré : " 
+		// 	+ANSI_RED+ nbErreur + ANSI_GREEN +"sur " +nb+" tests.\n "+ ANSI_RESET);
 
-		
 		// System.out.println(ANSI_GREEN+ "début du test de tan \n"+ ANSI_RESET);
 		// nbErreur = 0 ;
 		// nb = 0 ;
@@ -123,7 +122,7 @@ public class Test_Math_deca{
 		nb=0;
 		double diffMean = 0 ;
 		float diffMax = 0 ;
-		for(float x = 0; x <(float)Math.PI ;x += (float)Math.pow(2,-13)){
+		for(float x = (float)Math.PI; x <(float)Math.PI*2 ;x += (float)Math.pow(2,-13)){
 		//for(float x = 0; x <(float)Math.PI/8 ;x += (float) Math.pow(2,-23)){
 			diffRelative = Math.abs(((float)Math.sin(x) - Math_deca.sinTaylor(x))/(float)Math.sin(x));
 			diff =Math.abs(((float)Math.sin(x) - Math_deca.sinTaylor(x)));
@@ -148,6 +147,7 @@ public class Test_Math_deca{
 			+ANSI_RED+ diffMean+ANSI_GREEN+", Erreur max en ulp : " 
 			+ANSI_RED+ diffMax+ANSI_RESET);
 		
+
 		System.out.println(ANSI_GREEN+"début du test de cosTaylor\n"+ANSI_RESET);
 		nbErreur=0;
 		nb=0;
@@ -177,7 +177,7 @@ public class Test_Math_deca{
 
 
 
-
+		// System.out.println("test asin(0.5) =" +Math_deca.asin(0.5f));
 		// System.out.println(ANSI_GREEN+"début du test de arcsin\n"+ANSI_RESET);
 		// nbErreur=0;
 		// nb=0;
@@ -189,7 +189,6 @@ public class Test_Math_deca{
 		// 	diffMax = (diff/Math_deca.ulp((float)Math.asin(x)) >diffMax)?diff/Math_deca.ulp((float)Math.asin(x)):diffMax;
 		// 	diffMean += diff/Math_deca.ulp((float)Math.asin(x));	
 		// 	nb ++ ;
-		// 	//if ( diffRelative >= Math.pow(10,-3)) {
 		// 	if ( diff > Math_deca.ulp((float)Math.asin(x))){
 		// 		// System.out.println("Erreur pour x="+x);
 		// 		// System.out.println("Math_deca.arcsin : "+Math_deca.asin(x));
@@ -206,19 +205,25 @@ public class Test_Math_deca{
 		// 	+ANSI_RED+ diffMax+ANSI_RESET);
 
 
-		// //System.out.println("test de arctan en dse :\n");
-
-		// for(float x = -1.F ; x < 1.F ; x = x + (float) Math.pow(2,-5)){
-		// //	//diffRelative = Math.abs(((float)Math.atan(x) - Math_deca.atan(x))/(float)Math.asin(x));
+		// System.out.println(ANSI_GREEN+"Début du test de arctan :\n"+ANSI_RESET);
+		// nbErreur=0;
+		// nb=0;
+		// diffMax = 0 ;
+		// diffMean = 0 ;
+		// for(float x = -1.F ; x < 1.F ; x = x + (float) Math.pow(2,-13)){
+		// 	diffRelative = Math.abs(((float)Math.atan(x) - Math_deca.atan(x))/(float)Math.atan(x));
+		// 	diff =Math.abs(((float)Math.asin(x) - Math_deca.asin(x)));
+		// 	diffMax = (diff/Math_deca.ulp((float)Math.atan(x)) >diffMax)?diff/Math_deca.ulp((float)Math.atan(x)):diffMax;
+		// 	diffMean += diff/Math_deca.ulp((float)Math.atan(x));	
 		// 	diff =Math.abs(((float)Math.atan(x) - Math_deca.atan(x)));
 		// 	nb ++ ;
 		// 	//if ( diffRelative >= Math.pow(10,-3)) {
 		// 	if ( diff > Math_deca.ulp((float)Math.atan(x))){
-		// 		System.out.println("Erreur pour x="+x);
-		// 		System.out.println("Math_deca.arctan : "+Math_deca.atan(x));
-		// 		System.out.println("Math.arctan : "+Math.atan(x));
-		// 		System.out.println("différence : " + diff/Math_deca.ulp((float)Math.atan(x)));
-		// 		System.out.println();
+		// 		// System.out.println("Erreur pour x="+x);
+		// 		// System.out.println("Math_deca.arctan : "+Math_deca.atan(x));
+		// 		// System.out.println("Math.arctan : "+Math.atan(x));
+		// 		// System.out.println("différence : " + diff/Math_deca.ulp((float)Math.atan(x)));
+		// 		// System.out.println();
 		// 		nbErreur ++;
 		// 	}
 
