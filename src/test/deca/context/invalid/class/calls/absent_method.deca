@@ -1,19 +1,18 @@
 // Description:
-//    Utilisation de this
+//    Appel d'une méthode inexistante
 //
 // Resultats:
-//    Aucune erreur
+//    undefined method
 // 
 // Historique:
 //    cree le 01/01/2016
 
 class A {
-	void m() {
-		A a = this;
-	}
+
 }
 
 {
-
+	A a;
+	a.a();
 }
 

@@ -1,19 +1,18 @@
 // Description:
-//    Utilisation de this
+//    Appel d'un champ protected dans main
 //
 // Resultats:
-//    Aucune erreur
+//    undefined field
 // 
 // Historique:
 //    cree le 01/01/2016
 
 class A {
-	void m() {
-		A a = this;
-	}
+	protected int a;
 }
 
 {
+	A a;
 
 }
 
