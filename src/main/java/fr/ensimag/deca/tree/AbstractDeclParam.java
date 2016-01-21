@@ -25,4 +25,7 @@ public abstract class AbstractDeclParam extends Tree {
      * @param compiler
      */
     protected abstract void codeGenDecl(DecacCompiler compiler);
+
+    public abstract void setIndice(int i);
+    public abstract int getIndice();
 }

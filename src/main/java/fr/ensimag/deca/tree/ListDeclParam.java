@@ -38,7 +38,12 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
     }
 
     public void codeGenListDecl(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        int i= -3;
+        for(AbstractDeclParam p : getList()){
+            p.setIndice(i);
+            p.codeGenDecl(compiler);
+            i--;
+        }
     }
 
 }

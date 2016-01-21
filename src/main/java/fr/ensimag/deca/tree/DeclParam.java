@@ -3,6 +3,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -16,9 +18,16 @@ public class DeclParam extends AbstractDeclParam {
     public AbstractIdentifier getVarName() {
         return varName;
     }
-
+    private int indice;
     private AbstractIdentifier type;
     private AbstractIdentifier varName;
+    public void setIndice(int i){
+        indice=i;
+    }
+    public int getIndice(){
+        return indice;
+    }
+
 
     public DeclParam(AbstractIdentifier type, AbstractIdentifier varName) {
         Validate.notNull(varName);
@@ -54,7 +63,7 @@ public class DeclParam extends AbstractDeclParam {
 
     @Override
     protected void codeGenDecl(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        varName.getNonTypeDefinition().setOperand(new RegisterOffset(indice, Register.SP));
     }
 
     @Override
