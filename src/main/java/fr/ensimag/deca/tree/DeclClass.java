@@ -154,6 +154,7 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void codeGenMethodClass(DecacCompiler compiler){
+
         for(AbstractDeclMethod a : methods.getList()){
             a.codeGenMethod(compiler);
         }

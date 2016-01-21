@@ -3,6 +3,11 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -88,8 +93,26 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     protected void codeGenMethod(DecacCompiler compiler) {
         compiler.addLabel(name.getMethodDefinition().getLabel());
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        for(int i=2;i<compiler.getCompilerOptions().getRegistre();i++){
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+        }
+        body.codeGenListInstMethod(compiler);
+        for(AbstractInst i: body.getList()){
 
-        //body.codeGenListInst(compiler);
+        }
+
+
+
+
+
+
+        for(int i=compiler.getCompilerOptions().getRegistre()-1;i>1;i--){
+            compiler.addInstruction(new POP(Register.getR(i)));
+        }
+        compiler.getRegManager().setTableRegistre(table); //on les remets à la fin
+        compiler.addInstruction(new RTS());
+
     }
 
 
