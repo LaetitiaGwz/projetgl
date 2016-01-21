@@ -1,0 +1,10 @@
+// Description:
+//    Création d'une instance de booléen
+//
+// Resultats:
+//    undefined class boolean
+
+{
+	boolean a = new boolean();
+}
+

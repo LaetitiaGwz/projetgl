@@ -1,8 +1,8 @@
 // Description:
-//    Affectation d'un float dans un champ de type int
+//    Affectation d'un champ de type int dans un float
 //
 // Resultats:
-//    undefined field
+//    cast correct
 // 
 // Historique:
 //    cree le 01/01/2016
@@ -13,7 +13,6 @@ class A {
 
 {
 	A a;
-	float b;
-	a.a = b;
+	float b = a.a;
 }
 
