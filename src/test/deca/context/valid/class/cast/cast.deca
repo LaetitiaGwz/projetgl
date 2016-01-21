@@ -20,9 +20,9 @@ class C extends B {}
 	C c1, c2;
 
 	// on cast B->A (implicite)
-	a1 = b;
+	a1 = b1;
 	// on cast C->A (implicite)
-	a2 = c;
+	a2 = c1;
 
 	// on undercast A->B
 	b2 = (B) (a1);

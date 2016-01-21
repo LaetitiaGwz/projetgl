@@ -13,7 +13,7 @@ class A {
 	void m() {
 		A d = this;
 		int c = this.a;
-		int e = this.e;
+		int b = this.b;
 	}
 }
 
