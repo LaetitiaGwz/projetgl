@@ -395,7 +395,7 @@ public class Math_deca{
 	}
         
         public static float atan(float x){
-            if(x>1   
+            if(x>1){   
                 return PIDIV2-atandse(1/x);
             }
             if(x<-1){
