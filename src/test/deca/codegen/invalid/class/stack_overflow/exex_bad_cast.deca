@@ -1,0 +1,20 @@
+// Description:
+//    Cast dynamique d'une classe
+//
+// Resultats:
+//    ima_output: bad cast
+
+class Socrate{
+}
+
+class Platon extends Socrate{
+}
+
+class Aristote extends Socrate{
+
+}
+
+{
+    Socrate s = new Platon();
+    Aristote a = (Aristote) s;
+}
