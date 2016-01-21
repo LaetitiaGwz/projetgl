@@ -1,5 +1,8 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.codegen.TableField;
+import fr.ensimag.deca.tree.AbstractDeclField;
+import fr.ensimag.deca.tree.AbstractDeclMethod;
 import fr.ensimag.deca.tree.Location;
 import fr.ensimag.deca.tree.Visibility;
 
@@ -15,6 +18,24 @@ public class FieldDefinition extends NonTypeDefinition {
     }
 
     private int index;
+
+    private TableField tableField;
+
+    public void initialiseTable(){
+        tableField=new TableField();
+    }
+
+    public void ajoutField(AbstractDeclField ajout){
+        tableField.addField(ajout);
+    }
+
+    public AbstractDeclField getField(Integer j){
+        return tableField.getIndex(j);
+    }
+
+    public boolean containKey(Integer i){
+        return tableField.containKey(i);
+    }
     
     @Override
     public boolean isField() {

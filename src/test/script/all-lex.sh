@@ -18,7 +18,7 @@ RED="\e[31m"
 return_status=0
 
 # Tests des cas invalides
-for cas_de_test in "$INVALID_DIR"/*.deca
+for cas_de_test in $(find "$INVALID_DIR" -type f | grep "\.deca")
 do
     # Récupération de la ligne ou se produit l'erreur, à partir des commentaires
     # du fichier de test
@@ -35,7 +35,7 @@ do
 done
 
 # Tests des cas valides
-for cas_de_test in "$VALID_DIR"/*.deca
+for cas_de_test in $(find "$VALID_DIR" -type f | grep "\.deca")
 do
     filename=$(echo ${cas_de_test} | sed -e "s@${VALID_DIR}/@@g")
     if test_lex "$cas_de_test" 2>&1 \

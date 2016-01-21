@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.TableMethode;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -19,20 +20,7 @@ import org.apache.commons.lang.Validate;
  */
 public class Identifier extends AbstractIdentifier {
 
-    private int nbMethod=0;
-    private int nbGB;
-    @Override
-    public int getNbGB(){
-        return this.nbGB;
-    }
-    @Override
-    public int getNbMethod(){
-        return this.nbMethod;
-    }
-    @Override
-    public void setNbMethod(int enplus){
-        this.nbMethod=enplus;
-    }
+
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -189,7 +177,7 @@ public class Identifier extends AbstractIdentifier {
         TypeDefinition t = compiler.getRootEnv().getTypeDef(compiler.getSymbols().create(getName().getName()));
 
         if(t == null) {
-            throw new DecacInternalError("Type " + getName().getName() + " undefinded.");
+            throw new ContextualError("Type " + getName().getName() + " undefinded.", getLocation());
         }
 
         setDefinition(t);
@@ -199,10 +187,22 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     public Type verifyClass(DecacCompiler compiler) throws ContextualError {
-        ClassDefinition c = compiler.getRootEnv().getClassDef(compiler.getSymbols().create(getName().getName()));
+        TypeDefinition c = compiler.getRootEnv().getTypeDef(compiler.getSymbols().create(getName().getName()));
+
+        if(c == null || (!(c instanceof ClassDefinition))) {
+            throw new ContextualError("Class " + getName().getName() + " undefinded.", this.getLocation());
+        }
+
+        setDefinition(c);
+        setType(c.getType());
+        return c.getType();
+    }
+
+    public Type verifyMethod(Signature s, DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        MethodDefinition c = localEnv.getMethodDef(compiler.getSymbols().create(getName().getName()), s);
 
         if(c == null) {
-            throw new ContextualError("Class " + getName().getName() + " undefinded.", this.getLocation());
+            throw new ContextualError("Method " + getName().getName() + " undefinded.", this.getLocation());
         }
 
         setDefinition(c);
@@ -239,10 +239,10 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
-    protected void codeGenInitClass(DecacCompiler compiler, int nbMethode){
-        this.nbGB=compiler.getRegManager().getGB();
-        this.codeGenInit(compiler);
-        this.setNbMethod(nbMethode);
+    protected void codeGenInitClass(DecacCompiler compiler){
+        RegisterOffset stock = new RegisterOffset(compiler.getRegManager().getGB(), Register.GB);
+        this.getClassDefinition().setOperand(stock);
+        compiler.getRegManager().incrementGB();
 
     }
 

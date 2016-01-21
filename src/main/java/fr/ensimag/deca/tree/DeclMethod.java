@@ -21,6 +21,10 @@ public class DeclMethod extends AbstractDeclMethod {
 
     EnvironmentExp methodEnv;
 
+    @Override
+    public AbstractIdentifier getIdentifier(){
+        return this.name;
+    }
     public DeclMethod(AbstractIdentifier name, AbstractIdentifier ret, ListDeclParam params, ListInst body, ListDeclVarSet declVars) {
         Validate.notNull(name);
         Validate.notNull(ret);
@@ -39,19 +43,29 @@ public class DeclMethod extends AbstractDeclMethod {
     protected void verifyMembers(DecacCompiler compiler,
                                 EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-
         Type returnType = ret.verifyType(compiler);
         Signature signature = params.verifyMembers(compiler, localEnv, currentClass);
 
-        MethodDefinition methodDef = new MethodDefinition(returnType, getLocation(), signature, currentClass.incNumberOfMethods());
+        // On vérifie d'abord que la méthode n'est pas
+        //  déjà déclarée dans l'environnement parent
+        MethodDefinition parentDef = localEnv.getMethodDef(name.getName(), signature);
+        int index;
+        if(parentDef == null) {
+            index = currentClass.incNumberOfMethods();
+        }
+        else {
+            index = parentDef.getIndex();
+        }
+
+        MethodDefinition methodDef = new MethodDefinition(returnType, getLocation(), signature, index);
 
         try {
-            localEnv.declare(compiler.getSymbols().create(name.getName().getName()), methodDef);
+            localEnv.declareMethod(name.getName(), methodDef);
         } catch (EnvironmentExp.DoubleDefException e) {
             throw new ContextualError("Double declaration of method " + name.getName().getName(), getLocation());
         }
 
-        name.verifyExpr(compiler, localEnv, currentClass);
+        name.verifyMethod(signature, compiler, localEnv, currentClass);
     }
 
     @Override
@@ -68,9 +82,17 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    protected void codeGenMethod(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+    protected void codePreGenMethod(DecacCompiler compiler) {
+        name.getMethodDefinition().setLabel(compiler.getLblManager().getLabelFalse());
     }
+    @Override
+    protected void codeGenMethod(DecacCompiler compiler) {
+        compiler.addLabel(name.getMethodDefinition().getLabel());
+
+        //body.codeGenListInst(compiler);
+    }
+
+
 
     @Override
     public void decompile(IndentPrintStream s) {

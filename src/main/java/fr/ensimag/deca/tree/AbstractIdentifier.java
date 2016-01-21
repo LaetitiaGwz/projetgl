@@ -1,15 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.ClassType;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Definition;
-import fr.ensimag.deca.context.FieldDefinition;
-import fr.ensimag.deca.context.MethodDefinition;
-import fr.ensimag.deca.context.NonTypeDefinition;
-import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.SymbolTable;
 
 /**
@@ -70,6 +62,7 @@ public abstract class AbstractIdentifier extends AbstractLValue {
      */
     public abstract NonTypeDefinition getNonTypeDefinition();
 
+
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * VariableDefinition.
@@ -84,15 +77,12 @@ public abstract class AbstractIdentifier extends AbstractLValue {
 
     public abstract void setDefinition(Definition definition);
 
-    protected abstract void codeGenInitClass(DecacCompiler compiler,int nbMethode);
-    public abstract int getNbMethod();
-    public abstract void setNbMethod(int enplus);
-    public abstract int getNbGB();
-
-
+    protected abstract void codeGenInitClass(DecacCompiler compiler);
 
     public abstract Type verifyType(DecacCompiler compiler) throws ContextualError;
 
     public abstract Type verifyClass(DecacCompiler compiler) throws ContextualError;
-    
+
+    public abstract Type verifyMethod(Signature s, DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
+
 }

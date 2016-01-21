@@ -1,6 +1,9 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.codegen.TableMethode;
+import fr.ensimag.deca.tree.AbstractDeclMethod;
 import fr.ensimag.deca.tree.Location;
+import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Label;
 import org.apache.commons.lang.Validate;
 
@@ -13,6 +16,23 @@ import org.apache.commons.lang.Validate;
 public class ClassDefinition extends TypeDefinition {
 
 
+    private TableMethode tableMethode;
+
+    public void initialiseTable(){
+        tableMethode=new TableMethode();
+    }
+
+    public void ajoutMethod(AbstractDeclMethod ajout){
+        tableMethode.addMethode(ajout);
+    }
+
+    public AbstractDeclMethod getMethod(Integer j){
+        return tableMethode.getIndex(j);
+    }
+
+    public boolean containKey(Integer i){
+        return tableMethode.containKey(i);
+    }
     public void setNumberOfFields(int numberOfFields) {
         this.numberOfFields = numberOfFields;
     }
@@ -20,6 +40,15 @@ public class ClassDefinition extends TypeDefinition {
     public int getNumberOfFields() {
         return numberOfFields;
     }
+
+    public void setOperand(DAddr operand) {
+        this.operand = operand;
+    }
+
+    public DAddr getOperand() {
+        return operand;
+    }
+    private DAddr operand;
 
     public int incNumberOfFields() {
         this.numberOfFields++;
@@ -53,7 +82,7 @@ public class ClassDefinition extends TypeDefinition {
         // Cast succeeds by construction because the type has been correctly set
         // in the constructor.
         return (ClassType) super.getType();
-    };
+    }
 
     public ClassDefinition getSuperClass() {
         return superClass;
@@ -71,8 +100,6 @@ public class ClassDefinition extends TypeDefinition {
         EnvironmentExp parent;
         if (superClass != null) {
             parent = superClass.getMembers();
-            setNumberOfFields(superClass.getNumberOfFields());
-            setNumberOfMethods(superClass.getNumberOfMethods());
         } else {
             parent = null;
         }

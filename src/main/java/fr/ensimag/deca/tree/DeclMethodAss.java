@@ -21,6 +21,11 @@ public class DeclMethodAss extends AbstractDeclMethod {
     ListDeclParam params;
     String code;
 
+    @Override
+    public AbstractIdentifier getIdentifier(){
+        return this.name;
+    }
+
     public DeclMethodAss(AbstractIdentifier name, AbstractIdentifier ret, ListDeclParam params, String code) {
         Validate.notNull(name);
         Validate.notNull(ret);

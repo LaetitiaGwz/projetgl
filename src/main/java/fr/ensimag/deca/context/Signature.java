@@ -24,4 +24,21 @@ public class Signature {
         return args.size();
     }
 
+    public boolean equals(Object other) {
+        if(other == null || (!(other instanceof Signature))) return false;
+        Signature s = (Signature) other;
+        if(size() != s.size()) return false;
+        for (int i = 0; i < size(); i++) {
+            if(!paramNumber(i).sameType(s.paramNumber(i))) return false;
+        }
+        return true;
+    }
+
+    public int hashCode() {
+        int h = 1;
+        for (int i = 0; i < size(); i++) {
+            h *= paramNumber(i).getName().hashCode();
+        }
+        return h;
+    }
 }

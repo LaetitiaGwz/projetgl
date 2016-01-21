@@ -1,8 +1,11 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Dictionary associating identifier's NonTypeDefinition to their names.
@@ -22,11 +25,25 @@ public class EnvironmentExp {
     // d'empilement).
     
     protected EnvironmentExp parentEnvironment;
-    protected HashMap<Symbol, Definition> environment ;
-    
+    /**
+     * Contains definition parameters, variables and fields
+     */
+    protected HashMap<Symbol, NonTypeDefinition> vars ;
+    /**
+     * Contains definition of methods
+     */
+    protected HashMap<Symbol, MethodDefinition> methods ;
+    /**
+     * Contains definition of types and classes
+     */
+    protected HashMap<Symbol, TypeDefinition> types ;
+
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment ;
-        this.environment = new HashMap<Symbol, Definition>();
+        this.vars = new HashMap<Symbol, NonTypeDefinition>();
+        this.methods = new HashMap<Symbol, MethodDefinition>();
+        this.types = new HashMap<Symbol, TypeDefinition>();
+
     }
 
     public static class DoubleDefException extends Exception {
@@ -43,9 +60,9 @@ public class EnvironmentExp {
      *          the symbol is undefined
      */
     public NonTypeDefinition get(Symbol key) {
-        Definition result = environment.get(key);
-        if (result != null && (result instanceof NonTypeDefinition)) {
-            return (NonTypeDefinition) result ;
+        NonTypeDefinition result = vars.get(key);
+        if (result != null) {
+            return result ;
         }
         else if(parentEnvironment == null) {
             return null;
@@ -54,11 +71,23 @@ public class EnvironmentExp {
             return parentEnvironment.get(key);
         }
     }
+    public MethodDefinition getMethodDef(Symbol key) {
+        MethodDefinition result = methods.get(key);
+        if (result != null) {
+            return result ;
+        }
+        else if(parentEnvironment == null) {
+            return null;
+        }
+        else{
+            return parentEnvironment.getMethodDef(key);
+        }
+    }
 
     public TypeDefinition getTypeDef(Symbol key) {
-        Definition result = environment.get(key);
-        if (result != null && (result instanceof TypeDefinition)) {
-            return (TypeDefinition) result ;
+        TypeDefinition result = types.get(key);
+        if (result != null) {
+            return result ;
         }
         else if(parentEnvironment == null) {
             return null;
@@ -69,7 +98,7 @@ public class EnvironmentExp {
     }
 
     public ClassDefinition getClassDef(Symbol key) {
-        Definition result = environment.get(key);
+        Definition result = types.get(key);
         if (result != null && (result instanceof ClassDefinition)) {
             return (ClassDefinition) result ;
         }
@@ -98,40 +127,48 @@ public class EnvironmentExp {
      *             environment.
      */
     public void declare(Symbol name, NonTypeDefinition def) throws DoubleDefException {
-        Definition res = environment.get(name);
-        if (res != null && (res instanceof NonTypeDefinition)) {
+        NonTypeDefinition res = vars.get(name);
+        if (res != null) {
             throw new DoubleDefException();
         }
         else {
-            this.environment.put(name, def);
+            this.vars.put(name, def);
         }
     }
-    public void declareClass(Symbol name, ClassDefinition def) throws DoubleDefException {
-        Definition res = environment.get(name);
-        if (res != null && (res instanceof ClassDefinition)) {
+    public void declareMethod(Symbol name, MethodDefinition def) throws DoubleDefException {
+        MethodDefinition res = methods.get(name);
+        if (res != null) {
             throw new DoubleDefException();
         }
         else {
-            this.environment.put(name, def);
+            this.methods.put(name, def);
         }
     }
     public void declareType(Symbol name, TypeDefinition def) throws DoubleDefException {
-        Definition res = environment.get(name);
-        if (res != null && (res instanceof TypeDefinition)) {
+        TypeDefinition res = types.get(name);
+        if (res != null) {
             throw new DoubleDefException();
         }
         else {
-            this.environment.put(name, def);
+            this.types.put(name, def);
         }
     }
 
     @Override
     public String toString() {
-        String s = "Affichage de l'environnement : \n";
-
-        for (Map.Entry<Symbol, Definition> entry : environment.entrySet()) {
+        String s = "Affichage des variables : ";
+        for (Map.Entry<Symbol, NonTypeDefinition> entry : vars.entrySet()) {
             s += "\nSymbol : " + entry.getKey().getName() + " Definition : " + entry.getValue();
         }
+        s += "\nAffichage des méthodes : ";
+        for (Map.Entry<Symbol, MethodDefinition> entry : methods.entrySet()) {
+            s += "\nSymbol : " + entry.getKey().getName() + " Definition : " + entry.getValue();
+        }
+        s += "\nAffichage des types : ";
+        for (Map.Entry<Symbol, TypeDefinition> entry : types.entrySet()) {
+            s += "\nSymbol : " + entry.getKey().getName() + " Definition : " + entry.getValue();
+        }
+        s += "\n#############################";
         return s;
     }
 }

@@ -2,12 +2,12 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.ListeMethodeClasse;
+import fr.ensimag.deca.codegen.TableField;
+import fr.ensimag.deca.codegen.TableMethode;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.LEA;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -25,7 +25,11 @@ public class DeclClass extends AbstractDeclClass {
 
     protected AbstractIdentifier name;
     protected AbstractIdentifier superClass;
-    private ListeMethodeClasse tableMethode;
+
+    @Override
+    public AbstractIdentifier returnIdentifier(){
+        return name;
+    }
 
     protected ListDeclFieldSet declFields;
     protected ListDeclMethod methods;
@@ -49,20 +53,19 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
-
         // On récupère la définition de la superClass dans ce contexte également (nécessaire pour la déclaration du type)
         ClassDefinition superClassDef = compiler.getRootEnv().getClassDef(compiler.getSymbols().create(superClass.getName().getName()));
 
         ClassType classType = new ClassType(compiler.getSymbols().create(name.getName().getName()), getLocation(), superClassDef);
         this.name.setType(classType);
 
-        ClassDefinition classDef = new ClassDefinition(classType, getLocation(), superClassDef);
+        ClassDefinition classDef = classType.getDefinition();
         name.setDefinition(classDef);
 
         // On déclare la class dans l'envRoot
         // Erreur si déjà existante
         try {
-            compiler.getRootEnv().declareClass(compiler.getSymbols().create(name.getName().getName()), name.getClassDefinition());
+            compiler.getRootEnv().declareType(compiler.getSymbols().create(name.getName().getName()), name.getClassDefinition());
         } catch (EnvironmentExp.DoubleDefException $e) {
             throw new ContextualError("Class " + name.getName().getName() + " twice declared.", getLocation());
         }
@@ -75,6 +78,12 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
+
+        // On hérite des index de la superClass
+        // Pas besoin de vérifier qu'elle est non null
+        (name.getClassDefinition()).setNumberOfMethods(superClass.getClassDefinition().getNumberOfMethods());
+        (name.getClassDefinition()).setNumberOfFields(superClass.getClassDefinition().getNumberOfFields());
+
         methods.verifyMethodsMembers(compiler, name.getClassDefinition().getMembers(), name.getClassDefinition());
         declFields.verifyMembers(compiler, name.getClassDefinition().getMembers(), name.getClassDefinition());
     }
@@ -101,24 +110,54 @@ public class DeclClass extends AbstractDeclClass {
         methods.iter(f);
         declFields.iter(f);
     }
+    @Override
+    protected void codePreGenMethodClass(DecacCompiler compiler){
+        // on recupère l'adresse de la superclasse
+        compiler.addInstruction(new LEA(superClass.getClassDefinition().getOperand(),Register.R0));
+        compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
+        name.codeGenInitClass(compiler);
+        name.getClassDefinition().initialiseTable();
 
-    protected void codePreGen1(DecacCompiler compiler){
-        if(superClass==null){
-            compiler.addInstruction(new LOAD(new NullOperand(),Register.R0));
-            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
-            name.codeGenInitClass(compiler,methods.size());
-
-            //on stock dans l'identifier l'adresse de start, cela incremente GB
+        //ne va commencer qu'à 2 , code.Object.equals a rajouter à la main par la suite
+        for(AbstractDeclMethod a : methods.getList()){
+            compiler.getLblManager().setLabelFalse(new Label("code."+name.getName().toString()+"."+a.getIdentifier().getName()));
+            a.codePreGenMethod(compiler); // on en profite pour regler la methode
+            name.getClassDefinition().ajoutMethod(a);
         }
-        else{// on recupère l'adresse de la superclasse
-            compiler.addInstruction(new LEA(superClass.getNonTypeDefinition().getOperand(),Register.R0));
-            compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
-            name.codeGenInitClass(compiler,superClass.getNbMethod()+methods.size());
+        // on a ajouté les éléments de la classe verifions la superclasse si présente
+        if(!superClass.getName().toString().equals("Object")){// besoin de récupérer éléments de la super classe que si elle existe
+            Integer i=2;
+            while(superClass.getClassDefinition().containKey(i) || name.getClassDefinition().containKey(i) ){
+                if(!name.getClassDefinition().containKey(i)){
+                    name.getClassDefinition().ajoutMethod(superClass.getClassDefinition().getMethod(i));
+                }
+                i++;
+            }
         }
+        // le tableau est rempli.
 
 
     }
-
-    protected void codeGenRemplir(DecacCompiler compiler){
+    @Override
+    protected void codeGenFieldClass(DecacCompiler compiler){
+        compiler.addLabel(new Label("init."+name.getName().toString())); //pour s'en rappeler
+        for(AbstractDeclFieldSet a : declFields.getList()){
+            a.codeGenFieldSet(compiler);
+        }
+        if(!superClass.getName().toString().equals("Object")){
+            compiler.addInstruction(new PUSH(Register.R1)); // on sauvegarde R1 pour la superclass
+            compiler.addInstruction(new BSR(new Label("init."+superClass.getName().toString())));
+            compiler.addInstruction(new SUBSP(1));
+        }
+        compiler.addInstruction(new RTS());
     }
+
+    @Override
+    protected void codeGenMethodClass(DecacCompiler compiler){
+        for(AbstractDeclMethod a : methods.getList()){
+            a.codeGenMethod(compiler);
+        }
+
+    }
+
 }

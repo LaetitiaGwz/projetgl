@@ -38,6 +38,8 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(Type t, DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+        
+        initialization.verifyInitialization(compiler, t, localEnv, currentClass);
 
         // On tente de déclarer la variable dans l'environnement. Sinon erreur contextuelle.
         try {
@@ -48,7 +50,6 @@ public class DeclVar extends AbstractDeclVar {
         }
 
         varName.verifyExpr(compiler, localEnv, currentClass);
-        initialization.verifyInitialization(compiler, t, localEnv, currentClass);
     }
 
     @Override

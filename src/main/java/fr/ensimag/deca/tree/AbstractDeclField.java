@@ -26,5 +26,13 @@ public abstract class AbstractDeclField extends Tree {
      * Generates the code for the declaration
      * @param compiler
      */
+
     protected abstract void codeGenDecl(DecacCompiler compiler);
+
+    protected abstract void codeGenFieldFloat(DecacCompiler compiler);
+
+    protected abstract void codeGenFieldInt(DecacCompiler compiler);
+
+    public abstract AbstractIdentifier getVarName();
+
 }

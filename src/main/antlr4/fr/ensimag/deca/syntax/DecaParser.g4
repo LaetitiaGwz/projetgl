@@ -169,7 +169,7 @@ inst returns[AbstractInst tree]
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
-            $tree = $expr.tree;
+            $tree = new Return($expr.tree);
             setLocation($tree, $expr.start);
         }
     ;
@@ -288,7 +288,6 @@ eq_neq_expr returns[AbstractExpr tree]
         }
     ;
 
-//TODO instanceof
 inequality_expr returns[AbstractExpr tree]
     : e=sum_expr {
             assert($e.tree != null);
@@ -322,7 +321,8 @@ inequality_expr returns[AbstractExpr tree]
     | e1=inequality_expr INSTANCEOF type {
             assert($e1.tree != null);
             assert($type.tree != null);
-            // TODO
+            $tree = new InstanceOf($type.tree, $e1.tree);
+            setLocation($tree, $e1.start);
         }
     ;
 
@@ -388,7 +388,6 @@ unary_expr returns[AbstractExpr tree]
         }
     ;
 
-//TODO methode/attributs de classe
 select_expr returns[AbstractExpr tree]
     : e=primary_expr {
             assert($e.tree != null);
@@ -401,16 +400,19 @@ select_expr returns[AbstractExpr tree]
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
             assert($args.tree != null);
-            //TODO
+            $tree = new MethodCall($e1.tree, $i.tree, $args.tree);
+            setLocation($tree, $e1.start);
+            setLocation($i.tree, $i.start);
         }
         | /* epsilon */ {
-            // we matched "e.i"
-            //TODO
+            // we matched "e1.i"
+            $tree = new Selection($e1.tree, $i.tree);
+            setLocation($tree, $e1.start);
+            setLocation($i.tree, $i.start);
         }
         )
     ;
 
-//TODO methode
 primary_expr returns[AbstractExpr tree]
     : ident {
             assert($ident.tree != null);
@@ -434,7 +436,9 @@ primary_expr returns[AbstractExpr tree]
         }
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
-            //TODO
+            $tree = new New($ident.tree);
+            setLocation($ident.tree, $ident.start);
+            setLocation($tree, $ident.start);
         }
     | cast=OPARENT type CPARENT OPARENT expr CPARENT {
             assert($type.tree != null);
@@ -457,13 +461,20 @@ type returns[AbstractIdentifier tree]
         }
     ;
 
-//TODO THIS
 literal returns[AbstractExpr tree]
     : INT {
+            try{
             $tree = new IntLiteral(Integer.parseInt($INT.getText()));
+            }catch(NumberFormatException e){
+                System.out.println("Integer number too large");
+            }
         }
     | fd=FLOAT {
+            try{
             $tree = new FloatLiteral(Float.parseFloat($fd.getText()));
+             }catch(IllegalArgumentException e){
+                System.out.println("Floating point number too large");
+            }
         }
     | STRING {
             $tree = new StringLiteral($STRING.getText());
@@ -475,7 +486,7 @@ literal returns[AbstractExpr tree]
             $tree = new BooleanLiteral(false);
         }
     | THIS {
-            //TODO
+            $tree = new This();
         }
     | NULL {
             $tree = new Null();
@@ -490,7 +501,6 @@ ident returns[AbstractIdentifier tree]
 
 /****     Class related rules     ****/
 
-//TODO ajout de classe dans la liste
 list_classes returns[ListDeclClass tree]
 @init {
     $tree = new ListDeclClass();
@@ -504,7 +514,6 @@ list_classes returns[ListDeclClass tree]
       )*
     ;
 
-//TODO
 class_decl returns[AbstractDeclClass tree]
     : CLASS name=ident superclass=class_extension OBRACE class_body CBRACE {
             assert($class_body.methods != null);
@@ -513,22 +522,22 @@ class_decl returns[AbstractDeclClass tree]
             assert($name.tree != null);
             $tree = new DeclClass($name.tree, $superclass.tree, $class_body.fields, $class_body.methods);
             setLocation($tree, $name.start);
+            setLocation($name.tree, $name.start);
+            setLocation($superclass.tree, $superclass.start);
         }
     ;
 
-//TODO
 class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
             assert($ident.tree != null);
             $tree = $ident.tree;
-            setLocation($tree, $ident.start);
+            setLocation($ident.tree, $ident.start);
         }
     | /* epsilon */ {
             $tree = new Identifier(T.create("Object"));
         }
     ;
 
-//TODO
 class_body returns[ListDeclMethod methods, ListDeclFieldSet fields]
 @init {
     $methods = new ListDeclMethod();
@@ -543,7 +552,6 @@ class_body returns[ListDeclMethod methods, ListDeclFieldSet fields]
       )*
     ;
 
-//TODO
 decl_field_set returns[AbstractDeclFieldSet tree]
     : visibility type dv=list_decl_field SEMI {
             assert($visibility.tree != null);
@@ -554,7 +562,6 @@ decl_field_set returns[AbstractDeclFieldSet tree]
         }
     ;
 
-//TODO
 visibility returns [Visibility tree]
     : /* epsilon */ {
             $tree = Visibility.PUBLIC;
@@ -564,7 +571,6 @@ visibility returns [Visibility tree]
         }
     ;
 
-//TODO
 list_decl_field returns[ListDeclField tree]
 @init{
     $tree = new ListDeclField();
@@ -579,7 +585,6 @@ list_decl_field returns[ListDeclField tree]
       )*
     ;
 
-//TODO
 decl_field returns[AbstractDeclField tree]
 @init {
     AbstractInitialization initialization;
@@ -600,7 +605,6 @@ decl_field returns[AbstractDeclField tree]
         }
     ;
 
-//TODO
 decl_method returns[AbstractDeclMethod tree]
 @init {
 }
@@ -612,10 +616,10 @@ decl_method returns[AbstractDeclMethod tree]
         }
       ) {
             setLocation($tree, $type.start);
+            setLocation($ident.tree, $type.start);
         }
     ;
 
-//TODO
 list_params returns[ListDeclParam tree]
 @init {
     $tree = new ListDeclParam();
@@ -639,7 +643,6 @@ multi_line_string returns[String text, Location location]
         }
     ;
 
-//TODO
 param returns[AbstractDeclParam tree]
     : type ident {
             $tree = new DeclParam($type.tree, $ident.tree);

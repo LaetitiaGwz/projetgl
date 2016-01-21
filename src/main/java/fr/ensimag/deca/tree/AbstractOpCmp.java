@@ -3,9 +3,10 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
  *
@@ -65,6 +66,30 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         }
         compiler.getRegManager().setEtatRegistreFalse(compiler.getRegManager().getLastregistre()-1);
         //on libère quoi qu'il arrive
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler){
+        this.getLeftOperand().codeGenOPLeft(compiler);
+        GPRegister cmpRight= (GPRegister) getLeftOperand().getdValue();
+        this.getRightOperand().codeGenOPRight(compiler);
+        DVal cmpLeft = getRightOperand().getdValue();
+        compiler.addInstruction(new CMP(cmpLeft, cmpRight));
+        int i=compiler.getLblManager().getIf();
+        compiler.getLblManager().incrementIf();
+        Label finTest = new Label("endTest"+i);
+        Label suiteTest = new Label("suiteTest"+i);
+        compiler.getLblManager().setLabelFalse(suiteTest);
+        this.codeGenCMPOP(compiler);
+        int j= compiler.getRegManager().getLastregistre();
+        compiler.getRegManager().setEtatRegistreTrue(j);
+        GPRegister bypass = Register.getR(j);
+        compiler.addInstruction(new LOAD(new ImmediateInteger(1),bypass));
+        compiler.addInstruction(new BRA(finTest));
+        compiler.addLabel(suiteTest);
+        compiler.addInstruction(new LOAD(new ImmediateInteger(0),bypass));
+        compiler.addLabel(finTest);
+        setdValue(bypass);
     }
 
     @Override

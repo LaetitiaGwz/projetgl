@@ -52,7 +52,7 @@ public class Assign extends AbstractBinaryExpr {
         else if(!rightType.sameType(leftType)) {
             throw new ContextualError("Assignement incompatible : cannot cast " + rightType + " into " + leftType + ".", getLocation());
         }
-        
+
         Type t = compiler.getRootEnv().getTypeDef(compiler.getSymbols().create("boolean")).getType();
         setType(t);
         return t;

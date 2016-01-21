@@ -67,8 +67,16 @@ public class DeclFieldSet extends AbstractDeclFieldSet {
     }
 
     @Override
-    protected void codegenDeclFieldSet(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+    protected void codeGenFieldSet(DecacCompiler compiler) {
+        for( AbstractDeclField a : declFields.getList()){
+            if(getFieldType().getName().toString().equals("float")){
+                a.codeGenFieldFloat(compiler);
+            }
+            else{
+                a.codeGenFieldInt(compiler);
+            }
+
+        }
     }
 
 

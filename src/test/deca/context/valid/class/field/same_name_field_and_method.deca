@@ -1,0 +1,20 @@
+// Description:
+//    Déclaration d'une classe avec un attribut int
+//
+// Resultats:
+//    Aucune erreur
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class Test {
+	int b;
+	void b() {
+		int b = 2;
+	}
+}
+
+{
+
+}
+

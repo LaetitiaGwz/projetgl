@@ -50,7 +50,7 @@ echo -e "${WHITE} ------------- TESTS DE LA PARTIE B (COMPILATION SEULEMENT) ---
 # On teste ici seulement la compilation (donc la génération de code),
 # pas l'éxécution
 #######################################################
-for cas_de_test in "$ETAPEB_VALID_DIR"/*.deca
+for cas_de_test in $(find "$ETAPEB_VALID_DIR" -type f | grep "\.deca")
 do
         line_err=$(cat ${cas_de_test} | grep Ligne | sed -e "s/[^0-9]//g")
         filename=$(echo ${cas_de_test} | xargs basename)
@@ -82,7 +82,7 @@ echo -e "${WHITE} ------------- TESTS DE LA PARTIE C : COMPILATION + EXECUTION -
 #######################################################
 
 # Test des cas invalides (erreur à l'éxécution)
-for cas_de_test in "$ETAPEC_INVALID_DIR"/*.deca
+for cas_de_test in $(find "$ETAPEC_INVALID_DIR" -type f | grep "\.deca")
 do
         # Récupération de la ligne ou se produit l'erreur, à partir des commentaires
         # du fichier de test
@@ -146,7 +146,7 @@ done
 
 
 # Test des cas valides
-for cas_de_test in "$ETAPEC_VALID_DIR"/*.deca
+for cas_de_test in $(find "$ETAPEC_VALID_DIR" -type f | grep "\.deca")
 do
         filename=$(echo ${cas_de_test} | sed -e "s@${ETAPEC_VALID_DIR}/@@g")
         result_test=$(decac "$cas_de_test" 2>&1)

@@ -1,5 +1,5 @@
 // Description:
-//    Déclaration d'une classe avec un attribut int
+//    Utilisation de la selection
 //
 // Resultats:
 //    Aucune erreur
@@ -7,14 +7,12 @@
 // Historique:
 //    cree le 01/01/2016
 
-class Test {
-	int b;
-	void b() {
-		c = 2;
-	}
+class A {
+	int a;
 }
 
 {
-
+	A b;
+	int a = b.a;
 }
 

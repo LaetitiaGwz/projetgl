@@ -5,6 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 /**
  * Individual variable declaration (e.g. "x = 42" in "int x = 42, z;")
@@ -23,4 +25,5 @@ public abstract class AbstractDeclVar extends Tree {
      * @param compiler
      */
     protected abstract void codeGenDecl(DecacCompiler compiler);
+
 }
