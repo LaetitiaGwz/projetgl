@@ -130,7 +130,7 @@ public class Math_deca{
 	public static float sqrt(float x){
 
 		if (x<0){
-			System.out.println(x+" est un nombre négatif ...");
+			System.out.println(x+" est un nombre négatif, on ne considère pas les racines carrés des nombres négatifs.");
 			return (float)0.0;
 		}
 		if (x == (float)1.0 || x == (float) 0.0){
@@ -375,7 +375,7 @@ public class Math_deca{
 		int i=1;
 
 		//while ( i<6 || abs(temp)> ulp(res) ) {
-		while ( i < 6) {
+		while ( i < 7) {
 			temp = -temp*power(x,2)/((2*i - 1)*2*i);
 			res=res+temp;
 			i ++ ;
@@ -442,7 +442,7 @@ public class Math_deca{
 		if(abs(x)<0.75){
 			return asindse(x);
 		}
-		else if(x>0.75){ return PIDIV2-asindse(sqrt(1-x*x));}
+		else if(x>=0.75){ return PIDIV2-asindse(sqrt(1-x*x));}
 		else return asindse(sqrt(1-x*x))-PIDIV2;
 	}
 
