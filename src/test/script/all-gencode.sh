@@ -26,8 +26,8 @@ ETAPEC_OUTPUT_DIR_INVALID=src/test/output/codegen/invalid
 # Etape B : dossiers source des tests
 ETAPEB_VALID_DIR=src/test/deca/context/valid
 # Etape B : dossiers des résultats
-ETAPEB_OUTPUT_DIR_VALID=src/test/output/context/valid/
-ETAPEB_OUTPUT_DIR_ERROR=src/test/output/context/error/
+ETAPEB_OUTPUT_DIR_VALID=src/test/output/context/valid
+ETAPEB_OUTPUT_DIR_ERROR=src/test/output/context/error
 
 # Création des répertoires pour stocker les résultats des tests
 mkdir -p "$ETAPEC_OUTPUT_DIR_VALID" "$ETAPEC_OUTPUT_DIR_INVALID" "$ETAPEC_OUTPUT_DIR_ERROR"
@@ -62,7 +62,7 @@ do
 
                 # On rassemble les fichiers .ass dans src/test/output/
                 assembly_file=$(echo "$filename" | sed -e "s/.deca/.ass/")
-                assembly_dir_new="$ETAPEB_OUTPUT_DIR_VALID""$assembly_file"
+                assembly_dir_new="$ETAPEB_OUTPUT_DIR_VALID"'/'"$assembly_file"
                 assembly_dir_old=$(echo "$cas_de_test" | sed -e "s@\.deca@\.ass@")
                 mv "$assembly_dir_old" "$assembly_dir_new"
                 success=$(($success + 1))
@@ -86,7 +86,8 @@ for cas_de_test in $(find "$ETAPEC_INVALID_DIR" -type f | grep "\.deca")
 do
         # Récupération de la ligne ou se produit l'erreur, à partir des commentaires
         # du fichier de test
-        filename=$(echo ${cas_de_test} | sed -e "s@${ETAPEC_INVALID_DIR}/@@g")
+        filename=$(echo ${cas_de_test} | xargs basename)
+        assembly_file=$(echo "$filename" | sed -e "s/\.deca/\.ass/")
         result_test=$(decac "$cas_de_test" 2>&1)
 
         ######### TESTS QUI NE COMPILENT PAS ################
@@ -97,7 +98,7 @@ do
         elif echo "$result_test" | grep -q "Exception"
         then
                 # Ecriture du résultat dans un fichier .error
-                error_file=$(echo "$filename" | sed -e "s/.deca/.error/g")
+                error_file=$(echo "$filename" | sed -e "s/\.deca/\.error/g")
                 echo "$result_test" > "$ETAPEC_OUTPUT_DIR_ERROR"/"$error_file"
 
                 echo -e "$filename"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
@@ -117,15 +118,17 @@ do
         ######### TESTS QUI COMPILENT ################
         else
                 # On rassemble les fichiers .ass dans src/test/output/
-                assembly_file=$(echo "$filename" | sed -e "s/.deca/.ass/g")
-                assembly_dir="$ETAPEC_OUTPUT_DIR_INVALID"'/'"$assembly_file"
-                mv "$ETAPEC_INVALID_DIR"/"$assembly_file" "$assembly_dir"
+                assembly_dir_new="$ETAPEC_OUTPUT_DIR_INVALID"'/'"$assembly_file"
+                assembly_dir_old=$(echo "$cas_de_test" | sed -e "s/\.deca/\.ass/")
+                echo $assembly_dir_old
+                echo $assembly_dir_new
+                mv "$assembly_dir_old" "$assembly_dir_new"
 
                 echo -e "$filename"
                 echo -e "Compilation : ${GREEN}  OK ${WHITE}"
 
                 expected_output=$(cat "$cas_de_test" | grep "ima_output:" |sed -e  "s@//@@g" | sed -e "s@ima_output:@@;s@ @@g;s@ima_output:@@")
-                real_output=$(ima "$assembly_dir")
+                real_output=$(ima "$assembly_dir_new")
                 return_value=$?
 
                 # Vérifie deux choses : 1) le code d'erreur est bon 2) ima retourne bien un nombre != 0
@@ -148,8 +151,9 @@ done
 # Test des cas valides
 for cas_de_test in $(find "$ETAPEC_VALID_DIR" -type f | grep "\.deca")
 do
-        filename=$(echo ${cas_de_test} | sed -e "s@${ETAPEC_VALID_DIR}/@@g")
+        filename=$(echo ${cas_de_test} | xargs basename)
         result_test=$(decac "$cas_de_test" 2>&1)
+        old_dir=$(echo "$cas_de_test" | sed -e "s/\.deca/\.ass/")
 
         ######### TESTS QUI NE COMPILENT PAS ################
         if echo "$result_test" | grep -q "UnsupportedOperationException"
@@ -159,7 +163,7 @@ do
         elif echo "$result_test" | grep -q "Exception"
         then
                 # Ecriture du résultat dans un fichier .error
-                error_file=$(echo "$filename" | sed -e "s/.deca/.error/g")
+                error_file=$(echo "$filename" | sed -e "s/\.deca/\.error/g")
                 echo "$result_test" > "$ETAPEC_OUTPUT_DIR_ERROR"/"$error_file"
 
                 echo -e "$filename"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
@@ -167,7 +171,7 @@ do
         elif [[ "$result_test" != "" ]]
         then
              # Ecriture du résultat dans un fichier .error
-                error_file=$(echo "$filename" | sed -e "s/.deca/.error/g")
+                error_file=$(echo "$filename" | sed -e "s/\.deca/\.error/g")
                 echo "$result_test" > "$ETAPEC_OUTPUT_DIR_ERROR"/"$error_file"
 
                 echo -e "$filename"" : ${RED} EXCEPTION FROM ANOTHER PART ( CONTEXT, PARSER OR LEXER ) ${WHITE}"
@@ -178,15 +182,15 @@ do
         #########TESTS QUI COMPILENT################
         else
                 # On rassemble les fichiers .ass dans src/test/output/
-                assembly_file=$(echo "$filename" | sed -e "s/.deca/.ass/g")
-                assembly_dir="$ETAPEC_OUTPUT_DIR_VALID"'/'"$assembly_file"
-                mv "$ETAPEC_VALID_DIR"/"$assembly_file" "$assembly_dir"
+                assembly_dir_new="$ETAPEC_OUTPUT_DIR_VALID"'/'"$assembly_file"
+                assembly_dir_old=$(echo "$cas_de_test" | sed -e "s/\.deca/\.ass/")
+                mv "$assembly_dir_old" "$assembly_dir_new"
 
                 echo -e "$filename"
                 echo -e "Compilation : ${GREEN}  OK ${WHITE}"
 
                 expected_output=$(cat "$cas_de_test" | grep "ima_output:" |sed -e  "s@//@@g" | sed -e "s@ima_output:@@;s@ @@g;s@ima_output:@@")
-                real_output=$(ima "$assembly_dir" )
+                real_output=$(ima "$assembly_dir_new" )
                 if [[ "$expected_output" == "$real_output" ]];
                 then
                     echo -e "Execution : ${GREEN}  OK ${WHITE}"

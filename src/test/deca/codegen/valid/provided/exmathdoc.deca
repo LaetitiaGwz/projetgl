@@ -4,9 +4,6 @@
 // Resultats:
 //    cos(0.0) = 1.00000e+00
 //
-// Historique:
-//    cree le 01/01/2016
-
 // Un exemple de programme Deca utilisant la classe Math
 
 #include "Math.decah"

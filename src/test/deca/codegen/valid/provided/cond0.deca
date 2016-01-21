@@ -3,9 +3,7 @@
 //
 // Resultats:
 //    ok
-// 
-// Historique:
-//    cree le 01/01/2016
+// ima_output: ok
 
 {
    if (1 >= 0) {

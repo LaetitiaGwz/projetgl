@@ -27,7 +27,8 @@ do
         # Récupération de la ligne ou se produit l'erreur, à partir des commentaires
         # du fichier de test
         line_err=$(cat ${cas_de_test} | grep Ligne | sed -e "s/[^0-9]//g")
-        filename=$(echo ${cas_de_test} | sed -e "s@${INVALID_DIR}/@@g")
+        filename=$(echo ${cas_de_test} | xargs basename)
+        old_dir=$(echo "$cas_de_test" | sed -e "s/\.deca/\.ass/")
         result_test=$(test_context "$cas_de_test" 2>&1)
         if  echo "$result_test" | grep -q "$filename"':[0-9]'
         then
@@ -52,7 +53,7 @@ done
 # Tests des cas valides
 for cas_de_test in $(find "$VALID_DIR" -type f | grep "\.deca")
 do
-        filename=$(echo ${cas_de_test} | sed -e "s@${VALID_DIR}/@@g")
+        filename=$(echo ${cas_de_test} | xargs basename)
         result_test=$(test_context "$cas_de_test" 2>&1)
         if  echo "$result_test" | grep -q "$filename"':[0-9]'
         then
