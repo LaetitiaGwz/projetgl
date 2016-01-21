@@ -12,6 +12,7 @@
 Deca.iml
 *.ass
 *.tokens
+planning
 
 # outputs of tests
 src/test/output
