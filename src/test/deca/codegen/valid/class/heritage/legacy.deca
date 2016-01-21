@@ -1,0 +1,17 @@
+// Description:
+//    Héritage d'une classe
+//
+// Resultats:
+//    Aucune erreur
+// 
+
+class A {
+}
+
+class B extends A {
+
+}
+
+{
+}
+

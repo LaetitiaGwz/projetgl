@@ -1,0 +1,52 @@
+// Description:
+//    Test d'appels de méthodes avec arguments
+//
+// Resultats:
+//    ima_output: 52.40000e00falseargumentbabar97.10000e00
+//
+
+class Babar{
+
+}
+
+class Arguments {
+    void afficheEntier(int a){
+       print(a);
+    }
+
+    void afficheFloat(float f){
+        print(f);
+    }
+
+    void afficheBool(boolean b){
+        if(b){
+            print("true");
+        }else{
+            print("false");
+        }
+    }
+
+    void afficheSoiMeme(Arguments a){
+        print("argument");
+    }
+
+    void afficheAutreClasse(Babar b){
+        print("babar");
+    }
+
+    void afficheDeuxArgs(int a,float b){
+        print(a,b);
+    }
+}
+
+{
+    Babar b = new Babar();
+    Arguments a = new Arguments();
+    a.afficheEntier(5);
+    a.afficheFloat(2.4);
+    a.afficheBool(false);
+    a.afficheSoiMeme(a);
+    a.afficheAutreClasse(b);
+    a.afficheDeuxArgs(9,7.1);
+}
+

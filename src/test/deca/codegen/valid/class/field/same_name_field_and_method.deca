@@ -1,0 +1,18 @@
+// Description:
+//    Déclaration d'une classe avec un attribut int
+//
+// Resultats:
+//    Aucune erreur
+// 
+
+class Test {
+	int b;
+	void b() {
+		int b = 2;
+	}
+}
+
+{
+
+}
+
