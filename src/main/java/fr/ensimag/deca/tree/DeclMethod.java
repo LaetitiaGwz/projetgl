@@ -82,9 +82,17 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    protected void codeGenMethod(DecacCompiler compiler) {
+    protected void codePreGenMethod(DecacCompiler compiler) {
         name.getMethodDefinition().setLabel(compiler.getLblManager().getLabelFalse());
     }
+    @Override
+    protected void codeGenMethod(DecacCompiler compiler) {
+        compiler.addLabel(name.getMethodDefinition().getLabel());
+
+        //body.codeGenListInst(compiler);
+    }
+
+
 
     @Override
     public void decompile(IndentPrintStream s) {

@@ -105,7 +105,7 @@ public class DeclClass extends AbstractDeclClass {
         declFields.iter(f);
     }
     @Override
-    protected void codePreGenMethod(DecacCompiler compiler){
+    protected void codePreGenMethodClass(DecacCompiler compiler){
         // on recupère l'adresse de la superclasse
         compiler.addInstruction(new LEA(superClass.getClassDefinition().getOperand(),Register.R0));
         compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
@@ -115,7 +115,7 @@ public class DeclClass extends AbstractDeclClass {
         //ne va commencer qu'à 2 , code.Object.equals a rajouter à la main par la suite
         for(AbstractDeclMethod a : methods.getList()){
             compiler.getLblManager().setLabelFalse(new Label("code."+name.getName().toString()+"."+a.getIdentifier().getName()));
-            a.codeGenMethod(compiler); // on en profite pour regler la methode
+            a.codePreGenMethod(compiler); // on en profite pour regler la methode
             name.getClassDefinition().ajoutMethod(a);
         }
         // on a ajouté les éléments de la classe verifions la superclasse si présente
@@ -148,6 +148,9 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void codeGenMethodClass(DecacCompiler compiler){
+        for(AbstractDeclMethod a : methods.getList()){
+            a.codeGenMethod(compiler);
+        }
 
     }
 

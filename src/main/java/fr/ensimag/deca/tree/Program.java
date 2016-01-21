@@ -97,7 +97,7 @@ public class Program extends AbstractProgram {
 
         //pile initial
         for(AbstractDeclClass a: classes.getList()){
-            a.codePreGenMethod(compiler);
+            a.codePreGenMethodClass(compiler);
             compiler.addInstruction(new LOAD(new LabelOperand(new Label("code.Object.equals")), Register.R0));
             compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
             compiler.getRegManager().incrementGB();
