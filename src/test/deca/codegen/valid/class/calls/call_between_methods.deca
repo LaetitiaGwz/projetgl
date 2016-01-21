@@ -1,0 +1,30 @@
+// Description:
+//    Test d'appels entre méthodes
+//
+// Resultats:
+//    ima_output: socrateplaton
+// 
+
+class Platon {
+    void appelSocrate(){
+        Socrate s = new Socrate();
+        s.quiSuisJe();
+        quiSuisJe();
+    }
+
+    void quiSuisJe(){
+        print("platon");
+    }
+}
+
+class Socrate {
+    void quiSuisJe(){
+        print("socrate");
+    }
+}
+
+{
+    Platon p = new Platon();
+    p.appelSocrate();
+}
+
