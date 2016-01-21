@@ -117,22 +117,21 @@ public class Test_Math_deca{
 		// 	+ANSI_RED+ nbErreur + ANSI_GREEN+" sur " +nb+ "tests.\n"+ANSI_RESET);
 
 
-		// System.out.println(ANSI_GREEN+"début du test de sinTaylor\n"+ANSI_RESET);
-		// nbErreur=0;
-		// nb=0;
+		System.out.println(ANSI_GREEN+"début du test de sinTaylor\n"+ANSI_RESET);
+		nbErreur=0;
+		nb=0;
 		double diffMean = 0 ;
 		float diffMax = 0 ;
-		for(float x = (float)Math.PI*3/2; x <(float)Math.PI*5/2 ;x += (float) Math.pow(2,-15)){
+		for(float x = 0; x <(float)Math.PI ;x += (float)Math.pow(2,-13)){
 		//for(float x = 0; x <(float)Math.PI/8 ;x += (float) Math.pow(2,-23)){
 			diffRelative = Math.abs(((float)Math.sin(x) - Math_deca.sinTaylor(x))/(float)Math.sin(x));
 			diff =Math.abs(((float)Math.sin(x) - Math_deca.sinTaylor(x)));
 			nb ++ ;
 			diffMax = (diff/Math_deca.ulp((float)Math.sin(x)) >diffMax)?diff/Math_deca.ulp((float)Math.sin(x)):diffMax;
 			diffMean += diff/Math_deca.ulp((float)Math.sin(x));
-			if ( diff > 30*(float)Math.ulp((float)Math.sin(x))){
+			if ( diff >(float)Math.ulp((float)Math.sin(x))){
 				
 				nbErreur ++;
-				// System.out.println(diffMean);
 				// System.out.println("Erreur pour x="+x);
 				// System.out.println("Math_deca.sinTaylor : "+Math_deca.sinTaylor(x));
 				// System.out.println("Math.sin : "+(float)Math.sin(x));
@@ -153,7 +152,7 @@ public class Test_Math_deca{
 		nb=0;
 		diffMax = 0 ;
 		diffMean = 0 ;
-		for(float x = 0 ; x < (float)Math.PI/2  ; x = x + (float) Math.pow(2,-15)){
+		for(float x = 0 ; x < (float)Math.PI  ; x = x + (float) Math.pow(2,-13)){
 
 			diffRelative = Math.abs(((float)Math.cos(x) - Math_deca.cosTaylor(x))/(float)Math.cos(x));
 			diff =Math.abs(((float)Math.cos(x) - Math_deca.cosTaylor(x)));
@@ -161,14 +160,13 @@ public class Test_Math_deca{
 			diffMean += diff/Math_deca.ulp((float)Math.cos(x));	
 			nb ++ ;
 			if ( diff > (float)Math.ulp((float)Math.cos(x))){
+				nbErreur ++;
 				// System.out.println("Erreur pour x="+x);
 				// System.out.println("Math_deca.cosTaylor : "+Math_deca.cosTaylor(x));
 				// System.out.println("Math.cos : "+(float)Math.cos(x));
 				// System.out.println("différence en ulp : " + diff/Math_deca.ulp((float)Math.cos(x)));
 				// System.out.println();
-				nbErreur ++;
-			}
-			
+			}			
 		}
 		diffMean/=(nbErreur);
 		System.out.println(ANSI_GREEN+"fin du test de cosTaylor. Erreur rencontré : "
@@ -179,25 +177,32 @@ public class Test_Math_deca{
 
 
 
-		// System.out.println(ANSI_GREEN+"début du test de arcsin\n"+ANSI_RESET);
-		// for(float x = -1.F ; x < 1.F ; x = x + (float) Math.pow(2,-5)){
-		// 	diffRelative = Math.abs(((float)Math.asin(x) - Math_deca.asin(x))/(float)Math.asin(x));
-		// 	diff =Math.abs(((float)Math.asin(x) - Math_deca.asin(x)));
-		// 	nb ++ ;
-		// 	//if ( diffRelative >= Math.pow(10,-3)) {
-		// 	if ( diff > Math_deca.ulp((float)Math.asin(x))){
-		// 		System.out.println("Erreur pour x="+x);
-		// 		System.out.println("Math_deca.arcsin : "+Math_deca.asin(x));
-		// 		System.out.println("Math.arcsin : "+Math.asin(x));
-		// 		System.out.println("différence : " + diff/Math_deca.ulp((float)Math.asin(x)));
-		// 		System.out.println();
-		// 		nbErreur ++;
-		// 	}
-
-
-		// }
-		// System.out.println(ANSI_GREEN+"fin du test de arcsin. Erreur rencontré : "+ANSI_RED+nbErreur 
-		// 	+ ANSI_GREEN+" sur " +nb+ "tests.\n"+ANSI_RESET);
+		System.out.println(ANSI_GREEN+"début du test de arcsin\n"+ANSI_RESET);
+		nbErreur=0;
+		nb=0;
+		diffMax = 0 ;
+		diffMean = 0 ;
+		for(float x = -2 ; x < 1 ; x = x + (float) Math.pow(2,-23)){
+			diffRelative = Math.abs(((float)Math.asin(x) - Math_deca.asin(x))/(float)Math.asin(x));
+			diff =Math.abs(((float)Math.asin(x) - Math_deca.asin(x)));
+			diffMax = (diff/Math_deca.ulp((float)Math.asin(x)) >diffMax)?diff/Math_deca.ulp((float)Math.asin(x)):diffMax;
+			diffMean += diff/Math_deca.ulp((float)Math.asin(x));	
+			nb ++ ;
+			//if ( diffRelative >= Math.pow(10,-3)) {
+			if ( diff > Math_deca.ulp((float)Math.asin(x))){
+				// System.out.println("Erreur pour x="+x);
+				// System.out.println("Math_deca.arcsin : "+Math_deca.asin(x));
+				// System.out.println("Math.arcsin : "+Math.asin(x));
+				// System.out.println("différence : " + diff/Math_deca.ulp((float)Math.asin(x)));
+				// System.out.println();
+				nbErreur ++;
+			}
+		}
+		diffMean/=(nbErreur);
+		System.out.println(ANSI_GREEN+"fin du test de arcsin. Erreur rencontré : "+ANSI_RED+nbErreur 
+			+ ANSI_GREEN+" sur " +nb+ "tests.\n"+ANSI_GREEN+"Erreur moyenne en ulp : " 
+			+ANSI_RED+ diffMean+ANSI_GREEN+", Erreur max en ulp : " 
+			+ANSI_RED+ diffMax+ANSI_RESET);
 
 
 		//System.out.println("test de arctan en dse :\n");
