@@ -1,0 +1,18 @@
+// Description:
+//    Tests de débordement de la pile
+//
+// Resultats:
+//   ima_output: stack overflow
+// 
+
+class Socrate{
+    void overflow(){
+    		overflow();
+    }
+}
+
+{
+    Socrate s = new Socrate();
+    s.overflow();
+}
+
