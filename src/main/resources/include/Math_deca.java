@@ -421,42 +421,86 @@ public class Math_deca{
 		}
 	}     
 
-	public static float asindse(float x){
-        //float a1=power(x,3)/6;
-        //float a2=3*power(x,5)/40;
-        //float a3=5*power(x,7)/112;
-        //res=res+a1+a2+a3;
-        //return res;
-		float temp=power(x,3)/6;
-		float res=x+temp;
-		int i=2;
-		while(abs(temp)>ulp(res)){
-			temp=fact(2*i)*power(x,1+2*i)/(power(2,2*i)*fact(i)*fact(i)*(2*i+1));
-			res=res+temp;
-			i=i+1;
-		}
-		return res;
-	}
-
+            public static float asindse(float x){
+                    //terme n impaire seulement  
+                    int n=41;
+                       
+            float res=fact(n-1)/(power(2,n-1)*fact((n-1)/2)*fact((n-1)/2)*(n));
+            int k=n-1;
+            //System.out.println("aa");
+            //System.out.println(res);
+            boolean b= true;
+            
+            while(k>=0){
+               // System.out.println(b);
+              //  System.out.println(n);
+                
+                if (b==true){
+                 res=res*x;  
+                 b=false;
+                }
+                else{
+                   
+                    res=res*x+fact(k-1)/(power(2,k-1)*fact((k-1)/2)*fact((k-1)/2)*(k));
+                    b=true;
+                }
+                k=k-1;
+                     
+                }
+            return res;
+                }
+	
 	public static float asin(float x){
 		if(abs(x)<0.75){
 			return asindse(x);
 		}
-		else if(x>=0.75){ return PIDIV2-asindse(sqrt(1-x*x));}
+		else if(x>0.75){ return PIDIV2-asindse(sqrt(1-x*x));}
 		else return asindse(sqrt(1-x*x))-PIDIV2;
+
 	}
 
-	public static float atan(float x){
-		float temp=-power(x,3)/3;
-		float res=x+temp;
-		int i=2;
-		while(i<6){
-			temp=power(-1,i)*power(x,1+2*i)/(1+2*i);
-			res=res+temp;
-			i=i+1; 
-		}
-		return res;
-	}
+ public static float atan(float x){
+            if(x>1){
+                return PIDIV2-atandse(1/x);
+            }
+            if(x<1){
+                return -PIDIV2-atandse(1/x);
+            }
+            else{
+                return atandse(x);
+            }
+        }
+        
+        public static float atandse(float x){
+            int n=326;
+            float res=-1/327.F;
+            //System.out.println("aa");
+            //System.out.println(res);
+            boolean b= true;
+            float signe=-1;
+            while(n>=0){
+               // System.out.println(b);
+              //  System.out.println(n);
+                
+                if (b==true){
+                 res=res*x;  
+                 b=false;
+                }
+                else{
+                    signe=signe*(-1);
+                    res=res*x+signe/(n);
+                    b=true;
+                
+                   
+                }
+                n=n-1;
+               
+               //System.out.println(res);
+             
+                
+            }   
+            return res;
+        }
 
 
 
