@@ -63,6 +63,17 @@ public class DeclVar extends AbstractDeclVar {
             compiler.resetTableRegistre();
         }
     }
+    @Override
+    protected void codeGenDeclMethod(DecacCompiler compiler) {
+        getVarName().codeGenInitMethod(compiler);
+        if(getInitialization().getExpression()!=null){
+            getInitialization().codeGenInit(compiler);
+            Register regLeft = (Register) this.getInitialization().getExpression().getdValue();
+            DAddr adress = this.getVarName().getNonTypeDefinition().getOperand();
+            compiler.addInstruction(new STORE(regLeft, adress));
+            compiler.resetTableRegistre();
+        }
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {

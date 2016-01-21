@@ -58,6 +58,14 @@ public class DeclVarSet extends AbstractDeclVarSet {
             declVar.codeGenDecl(compiler);
         }
     }
+    @Override
+    protected void codegenDeclVarSetMethod(DecacCompiler compiler) {
+        // run codegen on each declaration
+        for(AbstractDeclVar declVar : getDeclVars().getList()){
+            declVar.codeGenDeclMethod(compiler);
+        }
+    }
+
 
 
     @Override

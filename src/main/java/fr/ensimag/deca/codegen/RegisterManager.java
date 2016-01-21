@@ -10,8 +10,7 @@ public class RegisterManager {
 
 	private int GB; // Global Pointer
 	private int LB;
-	private int LBfixe;
-    public int getGB(){
+	    public int getGB(){
         return this.GB;
     }
     public void incrementGB(){
@@ -23,22 +22,18 @@ public class RegisterManager {
 	public void incrementLB(){
 		this.LB ++;
 	}
-	public void setLB(int i){
-		this.LB=i;
+	public void initialiseLB(){
+		this.LB=1;
 	}
-	public void setLBfixe(int i){
-		this.LBfixe=i;
-	}
-	public void initialiseLB(int i){
-		this.LBfixe=i;
-		this.LB=i;
-	}
+
+
 	public RegisterManager(int nbRegistre){ //nbRegistre >4 <17
 		this.tableRegistre=new boolean[nbRegistre];
 		for(int i=0; i<nbRegistre;i++){
 			this.tableRegistre[i]=false;
 		}
 		this.GB = 1;
+		this.LB=1;
 	}
 	public boolean[] getTableRegistre(){
 		return this.tableRegistre;

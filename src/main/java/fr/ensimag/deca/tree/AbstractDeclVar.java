@@ -25,5 +25,6 @@ public abstract class AbstractDeclVar extends Tree {
      * @param compiler
      */
     protected abstract void codeGenDecl(DecacCompiler compiler);
+    protected abstract void codeGenDeclMethod(DecacCompiler compiler);
 
 }

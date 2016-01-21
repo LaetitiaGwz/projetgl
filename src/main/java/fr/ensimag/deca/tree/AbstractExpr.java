@@ -129,9 +129,7 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler) {
     }
 
-    protected void codeGenInit(DecacCompiler compiler){
 
-    }
 
     protected void codeGenOPRight(DecacCompiler compiler){
 
