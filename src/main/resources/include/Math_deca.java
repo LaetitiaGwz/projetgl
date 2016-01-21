@@ -369,15 +369,16 @@ public class Math_deca{
 			return x ;
 		}
 		int k = 0 ;
-		float c1 = (float)13176796*power(2,-21);
-		float c2 = (float)-11464520*power(2,-44);
-		float c3 = (float)-15186280*power(2,-66);
+		float c1 = (float)13176796*power(2,-22);
+		float c2 = (float)-11464520*power(2,-45);
+		float c3 = (float)-15186280*power(2,-67);
 		float xTemp = abs(x) ;
 		boolean sign = ( x > 0 )? true : false ;
-		while ( xTemp >= 2*PI){
-			xTemp = xTemp -(float)2*PI;
-			k = (sign)?k+1:k-1 ;
-		}
+		// while ( xTemp >= 2*PI){
+		// 	xTemp = xTemp -(float)2*PI;
+		// 	k = (sign)?k+1:k-1 ;
+		// }
+		k=Math.round(x/(2*PI));
 		x = x - k*c1 ;
 		x = x - k*c2 ;
 		x = x - k*c3 ;

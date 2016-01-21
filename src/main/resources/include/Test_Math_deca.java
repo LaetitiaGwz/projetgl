@@ -159,18 +159,20 @@ public class Test_Math_deca{
 		nb=0;
 		diffMax = 0 ;
 		diffMean = 0 ;
-		for(float x = (float)Math.PI/2 + 5*(float)Math.ulp(Math.PI/2); x <(float)Math.PI*1.001f/2   ;x += (float)Math.pow(2,-20)){
+		for(float x = (float)Math.PI/2 ; x <(float)Math.PI*1.001245f/2    ;x += (float)Math.pow(2,-17)){
+		//for(float x = (float)Math.PI/2 + 5*(float)Math.ulp(Math.PI/2); x <(float)Math.PI*1.001f/2   ;x += (float)Math.pow(2,-20)){			
 			diff =Math.abs(((float)Math.cos(x) - Math_deca.cosTaylor(x)));
 			diffMax = (diff/Math_deca.ulp((float)Math.cos(x)) >diffMax)?diff/Math_deca.ulp((float)Math.cos(x)):diffMax;
 			nb ++ ;
-			if ( diff >200*Math.ulp((float)Math.cos(x))){
+			//System.out.println(diff);
+			if ( diff >50*Math.ulp((float)Math.cos(x))){
 				diffMean += diff/Math_deca.ulp((float)Math.cos(x));	
 				nbErreur ++;
-				System.out.println("Erreur pour x="+x);
-				System.out.println("Math_deca.cosTaylor : "+Math_deca.cosTaylor(x));
-				System.out.println("Math.cos : "+(float)Math.cos(x));
-				System.out.println("différence en ulp : " + diff/Math_deca.ulp((float)Math.cos(x)));
-				System.out.println();
+				// System.out.println("Erreur pour x="+x);
+				// System.out.println("Math_deca.cosTaylor : "+Math_deca.cosTaylor(x));
+				// System.out.println("Math.cos : "+(float)Math.cos(x));
+				// System.out.println("différence en ulp : " + diff/Math_deca.ulp((float)Math.cos(x)));
+				// System.out.println();
 			}			
 		}
 		diffMean/=(nbErreur);
