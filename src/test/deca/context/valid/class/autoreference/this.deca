@@ -9,15 +9,15 @@
 
 class A {
 	int a;
-	int b;
-
-	void m(int b) {
-		A a = this;
+	protected int b;
+	void m() {
+		A d = this;
+		int c = this.a;
+		int e = this.e;
 	}
 }
 
 {
-	int a = 5;
-	a = a + a;
+
 }
 

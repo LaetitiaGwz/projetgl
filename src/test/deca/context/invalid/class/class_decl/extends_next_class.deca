@@ -1,0 +1,11 @@
+// Description:
+//    héritage d'une classe déclarée après
+//
+// Resultats:
+//    undefined class
+
+class B extends A {}
+
+class A {}
+
+{}

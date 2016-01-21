@@ -4,9 +4,7 @@
 // Resultats:
 //    ok
 //    ok
-//
-// Historique:
-//    cree le 01/01/2016
+// ima_output: ok ok
 
 {
    println("ok") ; 

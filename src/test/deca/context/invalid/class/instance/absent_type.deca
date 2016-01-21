@@ -1,0 +1,11 @@
+// Description:
+//    Utilisation de instanceof
+//
+// Resultats:
+//    undefined type A
+
+{
+	int a;
+	if(a instanceof A) {}
+}
+

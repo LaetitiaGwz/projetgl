@@ -1,0 +1,16 @@
+// Description:
+//    Déclaration de classe héritant de float
+//
+// Resultats:
+//    undefined supeclass
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class C extends float {
+
+}
+
+{
+
+}

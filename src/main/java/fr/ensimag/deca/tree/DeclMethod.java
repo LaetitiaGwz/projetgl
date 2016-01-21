@@ -77,8 +77,8 @@ public class DeclMethod extends AbstractDeclMethod {
         methodEnv = new EnvironmentExp(currentClass.getMembers());
 
         params.verifyBody(compiler, methodEnv, currentClass);
-        body.verifyListInst(compiler, methodEnv, currentClass, ret.getType());
         declVars.verifyListDeclVariable(compiler, methodEnv, currentClass);
+        body.verifyListInst(compiler, methodEnv, currentClass, ret.getType());
     }
 
     @Override

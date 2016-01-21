@@ -1,0 +1,10 @@
+// Description:
+//    Création d'une instance d'entier
+//
+// Resultats:
+//    undefined class int
+
+{
+	int a = new int();
+}
+

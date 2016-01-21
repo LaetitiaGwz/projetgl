@@ -1,0 +1,26 @@
+// Description:
+//    Déclaration d'une variable de type d'une autre classe
+//
+// Resultats:
+//    Aucune erreur
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class A {
+
+}
+
+class C {
+	void m() {
+		A a;
+	}
+
+	A n() {
+		return new A();
+	}
+}
+
+{
+
+}

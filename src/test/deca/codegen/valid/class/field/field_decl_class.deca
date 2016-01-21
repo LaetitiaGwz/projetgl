@@ -1,0 +1,23 @@
+// Description:
+//    Tests de débordement de la pile
+//
+// Resultats:
+//   ima_output: socrate
+//
+
+class Socrate{
+	void quiSuisJe(){
+		System.out.print("socrate");
+	}
+}
+
+class Platon{
+	Socrate s = new Socrate();
+	void afficheSocrate(){
+		s.quiSuisJe();
+	}
+}
+{
+    Platon p = new Platon();
+    p.afficheSocrate();
+}
