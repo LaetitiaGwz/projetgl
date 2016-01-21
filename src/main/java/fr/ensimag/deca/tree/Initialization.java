@@ -7,6 +7,11 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -50,14 +55,22 @@ public class Initialization extends AbstractInitialization {
         getExpression().codeGenInst(compiler);
     }
 
-    //TODO gestion registre tout mettre à true?
     @Override
     protected void codeGenInitFieldFloat(DecacCompiler compiler){
+        for(int i=2;i<compiler.getCompilerOptions().getRegistre();i++){
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+        }
+        compiler.getRegManager().resetTableRegistre();
+        getExpression().codeGenInst(compiler);
+        compiler.addInstruction(new LOAD(getExpression().getdValue(),Register.R0));
+        for(int i=compiler.getCompilerOptions().getRegistre()-1;i>1;i--){
+            compiler.addInstruction(new POP(Register.getR(i)));
+        }
 
-    }//TODO gestion registre tout mettre à true?
+    }
     @Override
-    protected void codeGenInitFieldInt(DecacCompiler compiler){
-
+    protected void codeGenInitFieldInt(DecacCompiler compiler){//l'expression fait tout
+        this.codeGenInitFieldFloat(compiler);
     }
 
 

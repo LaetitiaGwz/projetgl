@@ -7,9 +7,7 @@ import fr.ensimag.deca.codegen.TableMethode;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.LEA;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -140,6 +138,12 @@ public class DeclClass extends AbstractDeclClass {
         for(AbstractDeclFieldSet a : declFields.getList()){
             a.codeGenFieldSet(compiler);
         }
+        if(!superClass.getName().toString().equals("Object")){
+            compiler.addInstruction(new PUSH(Register.R1)); // on sauvegarde R1 pour la superclass
+            compiler.addInstruction(new BSR(new Label("init."+superClass.getName().toString())));
+            compiler.addInstruction(new SUBSP(1));
+        }
+        compiler.addInstruction(new RTS());
     }
 
     @Override
