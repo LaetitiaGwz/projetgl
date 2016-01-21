@@ -1,0 +1,31 @@
+// Description:
+//    Utilisation de new
+//
+// Resultats:
+//    Aucune erreur
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class Socrate{
+
+}
+
+class Platon {
+	Platon p = new Platon();
+	Socrate s = new Socrate();
+
+	Platon retourneNewPlaton(){
+        return new Platon();
+	}
+
+	Socrate retourneNewSocr(){
+	    return new Socrate();
+	}
+}
+
+{
+	int a = 5;
+	a = a + a;
+}
+

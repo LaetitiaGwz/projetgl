@@ -12,6 +12,7 @@
 Deca.iml
 *.ass
 *.tokens
+/src/main/java/fr/ensimag/deca/Sandbox.java
 planning
 
 # outputs of tests
