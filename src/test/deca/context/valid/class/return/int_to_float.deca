@@ -7,7 +7,7 @@
 
 class A {
 	int a() {
-		return float;
+		return 5.3;
 	}
 }
 

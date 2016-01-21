@@ -41,4 +41,12 @@ public class Signature {
         }
         return h;
     }
+
+    public String toString() {
+        String s = "Affichage de la signature : ";
+        for (int i = 0; i < size(); i++) {
+            s += paramNumber(i) + ",";
+        }
+        return s;
+    }
 }

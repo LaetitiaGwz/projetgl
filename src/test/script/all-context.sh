@@ -32,7 +32,7 @@ do
         result_test=$(test_context "$cas_de_test" 2>&1)
         if  echo "$result_test" | grep -q "$filename"':[0-9]'
         then
-                #echo -e "$filename"" : ${GREEN}  OK ${WHITE}"
+                echo -e "$filename"" : ${GREEN}  OK ${WHITE}"
                 success=$(($success + 1))
         elif echo "$result_test" | grep -q "UnsupportedOperationException"
         then
@@ -70,7 +70,7 @@ do
                 fail=$(($fail + 1))
                 return_status=1
         else
-                #echo -e "$filename"" : ${GREEN}  OK ${WHITE}"
+                echo -e "$filename"" : ${GREEN}  OK ${WHITE}"
                 success=$(($success + 1))
 
     fi

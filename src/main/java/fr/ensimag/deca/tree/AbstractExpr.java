@@ -179,15 +179,24 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     protected boolean subtype(EnvironmentExp env, Type parent, Type child) {
-        if(parent.sameType(child)) return true;
 
-        if(parent.isClass() && child.isNull()) return true;
-        
+        if(parent.sameType(child)) {
+            return true;
+        }
+
+        if(parent.isClass() && child.isNull()) {
+            return true;
+        }
+
         if(child.isClass()) {
-            if (parent.getName().getName().equals("Object")) return true;
+            if (parent.getName().getName().equals("Object")) {
+                return true;
+            }
 
             ClassDefinition superclassDef = ((ClassType) child).getDefinition().getSuperClass();
-            if (superclassDef != null && subtype(env, parent, superclassDef.getType())) return true;
+            if (superclassDef != null && subtype(env, parent, superclassDef.getType())) {
+                return true;
+            }
         }
         return false;
     }

@@ -44,6 +44,10 @@ public class Assign extends AbstractBinaryExpr {
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
 
+        if(!assignCompatible(localEnv, leftType, rightType)) {
+            throw new ContextualError("Cannot assign " + rightType + " to " + leftType, getLocation());
+        }
+
         if(rightType.isInt() && leftType.isFloat()) {
             // Conversion du rightoperand
             ConvFloat conv = new ConvFloat(getRightOperand());
@@ -51,7 +55,7 @@ public class Assign extends AbstractBinaryExpr {
             setRightOperand(conv);
             getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         }
-        else if(!rightType.sameType(leftType)) {
+        else {
             // On crée le type et on met sa location
             Identifier typeIdentifier = new Identifier(leftType.getName());
             typeIdentifier.setLocation(getLocation());

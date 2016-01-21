@@ -1,8 +1,8 @@
 // Description:
-//    Cast to an daughter class
+//    Cast to an child class
 //
 // Resultats:
-//    Cannot cast A to B
+//    Cast ok
 
 class A {}
 
