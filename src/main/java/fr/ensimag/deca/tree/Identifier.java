@@ -198,8 +198,8 @@ public class Identifier extends AbstractIdentifier {
         return c.getType();
     }
 
-    public Type verifyMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
-        MethodDefinition c = localEnv.getMethodDef(compiler.getSymbols().create(getName().getName()));
+    public Type verifyMethod(Signature s, DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        MethodDefinition c = localEnv.getMethodDef(compiler.getSymbols().create(getName().getName()), s);
 
         if(c == null) {
             throw new ContextualError("Method " + getName().getName() + " undefinded.", this.getLocation());

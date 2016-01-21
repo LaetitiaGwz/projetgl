@@ -3,6 +3,7 @@ package fr.ensimag.deca.context;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Dictionary associating identifier's NonTypeDefinition to their names.
@@ -17,9 +18,6 @@ import java.util.Map;
  * @date 01/01/2016
  */
 public class EnvironmentExp {
-    // A FAIRE : implémenter la structure de donnée représentant un
-    // environnement (association nom -> définition, avec possibilité
-    // d'empilement).
     
     protected EnvironmentExp parentEnvironment;
     /**
@@ -29,7 +27,23 @@ public class EnvironmentExp {
     /**
      * Contains definition of methods
      */
-    protected HashMap<Symbol, MethodDefinition> methods ;
+    class MethodKey {
+        public Symbol symbol;
+        public Signature signature;
+        public MethodKey(Symbol symbol, Signature signature) {
+            this.symbol = symbol;
+            this.signature = signature;
+        }
+        public int hashCode() {
+            return symbol.hashCode()*signature.hashCode();
+        }
+        public boolean equals(Object k) {
+            if(k == null) return false;
+            if(!(k instanceof MethodKey)) return false;
+            return symbol.equals(((MethodKey)k).symbol) && signature.equals(((MethodKey)k).signature);
+        }
+    }
+    protected HashMap<MethodKey, MethodDefinition> methods ;
     /**
      * Contains definition of types and classes
      */
@@ -38,7 +52,7 @@ public class EnvironmentExp {
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment ;
         this.vars = new HashMap<Symbol, NonTypeDefinition>();
-        this.methods = new HashMap<Symbol, MethodDefinition>();
+        this.methods = new HashMap<MethodKey, MethodDefinition>();
         this.types = new HashMap<Symbol, TypeDefinition>();
     }
 
@@ -67,8 +81,8 @@ public class EnvironmentExp {
             return parentEnvironment.get(key);
         }
     }
-    public MethodDefinition getMethodDef(Symbol key) {
-        MethodDefinition result = methods.get(key);
+    public MethodDefinition getMethodDef(Symbol key, Signature s) {
+        MethodDefinition result = methods.get(new MethodKey(key, s));
         if (result != null) {
             return result ;
         }
@@ -76,7 +90,7 @@ public class EnvironmentExp {
             return null;
         }
         else{
-            return parentEnvironment.getMethodDef(key);
+            return parentEnvironment.getMethodDef(key, s);
         }
     }
 
@@ -132,12 +146,13 @@ public class EnvironmentExp {
         }
     }
     public void declareMethod(Symbol name, MethodDefinition def) throws DoubleDefException {
-        MethodDefinition res = methods.get(name);
+        MethodKey key = new MethodKey(name, def.getSignature());
+        MethodDefinition res = methods.get(key);
         if (res != null) {
             throw new DoubleDefException();
         }
         else {
-            this.methods.put(name, def);
+            this.methods.put(key, def);
         }
     }
     public void declareType(Symbol name, TypeDefinition def) throws DoubleDefException {
@@ -157,8 +172,8 @@ public class EnvironmentExp {
             s += "\nSymbol : " + entry.getKey().getName() + " Definition : " + entry.getValue();
         }
         s += "\nAffichage des méthodes : ";
-        for (Map.Entry<Symbol, MethodDefinition> entry : methods.entrySet()) {
-            s += "\nSymbol : " + entry.getKey().getName() + " Definition : " + entry.getValue();
+        for (Map.Entry<MethodKey, MethodDefinition> entry : methods.entrySet()) {
+            s += "\nSymbol : " + entry.getKey().symbol.getName() + " Definition : " + entry.getValue();
         }
         s += "\nAffichage des types : ";
         for (Map.Entry<Symbol, TypeDefinition> entry : types.entrySet()) {

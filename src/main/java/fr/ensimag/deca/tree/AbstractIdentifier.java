@@ -83,6 +83,6 @@ public abstract class AbstractIdentifier extends AbstractLValue {
 
     public abstract Type verifyClass(DecacCompiler compiler) throws ContextualError;
 
-    public abstract Type verifyMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
+    public abstract Type verifyMethod(Signature s, DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
 
 }

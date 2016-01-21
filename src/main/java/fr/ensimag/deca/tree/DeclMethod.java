@@ -48,7 +48,7 @@ public class DeclMethod extends AbstractDeclMethod {
 
         // On vérifie d'abord que la méthode n'est pas
         //  déjà déclarée dans l'environnement parent
-        MethodDefinition parentDef = localEnv.getMethodDef(compiler.getSymbols().create(name.getName().getName()));
+        MethodDefinition parentDef = localEnv.getMethodDef(name.getName(), signature);
         int index;
         if(parentDef == null) {
             index = currentClass.incNumberOfMethods();
@@ -60,12 +60,12 @@ public class DeclMethod extends AbstractDeclMethod {
         MethodDefinition methodDef = new MethodDefinition(returnType, getLocation(), signature, index);
 
         try {
-            localEnv.declareMethod(compiler.getSymbols().create(name.getName().getName()), methodDef);
+            localEnv.declareMethod(name.getName(), methodDef);
         } catch (EnvironmentExp.DoubleDefException e) {
             throw new ContextualError("Double declaration of method " + name.getName().getName(), getLocation());
         }
 
-        name.verifyMethod(compiler, localEnv, currentClass);
+        name.verifyMethod(signature, compiler, localEnv, currentClass);
     }
 
     @Override
