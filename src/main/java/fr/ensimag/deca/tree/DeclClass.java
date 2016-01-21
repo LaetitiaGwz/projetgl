@@ -59,7 +59,7 @@ public class DeclClass extends AbstractDeclClass {
         ClassType classType = new ClassType(compiler.getSymbols().create(name.getName().getName()), getLocation(), superClassDef);
         this.name.setType(classType);
 
-        ClassDefinition classDef = new ClassDefinition(classType, getLocation(), superClassDef);
+        ClassDefinition classDef = classType.getDefinition();
         name.setDefinition(classDef);
 
         // On déclare la class dans l'envRoot
@@ -78,6 +78,12 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
+
+        // On hérite des index de la superClass
+        // Pas besoin de vérifier qu'elle est non null
+        (name.getClassDefinition()).setNumberOfMethods(superClass.getClassDefinition().getNumberOfMethods());
+        (name.getClassDefinition()).setNumberOfFields(superClass.getClassDefinition().getNumberOfFields());
+
         methods.verifyMethodsMembers(compiler, name.getClassDefinition().getMembers(), name.getClassDefinition());
         declFields.verifyMembers(compiler, name.getClassDefinition().getMembers(), name.getClassDefinition());
     }

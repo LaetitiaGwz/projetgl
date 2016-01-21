@@ -100,8 +100,6 @@ public class ClassDefinition extends TypeDefinition {
         EnvironmentExp parent;
         if (superClass != null) {
             parent = superClass.getMembers();
-            setNumberOfFields(superClass.getNumberOfFields());
-            setNumberOfMethods(superClass.getNumberOfMethods());
         } else {
             parent = null;
         }
