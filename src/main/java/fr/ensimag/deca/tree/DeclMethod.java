@@ -3,7 +3,9 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
@@ -53,7 +55,7 @@ public class DeclMethod extends AbstractDeclMethod {
 
         // On vérifie d'abord que la méthode n'est pas
         //  déjà déclarée dans l'environnement parent
-        MethodDefinition parentDef = localEnv.getMethodDef(name.getName(), signature);
+        MethodDefinition parentDef = localEnv.getMethodDef(name.getName());
         int index;
         if(parentDef == null) {
             index = currentClass.incNumberOfMethods();
@@ -97,10 +99,13 @@ public class DeclMethod extends AbstractDeclMethod {
         for(int i=2;i<compiler.getCompilerOptions().getRegistre();i++){
             compiler.addInstruction(new PUSH(Register.getR(i)));
         }
-        body.codeGenListInstMethod(compiler);
-        for(AbstractInst i: body.getList()){
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB),Register.getR(2)));// on sauve l'objet dans R2 tt le temps
+        compiler.getRegManager().setEtatRegistreTrue(2);
+        Label fin = new Label("fin."+getIdentifier().getMethodDefinition().getLabel().toString());
+        compiler.getLblManager().setLabelFalse(fin);
+        body.codeGenListInst(compiler);
+        compiler.addLabel(fin);
 
-        }
 
 
 

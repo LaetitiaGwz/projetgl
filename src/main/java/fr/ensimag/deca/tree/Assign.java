@@ -7,6 +7,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 /**
@@ -33,9 +35,29 @@ public class Assign extends AbstractBinaryExpr {
         getRightOperand().codeGenOPLeft(compiler);
         getLeftOperand().codeGenInst(compiler);
         Register regLeft = (Register) getRightOperand().getdValue();
-        DAddr adress = this.getLeftOperand().getNonTypeDefinition().getOperand();
-        compiler.addInstruction(new STORE(regLeft, adress));
-        compiler.getRegManager().resetTableRegistre();
+        if(getLeftOperand().getDefinition().isField()){
+            compiler.addInstruction(new STORE(regLeft,new RegisterOffset(getLeftOperand().getFieldDefinition().getIndex(),Register.getR(2)))); // on store dans R2
+            compiler.getRegManager().resetTableRegistre();
+            compiler.getRegManager().setEtatRegistreTrue(2); /// on protege R2
+        }
+        else if(getLeftOperand().getDefinition().isClass()){
+
+        }
+        else if(getLeftOperand().getDefinition().isMethod()){
+
+        }
+        else if(getLeftOperand().getDefinition().isParam()){
+
+        }
+        else if(getLeftOperand().getDefinition().isExpression()){
+            DAddr adress = this.getLeftOperand().getNonTypeDefinition().getOperand();
+            compiler.addInstruction(new STORE(regLeft, adress));
+            compiler.getRegManager().resetTableRegistre();
+        }
+        else{
+
+        }
+
     }
 
     @Override

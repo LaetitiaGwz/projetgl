@@ -199,7 +199,7 @@ public class Identifier extends AbstractIdentifier {
     }
 
     public Type verifyMethod(Signature s, DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
-        MethodDefinition c = localEnv.getMethodDef(compiler.getSymbols().create(getName().getName()), s);
+        MethodDefinition c = localEnv.getMethodDef(compiler.getSymbols().create(getName().getName()));
 
         if(c == null) {
             throw new ContextualError("Method " + getName().getName() + " undefinded.", this.getLocation());
@@ -229,8 +229,28 @@ public class Identifier extends AbstractIdentifier {
         GPRegister reg = Register.getR(i);
         compiler.getRegManager().setEtatRegistreTrue(i);
         this.setdValue(reg);
-        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(), reg));
+        if(getDefinition().isField()){
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB),reg)); // on charge l'objet
+            compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(),reg),reg)); //on charge l'élément
+        }
+        else if(getDefinition().isClass()){
+            compiler.addInstruction(new LOAD(getClassDefinition().getOperand(),reg));
+        }
+        else if(getDefinition().isMethod()){
+
+        }
+        else if(getDefinition().isParam()){
+
+        }
+        else if(getDefinition().isExpression()){
+            compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(), reg));
+        }
+        else{
+
+        }
+
     }
+
     @Override
     protected void codeGenInit(DecacCompiler compiler){
         RegisterOffset stock = new RegisterOffset(compiler.getRegManager().getGB(), Register.GB);
@@ -248,16 +268,30 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenOPLeft(DecacCompiler compiler){
-        DAddr stock = this.getNonTypeDefinition().getOperand();
-        int i=compiler.getRegManager().getLastregistre();
-        compiler.getRegManager().setEtatRegistreTrue(i);
-        compiler.addInstruction(new LOAD(stock,Register.getR(i)));
-        this.setdValue(Register.getR(i));
+        this.codeGenInst(compiler);
     }
 
     @Override
     protected void codeGenOPRight(DecacCompiler compiler){
-        this.setdValue(this.getNonTypeDefinition().getOperand());
+        if(getDefinition().isField()){
+            this.codeGenInst(compiler);
+        }
+        else if(getDefinition().isClass()){
+            this.setdValue(getClassDefinition().getOperand());
+        }
+        else if(getDefinition().isMethod()){
+
+        }
+        else if(getDefinition().isParam()){
+
+        }
+        else if(getDefinition().isExpression()){
+            this.setdValue(this.getNonTypeDefinition().getOperand());
+        }
+        else{
+
+        }
+
     }
     @Override
     protected void codeGenNot(DecacCompiler compiler){

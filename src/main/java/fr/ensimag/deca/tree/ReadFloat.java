@@ -6,6 +6,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
 import java.io.PrintStream;
 
@@ -26,9 +27,18 @@ public class ReadFloat extends AbstractReadExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
+        compiler.addInstruction(new WSTR("entrez un float"));
         compiler.addInstruction(new RFLOAT());
         this.setdValue(Register.R1);
 
+    }
+    @Override
+    protected void codeGenOPLeft(DecacCompiler compiler){
+        this.codeGenInst(compiler);
+    }
+    @Override
+    protected void codeGenOPRight(DecacCompiler compiler){
+        this.codeGenInst(compiler);
     }
 
     @Override
