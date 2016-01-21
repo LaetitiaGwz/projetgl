@@ -1,0 +1,31 @@
+// Description:
+//    Déclaration de variable dans les méthodes
+//
+// Resultats:
+//    Aucune erreur
+// 
+
+class A {
+    void a() {
+        int a;
+        float b;
+        float c = a + b;
+        A d;
+        boolean e = true;
+        String f;
+        if(e) {
+            f = "Ok";
+        }
+        else {
+            f = "Erreur";
+        }
+        d = new A();
+        if(!(d instanceof A)) {
+            f = "Erreur";
+        }
+    }
+}
+{
+
+}
+

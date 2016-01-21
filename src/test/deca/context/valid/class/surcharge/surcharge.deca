@@ -7,12 +7,18 @@
 // Historique:
 //    cree le 01/01/2016
 
-class A {
-	void m() {
-	}
-	void m(int a) {
+class B {
 
-	}
+}
+
+class A {
+	void m() {}
+	void m(int a) {}
+	void m(float a) {}
+	void m(boolean a) {}
+	void m(String a) {}
+	void m(A a) {}
+	void m(B a) {}
 }
 
 {

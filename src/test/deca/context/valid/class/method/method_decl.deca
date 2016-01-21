@@ -37,6 +37,13 @@ class Aristote {
         Aristote a = new Aristote();
         return a;
     }
+
+    void a (int a) {}
+    void b (boolean a) {}
+    void c (String a) {}
+    void d (float a) {}
+    void e (Aristote a) {}
+    void f (Socrate a) {}
 }
 {
 

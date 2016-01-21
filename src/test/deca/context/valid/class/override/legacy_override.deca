@@ -11,11 +11,15 @@ class A {
 	void m() {
 		println("Erreur");
 	}
+	void n(int a, int b) {
+	}
 }
 
 class B extends A {
 	void m() {
 		println("Ok");
+	}
+	void n(int a, int b) {
 	}
 }
 
