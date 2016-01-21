@@ -1,0 +1,23 @@
+// Description:
+//    Déclaration d'une classe avec methode a 1 paramètre
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 19/01/2016
+
+class Point2D{
+
+        protected int x;
+
+        void addA(int a){
+        x = x + a;
+
+        }
+
+        int getX(){
+            return x;
+        }
+
+}

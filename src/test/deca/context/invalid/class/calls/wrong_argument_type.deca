@@ -1,0 +1,19 @@
+// Description:
+//    Appel d'une méthode avec les mauvais type de paramètres
+//
+// Resultats:
+//    undefined method
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class A {
+	void a(int a) {}
+}
+
+{
+	A a;
+	float b;
+	a.a(b);
+}
+

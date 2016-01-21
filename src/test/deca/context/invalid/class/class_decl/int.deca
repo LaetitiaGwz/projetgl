@@ -1,0 +1,16 @@
+// Description:
+//    Déclaration d'une classe int
+//
+// Resultats:
+//    Double définition of int
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class int {
+
+}
+
+{
+
+}
