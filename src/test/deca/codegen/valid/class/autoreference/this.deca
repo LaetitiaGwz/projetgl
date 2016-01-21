@@ -1,0 +1,22 @@
+// Description:
+//    Utilisation de this
+//
+// Resultats:
+//    Aucune erreur
+// 
+
+class A {
+	int a;
+	int b;
+
+	void m(int b) {
+		A a = this;
+
+		if(this == this){
+		}else if(this == a){
+		}
+	}
+}
+{
+}
+
