@@ -57,6 +57,7 @@ public class Initialization extends AbstractInitialization {
 
     @Override
     protected void codeGenInitFieldFloat(DecacCompiler compiler){
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
         for(int i=2;i<compiler.getCompilerOptions().getRegistre();i++){
             compiler.addInstruction(new PUSH(Register.getR(i)));
         }
@@ -66,6 +67,7 @@ public class Initialization extends AbstractInitialization {
         for(int i=compiler.getCompilerOptions().getRegistre()-1;i>1;i--){
             compiler.addInstruction(new POP(Register.getR(i)));
         }
+        compiler.getRegManager().setTableRegistre(table); //on les remets à la fin
 
     }
     @Override

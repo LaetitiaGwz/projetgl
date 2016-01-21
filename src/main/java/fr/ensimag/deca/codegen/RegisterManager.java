@@ -40,6 +40,13 @@ public class RegisterManager {
 		}
 		this.GB = 1;
 	}
+	public boolean[] getTableRegistre(){
+		return this.tableRegistre;
+	}
+
+	public void setTableRegistre(boolean table[]){
+		this.tableRegistre=table;
+	}
 
 	public int getTailleTable(){ // pour recupérer la dimension
 		return this.tableRegistre.length;
