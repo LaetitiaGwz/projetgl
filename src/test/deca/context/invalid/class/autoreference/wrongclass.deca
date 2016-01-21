@@ -1,0 +1,23 @@
+// Description:
+//    Affectation de this à un objet de classe différente
+//
+// Resultats:
+//    Incompatile type
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class B {
+
+}
+
+class A {
+	void m() {
+		B a = this;
+	}
+}
+
+{
+
+}
+
