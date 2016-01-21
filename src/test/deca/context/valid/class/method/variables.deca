@@ -19,28 +19,14 @@ class A {
         float g = 5.3;
         String h = "ok";
 
-        protected int i;
-        protected boolean j;
-        protected float k;
-        protected String l;
-
-        protected int m = 15;
-        protected boolean n = true;
-        protected float o = 5.1234;
-        protected String p = "Hello";
-
         B q;
         B r = new B();
-        protected B s;
-        protected B t = new B();
 
         C u;
         C v = new C();
-        protected C w;
-        protected C x = new C();
 
-        if(a == i) {}
-        else if(j) {}
+        if(a == 5) {}
+        else if(f) {}
         else {}
 
         e = 2;

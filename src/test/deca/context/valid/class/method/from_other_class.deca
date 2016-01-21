@@ -17,7 +17,7 @@ class C {
 	}
 
 	A n() {
-
+		return new A();
 	}
 }
 
