@@ -1,0 +1,10 @@
+// Description:
+//    Cast to an undefined class
+//
+// Resultats:
+//    Undefined class A
+
+{
+	int b;
+	int a = (A)(b);
+}
