@@ -1,5 +1,5 @@
 // Description:
-//    Utilisation de this
+//    Déclaration d'une variable de type d'une autre classe
 //
 // Resultats:
 //    Aucune erreur
@@ -8,16 +8,19 @@
 //    cree le 01/01/2016
 
 class A {
-	int a;
-	protected int b;
+
+}
+
+class C {
 	void m() {
-		A d = this;
-		int c = this.a;
-		int e = this.e;
+		A a;
+	}
+
+	A n() {
+
 	}
 }
 
 {
 
 }
-

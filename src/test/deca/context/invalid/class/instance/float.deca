@@ -1,0 +1,11 @@
+// Description:
+//    Utilisation de instanceof sur un float
+//
+// Resultats:
+//    cannot cast float to float
+
+{
+	int a;
+	if(a instanceof float) {}
+}
+
