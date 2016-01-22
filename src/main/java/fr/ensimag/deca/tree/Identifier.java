@@ -254,6 +254,7 @@ public class Identifier extends AbstractIdentifier {
         this.getNonTypeDefinition().setOperand(stock);
         compiler.getRegManager().incrementGB();
     }
+
     @Override
     protected void codeGenInitMethod(DecacCompiler compiler){
         RegisterOffset stock = new RegisterOffset(compiler.getRegManager().getLB(), Register.LB);

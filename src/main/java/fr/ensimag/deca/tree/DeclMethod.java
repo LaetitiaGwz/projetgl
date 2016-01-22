@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
@@ -99,8 +100,7 @@ public class DeclMethod extends AbstractDeclMethod {
         for(int i=2;i<compiler.getCompilerOptions().getRegistre();i++){
             compiler.addInstruction(new PUSH(Register.getR(i)));
         }
-        compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB),Register.getR(2)));// on sauve l'objet dans R2 tt le temps
-        compiler.getRegManager().setEtatRegistreTrue(2);
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB), Register.getR(2)));// on sauve l'objet dans R2 tt le temps
         Label fin = new Label("fin."+getIdentifier().getMethodDefinition().getLabel().toString());
         compiler.getLblManager().setLabelFalse(fin);
         params.codeGenListDecl(compiler);

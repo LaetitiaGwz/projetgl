@@ -57,7 +57,7 @@ public class RegisterManager {
 	}
 
 	public int getLastregistre(){
-		int i=2;
+		int i=3;
 		while(i < tableRegistre.length && this.tableRegistre[i]){
 			i++;
 		}
@@ -66,7 +66,7 @@ public class RegisterManager {
 
 	public GPRegister getGBRegister(){
 		Validate.isTrue(!noFreeRegister());
-		int i=2;
+		int i=3;
 		while(this.tableRegistre[i]){
 			i++;
 		}
@@ -84,7 +84,7 @@ public class RegisterManager {
 	}
 
 	public void resetTableRegistre(){
-		for(int i=2; i<this.tableRegistre.length;i++){
+		for(int i=3; i<this.tableRegistre.length;i++){
 			this.tableRegistre[i]=false;
 		}
 	}
