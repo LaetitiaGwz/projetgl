@@ -1,0 +1,20 @@
+// Description:
+//    Déclaration de deux classes de même nom
+//
+// Resultats:
+//    Double définition of A
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class A {
+
+}
+
+class A {
+
+}
+
+{
+
+}

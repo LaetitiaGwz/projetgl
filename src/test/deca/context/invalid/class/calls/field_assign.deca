@@ -1,5 +1,5 @@
 // Description:
-//    Affectation d'un int dans un champ de type float
+//    Affectation d'un float dans un champ de type int
 //
 // Resultats:
 //    undefined field
@@ -13,7 +13,7 @@ class A {
 
 {
 	A a;
-	int b;
+	float b;
 	a.a = b;
 }
 

@@ -1,0 +1,17 @@
+// Description:
+//      Double déclaration de méthode avec même retour
+//
+// Resultats:
+//      double definition of method m
+
+class C {
+	int m() {
+	}
+
+	int m() {
+	}
+}
+
+{
+
+}

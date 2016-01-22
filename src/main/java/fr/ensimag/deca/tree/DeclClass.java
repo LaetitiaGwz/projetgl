@@ -53,8 +53,10 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
+        // On vérifie que la superclasse existe bien
+        superClass.verifyClass(compiler);
         // On récupère la définition de la superClass dans ce contexte également (nécessaire pour la déclaration du type)
-        ClassDefinition superClassDef = compiler.getRootEnv().getClassDef(compiler.getSymbols().create(superClass.getName().getName()));
+        ClassDefinition superClassDef = compiler.getRootEnv().getClassDef(superClass.getName());
 
         ClassType classType = new ClassType(compiler.getSymbols().create(name.getName().getName()), getLocation(), superClassDef);
         this.name.setType(classType);
@@ -72,7 +74,6 @@ public class DeclClass extends AbstractDeclClass {
 
         // On met en place les définitions
         name.verifyClass(compiler);
-        superClass.verifyClass(compiler);
     }
 
     @Override

@@ -4,8 +4,9 @@ public class Math_deca{
 
 	public static final float MIN_VALUE = Float.MIN_VALUE;
 	public static final float MAX_VALUE = Float.MAX_VALUE;
-	public static final float PI = (float)3.141592653589793;
-	public static final float PI_4 = (float)0.7853981633974483 ;
+	public static final float PI = (float)3.1415927 ; //(float)3.141592653589793
+	public static final float PI_2 = (float)1.5707964 ;
+	public static final float PI_4 = (float)0.7853982 ;
 	public static final float PIDIV=(float)Math.PI/8;
 	public static final float PIDIV2=(float)Math.PI/2;
 
@@ -64,7 +65,7 @@ public class Math_deca{
 	public static float tanCordic(float theta){
 
 		// On se ramène à des angles entre -PI/2 et PI/2
-		while ( theta > PI/2.0 || theta < -PI/2.0){
+		while ( theta > PI_2 || theta < -PI_2){
 			theta = (theta < 0) ? theta + PI : theta - PI ;
 		}
 
@@ -128,7 +129,7 @@ public class Math_deca{
 	public static float sqrt(float x){
 
 		if (x<0){
-			System.out.println(x+" est un nombre négatif ...");
+			System.out.println(x+" est un nombre négatif, on ne considère pas les racines carrés des nombres négatifs.");
 			return (float)0.0;
 		}
 		if (x == (float)1.0 || x == (float) 0.0){
@@ -163,8 +164,8 @@ public class Math_deca{
 
 	public static float cosCordic(float x){
 		float t = tanCordic(x/2) ;
-		return (float) 1/sqrt(1 + power(tanCordic(x),2));
-		//return (float)(1-power(t,2))/(1 + power(t,2)) ;
+		//return (float) 1/sqrt(1 + power(tanCordic(x),2));
+		return (float)(1-power(t,2))/(1 + power(t,2)) ;
 
 	}
 
@@ -174,32 +175,70 @@ public class Math_deca{
 	}
 
 	public static float sinTaylor(float x){
-		
 		//réduction sur ]-PI;PI]
 		x = reductionCodyAndWaite(x,PI) ;
 
-		if ( x == PI/2 || x == -PI/2){
-			return (float) 1.0;
+		if ( x == PI || x == -PI){
+			return (float) 0.0 ;
 		}
-		//réduction sur ]-PI/2; PI/2]
-		boolean sign = true;
-		if ( x > PI/2 || x < -PI/2){
-			sign = !sign;
-			x = -reductionCodyAndWaite(x,PI/2) ;
+		if ( x == PI_2 || x == -PI_2){
+			if ( x>0){
+				return (float) 1.0 ;
+			}
+			else {
+				return (float) -1.0;
+			}
 		}
 
+		//réduction sur ]-PI_2; PI/2]
+		boolean minus = false;
+		// float c1 = (float)3.1415863; // meilleur valeur : 3.1415863
+		// float c2 = (float)0.00000635358;//0.00000635358
+		// float c1 = (float)3.125; // meilleur valeur : 3.125
+		// float c2 = (float)0.016571045;// 0.016571045;
+		// float c3 = (float)0.00002160858;//0.00002160858
+		float c1 = (float)13176796*power(2,-22);
+		float c2 = (float)-11464520*power(2,-45);
+		float c3 = (float)-15186280*power(2,-67);
+		if ( x > PI_2 || x < -PI_2){
+			minus = !minus;
+			if(x>0){
+				x = x-c1;
+				x = x-c2;
+				x = x-c3;
+			}
+			else{
+				x = x+c1;
+				x = x+c2;
+				x = x+c3;
+			}
+		}
 		//réduction sur [-PI/4;PI/4]
-		if ( x>PI/4 ) {
-			if(sign){
-				return cosTaylor(x-PI/2);
+		// c1 = (float)1.5707855 ; // meilleur valeur :1.5707855
+		// c2 = (float)0.00001082679; // 0.00001082679
+		// test : 618 erreurs
+		c1 = 13176796*power(2,-23);
+		c2 = -11464520*power(2,-46);
+		c3 = -15186280*power(2,-68);
+
+		if ( x>PI_4 ) {
+			x = x -c1;
+			x = x -c2;
+			x = x -c3;
+			if(minus){
+				return -cosTaylor(x);
 			}
 			else{
 				return -cosTaylor(x-PI/2);
 			}		
 		}
-		else if ( x<-PI/4){
-			if(sign){
-				return -cosTaylor(x + PI/2);
+		else if ( x<-PI_4){
+			x = x + c1;
+			x = x + c2;
+			x = x + c3;
+
+			if(minus){
+				return cosTaylor(x);
 			}
 			else{
 				return cosTaylor(x + PI/2);
@@ -208,11 +247,11 @@ public class Math_deca{
 
 		//réduction sur [0;PI/4]
 		if (x<0){
-
-			sign = !sign;
+			minus = !minus;
 			x=-x;
 		}
 
+		//Développement en série entière.
 		float res=x;
 		float temp=x;
 		int i=1;
@@ -232,27 +271,62 @@ public class Math_deca{
 	public static float cosTaylor(float x){
 
 		//réduction sur ]-PI;PI]
-		x = reductionCodyAndWaite(x,PI) ;
-
-		//réduction sur ]-PI/2; PI/2]
-		boolean sign = true;
-		if ( x > PI/2 || x < -PI/2){
-			sign = !sign;
-			reductionCodyAndWaite(x,PI/2);
+		x = reductionCodyAndWaite(x) ;
+		if ( x == PI || x == -PI){
+			return (float) -1.0 ;
 		}
+		if ( x == PI_2 || x == -PI_2){
+			return (float) 0.0 ;
+		}
+		
+		//réduction sur ]-PI/2; PI/2]
+		boolean minus = false;
+		// float c1 = (float)3.125; // meilleur valeur : 3.125
+		// float c2 = (float)0.016571045;// 0.016571045;
+		// float c3 = (float)0.00002160858;//0.00002160858
+		float c1 = 13176796*power(2,-22);
+		float c2 = -11464520*power(2,-45);
+		float c3 = -15186280*power(2,-67);
 
+		if ( x > PI_2 || x < -PI_2 ){
+			minus = !minus;
+			if (x>0){
+				x = x - c1;
+				x = x - c2;
+				x = x - c3;
+			}
+			else{
+				x = x + c1;
+				x = x + c2;
+				x = x + c3;
+			}
+		}
 		//réduction sur [-PI/4;PI/4]
-		if ( x>PI/4 ) {
-			if(sign){
-				return -sinTaylor(x-PI/2);
+		//meilleurs valeurs :
+		// c1 = (float)3.140625/2;
+		// c2 = (float)9.67653589793E-4/2;
+		// c3 = 0f;
+		c1 = 13176796*power(2,-23);
+		c2 = -11464520*power(2,-46);
+		c3 = -15186280*power(2,-68);
+		
+		if ( x > PI_4 ) {
+			x = x - c1;
+			x = x - c2;
+			x = x - c3;
+			if(minus){
+				return sinTaylor(x);
 			}
 			else{
 				return sinTaylor(x-PI/2);
 			}
 		}
-		else if ( x<-PI/4){
-			if(sign){
-				return sinTaylor(x + PI/2);
+		else if ( x<-PI_4 ){
+			x = x + c1;
+			x = x + c2;
+			x = x + c3;
+			if(minus){
+				return -sinTaylor(x);
 			}
 			else{
 				return -sinTaylor(x + PI/2);
@@ -261,13 +335,16 @@ public class Math_deca{
 		}
 
 		if (x<0){
-			x=-x;
+			x = -x;
 		}
-		float res=1;
-		float temp=-power(x,2)/2;
-		int i=0;
-		//while ( i<6 || abs(temp)> ulp(res) ) {
-		while ( i < 6) {
+	
+		//Développement en série entière.
+		float res = 1;
+		float temp = 1;
+		int i = 1;
+
+		while ( i<6 || abs(temp)> ulp(res) ) {
+		//while (i<6){
 			temp = -temp*power(x,2)/((2*i - 1)*2*i);
 			res=res+temp;
 			i ++ ;
@@ -278,6 +355,7 @@ public class Math_deca{
 		else{
 			return -res ;
 		}
+	
 	}
 
 	//cf : 
@@ -286,14 +364,16 @@ public class Math_deca{
 	// retourne un nb positif
 	public static float reductionCodyAndWaite(float x,float lambda){
 		int k = 0 ;
-		float c1 = lambda - 10*ulp(lambda); // c1 = lambda- ulp(lambda)
-		float c2 = 10*ulp(lambda); // c2 = ulp(lambda)
-		float xTemp = x ;
+		float c1 = (float)13176796*power(2,-22);
+		float c2 = (float)-11464520*power(2,-45);
+		float c3 = (float)-15186280*power(2,-67);
+		float xTemp = abs(x) ;
 		boolean sign = ( x > 0 )? true : false ;
-		while ( xTemp >= lambda || xTemp < -lambda){
-			xTemp = (sign)?xTemp -lambda:xTemp + lambda;
-			k = (sign)?k+1:k-1 ;
-		}
+		// while ( xTemp >= 2*PI){
+		// 	xTemp = xTemp -(float)2*PI;
+		// 	k = (sign)?k+1:k-1 ;
+		// }
+		k=Math.round(x/(2*PI));
 		x = x - k*c1 ;
 		x = x - k*c2 ;
 		return x ;
@@ -327,54 +407,37 @@ public class Math_deca{
 		}
 	}     
 
-	public static float asinedse(float x){
-            //float a1=power(x,3)/6;
-            //float a2=3*power(x,5)/40;
-            //float a3=5*power(x,7)/112;
-            //res=res+a1+a2+a3;
-            //return res;
-		float temp=power(x,3)/6;
-		float res=x+temp;
-		int i=2;
-		while(abs(temp)>ulp(res)){
-			temp=fact(2*i)*power(x,1+2*i)/(power(2,2*i)*fact(i)*fact(i)*(2*i+1));
-			res=res+temp;
-			i=i+1;
-		}
-		return res;
-        }
-                
-                public static float asindse(float x){
-                    //terme n impaire seulement  
-                    int n=41;
-                       
-            float res=fact(n-1)/(power(2,n-1)*fact((n-1)/2)*fact((n-1)/2)*(n));
-            int k=n-1;
+	public static float asindse(float x){
+        //terme n impaire seulement  
+		int n=33;
+
+		float res=fact(n-1)/(power(2,n-1)*fact((n-1)/2)*fact((n-1)/2)*(n));
+		int k=n-1;
             //System.out.println("aa");
             //System.out.println(res);
-            boolean b= true;
-            
-            while(k>=0){
+		boolean b= true;
+
+		while(k>=0){
                // System.out.println(b);
               //  System.out.println(n);
-                
-                if (b==true){
-                 res=res*x;  
-                 b=false;
-                }
-                else{
-                   
-                    res=res*x+fact(k-1)/(power(2,k-1)*fact((k-1)/2)*fact((k-1)/2)*(k));
-                    b=true;
-                }
-                k=k-1;
-                     
-                }
-            return res;
-                }
+
+			if (b==true){
+				res=res*x;  
+				b=false;
+			}
+			else{
+
+				res=res*x+fact(k-1)/(power(2,k-1)*fact((k-1)/2)*fact((k-1)/2)*(k));
+				b=true;
+			}
+			k=k-1;
+
+		}
+		return res;
+	}
 	
 	public static float asin(float x){
-		if(abs(x)<0.75){
+		if(abs(x)<=0.75){
 			return asindse(x);
 		}
 		else if(x>0.75){ return PIDIV2-asindse(sqrt(1-x*x));}
@@ -382,15 +445,46 @@ public class Math_deca{
 
 	}
 
-	public static float atane(float x){
-		float temp=-power(x,3)/3;
-		float res=x+temp;
-		int i=2;
-		while(i<15){
-			temp=power(-1,i)*power(x,1+2*i)/(1+2*i);
-			res=res+temp;
-			i=i+1; 
+	public static float atan(float x){
+		if(x>1){
+			return PIDIV2-atandse(1/x);
 		}
+		if(x<1){
+			return -PIDIV2-atandse(1/x);
+		}
+		else{
+			return atandse(x);
+		}
+	}
+
+	public static float atandse(float x){
+		int n=326;
+		float res=-1/327.F;
+            //System.out.println("aa");
+            //System.out.println(res);
+		boolean b= true;
+		float signe=-1;
+		while(n>=0){
+               // System.out.println(b);
+              //  System.out.println(n);
+
+			if (b==true){
+				res=res*x;  
+				b=false;
+			}
+			else{
+				signe=signe*(-1);
+				res=res*x+signe/(n);
+				b=true;
+
+
+			}
+			n=n-1;
+
+               //System.out.println(res);
+
+
+		}   
 		return res;
 	}
         

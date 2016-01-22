@@ -8,8 +8,12 @@
 //    cree le 01/01/2016
 
 class A {
+	int a;
+	protected int b;
 	void m() {
-		A a = this;
+		A d = this;
+		int c = this.a;
+		int b = this.b;
 	}
 }
 

@@ -1,0 +1,17 @@
+// Description:
+//    Déclaration d'une fonction A mais avec return B avec A fille de B
+//
+// Resultats:
+//    cannot cast B to A
+
+class B {}
+
+class A extends B {
+	A a() {
+		return new B();
+	}
+}
+
+{
+}
+

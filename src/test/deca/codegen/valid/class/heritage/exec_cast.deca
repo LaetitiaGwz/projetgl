@@ -1,0 +1,22 @@
+// Description:
+//    Cast dynamique d'une classe
+//
+// Resultats:
+//    ima_output: platon
+
+class Socrate{
+    void quiSuisJe(){
+        print("socrate");
+    }
+}
+
+class Platon extends Socrate{
+    void quiSuisJe(){
+        print("platon");
+    }
+}
+
+{
+    Platon p = new Platon();
+    Socrate s = (Socrate) p;
+}

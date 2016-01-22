@@ -1,0 +1,41 @@
+// Description:
+//    Déclaration de variable dans les méthodes
+//
+// Resultats:
+//    Aucune erreur
+//
+
+class C {}
+
+class A {
+    void a() {
+        int a;
+        boolean b;
+        float c;
+        String d;
+
+        int e = 5;
+        boolean f = false;
+        float g = 5.3;
+        String h = "ok";
+
+        B q;
+        B r = new B();
+
+        C u;
+        C v = new C();
+
+        if(a == 5) {}
+        else if(f) {}
+        else {}
+
+        e = 2;
+	}
+}
+
+class B {}
+
+{
+
+}
+

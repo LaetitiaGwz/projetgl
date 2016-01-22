@@ -112,9 +112,15 @@ public class Selection extends AbstractLValue {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         Type t = obj.verifyExpr(compiler, localEnv, currentClass);
 
-        ClassDefinition classDef = compiler.getRootEnv().getClassDef(compiler.getSymbols().create(t.getName().getName()));
+        ClassDefinition classDef = compiler.getRootEnv().getClassDef(t.getName());
 
         Type retType = field.verifyExpr(compiler, classDef.getMembers(), currentClass);
+
+        // Erreur si le field est protected et qu'on ne se trouve pas das sa classe
+        if(!classDef.equals(currentClass) && field.getFieldDefinition().getVisibility() == Visibility.PROTECTED) {
+            throw new ContextualError("Cannot call a protected field outside its class.", getLocation());
+        }
+
         setType(retType);
         return retType;
     }

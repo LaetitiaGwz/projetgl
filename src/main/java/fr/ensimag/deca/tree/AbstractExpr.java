@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
@@ -184,7 +181,26 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     protected boolean subtype(EnvironmentExp env, Type parent, Type child) {
-        return (parent.sameType(child));
+
+        if(parent.sameType(child)) {
+            return true;
+        }
+
+        if(parent.isClass() && child.isNull()) {
+            return true;
+        }
+
+        if(child.isClass()) {
+            if (parent.getName().getName().equals("Object")) {
+                return true;
+            }
+
+            ClassDefinition superclassDef = ((ClassType) child).getDefinition().getSuperClass();
+            if (superclassDef != null && subtype(env, parent, superclassDef.getType())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected boolean assignCompatible(EnvironmentExp env, Type object, Type value) {

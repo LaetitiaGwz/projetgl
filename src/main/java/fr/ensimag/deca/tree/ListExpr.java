@@ -43,7 +43,7 @@ public class ListExpr extends TreeList<AbstractExpr> {
         Signature s = new Signature();
         // Erreur si types différents pour un certain paramètre
         for (AbstractExpr expr : getList()) {
-            s.add(expr.getType());
+            s.add(expr.verifyExpr(compiler, localEnv, currentClass));
         }
         return s;
     }

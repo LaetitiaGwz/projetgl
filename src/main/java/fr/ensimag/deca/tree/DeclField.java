@@ -44,7 +44,7 @@ public class DeclField extends AbstractDeclField {
         FieldDefinition fieldDef = new FieldDefinition(t, getLocation(), visibility, currentClass, currentClass.incNumberOfFields());
 
         try {
-            currentClass.getMembers().declare(compiler.getSymbols().create(varName.getName().getName()), fieldDef);
+            currentClass.getMembers().declare(varName.getName(), fieldDef);
         } catch (EnvironmentExp.DoubleDefException e) {
             throw new ContextualError("Double definition of variable " + getVarName().getName().getName(), getLocation());
         }

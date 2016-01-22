@@ -66,13 +66,28 @@ public class Assign extends AbstractBinaryExpr {
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
 
+        if(!assignCompatible(localEnv, leftType, rightType)) {
+            throw new ContextualError("Cannot assign " + rightType + " to " + leftType, getLocation());
+        }
+
         if(rightType.isInt() && leftType.isFloat()) {
             // Conversion du rightoperand
-            setRightOperand(new ConvFloat(getRightOperand()));
+            ConvFloat conv = new ConvFloat(getRightOperand());
+            conv.setLocation(getLocation());
+            setRightOperand(conv);
             getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         }
-        else if(!rightType.sameType(leftType)) {
-            throw new ContextualError("Assignement incompatible : cannot cast " + rightType + " into " + leftType + ".", getLocation());
+        else {
+            // On crée le type et on met sa location
+            Identifier typeIdentifier = new Identifier(leftType.getName());
+            typeIdentifier.setLocation(getLocation());
+            // On crée le cast et on met sa location
+            Cast cast = new Cast(typeIdentifier, getRightOperand());
+            cast.setLocation(getLocation());
+
+            // On relie le tout à l'affectation
+            setRightOperand(cast);
+            getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         }
 
         Type t = compiler.getRootEnv().getTypeDef(compiler.getSymbols().create("boolean")).getType();

@@ -1,0 +1,15 @@
+// Description:
+//    Déclaration d'une fonction void mais avec instruction return
+//
+// Resultats:
+//    instruction return in void method
+
+class A {
+	void a() {
+		return 5;
+	}
+}
+
+{
+}
+

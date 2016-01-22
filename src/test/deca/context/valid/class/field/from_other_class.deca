@@ -1,0 +1,20 @@
+// Description:
+//    Déclaration d'un champ de type d'une autre classe
+//
+// Resultats:
+//    Aucune erreur
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class A {
+
+}
+
+class C {
+	A a = new A();
+}
+
+{
+
+}
