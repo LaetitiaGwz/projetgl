@@ -7,7 +7,7 @@ public class Math_deca{
 
 	public static final float MIN_VALUE = Float.MIN_VALUE;
 	public static final float MAX_VALUE = Float.MAX_VALUE;
-	public static final float PI = (float)3.1415927 ; //(float)3.141592653589793
+	public static final float PI = (float)3.141592653589793;
 	public static final float PI_2 = (float)1.5707964 ;
 	public static final float PI_4 = (float)0.7853982 ;
 	public static final float PIDIV=(float)Math.PI/8;
@@ -178,19 +178,19 @@ public class Math_deca{
 
 	public static float sinTaylor(float x){
 		//réduction sur ]-PI;PI]
-		x = reductionCodyAndWaite(x) ;
-
-		if ( x == PI || x == -PI){
-			return (float) 0.0 ;
-		}
-		if ( x == PI_2 || x == -PI_2){
-			if ( x>0){
-				return (float) 1.0 ;
-			}
-			else {
-				return (float) -1.0;
-			}
-		}
+		int k = 0 ;
+		x = reductionCodyAndWaite(x,k) ;
+		// if ( x == PI || x == -PI){
+		// 	return (float) 0.0 ;
+		// }
+		// if ( x == PI_2 || x == -PI_2){
+		// 	if ( x>0){
+		// 		return (float) 1.0 ;
+		// 	}
+		// 	else {
+		// 		return (float) -1.0;
+		// 	}
+		// }
 
 		//réduction sur ]-PI_2; PI/2]
 		boolean minus = false;
@@ -222,8 +222,8 @@ public class Math_deca{
 		c1 = 13176796*power(2,-23);
 		c2 = -11464520*power(2,-46);
 		c3 = -15186280*power(2,-68);
-
-		if ( x>PI_4 ) {
+		//if ( x>PI_4 ) {
+		if ( x>c1/2 ) {	
 			x = x -c1;
 			x = x -c2;
 			x = x -c3;
@@ -234,7 +234,8 @@ public class Math_deca{
 				return cosTaylor(x);
 			}		
 		}
-		else if ( x<-PI_4){
+		//else if ( x<-PI_4){
+		else if ( x<-c1/2){	
 			x = x + c1;
 			x = x + c2;
 			x = x + c3;
@@ -246,13 +247,11 @@ public class Math_deca{
 				return -cosTaylor(x);
 			}
 		}
-
 		//réduction sur [0;PI/4]
 		if (x<0){
 			minus = !minus;
 			x=-x;
 		}
-
 		//Développement en série entière.
 		float res=x;
 		float temp=x;
@@ -271,82 +270,150 @@ public class Math_deca{
 	}
 
 	public static float cosTaylor(float x){
+		// zone de test 
+		// supposons x >0
+		// float xt =x;
+		// int k = (int) (x/(Math.PI/4));
+		// if(x-k*Math.PI/4>Math.PI/8.0)
+		// 	k++;
+		// // 110010 010000 111111 011010 101000 100010 000101 101000 110000 100011 0100
+		// // 1100010011000110011000101000101110000000110111000001110011010001
+		// float c11 = (0b110010)*power(2,-6);
+		// float c21 = (0b010000)*power(2,-12);
+		// float c31 = (0b111111)*power(2,-18);
+		// float c41 = (0b011010)*power(2,-24);
+		// float c51 = (0b101000)*power(2,-30);
+		// float c61 = (0b100010)*power(2,-36);
+		// float c71 = (0b000101)*power(2,-42);
+		// float c81 = (0b101000)*power(2,-48);
+		// float c91 = (0b110000)*power(2,-54);
+		// float c101 = (0b100011)*power(2,-60);
+		// float c111 = (0b010011)*power(2,-66);
+		// // float c11 = (0b110)*power(2,-3);
+		// // float c11 = (0b110)*power(2,-3);
+		// // float c11 = (0b110)*power(2,-3);
+		// // float c11 = (0b110)*power(2,-3);
+		// // float c11 = (0b110)*power(2,-3);
+		// x= x-k*c11;
+		// x= x-k*c21;
+		// x= x-k*c31;
+		// x= x-k*c41;
+		// x= x-k*c51;
+		// x= x-k*c61;
+		// x= x-k*c71;
+		// x= x-k*c81;
+		// x= x-k*c91;
+		// x= x-k*c101;
+		// x= x-k*c111;
+		// System.out.println("my tests : " +k);
+		// System.out.println("java cos " + Math.cos(xt));
+		// System.out.println("my cos"+ sinTaylor(x));
+		// float diff =Math.abs(Math_deca.sinTaylor(x) - (float)Math.cos(xt));
+		// diff/=Math.ulp(Math.cos(xt));
+		// System.out.println("diff : "+diff);
+		// System.out.println("fin de mes tests:");
 
-		//réduction sur ]-PI;PI]
-		x = reductionCodyAndWaite(x) ;
-		if ( x == PI || x == -PI){
-			return (float) -1.0 ;
-		}
-		if ( x == PI_2 || x == -PI_2){
-			return (float) 0.0 ;
-		}
+		//	fin zone 
+
+		// //réduction sur ]-PI;PI]
+		// x = reductionCodyAndWaite(x) ;
+		// // if ( x == PI || x == -PI){
+		// // 	return (float) -1.0 ;
+		// // }
+		// // if ( x == PI_2 || x == -PI_2){
+		// // 	return (float) 0.0 ;
+		// // }
+		// //réduction sur ]-PI/2; PI/2]
+		// boolean minus = false;
+		// // float c1 = (float)3.125; // meilleur valeur : 3.125
+		// // float c2 = (float)0.016571045;// 0.016571045;
+		// // float c3 = (float)0.00002160858;//0.00002160858
+		// float c1 = 13176796*power(2,-22);
+		// float c2 = -11464520*power(2,-45);
+		// float c3 = -15186280*power(2,-67);
+
+		// if ( x > PI_2 || x < -PI_2 ){
+		// 	minus = !minus;
+		// 	if (x>0){
+		// 		x = x - c1;
+		// 		x = x - c2;
+		// 		x = x - c3;
+		// 	}
+		// 	else{
+		// 		x = x + c1;
+		// 		x = x + c2;
+		// 		x = x + c3;
+		// 	}
+		// }
+		// System.out.println("valeur x : " + x);
+		// //réduction sur [-PI/4;PI/4]
+		// //meilleurs valeurs :
+		// // c1 = (float)3.140625/2;
+		// // c2 = (float)9.67653589793E-4/2;
+		// // c3 = 0f;
+		// c1 = 13176796*power(2,-23);
+		// c2 = -11464520*power(2,-46);
+		// c3 = -15186280*power(2,-68);
 		
-		//réduction sur ]-PI/2; PI/2]
-		boolean minus = false;
-		// float c1 = (float)3.125; // meilleur valeur : 3.125
-		// float c2 = (float)0.016571045;// 0.016571045;
-		// float c3 = (float)0.00002160858;//0.00002160858
-		float c1 = 13176796*power(2,-22);
-		float c2 = -11464520*power(2,-45);
-		float c3 = -15186280*power(2,-67);
+		// if ( x > PI_4 ) {
+		// 	x = x - c1;
+		// 	x = x - c2;
+		// 	x = x - c3;
+		// 	if(minus){
+		// 		return sinTaylor(x);
+		// 	}
+		// 	else{
 
-		if ( x > PI_2 || x < -PI_2 ){
-			minus = !minus;
-			if (x>0){
-				x = x - c1;
-				x = x - c2;
-				x = x - c3;
-			}
-			else{
-				x = x + c1;
-				x = x + c2;
-				x = x + c3;
-			}
-		}
-		//réduction sur [-PI/4;PI/4]
-		//meilleurs valeurs :
-		// c1 = (float)3.140625/2;
-		// c2 = (float)9.67653589793E-4/2;
-		// c3 = 0f;
-		c1 = 13176796*power(2,-23);
-		c2 = -11464520*power(2,-46);
-		c3 = -15186280*power(2,-68);
-		
-		if ( x > PI_4 ) {
-			x = x - c1;
-			x = x - c2;
-			x = x - c3;
-			if(minus){
+		// 		return -sinTaylor(x);
+		// 	}
+		// }
+		// else if ( x<-PI_4 ){
+		// 	x = x + c1;
+		// 	x = x + c2;
+		// 	x = x + c3;
+		// 	if(minus){
+		// 		return -sinTaylor(x);
+		// 	}
+		// 	else{
+		// 		return sinTaylor(x);
+		// 	}
+		// }
+		// if (x<0){
+		// 	x = -x;
+		// }
+
+		int k = 0 ;
+		boolean minus = false ;
+		x = reductionCodyAndWaite(x,k);
+		k = k%8 ;
+		switch(k){
+			case 1: 
+			return sinTaylor(x);
+				
+			case 6:
 				return sinTaylor(x);
-			}
-			else{
-
+				
+			case 2:
+			return -sinTaylor(x);
+				
+			case 5:
 				return -sinTaylor(x);
-			}
-		}
-		else if ( x<-PI_4 ){
-			x = x + c1;
-			x = x + c2;
-			x = x + c3;
-			if(minus){
-				return -sinTaylor(x);
-			}
-			else{
-				return sinTaylor(x);
-			}
+				
+			case 3:
+				minus = !minus ;
+				break ;
+			case 4:
+				minus = !minus ;
+				break ;
+			default: 
+				break;
 		}
 
-		if (x<0){
-			x = -x;
-		}
-	
 		//Développement en série entière.
 		float res = 1;
 		float temp = 1;
 		int i = 1;
-
 		while ( i<6 || abs(temp)> ulp(res) ) {
-		//while (i<6){
 			temp = -temp*power(x,2)/((2*i - 1)*2*i);
 			res=res+temp;
 			i ++ ;
@@ -357,32 +424,72 @@ public class Math_deca{
 		else{
 			return res ;
 		}
-	
+
 	}
 
 	//cf : 
 	//http://www.vinc17.net/research/papers/arithflottante.pdf
 	// Réduction  l'intervalle ]-PI,PI]
 	// retourne un nb positif
-	public static float reductionCodyAndWaite(float x){
-		if(abs(x)<= 2*PI){
-			return x ;
+	public static float reductionCodyAndWaite(float x, int k){
+		//test
+		//réduction sur [-PI/8;PI/8]
+		k = (int) (x/(Math.PI/4));
+		//on préfère être proche de 0 plutot que PI/4
+		if(x-k*Math.PI/4>Math.PI/8.0){
+			k++;
 		}
-		int k = 0 ;
-		float c1 = (float)13176796*power(2,-22);
-		float c2 = (float)-11464520*power(2,-45);
-		float c3 = (float)-15186280*power(2,-67);
-		float xTemp = abs(x) ;
-		boolean sign = ( x > 0 )? true : false ;
+		// 110010 010000 111111 011010 101000 100010 000101 101000 110000 100011 0100
+		// 1100010011000110011000101000101110000000110111000001110011010001
+		float c11 = (0b110010)*power(2,-6);
+		float c21 = (0b010000)*power(2,-12);
+		float c31 = (0b111111)*power(2,-18);
+		float c41 = (0b011010)*power(2,-24);
+		float c51 = (0b101000)*power(2,-30);
+		float c61 = (0b100010)*power(2,-36);
+		float c71 = (0b000101)*power(2,-42);
+		float c81 = (0b101000)*power(2,-48);
+		float c91 = (0b110000)*power(2,-54);
+		float c101 = (0b100011)*power(2,-60);
+		float c111 = (0b010011)*power(2,-66);
+		// float c11 = (0b110)*power(2,-3);
+		// float c11 = (0b110)*power(2,-3);
+		// float c11 = (0b110)*power(2,-3);
+		// float c11 = (0b110)*power(2,-3);
+		// float c11 = (0b110)*power(2,-3);
+		x= x-k*c11;
+		x= x-k*c21;
+		x= x-k*c31;
+		x= x-k*c41;
+		x= x-k*c51;
+		x= x-k*c61;
+		x= x-k*c71;
+		x= x-k*c81;
+		x= x-k*c91;
+		x= x-k*c101;
+		x= x-k*c111;
+
+		return x ;
+
+
+		//test
+		// if(abs(x)<= 2*PI){
+		// 	return x ;
+		// }
+		// int k = 0 ;
+		// float c1 = (float)13176796*power(2,-21);
+		// float c2 = (float)-11464520*power(2,-44);
+		// float c3 = (float)-15186280*power(2,-66);
+		// float xTemp = abs(x) ;
+		// boolean sign = ( x > 0 )? true : false ;
 		// while ( xTemp >= 2*PI){
 		// 	xTemp = xTemp -(float)2*PI;
 		// 	k = (sign)?k+1:k-1 ;
 		// }
-		k=Math.round(x/(2*PI));
-		x = x - k*c1 ;
-		x = x - k*c2 ;
-		x = x - k*c3 ;
-		return x ;
+		// x = x - k*c1 ;
+		// x = x - k*c2 ;
+		// x = x - k*c3 ;
+		// return x ;
 	}
 
 	public static float fact(int n){

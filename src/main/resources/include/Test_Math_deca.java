@@ -131,18 +131,19 @@ public class Test_Math_deca{
 		nb=0;
 		diffMean = 0 ;
 		diffMax = 0 ;
-		for(float x = (float)Math.PI/2; x <(float)Math.PI*3/2 ;x += (float)Math.pow(2,-17)){
+		for(float x =(float)Math.PI; x <(float)Math.PI  ;x += (float)Math.pow(2,-10)){
+		//for(float x = (float)Math.PI/2; x <(float)Math.PI*3/2 ;x += (float)Math.pow(2,-17)){
 			diff =Math.abs(((float)Math.sin(x) - Math_deca.sinTaylor(x)));
 			nb ++ ;
 			diffMax = (diff/Math_deca.ulp((float)Math.sin(x)) >diffMax)?diff/Math_deca.ulp((float)Math.sin(x)):diffMax;
-			if ( diff >Math.ulp((float)Math.sin(x))){
+			if ( diff >10*(float)Math.ulp((float)Math.sin(x))){
 				nbErreur ++;
 				diffMean += diff/Math_deca.ulp((float)Math.sin(x));
-				// System.out.println("Erreur pour x="+x);
-				// System.out.println("Math_deca.sinTaylor : "+Math_deca.sinTaylor(x));
-				// System.out.println("Math.sin : "+(float)Math.sin(x));
-				// System.out.println("différence en ulp : " + diff/Math_deca.ulp((float)Math.sin(x)));
-				// System.out.println();
+				System.out.println("Erreur pour x="+x);
+				System.out.println("Math_deca.sinTaylor : "+Math_deca.sinTaylor(x));
+				System.out.println("Math.sin : "+(float)Math.sin(x));
+				System.out.println("différence en ulp : " + diff/Math_deca.ulp((float)Math.sin(x)));
+				System.out.println();
 
 
 			}
@@ -159,13 +160,13 @@ public class Test_Math_deca{
 		nb=0;
 		diffMax = 0 ;
 		diffMean = 0 ;
-		for(float x = (float)Math.PI/2 ; x <(float)Math.PI*1.001245f/2    ;x += (float)Math.pow(2,-17)){
-		//for(float x = (float)Math.PI/2 + 5*(float)Math.ulp(Math.PI/2); x <(float)Math.PI*1.001f/2   ;x += (float)Math.pow(2,-20)){			
+		for(float x = 0 ; x <(float)Math.PI   ;x += (float)Math.pow(2,-10)){
+		//for(float x = (float)Math.PI*3/2; x <(float)Math.PI*3*1.005/2  ;x += (float)Math.pow(2,-5)){			
 			diff =Math.abs(((float)Math.cos(x) - Math_deca.cosTaylor(x)));
-			diffMax = (diff/Math_deca.ulp((float)Math.cos(x)) >diffMax)?diff/Math_deca.ulp((float)Math.cos(x)):diffMax;
+			diffMax = (diff/Math.ulp((float)Math.cos(x)) >diffMax)?diff/Math.ulp((float)Math.cos(x)):diffMax;
 			nb ++ ;
 			//System.out.println(diff);
-			if ( diff >50*Math.ulp((float)Math.cos(x))){
+			if ( diff >15*Math.ulp((float)Math.cos(x))){
 				diffMean += diff/Math_deca.ulp((float)Math.cos(x));	
 				nbErreur ++;
 				// System.out.println("Erreur pour x="+x);
@@ -181,8 +182,7 @@ public class Test_Math_deca{
 			+ANSI_RED+ diffMean+ANSI_GREEN+", Erreur max en ulp : " 
 			+ANSI_RED+ diffMax+ANSI_RESET);
 
-
-
+		
 		// System.out.println(ANSI_GREEN+"début du test de arcsin\n"+ANSI_RESET);
 		// nbErreur=0;
 		// nb=0;
