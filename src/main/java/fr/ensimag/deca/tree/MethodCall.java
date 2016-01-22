@@ -61,14 +61,6 @@ public class MethodCall extends AbstractExpr{
     }
 
     @Override
-    protected void codeGenOPRight(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-    }
-    @Override
-    protected void codeGenOPLeft(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-    }
-    @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("not yet implemented");
     }

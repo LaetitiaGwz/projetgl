@@ -3,6 +3,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -29,6 +31,16 @@ public class InstanceOf extends AbstractExpr {
         Type t = compiler.getRootEnv().getTypeDef(compiler.getSymbols().create("boolean")).getType();
         setType(t);
         return t;
+    }
+
+    @Override
+    public void codegenExpr(DecacCompiler compiler, GPRegister register) {
+
+    }
+
+    @Override
+    public DVal getDval() {
+        return null;
     }
 
     @Override

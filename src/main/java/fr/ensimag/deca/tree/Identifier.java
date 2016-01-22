@@ -265,6 +265,17 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
+    public void codegenExpr(DecacCompiler compiler, GPRegister register) {
+        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(), register));
+    }
+
+    @Override
+    public DVal getDval() {
+        return this.getNonTypeDefinition().getOperand();
+    }
+
+
+    @Override
     protected void codeGenInitClass(DecacCompiler compiler){
         RegisterOffset stock = new RegisterOffset(compiler.getRegManager().getGB(), Register.GB);
         this.getClassDefinition().setOperand(stock);
@@ -272,6 +283,7 @@ public class Identifier extends AbstractIdentifier {
 
     }
 
+    /*
     @Override
     protected void codeGenOPLeft(DecacCompiler compiler){
         this.codeGenInst(compiler);
@@ -299,6 +311,8 @@ public class Identifier extends AbstractIdentifier {
         }
 
     }
+    */
+
     @Override
     protected void codeGenNot(DecacCompiler compiler){
             int i = compiler.getRegManager().getLastregistre();

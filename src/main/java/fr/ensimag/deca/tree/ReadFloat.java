@@ -32,14 +32,6 @@ public class ReadFloat extends AbstractReadExpr {
         this.setdValue(Register.R1);
 
     }
-    @Override
-    protected void codeGenOPLeft(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-    }
-    @Override
-    protected void codeGenOPRight(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-    }
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {

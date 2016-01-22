@@ -8,7 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 /**
@@ -32,11 +32,11 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        getRightOperand().codeGenOPLeft(compiler);
-        getLeftOperand().codeGenInst(compiler);
-        Register regLeft = (Register) getRightOperand().getdValue();
+        GPRegister reg = compiler.getRegManager().getGBRegister();
+        getRightOperand().codegenExpr(compiler, reg);
         if(getLeftOperand().getDefinition().isField()){
-            compiler.addInstruction(new STORE(regLeft,new RegisterOffset(getLeftOperand().getFieldDefinition().getIndex(),Register.getR(2)))); // on store dans R2
+            compiler.addInstruction(new STORE(reg,
+                    new RegisterOffset(getLeftOperand().getFieldDefinition().getIndex(),Register.getR(2)))); // on store dans R2
             compiler.getRegManager().resetTableRegistre();
             compiler.getRegManager().setEtatRegistreTrue(2); /// on protege R2
         }
@@ -51,13 +51,12 @@ public class Assign extends AbstractBinaryExpr {
         }
         else if(getLeftOperand().getDefinition().isExpression()){
             DAddr adress = this.getLeftOperand().getNonTypeDefinition().getOperand();
-            compiler.addInstruction(new STORE(regLeft, adress));
+            compiler.addInstruction(new STORE(reg, adress));
             compiler.getRegManager().resetTableRegistre();
         }
         else{
 
         }
-
     }
 
     @Override
