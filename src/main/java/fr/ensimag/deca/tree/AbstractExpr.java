@@ -40,6 +40,9 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     private boolean utilisation= false;
+    public void getNonTypeDefinition(){
+
+    }
 
     public void setUtilisation(){
         this.utilisation= true;

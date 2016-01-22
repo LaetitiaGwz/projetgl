@@ -4,13 +4,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.BRA;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
-import fr.ensimag.ima.pseudocode.instructions.SUBSP;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -49,20 +44,19 @@ public class MethodCall extends AbstractExpr{
         int i = compiler.getRegManager().getLastregistre();
         GPRegister reg = Register.getR(i);
         compiler.getRegManager().setEtatRegistreTrue(i);
-        this.setdValue(reg);
+        compiler.addInstruction(new ADDSP(1+params.size()));
         if(!params.isEmpty()){
-            for(int j=params.size();j>0;j--){
+            for(int j=1;j<params.size()+1;j++){
                 params.getList().get(j).codeGenInst(compiler);
                 compiler.addInstruction(new LOAD(params.getList().get(j).getdValue(),reg));
-                compiler.addInstruction(new PUSH(reg));
+                compiler.addInstruction(new STORE(reg,new RegisterOffset(-j,Register.SP)));
             }
         }
         obj.codeGenInst(compiler);
         compiler.addInstruction(new LOAD(obj.getdValue(),reg));
-        compiler.addInstruction(new PUSH(reg));
-        compiler.addInstruction(new BRA(method.getMethodDefinition().getLabel()));
+        compiler.addInstruction(new STORE(reg,new RegisterOffset(0,Register.SP)));
+        compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
         compiler.addInstruction(new SUBSP(1+params.size()));
-        compiler.getRegManager().setEtatRegistreFalse(i);
         this.setdValue(Register.R0); // on sauvergarde toujours au cas où
     }
 

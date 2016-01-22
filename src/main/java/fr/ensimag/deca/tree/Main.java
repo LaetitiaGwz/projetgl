@@ -4,6 +4,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.Label;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -43,6 +45,7 @@ public class Main extends AbstractMain {
         compiler.addComment("Beginning of main instructions:");
 
         insts.codeGenListInst(compiler);
+        compiler.addLabel(new Label("tas_plein"));
     }
     
     @Override

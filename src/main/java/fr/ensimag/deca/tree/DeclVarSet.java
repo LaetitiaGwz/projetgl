@@ -63,6 +63,9 @@ public class DeclVarSet extends AbstractDeclVarSet {
         // run codegen on each declaration
         for(AbstractDeclVar declVar : getDeclVars().getList()){
             declVar.codeGenDeclMethod(compiler);
+            if(type.getDefinition().isClass()){
+
+            }
         }
     }
 

@@ -6,13 +6,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.BRA;
-import fr.ensimag.ima.pseudocode.instructions.NEW;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
-import fr.ensimag.ima.pseudocode.instructions.SUBSP;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -40,10 +35,13 @@ public class New extends AbstractNew {
         GPRegister reg = Register.getR(i);
         compiler.getRegManager().setEtatRegistreTrue(i);
         this.setdValue(reg);
-        compiler.addInstruction(new NEW(className.getClassDefinition().getOperand(),reg));
+        compiler.addInstruction(new NEW(className.getClassDefinition().getNumberOfFields()+1,reg));
+        compiler.addInstruction(new BOV(new Label("tas_plein")));
+        compiler.addInstruction(new LEA(className.getClassDefinition().getOperand(),Register.R0));
+        compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(0,reg)));
         compiler.addInstruction(new PUSH(reg));
-        compiler.addInstruction(new BRA(new Label("init."+className.getName().toString())));
-        compiler.addInstruction(new SUBSP(1));
+        compiler.addInstruction(new BSR(new Label("init."+className.getName().toString())));
+        compiler.addInstruction(new POP(reg));
     }
 
     @Override

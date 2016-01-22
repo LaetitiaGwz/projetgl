@@ -40,7 +40,7 @@ public class Return extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         retValue.codeGenOPRight(compiler);
-        compiler.addInstruction(new OPP(retValue.getdValue(),Register.R0));
+        compiler.addInstruction(new LOAD(retValue.getdValue(),Register.R0));
         compiler.addInstruction(new BRA(compiler.getLblManager().getLabelFalse()));
     }
 
