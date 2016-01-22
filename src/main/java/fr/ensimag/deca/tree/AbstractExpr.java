@@ -8,6 +8,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.GPRegister;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -118,7 +119,6 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     protected  void codeGenPrintX(DecacCompiler compiler){
-        codeGenPrint(compiler);
     }
 
 
@@ -130,11 +130,12 @@ public abstract class AbstractExpr extends AbstractInst {
 
     }
 
-    protected void codeGenOPRight(DecacCompiler compiler){
+    public void codegenExpr(DecacCompiler compiler,GPRegister register){
 
     }
-    protected void codeGenOPLeft(DecacCompiler compiler){
 
+    public DVal getDval(){
+       return null;
     }
     protected void codeGenNot(DecacCompiler compiler){
 

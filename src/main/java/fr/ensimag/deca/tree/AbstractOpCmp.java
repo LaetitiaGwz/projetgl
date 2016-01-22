@@ -54,6 +54,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
+        /*
         this.getLeftOperand().codeGenOPLeft(compiler);
         GPRegister cmpRight= (GPRegister) getLeftOperand().getdValue();
         this.getRightOperand().codeGenOPRight(compiler);
@@ -66,22 +67,38 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         }
         compiler.getRegManager().setEtatRegistreFalse(compiler.getRegManager().getLastregistre()-1);
         //on libère quoi qu'il arrive
+        */
+        this.getLeftOperand().codegenExpr(compiler, Register.R0);
+        this.getRightOperand().codegenExpr(compiler, Register.R1);
+        compiler.addInstruction(new CMP(Register.R1, Register.R0));
+        codeGenCMPOP(compiler);
+    }
+
+    @Override
+    public void codegenExpr(DecacCompiler compiler, GPRegister register) {
+        this.getLeftOperand().codegenExpr(compiler, Register.R0);
+        this.getRightOperand().codegenExpr(compiler, Register.R1);
+        compiler.addInstruction(new CMP(Register.R0, Register.R1));
+        this.fetchCond(compiler, register);
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
+        /*
         this.getLeftOperand().codeGenOPLeft(compiler);
         GPRegister cmpRight= (GPRegister) getLeftOperand().getdValue();
         this.getRightOperand().codeGenOPRight(compiler);
         DVal cmpLeft = getRightOperand().getdValue();
         compiler.addInstruction(new CMP(cmpLeft, cmpRight));
+        */
+        this.codegenExpr(compiler,null);
         int i=compiler.getLblManager().getIf();
         compiler.getLblManager().incrementIf();
         Label finTest = new Label("endTest"+i);
         Label suiteTest = new Label("suiteTest"+i);
         compiler.getLblManager().setLabelFalse(suiteTest);
         this.codeGenCMPOP(compiler);
-        int j= compiler.getRegManager().getLastregistre();
+        int j = compiler.getRegManager().getLastregistre();
         compiler.getRegManager().setEtatRegistreTrue(j);
         GPRegister bypass = Register.getR(j);
         compiler.addInstruction(new LOAD(new ImmediateInteger(1),bypass));
@@ -98,5 +115,17 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         s.print(this.getOperatorName());
         getRightOperand().decompile(s);
     }
+
+    @Override
+    public DVal getDval() {
+        return null;
+    }
+
+    /**
+     *
+     * @param compiler
+     * @param register
+     */
+    protected abstract void fetchCond(DecacCompiler compiler, GPRegister register);
 
 }

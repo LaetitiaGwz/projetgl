@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
@@ -38,23 +39,48 @@ public class ConvFloat extends AbstractUnaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
+        /*
         getOperand().codeGenOPRight(compiler);
         GPRegister target = Register.getR(compiler.getRegManager().getLastregistre());
         compiler.getRegManager().setEtatRegistreTrue(compiler.getRegManager().getLastregistre());
         compiler.addInstruction(new FLOAT(getOperand().getdValue(), target));
         this.setdValue(target);
+        */
+    }
+
+    @Override
+    public void codegenExpr(DecacCompiler compiler, GPRegister register) {
+        getOperand().codegenExpr(compiler, register);
+        compiler.addInstruction(new FLOAT(register, register));
+    }
+
+    @Override
+    public DVal getDval() {
+        return null;
     }
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
-        compiler.addInstruction(new FLOAT(getOperand().getdValue(), Register.R1));
+        GPRegister reg = compiler.getRegManager().getGBRegister();
+        getOperand().codegenExpr(compiler, reg);
         compiler.addInstruction(new WFLOAT());
+        /*
+        if(getOperand().getDval() != null) {
+            compiler.addInstruction(new FLOAT(getOperand().getDval(), Register.R1));
+        }else {
+            getOperand().codegenExpr(compiler, Register.R1);
+            compiler.addInstruction(new FLOAT(Register.R1, Register.R1));
+        }
+        */
+        compiler.getRegManager().resetTableRegistre();
     }
 
     @Override
     protected void codeGenPrintX(DecacCompiler compiler){
-        compiler.addInstruction(new FLOAT(getOperand().getdValue(), Register.R1));
-        compiler.addInstruction(new WFLOATX());
+        GPRegister reg = compiler.getRegManager().getGBRegister();
+        getOperand().codegenExpr(compiler, reg);
+        compiler.addInstruction(new WFLOAT());
+        compiler.getRegManager().resetTableRegistre();
     }
 
     @Override

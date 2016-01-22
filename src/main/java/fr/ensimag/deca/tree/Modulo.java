@@ -37,24 +37,15 @@ public class Modulo extends AbstractOpArith {
         }
     }
 
+    @Override
+    protected void mnemoOp(DecacCompiler compiler, DVal left, GPRegister right) {
+        compiler.addInstruction(new REM(left, right));
+        compiler.addInstruction(new BOV(new Label("overflow_error")));
+    }
 
     @Override
     protected String getOperatorName() {
         return "%";
-    }
-
-    @Override
-    protected void codeGenInst(DecacCompiler compiler){
-        // a % b
-        this.getLeftOperand().codeGenOPLeft(compiler);
-        GPRegister modRight= (GPRegister) this.getLeftOperand().getdValue();
-        this.getRightOperand().codeGenOPRight(compiler);
-        DVal modLeft = this.getRightOperand().getdValue();
-        compiler.addInstruction(new REM(modLeft,modRight));
-        compiler.addInstruction(new BOV(new Label("overflow_error")));
-        // a <- a % b
-        //on libère le registre de b
-        this.setdValue(modRight);
     }
 
 }

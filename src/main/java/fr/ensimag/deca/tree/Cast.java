@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -80,24 +81,30 @@ public class Cast extends AbstractCast {
     }
 
     @Override
-    protected void codeGenOPLeft(DecacCompiler compiler) {
-        this.codeGenInst(compiler);
+    public void codegenExpr(DecacCompiler compiler, GPRegister register) {
+        expr.codegenExpr(compiler, register);
+        // Récupération de l'expression calculée
+        // Cast de l'expression
+        if(this.getType().isFloat())
+            compiler.addInstruction(new FLOAT(register, register));
+        else
+            compiler.addInstruction(new INT(register, register));
     }
 
     @Override
-    protected void codeGenOPRight(DecacCompiler compiler) {
-        this.codeGenInst(compiler);
+    public DVal getDval() {
+        return null;
     }
-
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
-        expr.codeGenInst(compiler);
+        GPRegister reg = compiler.getRegManager().getGBRegister();
+        expr.codegenExpr(compiler,reg);
         if(this.getType().isFloat()) {
-            compiler.addInstruction(new FLOAT(expr.getdValue(), Register.R1));
+            compiler.addInstruction(new FLOAT(reg, Register.R1));
             compiler.addInstruction(new WFLOAT());
         }else {
-            compiler.addInstruction(new INT(expr.getdValue(), Register.R1));
+            compiler.addInstruction(new INT(reg, Register.R1));
             compiler.addInstruction(new WINT());
         }
     }
@@ -105,8 +112,9 @@ public class Cast extends AbstractCast {
     @Override
     protected void codeGenPrintX(DecacCompiler compiler){
         Validate.isTrue(this.getType().isFloat());
-        expr.codeGenInst(compiler);
-        compiler.addInstruction(new FLOAT(expr.getdValue(), Register.R1));
+        GPRegister reg = compiler.getRegManager().getGBRegister();
+        expr.codegenExpr(compiler,reg);
+        compiler.addInstruction(new FLOAT(reg, Register.R1));
         compiler.addInstruction(new WFLOATX());
     }
 }

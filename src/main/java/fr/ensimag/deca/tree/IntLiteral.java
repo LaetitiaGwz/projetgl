@@ -3,9 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 
@@ -49,6 +47,7 @@ public class IntLiteral extends AbstractExpr {
         compiler.addInstruction(new WINT());
     }
 
+    /*
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         int i=compiler.getRegManager().getLastregistre();
@@ -57,7 +56,19 @@ public class IntLiteral extends AbstractExpr {
         this.setdValue(target);
         compiler.addInstruction(new LOAD(new ImmediateInteger(this.getValue()),target));
     }
+    */
 
+    @Override
+    public void codegenExpr(DecacCompiler compiler, GPRegister register) {
+        compiler.addInstruction(new LOAD(new ImmediateInteger(this.getValue()), register));
+    }
+
+    @Override
+    public DVal getDval() {
+        return new ImmediateInteger(this.getValue());
+    }
+
+    /*
     @Override
     protected void codeGenOPLeft(DecacCompiler compiler){
         this.codeGenInst(compiler);
@@ -67,6 +78,7 @@ public class IntLiteral extends AbstractExpr {
     protected void codeGenOPRight(DecacCompiler compiler){
         this.setdValue(new ImmediateInteger(this.getValue()));
     }
+    */
 
     @Override
     public void decompile(IndentPrintStream s) {

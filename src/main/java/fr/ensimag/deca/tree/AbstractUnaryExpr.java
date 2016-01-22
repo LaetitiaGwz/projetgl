@@ -40,13 +40,4 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         operand.prettyPrint(s, prefix, true);
     }
 
-    @Override
-    protected void codeGenOPLeft(DecacCompiler compiler) {
-        this.codeGenInst(compiler);
-    }
-
-    @Override
-    protected void codeGenOPRight(DecacCompiler compiler) {
-        this.codeGenInst(compiler);
-    }
 }

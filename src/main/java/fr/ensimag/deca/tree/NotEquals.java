@@ -2,9 +2,11 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
+import fr.ensimag.ima.pseudocode.instructions.SNE;
 
 /**
  *
@@ -15,6 +17,11 @@ public class NotEquals extends AbstractOpExactCmp {
 
     public NotEquals(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
+    }
+
+    @Override
+    protected void fetchCond(DecacCompiler compiler, GPRegister register) {
+        compiler.addInstruction(new SNE(register));
     }
 
 

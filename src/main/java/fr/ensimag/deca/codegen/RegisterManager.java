@@ -1,5 +1,9 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import org.apache.commons.lang.Validate;
+
 /**
  * Created by florentin on 12/01/16.
  * Classe permettant de gérer l'état des registres
@@ -52,10 +56,19 @@ public class RegisterManager {
 
 	public int getLastregistre(){
 		int i=2;
-		while(this.tableRegistre[i]){
+		while(i < tableRegistre.length && this.tableRegistre[i]){
 			i++;
 		}
 		return i;
+	}
+
+	public GPRegister getGBRegister(){
+		Validate.isTrue(!noFreeRegister());
+		int i=2;
+		while(this.tableRegistre[i]){
+			i++;
+		}
+		return Register.getR(i);
 	}
 
 	public void setEtatRegistreTrue(int registre){
@@ -70,5 +83,9 @@ public class RegisterManager {
 		for(int i=2; i<this.tableRegistre.length;i++){
 			this.tableRegistre[i]=false;
 		}
+	}
+
+	public boolean noFreeRegister(){
+		return tableRegistre[getTailleTable()-1];
 	}
 }

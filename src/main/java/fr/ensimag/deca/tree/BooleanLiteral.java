@@ -6,9 +6,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
 
@@ -59,6 +57,7 @@ public class BooleanLiteral extends AbstractExpr {
         return "BooleanLiteral (" + value + ")";
     }
 
+    /*
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         int i=compiler.getRegManager().getLastregistre();
@@ -68,6 +67,13 @@ public class BooleanLiteral extends AbstractExpr {
         int convBool = (getValue()) ? 1 : 0; // Conversion booléen -> integer
         compiler.addInstruction(new LOAD(new ImmediateInteger(convBool), target));
     }
+    */
+
+    @Override
+    public void codegenExpr(DecacCompiler compiler, GPRegister register) {
+        int convBool = (getValue()) ? 1 : 0; // Conversion booléen -> integer
+        compiler.addInstruction(new LOAD(new ImmediateInteger(convBool), register));
+    }
 
     @Override
     protected void codeGenNot(DecacCompiler compiler){
@@ -76,15 +82,8 @@ public class BooleanLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        int i=compiler.getRegManager().getLastregistre();
-        compiler.getRegManager().setEtatRegistreTrue(i);
-        GPRegister target= Register.getR(i);
-        compiler.addInstruction(new LOAD(new ImmediateInteger(0),target));
-        this.codeGenInst(compiler);
-        compiler.addInstruction(new CMP(this.getdValue(),target));
-        compiler.addInstruction(new BEQ(compiler.getLblManager().getLabelFalse()));
-        compiler.getRegManager().setEtatRegistreFalse(compiler.getRegManager().getLastregistre()-1);
-        compiler.getRegManager().setEtatRegistreFalse(i); // on libère les deux
+        if(!getValue())
+            compiler.addInstruction(new BRA(compiler.getLblManager().getLabelFalse()));
     }
 
     @Override

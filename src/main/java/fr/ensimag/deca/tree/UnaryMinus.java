@@ -31,6 +31,7 @@ public class UnaryMinus extends AbstractUnaryExpr {
         return type;
     }
 
+    /*
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         getOperand().codeGenOPRight(compiler);
@@ -43,31 +44,42 @@ public class UnaryMinus extends AbstractUnaryExpr {
         compiler.addInstruction(new SUB(getOperand().getdValue(), unRight));
 
         this.setdValue(unRight);
-        this.setUtilisation();
+    }
+    */
+
+    @Override
+    public void codegenExpr(DecacCompiler compiler, GPRegister register) {
+        getOperand().codegenExpr(compiler, register);
+        compiler.addInstruction(new OPP(register,register));
+    }
+
+    @Override
+    public DVal getDval() {
+        return null;
     }
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
-        getOperand().codeGenInst(compiler);
+        GPRegister reg = compiler.getRegManager().getGBRegister();
+        getOperand().codegenExpr(compiler, reg);
+        compiler.addInstruction(new OPP(reg, Register.R1));
         if(this.getType().isInt()){
-            compiler.addInstruction(new LOAD(new ImmediateInteger(0), Register.R1));
-            compiler.addInstruction(new SUB(getOperand().getdValue(), Register.R1));
             compiler.addInstruction(new WINT());
         }
         else if(this.getType().isFloat()){
-            compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.R1));
-            compiler.addInstruction(new SUB(getOperand().getdValue(), Register.R1));
             compiler.addInstruction(new WFLOAT());
         }
+        compiler.getRegManager().resetTableRegistre();
     }
 
     @Override
     protected void codeGenPrintX(DecacCompiler compiler) {
         Validate.isTrue(getType().isFloat());
-        getOperand().codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.R1));
-        compiler.addInstruction(new SUB(getOperand().getdValue(), Register.R1));
+        GPRegister reg = compiler.getRegManager().getGBRegister();
+        getOperand().codegenExpr(compiler, reg);
+        compiler.addInstruction(new OPP(reg, Register.R1));
         compiler.addInstruction(new WFLOATX());
+        compiler.getRegManager().resetTableRegistre();
     }
 
     @Override
