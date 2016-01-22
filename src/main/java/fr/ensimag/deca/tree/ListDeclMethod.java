@@ -31,11 +31,13 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     }
 
     public void codeGenListInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        //non utilisé directement dans declclass
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        for(AbstractDeclMethod a : getList()){
+            a.decompile(s);
+        }
     }
 }

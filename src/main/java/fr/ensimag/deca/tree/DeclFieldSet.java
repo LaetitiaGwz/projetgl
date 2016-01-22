@@ -82,7 +82,19 @@ public class DeclFieldSet extends AbstractDeclFieldSet {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print(getFieldType().getName().toString()+" ");
+        int i = declFields.size();
+        for(AbstractDeclField a : declFields.getList()){
+            a.decompile(s);
+            if(i>1){
+                s.print(",");
+            }
+            else{
+                s.println(";");
+            }
+            i--;
+        }
+
     }
 
     @Override

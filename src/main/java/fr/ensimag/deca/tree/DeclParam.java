@@ -68,7 +68,7 @@ public class DeclParam extends AbstractDeclParam {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print(type.getName().toString()+" "+varName.getName().toString());
     }
 
     @Override
