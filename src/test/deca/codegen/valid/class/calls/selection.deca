@@ -3,16 +3,16 @@
 //
 // Resultats:
 //    Aucune erreur
-// 
-// Historique:
-//    cree le 01/01/2016
+//
+//  ima_output: 33
 
 class A {
-	int a;
+	int a = 33;
 }
 
 {
 	A b;
 	int a = b.a;
+	print(a);
 }
 
