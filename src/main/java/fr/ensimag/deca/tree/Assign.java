@@ -89,7 +89,7 @@ public class Assign extends AbstractBinaryExpr {
             getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         }
 
-        Type t = compiler.getRootEnv().getTypeDef(compiler.getSymbols().create("boolean")).getType();
+        Type t = compiler.getEnvTypes().get(compiler.getSymbols().create("boolean")).getType();
         setType(t);
         return t;
     }

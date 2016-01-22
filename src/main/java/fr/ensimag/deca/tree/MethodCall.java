@@ -31,7 +31,7 @@ public class MethodCall extends AbstractExpr{
 
         Type t = obj.verifyExpr(compiler, localEnv, currentClass);
 
-        ClassDefinition classDef = compiler.getRootEnv().getClassDef(t.getName());
+        ClassDefinition classDef = compiler.getEnvTypes().getClassDef(t.getName());
         Signature s = params.verifySignature(compiler, localEnv, currentClass);
 
         Type retType = method.verifyMethod(s, compiler, classDef.getMembers(), currentClass);

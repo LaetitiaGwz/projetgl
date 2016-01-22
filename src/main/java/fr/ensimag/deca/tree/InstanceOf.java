@@ -28,7 +28,7 @@ public class InstanceOf extends AbstractExpr {
         className.verifyClass(compiler);
         var.verifyExpr(compiler, localEnv, currentClass);
 
-        Type t = compiler.getRootEnv().getTypeDef(compiler.getSymbols().create("boolean")).getType();
+        Type t = compiler.getEnvTypes().get(compiler.getSymbols().create("boolean")).getType();
         setType(t);
         return t;
     }
