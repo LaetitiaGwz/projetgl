@@ -68,7 +68,7 @@ public class DeclMethod extends AbstractDeclMethod {
 
         try {
             localEnv.declareMethod(name.getName(), methodDef);
-        } catch (EnvironmentExp.DoubleDefException e) {
+        } catch (AbstractEnvironnement.DoubleDefException e) {
             throw new ContextualError("Double declaration of method " + name.getName().getName(), getLocation());
         }
 
@@ -107,11 +107,6 @@ public class DeclMethod extends AbstractDeclMethod {
         declVars.codeGenListDeclMethod(compiler);
         body.codeGenListInst(compiler);
         compiler.addLabel(fin);
-
-
-
-
-
 
 
         for(int i=compiler.getCompilerOptions().getRegistre()-1;i>1;i--){

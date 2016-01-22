@@ -37,8 +37,6 @@ public class Assign extends AbstractBinaryExpr {
         if(getLeftOperand().getDefinition().isField()){
             compiler.addInstruction(new STORE(reg,
                     new RegisterOffset(getLeftOperand().getFieldDefinition().getIndex(),Register.getR(2)))); // on store dans R2
-            compiler.getRegManager().resetTableRegistre();
-            compiler.getRegManager().setEtatRegistreTrue(2); /// on protege R2
         }
         else if(getLeftOperand().getDefinition().isClass()){
 
@@ -89,7 +87,7 @@ public class Assign extends AbstractBinaryExpr {
             getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         }
 
-        Type t = compiler.getRootEnv().getTypeDef(compiler.getSymbols().create("boolean")).getType();
+        Type t = compiler.getEnvTypes().get(compiler.getSymbols().create("boolean")).getType();
         setType(t);
         return t;
     }

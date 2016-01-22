@@ -31,7 +31,7 @@ public class MethodCall extends AbstractExpr{
 
         Type t = obj.verifyExpr(compiler, localEnv, currentClass);
 
-        ClassDefinition classDef = compiler.getRootEnv().getClassDef(t.getName());
+        ClassDefinition classDef = compiler.getEnvTypes().getClassDef(t.getName());
         Signature s = params.verifySignature(compiler, localEnv, currentClass);
 
         Type retType = method.verifyMethod(s, compiler, classDef.getMembers(), currentClass);
@@ -40,25 +40,38 @@ public class MethodCall extends AbstractExpr{
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler){
-        int i = compiler.getRegManager().getLastregistre();
-        GPRegister reg = Register.getR(i);
-        compiler.getRegManager().setEtatRegistreTrue(i);
+    public void codegenExpr(DecacCompiler compiler,GPRegister register){
         compiler.addInstruction(new ADDSP(1+params.size()));
+        obj.codegenExpr(compiler,register);
+        compiler.addInstruction(new STORE(register,new RegisterOffset(0,Register.SP)));
         if(!params.isEmpty()){
             for(int j=1;j<params.size()+1;j++){
-                params.getList().get(j).codeGenInst(compiler);
-                compiler.addInstruction(new LOAD(params.getList().get(j).getdValue(),reg));
-                compiler.addInstruction(new STORE(reg,new RegisterOffset(-j,Register.SP)));
+                params.getList().get(j).codegenExpr(compiler,register);
+                compiler.addInstruction(new STORE(register,new RegisterOffset(-j,Register.SP)));
             }
         }
-        obj.codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(obj.getdValue(),reg));
-        compiler.addInstruction(new STORE(reg,new RegisterOffset(0,Register.SP)));
         compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
         compiler.addInstruction(new SUBSP(1+params.size()));
-        this.setdValue(Register.R0); // on sauvergarde toujours au cas où
+        compiler.addInstruction(new LOAD(Register.R0,register));
+        }
+    @Override
+    protected void codeGenInst(DecacCompiler compiler){
+        compiler.addInstruction(new ADDSP(1+params.size()));
+        GPRegister register =compiler.getRegManager().getGBRegister();
+        obj.codegenExpr(compiler,register);
+        compiler.addInstruction(new STORE(register,new RegisterOffset(0,Register.SP)));
+        if(!params.isEmpty()){
+            for(int j=1;j<params.size()+1;j++){
+                params.getList().get(j).codegenExpr(compiler,register);
+                compiler.addInstruction(new STORE(register,new RegisterOffset(-j,Register.SP)));
+            }
+        }
+        compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
+        compiler.addInstruction(new SUBSP(1+params.size()));
+        compiler.addInstruction(new STORE(register,(DAddr)obj.getDval()));
+
     }
+
 
     @Override
     public void decompile(IndentPrintStream s) {

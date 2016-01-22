@@ -39,15 +39,15 @@ public class Program extends AbstractProgram {
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
 
-        EnvironmentExp env = new EnvironmentExp(null);
+        EnvironmentTypes envTypes = new EnvironmentTypes(null);
         try {
-            declareTypes(compiler, env);
-            declareObject(compiler, env);
+            declareTypes(compiler, envTypes);
+            declareObject(compiler, envTypes);
         }
-        catch (EnvironmentExp.DoubleDefException $e) {
+        catch (AbstractEnvironnement.DoubleDefException $e) {
             throw new DecacInternalError("Double definition of builtin types.");
         }
-        compiler.setRootEnv(env);
+        compiler.setEnvTypes(envTypes);
 
 
         getClasses().verifyListClass(compiler);
@@ -55,15 +55,15 @@ public class Program extends AbstractProgram {
         LOG.debug("verify program: end");
     }
 
-    private void declareTypes(DecacCompiler compiler, EnvironmentExp env) throws EnvironmentExp.DoubleDefException {
-        env.declareType(compiler.getSymbols().create("int"), new TypeDefinition(new IntType(compiler.getSymbols().create("int")), Location.BUILTIN));
-        env.declareType(compiler.getSymbols().create("float"), new TypeDefinition(new FloatType(compiler.getSymbols().create("float")), Location.BUILTIN));
-        env.declareType(compiler.getSymbols().create("String"), new TypeDefinition(new StringType(compiler.getSymbols().create("String")), Location.BUILTIN));
-        env.declareType(compiler.getSymbols().create("boolean"), new TypeDefinition(new BooleanType(compiler.getSymbols().create("boolean")), Location.BUILTIN));
-        env.declareType(compiler.getSymbols().create("void"), new TypeDefinition(new VoidType(compiler.getSymbols().create("void")), Location.BUILTIN));
+    private void declareTypes(DecacCompiler compiler, EnvironmentTypes env) throws AbstractEnvironnement.DoubleDefException {
+        env.declare(compiler.getSymbols().create("int"), new TypeDefinition(new IntType(compiler.getSymbols().create("int")), Location.BUILTIN));
+        env.declare(compiler.getSymbols().create("float"), new TypeDefinition(new FloatType(compiler.getSymbols().create("float")), Location.BUILTIN));
+        env.declare(compiler.getSymbols().create("String"), new TypeDefinition(new StringType(compiler.getSymbols().create("String")), Location.BUILTIN));
+        env.declare(compiler.getSymbols().create("boolean"), new TypeDefinition(new BooleanType(compiler.getSymbols().create("boolean")), Location.BUILTIN));
+        env.declare(compiler.getSymbols().create("void"), new TypeDefinition(new VoidType(compiler.getSymbols().create("void")), Location.BUILTIN));
     }
 
-    private void declareObject(DecacCompiler compiler, EnvironmentExp env) throws EnvironmentExp.DoubleDefException {
+    private void declareObject(DecacCompiler compiler, EnvironmentTypes envTypes) throws AbstractEnvironnement.DoubleDefException {
 
         // Definition de la classe Object
         ClassDefinition Object = new ClassDefinition(new ClassType(compiler.getSymbols().create("Object"), Location.BUILTIN, null), Location.BUILTIN, null);
@@ -71,7 +71,7 @@ public class Program extends AbstractProgram {
 
         // Définition de la méthode Equals
         int equalIndex = Object.incNumberOfMethods();
-        Type returnType = env.getTypeDef(compiler.getSymbols().create("boolean")).getType();
+        Type returnType = envTypes.get(compiler.getSymbols().create("boolean")).getType();
         Signature signature = new Signature();
         signature.add(Object.getType());
         MethodDefinition equalDef = new MethodDefinition(returnType, Location.BUILTIN, signature, equalIndex);
@@ -82,7 +82,7 @@ public class Program extends AbstractProgram {
         // la méthode equals() à l'environnement de la classe Object
         Object.getMembers().declareMethod(compiler.getSymbols().create("equals"), equalDef);
         // Object à l'environnement root
-        env.declareType(compiler.getSymbols().create("Object"), Object);
+        envTypes.declare(compiler.getSymbols().create("Object"), Object);
     }
 
     @Override

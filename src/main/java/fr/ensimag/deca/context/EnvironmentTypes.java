@@ -1,11 +1,10 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.tree.AbstractBinaryExpr;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Dictionary associating identifier's NonTypeDefinition to their names.
@@ -19,25 +18,20 @@ import java.util.Set;
  * @author gl41
  * @date 01/01/2016
  */
-public class EnvironmentExp extends AbstractEnvironnement {
+public class EnvironmentTypes extends AbstractEnvironnement {
     // A FAIRE : implémenter la structure de donnée représentant un
     // environnement (association nom -> définition, avec possibilité
     // d'empilement).
-    
-    protected EnvironmentExp parentEnvironment;
-    /**
-     * Contains definition parameters, variables and fields
-     */
-    protected HashMap<Symbol, NonTypeDefinition> vars ;
-    /**
-     * Contains definition of methods
-     */
-    protected HashMap<Symbol, MethodDefinition> methods ;
 
-    public EnvironmentExp(EnvironmentExp parentEnvironment) {
+    protected EnvironmentTypes parentEnvironment;
+    /**
+     * Contains definition of types and classes
+     */
+    protected HashMap<Symbol, TypeDefinition> types ;
+
+    public EnvironmentTypes(EnvironmentTypes parentEnvironment) {
         this.parentEnvironment = parentEnvironment ;
-        this.vars = new HashMap<Symbol, NonTypeDefinition>();
-        this.methods = new HashMap<Symbol, MethodDefinition>();
+        this.types = new HashMap<Symbol, TypeDefinition>();
 
     }
 
@@ -50,8 +44,8 @@ public class EnvironmentExp extends AbstractEnvironnement {
      *          the definition of the symbol in the environment or null if 
      *          the symbol is undefined
      */
-    public NonTypeDefinition get(Symbol key) {
-        NonTypeDefinition result = vars.get(key);
+    public TypeDefinition get(Symbol key) {
+        TypeDefinition result = types.get(key);
         if (result != null) {
             return result ;
         }
@@ -62,18 +56,20 @@ public class EnvironmentExp extends AbstractEnvironnement {
             return parentEnvironment.get(key);
         }
     }
-    public MethodDefinition getMethodDef(Symbol key) {
-        MethodDefinition result = methods.get(key);
-        if (result != null) {
-            return result ;
+    public ClassDefinition getClassDef(Symbol key) {
+        TypeDefinition result = types.get(key);
+        if (result != null && result instanceof ClassDefinition) {
+            return (ClassDefinition) result ;
         }
         else if(parentEnvironment == null) {
             return null;
         }
         else{
-            return parentEnvironment.getMethodDef(key);
+            return parentEnvironment.getClassDef(key);
         }
     }
+
+
 
     /**
      * Add the definition def associated to the symbol name in the environment.
@@ -91,33 +87,20 @@ public class EnvironmentExp extends AbstractEnvironnement {
      *             if the symbol is already defined at the last level of the
      *             environment.
      */
-    public void declare(Symbol name, NonTypeDefinition def) throws DoubleDefException {
-        NonTypeDefinition res = vars.get(name);
+    public void declare(Symbol name, TypeDefinition def) throws DoubleDefException {
+        TypeDefinition res = types.get(name);
         if (res != null) {
             throw new DoubleDefException();
         }
         else {
-            this.vars.put(name, def);
-        }
-    }
-    public void declareMethod(Symbol name, MethodDefinition def) throws DoubleDefException {
-        MethodDefinition res = methods.get(name);
-        if (res != null) {
-            throw new DoubleDefException();
-        }
-        else {
-            this.methods.put(name, def);
+            this.types.put(name, def);
         }
     }
 
     @Override
     public String toString() {
-        String s = "Affichage des variables : ";
-        for (Map.Entry<Symbol, NonTypeDefinition> entry : vars.entrySet()) {
-            s += "\nSymbol : " + entry.getKey().getName() + " Definition : " + entry.getValue();
-        }
-        s += "\nAffichage des méthodes : ";
-        for (Map.Entry<Symbol, MethodDefinition> entry : methods.entrySet()) {
+        String s = "\nAffichage des types : ";
+        for (Map.Entry<Symbol, TypeDefinition> entry : types.entrySet()) {
             s += "\nSymbol : " + entry.getKey().getName() + " Definition : " + entry.getValue();
         }
         s += "\n#############################";

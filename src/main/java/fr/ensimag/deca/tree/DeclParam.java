@@ -53,7 +53,7 @@ public class DeclParam extends AbstractDeclParam {
 
         try {
             localEnv.declare(compiler.getSymbols().create(varName.getName().getName()), paramDef);
-        } catch (EnvironmentExp.DoubleDefException e) {
+        } catch (AbstractEnvironnement.DoubleDefException e) {
             throw new ContextualError("Double definition of variable " + varName.getName().getName(), getLocation());
         }
 
