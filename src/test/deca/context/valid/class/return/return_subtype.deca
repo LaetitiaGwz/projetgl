@@ -1,0 +1,31 @@
+// Description:
+//    Héritage d'une classe
+//
+// Resultats:
+//    Wrong return type
+
+class C {}
+class D extends C {}
+
+class A {
+	A m() {
+		return new A();
+	}
+	C n() {
+		return new C();
+	}
+	Object o() {
+		return new A();
+	}
+}
+
+class B extends A {
+	B m() {return new B();}
+	D n() {return new D();}
+	A o() {return new A();}
+}
+
+{
+
+}
+

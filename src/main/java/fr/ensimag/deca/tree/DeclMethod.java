@@ -65,7 +65,7 @@ public class DeclMethod extends AbstractDeclMethod {
             // Erreur si on tente de surcharger la méthode
             throw new ContextualError("Cannot override method " + name.getName().getName() + " with a different signature.", getLocation());
         }
-        else if (!name.subtype(localEnv, parentDef.getType(), returnType)) {
+        else if (!AbstractExpr.subtype(parentDef.getType(), returnType)) {
             // Erreur si le nouveau type de retour n'est pas un sous-type de l'ancien
             throw new ContextualError("Type returned by method " + name.getName().getName() + " is not a subtype of overrided method.", getLocation());
         }

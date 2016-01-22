@@ -5,7 +5,7 @@
 //    Aucune erreur
 
 class A {
-	boolean equals(A a) {
+	boolean equals(Object a) {
 		return true;
 	}
 }

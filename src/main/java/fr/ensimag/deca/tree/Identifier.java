@@ -206,7 +206,7 @@ public class Identifier extends AbstractIdentifier {
         if(c == null) {
             throw new ContextualError("Method " + getName().getName() + " undefinded.", this.getLocation());
         }
-        else if(!s.equals(c.getSignature())) {
+        else if(!c.getSignature().accepts(s)) {
             throw new ContextualError("Invalid signature for method " + getName().getName(), this.getLocation());
         }
 
