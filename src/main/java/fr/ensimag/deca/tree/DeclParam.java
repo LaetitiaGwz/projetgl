@@ -63,7 +63,7 @@ public class DeclParam extends AbstractDeclParam {
 
     @Override
     protected void codeGenDecl(DecacCompiler compiler) {
-        varName.getNonTypeDefinition().setOperand(new RegisterOffset(indice, Register.SP));
+        varName.getNonTypeDefinition().setOperand(new RegisterOffset(indice, Register.LB));
     }
 
     @Override

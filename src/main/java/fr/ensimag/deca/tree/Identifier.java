@@ -220,7 +220,25 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
-        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),Register.R1));
+        if(getDefinition().isField()){
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB),Register.R1)); // on charge l'objet
+            compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(),Register.R1),Register.R1)); //on charge l'élément
+        }
+        else if(getDefinition().isClass()){
+            compiler.addInstruction(new LOAD(getClassDefinition().getOperand(),Register.R1));
+        }
+        else if(getDefinition().isMethod()){
+
+        }
+        else if(getDefinition().isParam()){
+
+        }
+        else if(getDefinition().isExpression()){
+            compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(), Register.R1));
+        }
+        else{
+
+        }
         if(definition.getType().isInt())
             compiler.addInstruction(new WINT());
         else
@@ -284,6 +302,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenNot(DecacCompiler compiler){
+        this.codegenExpr(compiler,Register.R0);
             compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),Register.R0));
             compiler.addInstruction(new ADD(new ImmediateInteger(1),Register.R0));
             compiler.addInstruction(new REM(new ImmediateInteger(2),Register.R0));
@@ -291,7 +310,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),Register.R0));
+        this.codegenExpr(compiler,Register.R0);
         compiler.addInstruction(new CMP(0,Register.R0));
         compiler.addInstruction(new BEQ(compiler.getLblManager().getLabelFalse()));
     }

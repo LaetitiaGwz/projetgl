@@ -11,7 +11,7 @@ class A {
 }
 
 {
-	A b;
+	A b = new A();
 	int a = b.a;
 	print(a);
 }
