@@ -34,7 +34,9 @@ public class ListDeclFieldSet extends TreeList<AbstractDeclFieldSet> {
     }
 
     public void codeGenListDecl(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        for(AbstractDeclFieldSet a : getList()){
+            a.codeGenFieldSet(compiler);
+        }
     }
 
 }
