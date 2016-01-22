@@ -46,7 +46,7 @@ public class DeclVar extends AbstractDeclVar {
         try {
             localEnv.declare(getVarName().getName(), new VariableDefinition(t, getLocation()));
         }
-        catch (EnvironmentExp.DoubleDefException e) {
+        catch (AbstractEnvironnement.DoubleDefException e) {
             throw new ContextualError("Multiple declaration of variable " + getVarName().getName().getName(), getLocation());
         }
 

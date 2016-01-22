@@ -56,9 +56,9 @@ public class DeclClass extends AbstractDeclClass {
         // On vérifie que la superclasse existe bien
         superClass.verifyClass(compiler);
         // On récupère la définition de la superClass dans ce contexte également (nécessaire pour la déclaration du type)
-        ClassDefinition superClassDef = compiler.getRootEnv().getClassDef(superClass.getName());
+        ClassDefinition superClassDef = compiler.getEnvTypes().getClassDef(superClass.getName());
 
-        ClassType classType = new ClassType(compiler.getSymbols().create(name.getName().getName()), getLocation(), superClassDef);
+        ClassType classType = new ClassType(name.getName(), getLocation(), superClassDef);
         this.name.setType(classType);
 
         ClassDefinition classDef = classType.getDefinition();
@@ -67,7 +67,7 @@ public class DeclClass extends AbstractDeclClass {
         // On déclare la class dans l'envRoot
         // Erreur si déjà existante
         try {
-            compiler.getRootEnv().declareType(compiler.getSymbols().create(name.getName().getName()), name.getClassDefinition());
+            compiler.getEnvTypes().declare(name.getName(), name.getClassDefinition());
         } catch (EnvironmentExp.DoubleDefException $e) {
             throw new ContextualError("Class " + name.getName().getName() + " twice declared.", getLocation());
         }

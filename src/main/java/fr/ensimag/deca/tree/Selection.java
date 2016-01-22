@@ -112,7 +112,7 @@ public class Selection extends AbstractLValue {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         Type t = obj.verifyExpr(compiler, localEnv, currentClass);
 
-        ClassDefinition classDef = compiler.getRootEnv().getClassDef(t.getName());
+        ClassDefinition classDef = compiler.getEnvTypes().getClassDef(t.getName());
 
         Type retType = field.verifyExpr(compiler, classDef.getMembers(), currentClass);
 
