@@ -57,7 +57,6 @@ public class DeclVar extends AbstractDeclVar {
     protected void codeGenDecl(DecacCompiler compiler) {
         getVarName().codeGenInit(compiler);
         if(getInitialization().getExpression()!=null){
-            getInitialization().codeGenInit(compiler);
             GPRegister reg = compiler.getRegManager().getGBRegister();
             this.getInitialization().getExpression().codegenExpr(compiler, reg);
             DAddr adress = this.getVarName().getNonTypeDefinition().getOperand();
@@ -65,14 +64,16 @@ public class DeclVar extends AbstractDeclVar {
             compiler.resetTableRegistre();
         }
     }
+
     @Override
     protected void codeGenDeclMethod(DecacCompiler compiler) {
         getVarName().codeGenInitMethod(compiler);
         if(getInitialization().getExpression()!=null){
             getInitialization().codeGenInit(compiler);
-            Register regLeft = (Register) this.getInitialization().getExpression().getdValue();
+            GPRegister reg = compiler.getRegManager().getGBRegister();
+            this.getInitialization().getExpression().codegenExpr(compiler, reg);
             DAddr adress = this.getVarName().getNonTypeDefinition().getOperand();
-            compiler.addInstruction(new STORE(regLeft, adress));
+            compiler.addInstruction(new STORE(reg, adress));
             compiler.resetTableRegistre();
         }
     }

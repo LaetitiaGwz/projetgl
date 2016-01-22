@@ -73,10 +73,12 @@ public class RegisterManager {
 		return Register.getR(i);
 	}
 
+	@Deprecated
 	public void setEtatRegistreTrue(int registre){
 			this.tableRegistre[registre]=true;
 	}
 
+	@Deprecated
 	public void setEtatRegistreFalse(int registre){
 		this.tableRegistre[registre]=false;
 	}

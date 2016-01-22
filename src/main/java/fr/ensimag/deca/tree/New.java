@@ -30,18 +30,14 @@ public class New extends AbstractNew {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        int i = compiler.getRegManager().getLastregistre();
-        GPRegister reg = Register.getR(i);
-        compiler.getRegManager().setEtatRegistreTrue(i);
-        this.setdValue(reg);
-        compiler.addInstruction(new NEW(className.getClassDefinition().getNumberOfFields()+1,reg));
+    public void codegenExpr(DecacCompiler compiler, GPRegister register) {
+        compiler.addInstruction(new NEW(className.getClassDefinition().getNumberOfFields()+1,register));
         compiler.addInstruction(new BOV(new Label("tas_plein")));
         compiler.addInstruction(new LEA(className.getClassDefinition().getOperand(),Register.R0));
-        compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(0,reg)));
-        compiler.addInstruction(new PUSH(reg));
+        compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(0,register)));
+        compiler.addInstruction(new PUSH(register));
         compiler.addInstruction(new BSR(new Label("init."+className.getName().toString())));
-        compiler.addInstruction(new POP(reg));
+        compiler.addInstruction(new POP(register));
     }
 
     @Override

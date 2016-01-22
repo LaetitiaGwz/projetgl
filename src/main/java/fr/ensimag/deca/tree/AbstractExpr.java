@@ -28,11 +28,13 @@ public abstract class AbstractExpr extends AbstractInst {
 
     private DVal dValue;
 
+    @Deprecated
     public void setdValue(DVal dval){
         this.dValue =dval;
         this.setUtilisation();
     }
 
+    @Deprecated
     public DVal getdValue(){
         return this.dValue;
     }
@@ -149,9 +151,6 @@ public abstract class AbstractExpr extends AbstractInst {
     protected  void codeGenCMPOP(DecacCompiler compiler){
         
     }
-
-
-
 
     @Override
     protected void decompileInst(IndentPrintStream s) {

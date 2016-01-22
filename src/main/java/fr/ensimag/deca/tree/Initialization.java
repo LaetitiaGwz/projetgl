@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
@@ -52,7 +53,8 @@ public class Initialization extends AbstractInitialization {
 
     @Override
     protected void codeGenInit(DecacCompiler compiler) {
-        getExpression().codeGenInst(compiler);
+        GPRegister reg = compiler.getRegManager().getGBRegister();
+        getExpression().codegenExpr(compiler, reg);
     }
 
     @Override
