@@ -52,10 +52,6 @@ public class DeclMethodAss extends AbstractDeclMethod {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-    @Override
-    protected void codePreGenMethod(DecacCompiler compiler) {
-
-    }
 
     @Override
     protected void codeGenMethod(DecacCompiler compiler) {

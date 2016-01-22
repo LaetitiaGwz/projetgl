@@ -71,10 +71,8 @@ public class EnvironmentExp {
             return parentEnvironment.get(key);
         }
     }
-    public MethodDefinition getMethodDef(Symbol key, Signature s) {
-        System.out.println(this);
-        System.out.println(s);
-        MethodDefinition result = methods.get(new MethodKey(key, s));
+    public MethodDefinition getMethodDef(Symbol key) {
+        MethodDefinition result = methods.get(key);
         if (result != null) {
             return result ;
         }
