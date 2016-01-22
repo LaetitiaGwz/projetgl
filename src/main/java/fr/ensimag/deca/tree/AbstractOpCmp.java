@@ -54,20 +54,6 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        /*
-        this.getLeftOperand().codeGenOPLeft(compiler);
-        GPRegister cmpRight= (GPRegister) getLeftOperand().getdValue();
-        this.getRightOperand().codeGenOPRight(compiler);
-        DVal cmpLeft = getRightOperand().getdValue();
-        compiler.addInstruction(new CMP(cmpLeft, cmpRight));
-        this.codeGenCMPOP(compiler);
-        if(getRightOperand().getUtilisation()){
-            compiler.getRegManager().setEtatRegistreFalse(compiler.getRegManager().getLastregistre()-1);
-
-        }
-        compiler.getRegManager().setEtatRegistreFalse(compiler.getRegManager().getLastregistre()-1);
-        //on libère quoi qu'il arrive
-        */
         this.getLeftOperand().codegenExpr(compiler, Register.R0);
         this.getRightOperand().codegenExpr(compiler, Register.R1);
         compiler.addInstruction(new CMP(Register.R1, Register.R0));
@@ -84,13 +70,6 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        /*
-        this.getLeftOperand().codeGenOPLeft(compiler);
-        GPRegister cmpRight= (GPRegister) getLeftOperand().getdValue();
-        this.getRightOperand().codeGenOPRight(compiler);
-        DVal cmpLeft = getRightOperand().getdValue();
-        compiler.addInstruction(new CMP(cmpLeft, cmpRight));
-        */
         this.codegenExpr(compiler,null);
         int i=compiler.getLblManager().getIf();
         compiler.getLblManager().incrementIf();

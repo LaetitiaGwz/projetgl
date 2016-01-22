@@ -223,6 +223,7 @@ public class Identifier extends AbstractIdentifier {
 
 
     }
+
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         int i = compiler.getRegManager().getLastregistre();
@@ -283,68 +284,18 @@ public class Identifier extends AbstractIdentifier {
 
     }
 
-    /*
-    @Override
-    protected void codeGenOPLeft(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-    }
-
-    @Override
-    protected void codeGenOPRight(DecacCompiler compiler){
-        if(getDefinition().isField()){
-            this.codeGenInst(compiler);
-        }
-        else if(getDefinition().isClass()){
-            this.setdValue(getClassDefinition().getOperand());
-        }
-        else if(getDefinition().isMethod()){
-
-        }
-        else if(getDefinition().isParam()){
-
-        }
-        else if(getDefinition().isExpression()){
-            this.setdValue(this.getNonTypeDefinition().getOperand());
-        }
-        else{
-
-        }
-
-    }
-    */
-
     @Override
     protected void codeGenNot(DecacCompiler compiler){
-            int i = compiler.getRegManager().getLastregistre();
-            GPRegister target= Register.getR(i);
-            compiler.getRegManager().setEtatRegistreTrue(i);
-            compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),target));
-            compiler.addInstruction(new ADD(new ImmediateInteger(1),target));
-            compiler.addInstruction(new REM(new ImmediateInteger(2),target));
-            this.setdValue(target);
+            compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),Register.R0));
+            compiler.addInstruction(new ADD(new ImmediateInteger(1),Register.R0));
+            compiler.addInstruction(new REM(new ImmediateInteger(2),Register.R0));
     }
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        int i = compiler.getRegManager().getLastregistre();
-        GPRegister target= Register.getR(i);
-        compiler.getRegManager().setEtatRegistreTrue(i);
-        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),target));
-        compiler.addInstruction(new CMP(new ImmediateInteger(0),target));
+        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),Register.R0));
+        compiler.addInstruction(new CMP(0,Register.R0));
         compiler.addInstruction(new BEQ(compiler.getLblManager().getLabelFalse()));
-        compiler.getRegManager().setEtatRegistreFalse(i);
-    }
-
-    @Override
-    protected void codeGenCMPNot(DecacCompiler compiler){
-        int i = compiler.getRegManager().getLastregistre();
-        GPRegister target= Register.getR(i);
-        compiler.getRegManager().setEtatRegistreTrue(i);
-        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),target));
-        compiler.addInstruction(new CMP(new ImmediateInteger(0),target));
-        compiler.addInstruction(new BNE(compiler.getLblManager().getLabelFalse()));
-        compiler.getRegManager().setEtatRegistreFalse(i);
-
     }
 
     @Override

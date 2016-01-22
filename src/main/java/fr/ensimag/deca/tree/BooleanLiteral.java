@@ -57,18 +57,6 @@ public class BooleanLiteral extends AbstractExpr {
         return "BooleanLiteral (" + value + ")";
     }
 
-    /*
-    @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        int i=compiler.getRegManager().getLastregistre();
-        compiler.getRegManager().setEtatRegistreTrue(i);
-        GPRegister target= Register.getR(i);
-        this.setdValue(target);
-        int convBool = (getValue()) ? 1 : 0; // Conversion booléen -> integer
-        compiler.addInstruction(new LOAD(new ImmediateInteger(convBool), target));
-    }
-    */
-
     @Override
     public void codegenExpr(DecacCompiler compiler, GPRegister register) {
         int convBool = (getValue()) ? 1 : 0; // Conversion booléen -> integer
@@ -84,11 +72,5 @@ public class BooleanLiteral extends AbstractExpr {
     protected void codeGenCMP(DecacCompiler compiler){
         if(!getValue())
             compiler.addInstruction(new BRA(compiler.getLblManager().getLabelFalse()));
-    }
-
-    @Override
-    protected void codeGenCMPNot(DecacCompiler compiler){
-        this.codeGenNot(compiler);
-        this.codeGenCMP(compiler);
     }
 }

@@ -45,13 +45,15 @@ public class Not extends AbstractUnaryExpr {
     @Override
     public void codegenExpr(DecacCompiler compiler, GPRegister register) {
         getOperand().codegenExpr(compiler, register);
-        compiler.addInstruction(new CMP(0,register));
+        compiler.addInstruction(new CMP(0, register));
         compiler.addInstruction(new SEQ(register));
     }
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        getOperand().codeGenCMPNot(compiler);
+        getOperand().codegenExpr(compiler, Register.R0);
+        compiler.addInstruction(new CMP(0,Register.R0));
+        compiler.addInstruction(new BNE(compiler.getLblManager().getLabelFalse()));
     }
 
     @Override

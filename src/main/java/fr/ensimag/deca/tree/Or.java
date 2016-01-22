@@ -43,9 +43,6 @@ public class Or extends AbstractOpBool {
         compiler.addLabel(finOr);
         compiler.addInstruction(new BRA(stockTrue));
         compiler.getLblManager().setLabelFalse(stock);
-
-
-
     }
 
 }
