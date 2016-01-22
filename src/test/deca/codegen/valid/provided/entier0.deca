@@ -5,13 +5,13 @@
 //    1
 //    2
 //    2
-//    ima_output: 1
+//    ima_output: 122
 
 {
    int x = 1;
    int y = 2;
-   println(x);
-   println(y);
+   print(x);
+   print(y);
    x= 3 * x - y / 2 ;
-   println(x);
+   print(x);
 }
