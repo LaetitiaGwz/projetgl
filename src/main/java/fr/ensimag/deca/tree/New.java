@@ -42,7 +42,8 @@ public class New extends AbstractNew {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print("new "+className.getName().toString());
+
     }
 
     @Override
