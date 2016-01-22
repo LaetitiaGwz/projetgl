@@ -77,7 +77,7 @@ public class Assign extends AbstractBinaryExpr {
             setRightOperand(conv);
             getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         }
-        else {
+        else if (!leftType.sameType(rightType)) {
             // On crée le type et on met sa location
             Identifier typeIdentifier = new Identifier(leftType.getName());
             typeIdentifier.setLocation(getLocation());
