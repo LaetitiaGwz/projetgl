@@ -1,0 +1,15 @@
+// Description:
+//    On redéfini avec comme return un sous-type, mais dans la même classe
+//
+// Resultats:
+//    Already defined
+
+class A {
+	A m() {}
+	B m() {}
+}
+
+class B extends A {}
+
+{}
+

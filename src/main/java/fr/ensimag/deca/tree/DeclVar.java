@@ -56,7 +56,7 @@ public class DeclVar extends AbstractDeclVar {
     @Override
     protected void codeGenDecl(DecacCompiler compiler) {
         getVarName().codeGenInit(compiler);
-        if(getInitialization().getExpression()!=null){
+        if(getInitialization().getExpression() != null){
             GPRegister reg = compiler.getRegManager().getGBRegister();
             this.getInitialization().getExpression().codegenExpr(compiler, reg);
             DAddr adress = this.getVarName().getNonTypeDefinition().getOperand();
@@ -68,7 +68,7 @@ public class DeclVar extends AbstractDeclVar {
     @Override
     protected void codeGenDeclMethod(DecacCompiler compiler) {
         getVarName().codeGenInitMethod(compiler);
-        if(getInitialization().getExpression()!=null){
+        if(getInitialization().getExpression() != null){
             getInitialization().codeGenInit(compiler);
             GPRegister reg = compiler.getRegManager().getGBRegister();
             this.getInitialization().getExpression().codegenExpr(compiler, reg);

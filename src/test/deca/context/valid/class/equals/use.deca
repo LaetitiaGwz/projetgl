@@ -6,9 +6,6 @@
 
 class A {}
 class C {
-	boolean equals(C c) {
-		return true;
-	}
 }
 
 {

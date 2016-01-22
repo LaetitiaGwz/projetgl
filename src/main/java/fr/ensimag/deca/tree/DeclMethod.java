@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
@@ -55,10 +56,19 @@ public class DeclMethod extends AbstractDeclMethod {
 
         // On vérifie d'abord que la méthode n'est pas
         //  déjà déclarée dans l'environnement parent
-        MethodDefinition parentDef = localEnv.getMethodDef(name.getName());
+        MethodDefinition parentDef = currentClass.getSuperClass().getMembers().getMethodDef(name.getName());
+
         int index;
         if(parentDef == null) {
             index = currentClass.incNumberOfMethods();
+        }
+        else if (!signature.equals(parentDef.getSignature())) {
+            // Erreur si on tente de surcharger la méthode
+            throw new ContextualError("Cannot override method " + name.getName().getName() + " with a different signature.", getLocation());
+        }
+        else if (!AbstractExpr.subtype(parentDef.getType(), returnType)) {
+            // Erreur si le nouveau type de retour n'est pas un sous-type de l'ancien
+            throw new ContextualError("Type returned by method " + name.getName().getName() + " is not a subtype of overrided method.", getLocation());
         }
         else {
             index = parentDef.getIndex();
@@ -99,8 +109,7 @@ public class DeclMethod extends AbstractDeclMethod {
         for(int i=2;i<compiler.getCompilerOptions().getRegistre();i++){
             compiler.addInstruction(new PUSH(Register.getR(i)));
         }
-        compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB),Register.getR(2)));// on sauve l'objet dans R2 tt le temps
-        compiler.getRegManager().setEtatRegistreTrue(2);
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB), Register.getR(2)));// on sauve l'objet dans R2 tt le temps
         Label fin = new Label("fin."+getIdentifier().getMethodDefinition().getLabel().toString());
         compiler.getLblManager().setLabelFalse(fin);
         params.codeGenListDecl(compiler);

@@ -44,10 +44,22 @@ public class Initialization extends AbstractInitialization {
         Type initType = expression.verifyExpr(compiler, localEnv, currentClass);
         if(initType.isInt() && t.isFloat()) {
             expression = new ConvFloat(expression);
+            expression.setLocation(getLocation());
             expression.verifyExpr(compiler, localEnv, currentClass);
         }
-        else if(!initType.sameType(t)) {
+        else if(!AbstractExpr.subtype(t, initType)) {
             throw new ContextualError("Incompatible type initialization. Expected " + t.getName() + ", had " + initType.getName() + ".", this.getLocation());
+        }
+        else if(!initType.sameType(t)) {
+            // On cast
+            // On crée le type et on met sa location
+            Identifier typeIdentifier = new Identifier(t.getName());
+            typeIdentifier.setLocation(getLocation());
+            // On crée le cast et on met sa location
+            Cast cast = new Cast(typeIdentifier, expression);
+            cast.setLocation(getLocation());
+
+            expression.verifyExpr(compiler, localEnv, currentClass);
         }
     }
 
