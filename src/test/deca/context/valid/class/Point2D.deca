@@ -26,12 +26,3 @@ class Point2D{
         }
 
 }
-
-{
-    int x;
-    Point2D point= new Point2D();
-    point.incremente();
-    point.incremente();
-    x= point.getX();
-    println(x);
-}
