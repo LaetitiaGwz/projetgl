@@ -71,7 +71,10 @@ public class InstanceOf extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        var.decompile(s);
+        s.print(" instanceof ");
+        s.println(className.getName().toString());
+
     }
 
     @Override
