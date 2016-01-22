@@ -48,7 +48,14 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("class { ... A FAIRE ... }");
+        s.print("class "+name.getName().toString());
+        if(!superClass.getName().toString().equals("Object")){
+            s.print(" extends "+superClass.getName().toString());
+        }
+        s.println("{");
+        declFields.decompile(s);
+        methods.decompile(s);
+        s.println("}");
     }
 
     @Override
@@ -142,9 +149,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void codeGenFieldClass(DecacCompiler compiler){
         compiler.addLabel(new Label("init."+name.getName().toString())); //pour s'en rappeler
-        for(AbstractDeclFieldSet a : declFields.getList()){
-            a.codeGenFieldSet(compiler);
-        }
+        declFields.codeGenListDecl(compiler);
         if(!superClass.getName().toString().equals("Object")){
             compiler.addInstruction(new PUSH(Register.R1)); // on sauvegarde R1 pour la superclass
             compiler.addInstruction(new BSR(new Label("init."+superClass.getName().toString())));
