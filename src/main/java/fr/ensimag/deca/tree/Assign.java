@@ -37,8 +37,6 @@ public class Assign extends AbstractBinaryExpr {
         if(getLeftOperand().getDefinition().isField()){
             compiler.addInstruction(new STORE(reg,
                     new RegisterOffset(getLeftOperand().getFieldDefinition().getIndex(),Register.getR(2)))); // on store dans R2
-            compiler.getRegManager().resetTableRegistre();
-            compiler.getRegManager().setEtatRegistreTrue(2); /// on protege R2
         }
         else if(getLeftOperand().getDefinition().isClass()){
 

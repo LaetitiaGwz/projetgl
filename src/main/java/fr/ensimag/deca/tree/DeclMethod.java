@@ -109,11 +109,6 @@ public class DeclMethod extends AbstractDeclMethod {
         compiler.addLabel(fin);
 
 
-
-
-
-
-
         for(int i=compiler.getCompilerOptions().getRegistre()-1;i>1;i--){
             compiler.addInstruction(new POP(Register.getR(i)));
         }

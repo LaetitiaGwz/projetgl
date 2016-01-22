@@ -223,18 +223,17 @@ public class Identifier extends AbstractIdentifier {
 
 
     }
+
+
+
     @Override
-    protected void codeGenInst(DecacCompiler compiler){
-        int i = compiler.getRegManager().getLastregistre();
-        GPRegister reg = Register.getR(i);
-        compiler.getRegManager().setEtatRegistreTrue(i);
-        this.setdValue(reg);
+    public void codegenExpr(DecacCompiler compiler,GPRegister register){
         if(getDefinition().isField()){
-            compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB),reg)); // on charge l'objet
-            compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(),reg),reg)); //on charge l'élément
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB),register)); // on charge l'objet
+            compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(),register),register)); //on charge l'élément
         }
         else if(getDefinition().isClass()){
-            compiler.addInstruction(new LOAD(getClassDefinition().getOperand(),reg));
+            compiler.addInstruction(new LOAD(getClassDefinition().getOperand(),register));
         }
         else if(getDefinition().isMethod()){
 
@@ -243,7 +242,7 @@ public class Identifier extends AbstractIdentifier {
 
         }
         else if(getDefinition().isExpression()){
-            compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(), reg));
+            compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(), register));
         }
         else{
 
@@ -264,10 +263,6 @@ public class Identifier extends AbstractIdentifier {
         compiler.getRegManager().incrementLB();
     }
 
-    @Override
-    public void codegenExpr(DecacCompiler compiler, GPRegister register) {
-        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(), register));
-    }
 
     @Override
     public DVal getDval() {

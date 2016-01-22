@@ -64,8 +64,9 @@ public class Initialization extends AbstractInitialization {
             compiler.addInstruction(new PUSH(Register.getR(i)));
         }
         compiler.getRegManager().resetTableRegistre();
-        getExpression().codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(getExpression().getdValue(),Register.R0));
+        GPRegister reg =compiler.getRegManager().getGBRegister();
+        getExpression().codegenExpr(compiler,reg);
+        compiler.addInstruction(new LOAD(reg,Register.R0));
         for(int i=compiler.getCompilerOptions().getRegistre()-1;i>1;i--){
             compiler.addInstruction(new POP(Register.getR(i)));
         }
