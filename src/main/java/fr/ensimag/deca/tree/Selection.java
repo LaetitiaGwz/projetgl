@@ -6,6 +6,13 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -123,6 +130,34 @@ public class Selection extends AbstractLValue {
 
         setType(retType);
         return retType;
+    }
+
+    @Override
+    public void codegenExpr(DecacCompiler compiler,GPRegister register){
+        GPRegister stock =compiler.getRegManager().getGBRegister();
+        //on ne peut appliquer this qu'à un field
+        obj.codegenExpr(compiler,stock);
+        //on a l'adresse de l'objet
+        compiler.addInstruction(new LOAD(new RegisterOffset(field.getFieldDefinition().getIndex(),stock),register));
+
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler){
+        this.codegenExpr(compiler,Register.R1);
+        if(this.getType().isFloat()){
+            compiler.addInstruction(new WFLOAT());
+        }
+        else{
+            compiler.addInstruction(new WINT());
+        }
+
+    }
+
+    @Override
+    protected void codeGenPrintX(DecacCompiler compiler){
+        this.codegenExpr(compiler,Register.R1);
+        compiler.addInstruction(new WFLOATX());
     }
 
     @Override

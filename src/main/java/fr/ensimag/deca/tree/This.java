@@ -6,6 +6,10 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
 
@@ -18,6 +22,15 @@ public class This extends AbstractThis {
         }
         this.setType(currentClass.getType());
         return currentClass.getType();
+    }
+
+    @Override
+    protected void codeGenThis(DecacCompiler compiler){
+
+    }
+    @Override
+    public void codegenExpr(DecacCompiler compiler,GPRegister register){
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB),register));
     }
 
     @Override
