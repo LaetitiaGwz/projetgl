@@ -167,6 +167,7 @@ public class Identifier extends AbstractIdentifier {
         if(t == null) {
             throw new ContextualError("Undefinded variable " + getName(), getLocation());
         }
+
         setDefinition(t);
         setType(t.getType());
         return t.getType();
@@ -201,8 +202,12 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyMethod(Signature s, DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         MethodDefinition c = localEnv.getMethodDef(compiler.getSymbols().create(getName().getName()));
 
+
         if(c == null) {
             throw new ContextualError("Method " + getName().getName() + " undefinded.", this.getLocation());
+        }
+        else if(!c.getSignature().accepts(s)) {
+            throw new ContextualError("Invalid signature for method " + getName().getName(), this.getLocation());
         }
 
         setDefinition(c);

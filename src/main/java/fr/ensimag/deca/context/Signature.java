@@ -1,5 +1,7 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.tree.AbstractExpr;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,15 @@ public class Signature {
         if(size() != s.size()) return false;
         for (int i = 0; i < size(); i++) {
             if(!paramNumber(i).sameType(s.paramNumber(i))) return false;
+        }
+        return true;
+    }
+
+    public boolean accepts(Signature s) {
+        if(s == null) return false;
+        if(size() != s.size()) return false;
+        for (int i = 0; i < size(); i++) {
+            if(!AbstractExpr.subtype(paramNumber(i), s.paramNumber(i))) return false;
         }
         return true;
     }

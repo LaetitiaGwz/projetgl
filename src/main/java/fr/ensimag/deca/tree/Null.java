@@ -29,7 +29,7 @@ public class Null extends AbstractExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        //nothing to do
     }
 
     @Override

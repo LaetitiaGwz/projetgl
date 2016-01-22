@@ -71,6 +71,24 @@ public class MethodCall extends AbstractExpr{
         compiler.addInstruction(new STORE(register,(DAddr)obj.getDval()));
 
     }
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler){
+        this.codegenExpr(compiler,Register.R1);
+        if(method.getType().isFloat()){
+            compiler.addInstruction(new WFLOAT());
+        }
+        else{
+            compiler.addInstruction(new WINT());
+        }
+
+
+    }
+    @Override
+    protected void codeGenPrintX(DecacCompiler compiler){
+        this.codegenExpr(compiler,Register.R1);
+        compiler.addInstruction(new WFLOATX());
+
+    }
 
 
     @Override

@@ -13,7 +13,7 @@ class B {
 
 class A extends B {
 	void m() {
-		B a = this;
+		B b = this;
 	}
 }
 

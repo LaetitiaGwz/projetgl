@@ -6,8 +6,8 @@
 
 
 class A {
-	float a() {
-		return 5;
+	int a() {
+		return 5.3;
 	}
 }
 

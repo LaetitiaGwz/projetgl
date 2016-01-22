@@ -4,11 +4,12 @@
 // Resultats:
 //    ok
 //    ok
-// ima_output: ok ok
+// ima_output: okok
 
 {
-   println("ok") ; 
    print("ok") ;
+   println("ok") ; 
+
 }
 
 

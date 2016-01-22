@@ -1,0 +1,20 @@
+// Description:
+//    Héritage d'une classe
+//
+// Resultats:
+//    Wrong return type
+
+class C {}
+
+class A {
+	A m() {}
+}
+
+class B extends A {
+	C m() {}
+}
+
+{
+
+}
+

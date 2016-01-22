@@ -172,7 +172,7 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-    protected boolean subtype(EnvironmentExp env, Type parent, Type child) {
+    public static boolean subtype(Type parent, Type child) {
 
         if(parent.sameType(child)) {
             return true;
@@ -188,7 +188,7 @@ public abstract class AbstractExpr extends AbstractInst {
             }
 
             ClassDefinition superclassDef = ((ClassType) child).getDefinition().getSuperClass();
-            if (superclassDef != null && subtype(env, parent, superclassDef.getType())) {
+            if (superclassDef != null && subtype(parent, superclassDef.getType())) {
                 return true;
             }
         }
@@ -196,7 +196,7 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     protected boolean assignCompatible(EnvironmentExp env, Type object, Type value) {
-        return (object.isFloat() && value.isInt()) || subtype(env, object, value);
+        return (object.isFloat() && value.isInt()) || subtype(object, value);
     }
 
     protected boolean castCompatible(EnvironmentExp env, Type from, Type to) {
