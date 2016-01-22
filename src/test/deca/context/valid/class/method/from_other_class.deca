@@ -1,11 +1,8 @@
 // Description:
-//    Déclaration d'une variable de type d'une autre classe
+//    Surcharge de méthode dans la même classe
 //
-// Resultats:
+// Résultats:
 //    Aucune erreur
-// 
-// Historique:
-//    cree le 01/01/2016
 
 class A {
 
@@ -16,7 +13,7 @@ class C {
 		A a;
 	}
 
-	A n() {
+	void m(int A) {
 		return new A();
 	}
 }

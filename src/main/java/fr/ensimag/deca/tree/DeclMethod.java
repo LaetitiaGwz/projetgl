@@ -55,10 +55,19 @@ public class DeclMethod extends AbstractDeclMethod {
 
         // On vérifie d'abord que la méthode n'est pas
         //  déjà déclarée dans l'environnement parent
-        MethodDefinition parentDef = localEnv.getMethodDef(name.getName());
+        MethodDefinition parentDef = currentClass.getSuperClass().getMembers().getMethodDef(name.getName());
+
         int index;
         if(parentDef == null) {
             index = currentClass.incNumberOfMethods();
+        }
+        else if (!signature.equals(parentDef.getSignature())) {
+            // Erreur si on tente de surcharger la méthode
+            throw new ContextualError("Cannot override method " + name.getName().getName() + " with a different signature.", getLocation());
+        }
+        else if (!name.subtype(localEnv, parentDef.getType(), returnType)) {
+            // Erreur si le nouveau type de retour n'est pas un sous-type de l'ancien
+            throw new ContextualError("Type returned by method " + name.getName().getName() + " is not a subtype of overrided method.", getLocation());
         }
         else {
             index = parentDef.getIndex();
