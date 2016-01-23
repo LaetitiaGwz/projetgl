@@ -18,5 +18,5 @@ class Platon extends Socrate{
 
 {
     Platon p = new Platon();
-    Socrate s = (Socrate) p;
+    Socrate s = (Socrate) (p);
 }

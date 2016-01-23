@@ -7,7 +7,7 @@
 
 class Socrate{
 	void quiSuisJe(){
-		System.out.print("socrate");
+		print("socrate");
 	}
 }
 
