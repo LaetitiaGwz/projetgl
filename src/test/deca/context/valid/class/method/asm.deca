@@ -1,0 +1,17 @@
+// Description:
+//    Test d'une méthode assembleur
+//
+// Resultats:
+//    Aucune erreur
+// 
+
+class A {
+    void m(int a) asm("test");
+
+    void n() asm("test");
+    int o(int a) asm("test");
+}
+
+{
+
+}
