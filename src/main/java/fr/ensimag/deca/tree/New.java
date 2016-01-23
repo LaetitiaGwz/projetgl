@@ -31,13 +31,15 @@ public class New extends AbstractNew {
 
     @Override
     public void codegenExpr(DecacCompiler compiler, GPRegister register) {
-        compiler.addInstruction(new NEW(className.getClassDefinition().getNumberOfFields()+1,register));
+        compiler.addInstruction(new NEW(className.getClassDefinition().getNumberOfFields()+1,Register.R1));
         compiler.addInstruction(new BOV(new Label("tas_plein")));
         compiler.addInstruction(new LEA(className.getClassDefinition().getOperand(),Register.R0));
-        compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(0,register)));
-        compiler.addInstruction(new PUSH(register));
+        compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(0,Register.R1)));
+        compiler.addInstruction(new ADDSP(1));
+        compiler.addInstruction(new STORE(Register.R1,new RegisterOffset(0,Register.SP)));
         compiler.addInstruction(new BSR(new Label("init."+className.getName().toString())));
-        compiler.addInstruction(new POP(register));
+        compiler.addInstruction(new SUBSP(1));
+        compiler.addInstruction(new LOAD(Register.R1,register));
     }
 
     @Override
