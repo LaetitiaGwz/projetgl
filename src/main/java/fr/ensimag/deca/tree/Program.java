@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import java.io.PrintStream;
@@ -75,6 +76,7 @@ public class Program extends AbstractProgram {
         Signature signature = new Signature();
         signature.add(Object.getType());
         MethodDefinition equalDef = new MethodDefinition(returnType, Location.BUILTIN, signature, equalIndex);
+        equalDef.setLabel(new Label("code.Object.equals"));
 
 
         /* On ajoute le tout aux environnements */
@@ -122,7 +124,8 @@ public class Program extends AbstractProgram {
 
         //on ecrit maintenant les instructions des methodes
         compiler.addLabel(new Label("code.Object.equals"));
-
+        //Identifier eq= new Identifier()
+        //DeclMethod equals = new DeclMethod()
         //public boolean equals (Object other) {
         //    return this == other;
         //}

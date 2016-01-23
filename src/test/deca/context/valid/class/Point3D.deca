@@ -28,10 +28,9 @@ class Point3D extends Point2D {
 
 
 {
-    int x;
-    Point2D point= new Point2D();
-    point.incremente();
-    point.incremente();
-    x= point.getX();
-    println(x);
+
+    Point3D point = new Point3D();
+    Point3D point1 = point;
+    boolean a;
+    a = point1.equals(point);
 }
