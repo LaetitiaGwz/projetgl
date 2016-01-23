@@ -7,6 +7,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Line;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -17,14 +19,20 @@ import java.io.PrintStream;
  */
 public class DeclMethodAss extends AbstractDeclMethod {
 
-    AbstractIdentifier name;
-    AbstractIdentifier ret;
-    ListDeclParam params;
-    String code;
+    protected AbstractIdentifier name;
+    protected AbstractIdentifier ret;
+    protected ListDeclParam params;
+    protected String code;
+    private Line tstoInst;
 
     @Override
     public AbstractIdentifier getIdentifier(){
         return this.name;
+    }
+
+    @Override
+    protected void setTSTO(DecacCompiler compiler, int maxStackSize) {
+        tstoInst.setInstruction(new TSTO(maxStackSize));
     }
 
     public DeclMethodAss(AbstractIdentifier name, AbstractIdentifier ret, ListDeclParam params, String code) {

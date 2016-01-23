@@ -1,9 +1,6 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.ListeMethodeClasse;
-import fr.ensimag.deca.codegen.TableField;
-import fr.ensimag.deca.codegen.TableMethode;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
@@ -12,7 +9,6 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
-import java.lang.reflect.Method;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -33,6 +29,9 @@ public class DeclClass extends AbstractDeclClass {
 
     protected ListDeclFieldSet declFields;
     protected ListDeclMethod methods;
+
+    // Instruction TSTO
+    private Line tstoInst;
 
     public DeclClass(AbstractIdentifier name, AbstractIdentifier superClass, ListDeclFieldSet declFields, ListDeclMethod methods) {
         Validate.notNull(name);
@@ -149,10 +148,15 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void codeGenFieldClass(DecacCompiler compiler){
         compiler.addLabel(new Label("init."+name.getName().toString())); //pour s'en rappeler
+        tstoInst = new Line(new TSTO(1));
+        compiler.add(tstoInst);
+        compiler.add(new Line(new BOV(new Label("stack_overflow"))));
+
         declFields.codeGenListDecl(compiler);
         if(!superClass.getName().toString().equals("Object")){
             compiler.addInstruction(new PUSH(Register.R1)); // on sauvegarde R1 pour la superclass
             compiler.addInstruction(new BSR(new Label("init."+superClass.getName().toString())));
+
             compiler.addInstruction(new SUBSP(1));
         }
         compiler.addInstruction(new RTS());
@@ -165,6 +169,14 @@ public class DeclClass extends AbstractDeclClass {
             a.codeGenMethod(compiler);
         }
 
+    }
+
+    @Override
+    protected void setTSTO(DecacCompiler compiler,int maxStackSize) {
+        for(AbstractDeclMethod method : methods.getList()){
+            tstoInst.setInstruction(new TSTO(maxStackSize));
+            method.setTSTO(compiler, maxStackSize);
+        }
     }
 
 }

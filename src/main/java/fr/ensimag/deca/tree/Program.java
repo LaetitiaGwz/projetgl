@@ -36,6 +36,7 @@ public class Program extends AbstractProgram {
     private ListDeclClass classes;
     private AbstractMain main;
 
+
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
@@ -117,10 +118,7 @@ public class Program extends AbstractProgram {
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
-        compiler.addLabel(new Label("tas_plein"));
-        compiler.addInstruction(new WSTR("leapoverflow"));
-        compiler.addInstruction(new WNL());
-        compiler.addInstruction(new HALT());
+
 
         //on ecrit maintenant les instructions des methodes
         compiler.addLabel(new Label("code.Object.equals"));
@@ -134,6 +132,11 @@ public class Program extends AbstractProgram {
             a.codeGenFieldClass(compiler);
             a.codeGenMethodClass(compiler);
         }
+        for(AbstractDeclClass a: classes.getList()){
+            a.setTSTO(compiler, 500);
+        }
+
+
     }
 
     @Override

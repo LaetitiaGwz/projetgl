@@ -4,9 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.GPRegister;
 
 /**
  * Instruction
@@ -25,8 +23,8 @@ public abstract class AbstractDeclMethod extends Tree {
      *            Definition of the class containing the instruction, or null in
      *            the main program.
      */
-    protected abstract void verifyMembers(DecacCompiler compiler,
-           EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
+    protected abstract void verifyMembers(fr.ensimag.deca.DecacCompiler compiler,
+                                          EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
     /**
      * Verify the method body for contextual error.
      *
@@ -40,8 +38,8 @@ public abstract class AbstractDeclMethod extends Tree {
      *            Return type of the method being analyzed (may be void). void
      *            in the main program.
      */
-    protected abstract void verifyBody(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
+    protected abstract void verifyBody(fr.ensimag.deca.DecacCompiler compiler,
+                                       EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
     
 
     /**
@@ -49,8 +47,8 @@ public abstract class AbstractDeclMethod extends Tree {
      * 
      * @param compiler
      */
-    protected abstract void codePreGenMethod(DecacCompiler compiler);
-    protected abstract void codeGenMethod(DecacCompiler compiler);
+    protected abstract void codePreGenMethod(fr.ensimag.deca.DecacCompiler compiler);
+    protected abstract void codeGenMethod(fr.ensimag.deca.DecacCompiler compiler);
 
     protected abstract String getName();
     public abstract AbstractIdentifier getIdentifier();
@@ -64,4 +62,6 @@ public abstract class AbstractDeclMethod extends Tree {
     protected void decompileMethod(IndentPrintStream s) {
         decompile(s);
     }
+
+    protected abstract void setTSTO(DecacCompiler compiler,int maxStackSize);
 }

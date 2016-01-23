@@ -274,11 +274,19 @@ public class DecacCompiler {
             else{
                 assert(prog.checkAllDecorations());
 
+                /* Code du programme */
                 addComment("start main program");
                 prog.codeGenProgram(this);
                 addComment("end main program");
+
+                /* Code des erreurs */
                 addLabel(new Label("overflow_error"));
                 addInstructionList(new ErrorInstruction("Error : overflow during arithmetic operation"));
+                addLabel(new Label("stack_overflow"));
+                addInstructionList(new ErrorInstruction("Error : stack overflow"));
+                addLabel(new Label("heap_overflow")); // TODO : voir avec les new
+                addInstructionList(new ErrorInstruction("Error : heap overflow"));
+
                 LOG.debug("Generated assembly code:" + nl + program.display());
                 LOG.info("Output file assembly file is: " + destName);
 

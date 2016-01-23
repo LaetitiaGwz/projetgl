@@ -3,7 +3,7 @@
     <!-- writting to a local file with the default encoding is the right thing to do -->
     <Or>
       <Class name="fr.ensimag.deca.DecacCompiler" />
-      <Class name="fr.ensimag.ima.pseudocode.IMAProgram" />
+      <Class name="fr.ensimag.ima.pseudocode.DecacCompiler" />
       <Class name="fr.ensimag.deca.tree.Tree" />
     </Or>
     <Bug pattern="DM_DEFAULT_ENCODING" />

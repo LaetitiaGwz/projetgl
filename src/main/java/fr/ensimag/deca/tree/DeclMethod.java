@@ -3,14 +3,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.POP;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
-import fr.ensimag.ima.pseudocode.instructions.RTS;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -21,18 +15,26 @@ import java.io.PrintStream;
  */
 public class DeclMethod extends AbstractDeclMethod {
 
-    AbstractIdentifier name;
-    AbstractIdentifier ret;
-    ListDeclParam params;
-    ListInst body;
-    ListDeclVarSet declVars;
+    protected AbstractIdentifier name;
+    protected AbstractIdentifier ret;
+    protected ListDeclParam params;
+    protected ListInst body;
+    protected ListDeclVarSet declVars;
 
-    EnvironmentExp methodEnv;
+    protected EnvironmentExp methodEnv;
+
+    private Line tstoInst;
 
     @Override
     public AbstractIdentifier getIdentifier(){
         return this.name;
     }
+
+    @Override
+    protected void setTSTO(DecacCompiler compiler, int maxStackSize) {
+        tstoInst.setInstruction(new TSTO(maxStackSize));
+    }
+
     public DeclMethod(AbstractIdentifier name, AbstractIdentifier ret, ListDeclParam params, ListInst body, ListDeclVarSet declVars) {
         Validate.notNull(name);
         Validate.notNull(ret);
@@ -48,8 +50,8 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    protected void verifyMembers(DecacCompiler compiler,
-                                EnvironmentExp localEnv, ClassDefinition currentClass)
+    protected void verifyMembers(fr.ensimag.deca.DecacCompiler compiler,
+                                 EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         Type returnType = ret.verifyType(compiler);
         Signature signature = params.verifyMembers(compiler, localEnv, currentClass);
@@ -86,7 +88,7 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    protected void verifyBody(DecacCompiler compiler,
+    protected void verifyBody(fr.ensimag.deca.DecacCompiler compiler,
                               EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
 
@@ -99,12 +101,16 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    protected void codePreGenMethod(DecacCompiler compiler) {
+    protected void codePreGenMethod(fr.ensimag.deca.DecacCompiler compiler) {
         name.getMethodDefinition().setLabel(compiler.getLblManager().getLabelFalse());
     }
     @Override
-    protected void codeGenMethod(DecacCompiler compiler) {
-        compiler.addLabel(name.getMethodDefinition().getLabel());
+    protected void codeGenMethod(fr.ensimag.deca.DecacCompiler compiler) {
+        compiler.add(new Line(name.getMethodDefinition().getLabel()));
+        tstoInst = new Line(new TSTO(1));
+        compiler.add(tstoInst);
+        compiler.add(new Line(new BOV(new Label("stack_overflow"))));
+
         boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
         for(int i=2;i<compiler.getCompilerOptions().getRegistre();i++){
             compiler.addInstruction(new PUSH(Register.getR(i)));
@@ -154,7 +160,7 @@ public class DeclMethod extends AbstractDeclMethod {
         declVars.iter(f);
         body.iter(f);
     }
-    
+
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         ret.prettyPrint(s, prefix, false);

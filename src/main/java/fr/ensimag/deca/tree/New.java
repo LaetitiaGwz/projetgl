@@ -32,7 +32,7 @@ public class New extends AbstractNew {
     @Override
     public void codegenExpr(DecacCompiler compiler, GPRegister register) {
         compiler.addInstruction(new NEW(className.getClassDefinition().getNumberOfFields()+1,Register.R1));
-        compiler.addInstruction(new BOV(new Label("tas_plein")));
+        compiler.addInstruction(new BOV(new Label("heap_overflow")));
         compiler.addInstruction(new LEA(className.getClassDefinition().getOperand(),Register.R0));
         compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(0,Register.R1)));
         compiler.addInstruction(new ADDSP(1));
