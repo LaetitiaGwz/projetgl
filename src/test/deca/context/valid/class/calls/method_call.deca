@@ -8,13 +8,14 @@
 //    cree le 01/01/2016
 
 class A {
-	void a() {
-
+	A a() {
+		return new A();
 	}
 }
 
 {
 	A a = new A();
 	a.a();
+	a.a().a().a().a().a().a().a().a().a().a().a().a().a().a();
 }
 

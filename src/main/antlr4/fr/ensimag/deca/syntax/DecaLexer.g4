@@ -95,7 +95,7 @@ MULTI_LINE_STRING : '"' (STRING_CAR | '\n' | '\\"' | '\\\\')*  '"';
 /* 
  * Commentaires
 */
-fragment COMMENT : ('//' .*? '\n'
+fragment COMMENT : ('//' .*? ('\n' | EOF)
 	  |'/*' .*? '*/'
           );
 

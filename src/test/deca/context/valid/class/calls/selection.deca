@@ -8,11 +8,12 @@
 //    cree le 01/01/2016
 
 class A {
-	int a;
+	A a;
 }
 
 {
 	A b;
-	int a = b.a;
+	A a = b.a;
+	b = b.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a;
 }
 

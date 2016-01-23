@@ -4,6 +4,6 @@
 //
 // Resultats:
 // inclusion circulaire
-// Ligne <9> : <Circular include for fichier.java>
+// Ligne <8> : <Circular include for lexer_circular_include.java>
 
 #include "lexer_circular_include.deca"
