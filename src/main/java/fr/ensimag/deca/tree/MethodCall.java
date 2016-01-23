@@ -53,41 +53,41 @@ public class MethodCall extends AbstractExpr{
     @Override
     public void codegenExpr(DecacCompiler compiler,GPRegister register){
         compiler.addInstruction(new ADDSP(1+params.size()));
-        obj.codegenExpr(compiler,Register.getR(2));
-        compiler.addInstruction(new CMP(new NullOperand(),Register.getR(2)));
+        obj.codegenExpr(compiler,register);
+        compiler.addInstruction(new CMP(new NullOperand(),register));
         compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
+        compiler.addInstruction(new STORE(register,new RegisterOffset(0,Register.SP)));
         if(!params.isEmpty()){
             for(int j=0;j<params.size();j++){
                 params.getList().get(j).codegenExpr(compiler,register);
                 compiler.addInstruction(new STORE(register,new RegisterOffset(-j-1,Register.SP)));
             }
         }
-
-        compiler.addInstruction(new STORE(Register.getR(2),new RegisterOffset(0,Register.SP)));
+        compiler.addInstruction(new LOAD(new RegisterOffset(0,Register.SP),register));
         compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
-        compiler.addInstruction(new SUBSP(1+params.size()));
-        compiler.addInstruction(new STORE(Register.getR(2),(DAddr)obj.getDval()));
+        compiler.addInstruction(new STORE(register,(DAddr)obj.getDval()));
         compiler.addInstruction(new LOAD(Register.R0,register));
+        compiler.addInstruction(new SUBSP(1+params.size()));
         }
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         compiler.addInstruction(new ADDSP(1+params.size()));
         GPRegister register =compiler.getRegManager().getGBRegister();
-        obj.codegenExpr(compiler,Register.getR(2));
-        compiler.addInstruction(new CMP(new NullOperand(),Register.getR(2)));
+        obj.codegenExpr(compiler,register);
+        compiler.addInstruction(new CMP(new NullOperand(),register));
         compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
+        compiler.addInstruction(new STORE(register,new RegisterOffset(0,Register.SP)));
         if(!params.isEmpty()){
             for(int j=0;j<params.size();j++){
                 params.getList().get(j).codegenExpr(compiler,register);
                 compiler.addInstruction(new STORE(register,new RegisterOffset(-j-1,Register.SP)));
             }
         }
-
-        compiler.addInstruction(new STORE(Register.getR(2),new RegisterOffset(0,Register.SP)));
+        compiler.addInstruction(new LOAD(new RegisterOffset(0,Register.SP),register));
         compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
-        compiler.addInstruction(new SUBSP(1+params.size()));
-        compiler.addInstruction(new STORE(Register.getR(2),(DAddr)obj.getDval()));
+        compiler.addInstruction(new STORE(register,(DAddr)obj.getDval()));
         compiler.addInstruction(new LOAD(Register.R0,register));
+        compiler.addInstruction(new SUBSP(1+params.size()));
 
     }
     @Override

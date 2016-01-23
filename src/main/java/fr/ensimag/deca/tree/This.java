@@ -26,11 +26,16 @@ public class This extends AbstractThis {
 
     @Override
     protected void codeGenThis(DecacCompiler compiler){
-
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB),Register.getR(2)));
     }
     @Override
     public void codegenExpr(DecacCompiler compiler,GPRegister register){
-        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB),register));
+        compiler.addInstruction(new LOAD(Register.getR(2),register));
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler){
+
     }
 
     @Override

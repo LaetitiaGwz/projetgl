@@ -121,6 +121,8 @@ public class Program extends AbstractProgram {
 
 
         //on ecrit maintenant les instructions des methodes
+        compiler.addLabel(new Label("init.Object"));
+        compiler.addInstruction(new RTS());
         compiler.addLabel(new Label("code.Object.equals"));
         //Identifier eq= new Identifier()
         //DeclMethod equals = new DeclMethod()
