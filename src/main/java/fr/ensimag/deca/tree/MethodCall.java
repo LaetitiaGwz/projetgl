@@ -54,6 +54,7 @@ public class MethodCall extends AbstractExpr{
         compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
         compiler.addInstruction(new SUBSP(1+params.size()));
         compiler.addInstruction(new STORE(Register.getR(2),(DAddr)obj.getDval()));
+        compiler.addInstruction(new LOAD(Register.R0,register));
         }
     @Override
     protected void codeGenInst(DecacCompiler compiler){
@@ -87,7 +88,8 @@ public class MethodCall extends AbstractExpr{
     }
     @Override
     protected void codeGenPrintX(DecacCompiler compiler){
-        this.codegenExpr(compiler,Register.R1);
+        this.codeGenInst(compiler);
+        compiler.addInstruction(new LOAD(Register.R0,Register.R1));
         compiler.addInstruction(new WFLOATX());
 
     }
