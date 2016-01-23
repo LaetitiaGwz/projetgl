@@ -2,7 +2,7 @@
 //    Appel d'une méthode de classe dans le main
 //
 // Resultats:
-//    ima_output: ok
+//    ima_output: 153664
 //
 
 class Maths {
@@ -21,6 +21,8 @@ class Maths {
 
 {
     Maths maths = new Maths();
+    int res = maths.carre(maths.moinsTrois(3) + maths.grosseExpression(1,2,3,4)*maths.carre(3-4+8));
+    print(res);
 
 }
 
