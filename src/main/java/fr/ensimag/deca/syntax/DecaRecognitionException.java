@@ -42,6 +42,11 @@ class DecaRecognitionException extends RecognitionException {
         setOffendingToken(ctx.getStart());
     }
 
+    public DecaRecognitionException(String msg, DecaParser recognizer, ParserRuleContext ctx) {
+        super(msg, recognizer, recognizer.getInputStream(), ctx);
+        setOffendingToken(ctx.getStart());
+    }
+
     public DecaRecognitionException(DecaParser recognizer, Token offendingToken) {
         super(recognizer, recognizer.getInputStream(), recognizer.getContext());
         setOffendingToken(offendingToken);

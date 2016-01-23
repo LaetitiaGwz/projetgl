@@ -25,6 +25,7 @@ options {
 // which packages should be imported?
 @header {
     import fr.ensimag.deca.tree.*;
+    import fr.ensimag.deca.syntax.DecaRecognitionException;
     import java.io.PrintStream;
     import fr.ensimag.deca.tools.SymbolTable;
     import fr.ensimag.deca.context.ContextualError;
@@ -465,16 +466,16 @@ type returns[AbstractIdentifier tree]
 literal returns[AbstractExpr tree]
     : INT {
             try{
-            $tree = new IntLiteral(Integer.parseInt($INT.getText()));
-            }catch(NumberFormatException e){
-                System.out.println("Integer number too large");
+                $tree = new IntLiteral(Integer.parseInt($INT.getText()));
+            } catch(NumberFormatException e) {
+                throw new DecaRecognitionException("Number too large.", this, _localctx);
             }
         }
     | fd=FLOAT {
             try{
-            $tree = new FloatLiteral(Float.parseFloat($fd.getText()));
+                $tree = new FloatLiteral(Float.parseFloat($fd.getText()));
              }catch(IllegalArgumentException e){
-                System.out.println("Floating point number too large");
+                throw new DecaRecognitionException("Number too large.", this, _localctx);
             }
         }
     | STRING {
