@@ -45,29 +45,28 @@ public class MethodCall extends AbstractExpr{
 
         if(!params.isEmpty()){
             for(int j=0;j<params.size();j++){
-                params.getList().get(j).codegenExpr(compiler,Register.getR(2));
-                compiler.addInstruction(new STORE(register,new RegisterOffset(-j,Register.SP)));
+                params.getList().get(j).codegenExpr(compiler,register);
+                compiler.addInstruction(new STORE(register,new RegisterOffset(-j-1,Register.SP)));
             }
         }
-        obj.codegenExpr(compiler,register);
-        compiler.addInstruction(new STORE(register,new RegisterOffset(0,Register.SP)));
+        obj.codegenExpr(compiler,Register.getR(2));
+        compiler.addInstruction(new STORE(Register.getR(2),new RegisterOffset(0,Register.SP)));
         compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
         compiler.addInstruction(new SUBSP(1+params.size()));
         compiler.addInstruction(new STORE(Register.getR(2),(DAddr)obj.getDval()));
-        compiler.addInstruction(new LOAD(Register.getR(2),register));
         }
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         compiler.addInstruction(new ADDSP(1+params.size()));
-        GPRegister register =Register.getR(2);
+        GPRegister register =compiler.getRegManager().getGBRegister();
         if(!params.isEmpty()){
             for(int j=0;j<params.size();j++){
                 params.getList().get(j).codegenExpr(compiler,register);
                 compiler.addInstruction(new STORE(register,new RegisterOffset(-j-1,Register.SP)));
             }
         }
-        obj.codegenExpr(compiler,register);
-        compiler.addInstruction(new STORE(register,new RegisterOffset(0,Register.SP)));
+        obj.codegenExpr(compiler,Register.getR(2));
+        compiler.addInstruction(new STORE(Register.getR(2),new RegisterOffset(0,Register.SP)));
         compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
         compiler.addInstruction(new SUBSP(1+params.size()));
         compiler.addInstruction(new STORE(Register.getR(2),(DAddr)obj.getDval()));
