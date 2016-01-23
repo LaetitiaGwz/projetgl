@@ -18,7 +18,7 @@ options {
 ASM: 'asm';         
 CLASS: 'class';     
 EXTENDS: 'extends';  
-ELSE: 'else'   ;    
+ELSE: 'else'   ;
 FALSE: 'false';      
 IF: 'if';
 INSTANCEOF: 'instanceof';  
@@ -95,7 +95,7 @@ MULTI_LINE_STRING : '"' (STRING_CAR | '\n' | '\\"' | '\\\\')*  '"';
 /* 
  * Commentaires
 */
-fragment COMMENT : ('//' .*? ('\n' | EOF)
+fragment COMMENT : ('//' .*? '\n'
 	  |'/*' .*? '*/'
           );
 
