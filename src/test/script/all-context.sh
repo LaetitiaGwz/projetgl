@@ -32,19 +32,19 @@ do
         result_test=$(test_context "$cas_de_test" 2>&1)
         if  echo "$result_test" | grep -q "$filename"':[0-9]'
         then
-                echo -e "$filename"" : ${GREEN}  OK ${WHITE}"
+                echo -e "$cas_de_test"" : ${GREEN}  OK ${WHITE}"
                 success=$(($success + 1))
         elif echo "$result_test" | grep -q "UnsupportedOperationException"
         then
-                echo -e "$filename"" : ${YELLOW}  NOT IMPLEMENTED ${WHITE}"
+                echo -e "$cas_de_test"" : ${YELLOW}  NOT IMPLEMENTED ${WHITE}"
                 fail=$(($fail + 1))
         elif echo "$result_test" | grep -q "Exception"
         then
-                echo -e "$filename"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
+                echo -e "$cas_de_test"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
                 fail=$(($fail + 1))
                 return_status=1
     else
-            echo -e "$filename"" : ${RED}  ERROR ${WHITE}"
+            echo -e "$cas_de_test"" : ${RED}  ERROR ${WHITE}"
             fail=$(($fail + 1))
             return_status=1
     fi
@@ -57,20 +57,20 @@ do
         result_test=$(test_context "$cas_de_test" 2>&1)
         if  echo "$result_test" | grep -q "$filename"':[0-9]'
         then
-                echo -e "$filename"" : ${RED}  CONTEXTUAL ERROR ${WHITE}"
+                echo -e "$cas_de_test"" : ${RED}  CONTEXTUAL ERROR ${WHITE}"
                 fail=$(($fail + 1))
                 return_status=1
         elif echo "$result_test" | grep -q "UnsupportedOperationException"
         then
-                echo -e "$filename"" : ${YELLOW}  NOT IMPLEMENTED ${WHITE}"
+                echo -e "$cas_de_test"" : ${YELLOW}  NOT IMPLEMENTED ${WHITE}"
                 fail=$(($fail + 1))
         elif echo "$result_test" | grep -q "Exception"
         then
-                echo -e "$filename"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
+                echo -e "$cas_de_test"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
                 fail=$(($fail + 1))
                 return_status=1
         else
-                echo -e "$filename"" : ${GREEN}  OK ${WHITE}"
+                echo -e "$cas_de_test"" : ${GREEN}  OK ${WHITE}"
                 success=$(($success + 1))
 
     fi

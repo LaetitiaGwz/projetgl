@@ -58,7 +58,7 @@ do
 
         if [[ "$result_test" == "" ]];
         then
-                echo -e "$filename"" : ${GREEN}  OK ${WHITE}"
+                echo -e "$cas_de_test"" : ${GREEN}  OK ${WHITE}"
 
                 # On rassemble les fichiers .ass dans src/test/output/
                 assembly_file=$(echo "$filename" | sed -e "s/.deca/.ass/")
@@ -67,7 +67,7 @@ do
                 mv "$assembly_dir_old" "$assembly_dir_new"
                 success=$(($success + 1))
         else
-                echo -e "$filename"" : ${RED}  ERROR ${WHITE}"
+                echo -e "$cas_de_test"" : ${RED}  ERROR ${WHITE}"
 
                 # Ecriture d'un fichier .error
                 error_file=$(echo "$filename" | sed -e "s/.deca/.error/g")
@@ -93,24 +93,24 @@ do
         ######### TESTS QUI NE COMPILENT PAS ################
         if echo "$result_test" | grep -q "UnsupportedOperationException"
         then
-                echo -e "$filename"" : ${YELLOW}  NOT IMPLEMENTED ${WHITE}"
+                echo -e "$cas_de_test"" : ${YELLOW}  NOT IMPLEMENTED ${WHITE}"
                 fail=$(($fail + 1))
         elif echo "$result_test" | grep -q "Exception"
         then
                 # Ecriture du résultat dans un fichier .error
                 error_file=$(echo "$filename" | sed -e "s/\.deca/\.error/g")
-                echo "$result_test" > "$ETAPEC_OUTPUT_DIR_ERROR"/"$error_file"
+                echo "$cas_de_test" > "$ETAPEC_OUTPUT_DIR_ERROR"/"$error_file"
 
-                echo -e "$filename"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
+                echo -e "$cas_de_test"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
                 fail=$(($fail + 1))
                 return_status=1
         elif [[ "$result_test" != "" ]]
         then
              # Ecriture du résultat dans un fichier .error
                 error_file=$(echo "$filename" | sed -e "s/.deca/.error/g")
-                echo "$result_test" > "$ETAPEC_OUTPUT_DIR_ERROR"/"$error_file"
+                echo "$cas_de_test" > "$ETAPEC_OUTPUT_DIR_ERROR"/"$error_file"
 
-                echo -e "$filename"" : ${RED} EXCEPTION FROM ANOTHER PART (CONTEXT, PARSER OR LEXER ) ${WHITE}"
+                echo -e "$cas_de_test"" : ${RED} EXCEPTION FROM ANOTHER PART (CONTEXT, PARSER OR LEXER ) ${WHITE}"
                 fail=$(($fail + 1))
                 return_status=1
 
@@ -122,7 +122,7 @@ do
                 assembly_dir_old=$(echo "$cas_de_test" | sed -e "s/\.deca/\.ass/")
                 mv "$assembly_dir_old" "$assembly_dir_new"
 
-                echo -e "$filename"
+                echo -e "$cas_de_test"
                 echo -e "Compilation : ${GREEN}  OK ${WHITE}"
 
                 expected_output=$(cat "$cas_de_test" | grep "ima_output:" |sed -e  "s@//@@g" | sed -e "s@ima_output:@@;s@ @@g;s@ima_output:@@")
@@ -156,7 +156,7 @@ do
         ######### TESTS QUI NE COMPILENT PAS ################
         if echo "$result_test" | grep -q "UnsupportedOperationException"
         then
-                echo -e "$filename"" : ${YELLOW}  NOT IMPLEMENTED ${WHITE}"
+                echo -e "$cas_de_test"" : ${YELLOW}  NOT IMPLEMENTED ${WHITE}"
                 fail=$(($fail + 1))
         elif echo "$result_test" | grep -q "Exception"
         then
@@ -164,15 +164,15 @@ do
                 error_file=$(echo "$filename" | sed -e "s/\.deca/\.error/g")
                 echo "$result_test" > "$ETAPEC_OUTPUT_DIR_ERROR"/"$error_file"
 
-                echo -e "$filename"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
+                echo -e "$cas_de_test"" : ${RED} EXCEPTION CAUGHT ${WHITE}"
                 fail=$(($fail + 1))
         elif [[ "$result_test" != "" ]]
         then
              # Ecriture du résultat dans un fichier .error
                 error_file=$(echo "$filename" | sed -e "s/\.deca/\.error/g")
-                echo "$result_test" > "$ETAPEC_OUTPUT_DIR_ERROR"/"$error_file"
+                echo "$cas_de_test" > "$ETAPEC_OUTPUT_DIR_ERROR"/"$error_file"
 
-                echo -e "$filename"" : ${RED} EXCEPTION FROM ANOTHER PART ( CONTEXT, PARSER OR LEXER ) ${WHITE}"
+                echo -e "$cas_de_test"" : ${RED} EXCEPTION FROM ANOTHER PART ( CONTEXT, PARSER OR LEXER ) ${WHITE}"
                 fail=$(($fail + 1))
                 return_status=1
 
@@ -184,7 +184,7 @@ do
                 assembly_dir_old=$(echo "$cas_de_test" | sed -e "s/\.deca/\.ass/")
                 mv "$assembly_dir_old" "$assembly_dir_new"
 
-                echo -e "$filename"
+                echo -e "$cas_de_test"
                 echo -e "Compilation : ${GREEN}  OK ${WHITE}"
 
                 expected_output=$(cat "$cas_de_test" | grep "ima_output:" |sed -e  "s@//@@g" | sed -e "s@ima_output:@@;s@ @@g;s@ima_output:@@")
