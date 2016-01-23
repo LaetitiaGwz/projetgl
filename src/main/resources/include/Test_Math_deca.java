@@ -125,13 +125,12 @@ public class Test_Math_deca{
 		// System.out.println(ANSI_GREEN+"fin du test de sinCordic. Erreur rencontré : " 
 		// 	+ANSI_RED+ nbErreur + ANSI_GREEN+" sur " +nb+ "tests.\n"+ANSI_RESET);
 
-		System.out.println(Math.ulp(200000));
 		System.out.println(ANSI_GREEN+"début du test de sinTaylor\n"+ANSI_RESET);
 		nbErreur=0;
 		nb=0;
 		diffMean = 0 ;
 		diffMax = 0 ;
-		for(float x = 1000000; x <(float)Math.PI*2 +1000000;x += (float)Math.pow(2,-3)){
+		for(float x = 0; x <(float)Math.PI*2;x += (float)Math.pow(2,-17)){
 		//for(float x = (float)Math.PI/2; x <(float)Math.PI*3/2 ;x += (float)Math.pow(2,-17)){
 			diff =Math.abs(((float)Math.sin(x) - Math_deca.sinTaylor(x)));
 			nb ++ ;
@@ -160,7 +159,7 @@ public class Test_Math_deca{
 		nb=0;
 		diffMax = 0 ;
 		diffMean = 0 ;
-		for(float x = 1000000; x <(float)Math.PI*2 + 1000000 ;x += (float)Math.pow(2,-3)){
+		for(float x = 0; x <(float)Math.PI*2;x += (float)Math.pow(2,-17)){
 		//for(float x = (float)Math.PI*3/2; x <(float)Math.PI*3*1.005/2  ;x += (float)Math.pow(2,-5)){			
 			diff =Math.abs(((float)Math.cos(x) - Math_deca.cosTaylor(x)));
 			diffMax = (diff/Math.ulp((float)Math.cos(x)) >diffMax)?diff/Math.ulp((float)Math.cos(x)):diffMax;
@@ -188,7 +187,7 @@ public class Test_Math_deca{
 		nb=0;
 		diffMax = 0 ;
 		diffMean = 0 ;
-		for(float x = 0.7495f; x < 0.7505f ; x = x + (float) Math.pow(2,-25)){
+		for(float x = -1f; x < 1f ; x = x + (float) Math.pow(2,-15)){
 			diffRelative = Math.abs(((float)Math.asin(x) - Math_deca.asin(x))/(float)Math.asin(x));
 			diff =Math.abs(((float)Math.asin(x) - Math_deca.asin(x)));
 			diffMax = (diff/Math_deca.ulp((float)Math.asin(x)) > diffMax)?diff/Math_deca.ulp((float)Math.asin(x)):diffMax;
@@ -208,33 +207,39 @@ public class Test_Math_deca{
 			+ ANSI_GREEN+" sur " +nb+ "tests.\n"+ANSI_GREEN+"Erreur moyenne en ulp : " 
 			+ANSI_RED+ diffMean+ANSI_GREEN+", Erreur max en ulp : " 
 			+ANSI_RED+ diffMax+ANSI_RESET);
-		
-		// System.out.println(ANSI_GREEN+"Début du test de arctan :\n"+ANSI_RESET);
-		// nbErreur=0;
-		// nb=0;
-		// diffMax = 0 ;
-		// diffMean = 0 ;
-		// for(float x = -1.F ; x < 1.F ; x = x + (float) Math.pow(2,-13)){
-		// 	diffRelative = Math.abs(((float)Math.atan(x) - Math_deca.atan(x))/(float)Math.atan(x));
-		// 	diff =Math.abs(((float)Math.asin(x) - Math_deca.asin(x)));
-		// 	diffMax = (diff/Math_deca.ulp((float)Math.atan(x)) >diffMax)?diff/Math_deca.ulp((float)Math.atan(x)):diffMax;
-		// 	diffMean += diff/Math_deca.ulp((float)Math.atan(x));	
-		// 	diff =Math.abs(((float)Math.atan(x) - Math_deca.atan(x)));
-		// 	nb ++ ;
-		// 	//if ( diffRelative >= Math.pow(10,-3)) {
-		// 	if ( diff > Math_deca.ulp((float)Math.atan(x))){
-		// 		// System.out.println("Erreur pour x="+x);
-		// 		// System.out.println("Math_deca.arctan : "+Math_deca.atan(x));
-		// 		// System.out.println("Math.arctan : "+Math.atan(x));
-		// 		// System.out.println("différence : " + diff/Math_deca.ulp((float)Math.atan(x)));
-		// 		// System.out.println();
-		// 		nbErreur ++;
-		// 	}
 
-		// }
-		// System.out.println("fin du test de arctan. Erreur rencontré : " + nbErreur + " sur " +nb+ "tests.\n"+ANSI_GREEN+"Erreur moyenne en ulp : " 
-		// 	+ANSI_RED+ diffMean+ANSI_GREEN+", Erreur max en ulp : " 
-		// 	+ANSI_RED+ diffMax+ANSI_RESET);
+
+
+
+		System.out.println(ANSI_GREEN+"Début du test de arctan :\n"+ANSI_RESET);
+		nbErreur=0;
+		nb=0;
+		diffMax = 0 ;
+		diffMean = 0 ;
+		for(float x = 0; x < 100 ; x = x + (float) Math.pow(2,-16)){
+			diffRelative = Math.abs(((float)Math.atan(x) - Math_deca.atan(x))/(float)Math.atan(x));
+			diff =Math.abs(((float)Math.atan(x) - Math_deca.atan(x)));
+			diffMax = (diff/Math_deca.ulp((float)Math.atan(x)) >diffMax)?diff/Math_deca.ulp((float)Math.atan(x)):diffMax;
+			diff =Math.abs(((float)Math.atan(x) - Math_deca.atan(x)));
+			nb ++ ;
+			//if ( diffRelative >= Math.pow(10,-3)) {
+			if ( diff >= Math_deca.ulp((float)Math.atan(x))){
+				diffMean += diff/Math.ulp((float)Math.atan(x));	
+				// System.out.println("Erreur pour x="+x);
+				// System.out.println("Math_deca.arctan : "+Math_deca.atan(x));
+				// System.out.println("Math.arctan : "+(float)Math.atan(x));
+				// System.out.println("différence : " + diff/Math_deca.ulp((float)Math.atan(x)));
+				// System.out.println();
+				nbErreur ++;
+			}
+
+		}
+		diffMean /=nbErreur;
+		System.out.println(ANSI_GREEN+"fin du test de arctan. Erreur rencontré : "+ANSI_RED+nbErreur 
+			+ ANSI_GREEN+" sur " +nb+ "tests.\n"+ANSI_GREEN+"Erreur moyenne en ulp : " 
+			+ANSI_RED+ diffMean+ANSI_GREEN+", Erreur max en ulp : " 
+			+ANSI_RED+ diffMax+ANSI_RESET);
+
 
 	}
 

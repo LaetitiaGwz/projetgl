@@ -3,6 +3,7 @@ import java.lang.Math ;
 valeur cody and waite : http://arxiv.org/pdf/0708.3722.pdf
 Cordic : http://www.trigofacile.com/maths/trigo/calcul/cordic/cordic.htm
 */
+
 class CodyAndWaite{
 
 	public static float x ;
@@ -621,7 +622,8 @@ public class Math_deca{
 	}     
 
 	public static float asindse(float x){
-        //terme n impaire seulement  
+
+		//terme n impaire seulement  
 		int n=33;
 
 		float res=fact(n-1)/(power(2,n-1)*fact((n-1)/2)*fact((n-1)/2)*(n));
@@ -641,7 +643,6 @@ public class Math_deca{
 				b=false;
 			}
 			else{
-
 				res=res*x+fact(k-1)/(power(2,k-1)*fact((k-1)/2)*fact((k-1)/2)*(k));
 				test = fact(k-1)/(power(2,k-1)*fact((k-1)/2)*fact((k-1)/2)*(k));
 				// System.out.println("valeur test : " + test);
@@ -654,26 +655,88 @@ public class Math_deca{
 	}
 	
 	public static float asin(float x){
-		if(abs(x)<=0.75){
+		if(abs(x)<=0.72){
 			return asindse(x);
 		}
-		else if(x>0.75){ return PIDIV2-asindse(sqrt(1-x*x));}
-		else return asindse(sqrt(1-x*x))-PIDIV2;
+		else if(x>0.72){ 
+			return PI/2-asindse(sqrt(1-x*x));}
+		else return asindse(sqrt(1-x*x))-PI/2;
 
 	}
-
 	public static float atan(float x){
-		if(x>1){
-			return PIDIV2-atandse(1/x);
+		int minus = 1 ;
+		if (x<0){
+			minus = -1 ;
 		}
-		if(x<1){
-			return -PIDIV2-atandse(1/x);
+		if(x>1.1875){
+			return minus*(PI/2-atanHermite(1/x));
+		}
+		else if (x>0.6875f){			
+			return minus*(atanHermite((x -1f)/(1f+x)) + PI/4.0f);
 		}
 		else{
-			return atandse(x);
+			return minus*atanHermite(x);
 		}
+		// if (x<0){
+		// 	minus = -1 ;
+		// }
+		// if(x>1.1875){
+		// 	return minus*(PI/2-atandse(1/x));
+		// }
+		// else if (x>0.6875f){			
+		// 	return minus*(atandse((x -1f)/(1f+x)) + PI/4.0f);
+		// }
+		// else{
+		// 	return minus*atandse(x);
+		// }
 	}
+	public static float atanHermite(float x){
+		float res=
+        (power(x,55)/901120f)
+        -(7f*power(x,54)/221184f)
+        +(377f*power(x,53)/868352f)
+        -(203f*power(x,52)/53248f)
+        +(10049f*power(x,51)/417792f)
+        -(11879f*power(x,50)/102400f)
+        +(178321f*power(x,49)/401408f)
+        -(68063f*power(x,48)/49152f)
+        +(2751463f*power(x,47)/770048f)
+        -(1454473f*power(x,46)/188416f )
+        +(10371647f*power(x,45)/737280f)
+        -(489259f*power(x,44)/22528f)
+        +(5012527f*power(x,43)/176128f)
+        -(1361617f*power(x,42)/43008f)
+        +(5016623f*power(x,41)/167936f)
+        -(489259f*power(x,40)/20480f)
+        +(10355263f*power(x,39)/638976f)
+        -(1454473f*power(x,38)/155648f)
+        +(2767847f*power(x,37)/606208f)
+        -(68063f*power(x,36)/36864f)
+        +(170129f*power(x,35)/286720f)
+        -(11879f*power(x,34)/69632f)
+        +(18241f*power(x,33)/270336f)
+        -(203f*power(x,32)/32768f)
+        -(16007f*power(x,31)/507904f)
+        -(7f*power(x,30)/122880f)
+        +(565f*power(x,29)/16384f)
+        -(power(x,27)/27f)
+        +(power(x,25)/25f)
+        -(power(x,23)/23f)
+        +(power(x,21)/21f)
+        -(power(x,19)/19f)
+        +(power(x,17)/17f)
+        -(power(x,15)/15f)
+		+(power(x,13)/13f)
+		-(power(x,11)/11f)
+		+(power(x,9)/9f)
+		-(power(x,7)/7f)
+		+(power(x,5)/5f)
+		-(power(x,3)/3f)
+		+x;
+        return res;
 
+	}
+	
 	public static float atandse(float x){
 		int n=326;
 		float res=-1/327.F;
