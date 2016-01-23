@@ -26,11 +26,13 @@ public class MethodCall extends AbstractExpr{
         this.params = params;
     }
 
-    public MethodCall(AbstractIdentifier method, ListExpr params) {
+    public MethodCall(Location loc, AbstractIdentifier method, ListExpr params) {
         Validate.notNull(method);
         Validate.notNull(params);
 
         this.obj = new This();
+        obj.setLocation(loc);
+        System.out.println(loc);
         this.method = method;
         this.params = params;
     }

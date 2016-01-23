@@ -19,15 +19,8 @@ public class ListInst extends TreeList<AbstractInst> {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
 
-        boolean hasReturn = false;
-
         for(AbstractInst inst : this.getList()) {
             inst.verifyInst(compiler, localEnv, currentClass, returnType);
-            if(inst instanceof  Return) hasReturn = true;
-        }
-
-        if(!returnType.isVoid() && !hasReturn) {
-            throw new ContextualError("Non void function has no return.", getLocation());
         }
     }
     public void codeGenListInst(DecacCompiler compiler) {

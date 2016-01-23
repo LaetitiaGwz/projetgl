@@ -45,10 +45,6 @@ class Platon extends Socrate {
         heritageMethode();
     }
 
-    void afficheA(int a){
-        print(a);
-    }
-
 }
 
 {
@@ -60,6 +56,5 @@ class Platon extends Socrate {
     p.afficheA();
     p.afficheB();
     p.appelSuper();
-    p.afficheA(66);
 }
 

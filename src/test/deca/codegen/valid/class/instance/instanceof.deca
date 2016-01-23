@@ -22,6 +22,7 @@ class D extends A{
 	  A a = new A();
       D d = new D();
       Object o = new Object();
+       boolean e = d instanceof A;
 
       if(a instanceof A) {
           print("ok");
@@ -35,7 +36,6 @@ class D extends A{
          print("ok");
       }
 
-       boolean e = d instanceof A;
         if(e){
               print("ok");
         }else{
