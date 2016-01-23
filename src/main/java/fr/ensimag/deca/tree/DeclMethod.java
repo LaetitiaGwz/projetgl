@@ -4,6 +4,9 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
@@ -121,6 +124,11 @@ public class DeclMethod extends AbstractDeclMethod {
         params.codeGenListDecl(compiler);
         declVars.codeGenListDeclMethod(compiler);
         body.codeGenListInst(compiler);
+        if(!ret.getType().isVoid()){
+            compiler.addInstruction(new WSTR("Erreur : sortie de la methode "+name.getName().toString() +" sans return"));
+            compiler.addInstruction(new WNL());
+            compiler.addInstruction(new ERROR());
+        }
         compiler.addLabel(fin);
 
 

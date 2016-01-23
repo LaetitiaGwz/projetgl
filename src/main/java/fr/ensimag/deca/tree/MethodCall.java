@@ -76,6 +76,7 @@ public class MethodCall extends AbstractExpr{
         compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
         compiler.addInstruction(new SUBSP(1+params.size()));
         compiler.addInstruction(new STORE(Register.getR(2),(DAddr)obj.getDval()));
+        compiler.addInstruction(new LOAD(Register.R0,register));
 
     }
     @Override
