@@ -28,9 +28,9 @@ class Platon{
 {
     Platon p = new Platon();
     Socrate s = p.retourneSocrate();
+    Socrate s1 = s.retourneSoiMeme();
     s.quiSuisJe();
     p.quiSuisJe();
-    Socrate s1 = s.retourneSoiMeme();
     s1.quiSuisJe();
 }
 
