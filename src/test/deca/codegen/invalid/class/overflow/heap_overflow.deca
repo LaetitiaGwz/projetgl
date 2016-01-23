@@ -1,5 +1,5 @@
 // Description:
-//    Tests de débordement de la pile
+//    Tests de débordement du tas
 //
 // Resultats:
 //   ima_output: stack overflow

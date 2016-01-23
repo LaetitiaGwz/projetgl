@@ -2,7 +2,7 @@
 //    Tests de déclaration de champs primitifs
 //
 // Resultats:
-//   ima_output: 59.40000e00true
+//   ima_output: 59.40000e+00true
 // 
 
 class Platon{

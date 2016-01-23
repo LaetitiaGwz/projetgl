@@ -2,10 +2,7 @@
 //    Utilisation de new
 //
 // Resultats:
-//    Aucune erreur
-// 
-// Historique:
-//    cree le 01/01/2016
+//    ok
 
 class Socrate{
 
@@ -25,7 +22,9 @@ class Platon {
 }
 
 {
-	int a = 5;
-	a = a + a;
+    Socrate s = new Socrate();
+    Platon p = s.retourneNewPlaton();
+    s = s.retourneNewSocr();
+    print("ok");
 }
 
