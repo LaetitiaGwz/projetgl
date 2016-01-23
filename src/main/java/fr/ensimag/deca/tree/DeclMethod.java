@@ -18,9 +18,6 @@ import java.io.PrintStream;
  */
 public class DeclMethod extends AbstractDeclMethod {
 
-    protected AbstractIdentifier name;
-    protected AbstractIdentifier ret;
-    protected ListDeclParam params;
     protected ListInst body;
     protected ListDeclVarSet declVars;
 
@@ -50,44 +47,6 @@ public class DeclMethod extends AbstractDeclMethod {
         this.params = params;
         this.body = body;
         this.declVars = declVars;
-    }
-
-    @Override
-    protected void verifyMembers(fr.ensimag.deca.DecacCompiler compiler,
-                                 EnvironmentExp localEnv, ClassDefinition currentClass)
-            throws ContextualError {
-        Type returnType = ret.verifyType(compiler);
-        Signature signature = params.verifyMembers(compiler, localEnv, currentClass);
-
-        // On vérifie d'abord que la méthode n'est pas
-        //  déjà déclarée dans l'environnement parent
-        MethodDefinition parentDef = currentClass.getSuperClass().getMembers().getMethodDef(name.getName());
-
-        int index;
-        if(parentDef == null) {
-            index = currentClass.incNumberOfMethods();
-        }
-        else if (!signature.equals(parentDef.getSignature())) {
-            // Erreur si on tente de surcharger la méthode
-            throw new ContextualError("Cannot override method " + name.getName().getName() + " with a different signature.", getLocation());
-        }
-        else if (!AbstractExpr.subtype(parentDef.getType(), returnType)) {
-            // Erreur si le nouveau type de retour n'est pas un sous-type de l'ancien
-            throw new ContextualError("Type returned by method " + name.getName().getName() + " is not a subtype of overrided method.", getLocation());
-        }
-        else {
-            index = parentDef.getIndex();
-        }
-
-        MethodDefinition methodDef = new MethodDefinition(returnType, getLocation(), signature, index);
-
-        try {
-            localEnv.declareMethod(name.getName(), methodDef);
-        } catch (AbstractEnvironnement.DoubleDefException e) {
-            throw new ContextualError("Double declaration of method " + name.getName().getName(), getLocation());
-        }
-
-        name.verifyMethod(signature, compiler, localEnv, currentClass);
     }
 
     @Override

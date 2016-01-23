@@ -1,9 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
@@ -13,52 +11,58 @@ import fr.ensimag.deca.tools.IndentPrintStream;
  * @date 01/01/2016
  */
 public abstract class AbstractDeclMethod extends Tree {
-    /**
-     * Verify the method as a member for contextual error.
-     *
-     * @param compiler
-     * @param localEnv
-     *            Environment in which the instruction should be checked
-     * @param currentClass
-     *            Definition of the class containing the instruction, or null in
-     *            the main program.
-     */
-    protected abstract void verifyMembers(fr.ensimag.deca.DecacCompiler compiler,
-                                          EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
-    /**
-     * Verify the method body for contextual error.
-     *
-     * @param compiler
-     * @param localEnv
-     *            Environment in which the instruction should be checked
-     * @param currentClass
-     *            Definition of the class containing the instruction, or null in
-     *            the main program.
-     * @param returnType
-     *            Return type of the method being analyzed (may be void). void
-     *            in the main program.
-     */
+
+    protected AbstractIdentifier name;
+    protected AbstractIdentifier ret;
+    protected ListDeclParam params;
+
+    protected void verifyMembers(fr.ensimag.deca.DecacCompiler compiler,
+                                 EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
+        Type returnType = ret.verifyType(compiler);
+        Signature signature = params.verifyMembers(compiler, localEnv, currentClass);
+
+        // On vérifie d'abord que la méthode n'est pas
+        //  déjà déclarée dans l'environnement parent
+        MethodDefinition parentDef = currentClass.getSuperClass().getMembers().getMethodDef(name.getName());
+
+        int index;
+        if(parentDef == null) {
+            index = currentClass.incNumberOfMethods();
+        }
+        else if (!signature.equals(parentDef.getSignature())) {
+            // Erreur si on tente de surcharger la méthode
+            throw new ContextualError("Cannot override method " + name.getName().getName() + " with a different signature.", getLocation());
+        }
+        else if (!AbstractExpr.subtype(parentDef.getType(), returnType)) {
+            // Erreur si le nouveau type de retour n'est pas un sous-type de l'ancien
+            throw new ContextualError("Type returned by method " + name.getName().getName() + " is not a subtype of overrided method.", getLocation());
+        }
+        else {
+            index = parentDef.getIndex();
+        }
+
+        MethodDefinition methodDef = new MethodDefinition(returnType, getLocation(), signature, index);
+
+        try {
+            localEnv.declareMethod(name.getName(), methodDef);
+        } catch (AbstractEnvironnement.DoubleDefException e) {
+            throw new ContextualError("Double declaration of method " + name.getName().getName(), getLocation());
+        }
+
+        name.verifyMethod(signature, compiler, localEnv, currentClass);
+    }
+
     protected abstract void verifyBody(fr.ensimag.deca.DecacCompiler compiler,
                                        EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
     
 
-    /**
-     * Generate assembly code for the instruction.
-     * 
-     * @param compiler
-     */
     protected abstract void codePreGenMethod(fr.ensimag.deca.DecacCompiler compiler);
     protected abstract void codeGenMethod(fr.ensimag.deca.DecacCompiler compiler);
 
     protected abstract String getName();
     public abstract AbstractIdentifier getIdentifier();
 
-    /**
-     * Decompile the tree, considering it as an instruction.
-     *
-     * In most case, this simply calls decompile(), but it may add a semicolon 
-     * if needed
-     */
     protected void decompileMethod(IndentPrintStream s) {
         decompile(s);
     }

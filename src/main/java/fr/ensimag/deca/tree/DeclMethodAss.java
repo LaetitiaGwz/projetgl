@@ -19,11 +19,10 @@ import java.io.PrintStream;
  */
 public class DeclMethodAss extends AbstractDeclMethod {
 
-    protected AbstractIdentifier name;
-    protected AbstractIdentifier ret;
-    protected ListDeclParam params;
     protected String code;
     private Line tstoInst;
+
+    protected EnvironmentExp methodEnv;
 
     @Override
     public AbstractIdentifier getIdentifier(){
@@ -48,17 +47,14 @@ public class DeclMethodAss extends AbstractDeclMethod {
     }
 
     @Override
-    protected void verifyMembers(DecacCompiler compiler,
-                                EnvironmentExp localEnv, ClassDefinition currentClass)
-            throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    @Override
     protected void verifyBody(DecacCompiler compiler,
                               EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        // On instancie l'environnement de la méthode dont l'env parent est celui de la classe
+        methodEnv = new EnvironmentExp(currentClass.getMembers());
+
+        params.verifyBody(compiler, methodEnv, currentClass);
     }
 
 
