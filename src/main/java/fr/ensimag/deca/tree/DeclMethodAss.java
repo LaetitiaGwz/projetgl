@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import com.sun.tools.classfile.Instruction;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -7,6 +8,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.InlinePortion;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Line;
 import fr.ensimag.ima.pseudocode.instructions.TSTO;
 import org.apache.commons.lang.Validate;
@@ -31,7 +34,7 @@ public class DeclMethodAss extends AbstractDeclMethod {
 
     @Override
     protected void setTSTO(DecacCompiler compiler, int maxStackSize) {
-        tstoInst.setInstruction(new TSTO(maxStackSize));
+       //on fait rien
     }
 
     public DeclMethodAss(AbstractIdentifier name, AbstractIdentifier ret, ListDeclParam params, String code) {
@@ -60,12 +63,13 @@ public class DeclMethodAss extends AbstractDeclMethod {
 
     @Override
     protected void codeGenMethod(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        compiler.addLabel(getIdentifier().getMethodDefinition().getLabel());
+        compiler.add(new InlinePortion(code.substring(1,code.length()-1).replaceAll("\\\\\"", "\"")));
     }
 
     @Override
     protected void codePreGenMethod(DecacCompiler compiler){
-        //rien a faire avant
+        getIdentifier().getMethodDefinition().setLabel(new Label(getIdentifier().getName().toString()));
     }
     @Override
     protected String getName(){
@@ -74,7 +78,7 @@ public class DeclMethodAss extends AbstractDeclMethod {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+    s.println(code);
     }
 
     @Override
