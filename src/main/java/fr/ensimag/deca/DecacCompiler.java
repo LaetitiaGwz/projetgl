@@ -284,8 +284,10 @@ public class DecacCompiler {
                 addInstructionList(new ErrorInstruction("Error : overflow during arithmetic operation"));
                 addLabel(new Label("stack_overflow"));
                 addInstructionList(new ErrorInstruction("Error : stack overflow"));
-                addLabel(new Label("heap_overflow")); // TODO : voir avec les new
+                addLabel(new Label("heap_overflow"));
                 addInstructionList(new ErrorInstruction("Error : heap overflow"));
+                addLabel(new Label("dereferencement.null"));
+                addInstructionList(new ErrorInstruction("Error : dereferencing null pointer"));
 
                 LOG.debug("Generated assembly code:" + nl + program.display());
                 LOG.info("Output file assembly file is: " + destName);
