@@ -115,10 +115,18 @@ public class Program extends AbstractProgram {
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
+        compiler.addLabel(new Label("tas_plein"));
+        compiler.addInstruction(new WSTR("leapoverflow"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new HALT());
 
         //on ecrit maintenant les instructions des methodes
         compiler.addLabel(new Label("code.Object.equals"));
-        //TODO checker s'il faut mettre du code
+
+        //public boolean equals (Object other) {
+        //    return this == other;
+        //}
+
         for(AbstractDeclClass a: classes.getList()){
             a.codeGenFieldClass(compiler);
             a.codeGenMethodClass(compiler);

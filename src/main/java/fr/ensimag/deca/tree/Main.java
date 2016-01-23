@@ -45,7 +45,6 @@ public class Main extends AbstractMain {
         compiler.addComment("Beginning of main instructions:");
 
         insts.codeGenListInst(compiler);
-        compiler.addLabel(new Label("tas_plein"));
     }
     
     @Override
