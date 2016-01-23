@@ -47,10 +47,10 @@ do
             # Vérification du résultat
             expected_output=$(cat "$cas_de_test" | grep "ima_output:" |sed -e  "s@//@@g" | sed -e "s@ima_output:@@;s@ @@g;s@ima_output:@@")
             assembly_file=$(echo "$cas_de_test" | sed -e "s/\.deca/\.ass/")
-            real_output=$(ima "$assembly_file" 2>/dev/null)
+            real_output=$(ima "$assembly_file" | sed -e "s@ @@g;")
             return_value=$?
 
-            if [[ "$return_value" == 0 && "$expected_output" == $(echo "$real_output" | grep -o "$expected_output") ]];
+            if [[ "$return_value" == 0 && "$expected_output" == $(echo "$real_output" | grep -o -- "$expected_output") ]];
                 then
                     echo -e "decac -r "$nb_max_reg" "$filename" ${GREEN}  OK" "${WHITE}"
                     success=$(($success + 1))

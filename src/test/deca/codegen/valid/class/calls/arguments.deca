@@ -2,7 +2,7 @@
 //    Test d'appels de méthodes avec arguments
 //
 // Resultats:
-//    ima_output: 52.40000e00falseargumentbabar97.10000e00
+//    ima_output: 52.40000e+00falseargumentbabar97.10000e+00
 //
 
 class Babar{

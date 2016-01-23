@@ -120,8 +120,6 @@ do
                 # On rassemble les fichiers .ass dans src/test/output/
                 assembly_dir_new="$ETAPEC_OUTPUT_DIR_INVALID"'/'"$assembly_file"
                 assembly_dir_old=$(echo "$cas_de_test" | sed -e "s/\.deca/\.ass/")
-                echo $assembly_dir_old
-                echo $assembly_dir_new
                 mv "$assembly_dir_old" "$assembly_dir_new"
 
                 echo -e "$filename"
@@ -132,7 +130,7 @@ do
                 return_value=$?
 
                 # Vérifie deux choses : 1) le code d'erreur est bon 2) ima retourne bien un nombre != 0
-                if [[ "$expected_output" == $(echo "$real_output" | grep -o "$expected_output")  &&  "$return_value" != 0 ]];
+                if [[ "$expected_output" == $(echo "$real_output" | grep -o -- "$expected_output")  &&  "$return_value" != 0 ]];
                 then
                     echo -e "Execution : ${GREEN}  OK ${WHITE}"
                     success=$(($success + 1))
@@ -190,8 +188,8 @@ do
                 echo -e "Compilation : ${GREEN}  OK ${WHITE}"
 
                 expected_output=$(cat "$cas_de_test" | grep "ima_output:" |sed -e  "s@//@@g" | sed -e "s@ima_output:@@;s@ @@g;s@ima_output:@@")
-                real_output=$(ima "$assembly_dir_new" )
-                if [[ "$expected_output" == "$real_output" ]];
+                real_output=$(ima "$assembly_dir_new" | sed -e "s@ @@g")
+                if [[ "$expected_output" == $(echo "$real_output" | grep -o -- "$expected_output")  ]];
                 then
                     echo -e "Execution : ${GREEN}  OK ${WHITE}"
                     success=$(($success + 1))
