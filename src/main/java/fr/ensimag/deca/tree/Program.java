@@ -117,6 +117,10 @@ public class Program extends AbstractProgram {
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
+        compiler.addLabel(new Label("dereferencement.null"));
+        compiler.addInstruction(new WSTR("Erreur : dereferencement de null"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new HALT());
         compiler.addLabel(new Label("tas_plein"));
         compiler.addInstruction(new WSTR("leapoverflow"));
         compiler.addInstruction(new WNL());

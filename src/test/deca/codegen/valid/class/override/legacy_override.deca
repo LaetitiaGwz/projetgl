@@ -19,7 +19,7 @@ class B extends A {
 }
 
 {
-	B b;
+	B b = new B();
 	b.m();
 }
 
