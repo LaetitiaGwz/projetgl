@@ -32,7 +32,7 @@ public class MethodCall extends AbstractExpr{
 
         this.obj = new This();
         obj.setLocation(loc);
-        System.out.println(loc);
+
         this.method = method;
         this.params = params;
     }
@@ -45,7 +45,7 @@ public class MethodCall extends AbstractExpr{
         ClassDefinition classDef = compiler.getEnvTypes().getClassDef(t.getName());
         Signature s = params.verifySignature(compiler, localEnv, currentClass);
 
-        Type retType = method.verifyMethod(s, compiler, classDef.getMembers(), currentClass);
+        Type retType = method.verifyMethod(s, compiler, classDef.getMembers());
         setType(retType);
         return retType;
     }

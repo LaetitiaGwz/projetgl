@@ -39,7 +39,7 @@ public abstract class AbstractExpr extends AbstractInst {
         return this.dValue;
     }
 
-    private boolean utilisation= false;
+    private boolean utilisation = false;
 
     public void setUtilisation(){
         this.utilisation= true;
