@@ -424,7 +424,7 @@ primary_expr returns[AbstractExpr tree]
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
             assert($m.tree != null);
-            //TODO
+            $tree = new MethodCall($m.tree, $list_expr.tree);
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);

@@ -1,0 +1,15 @@
+// Description:
+//    crée un objet null
+//
+// Resultats:
+//    Aucune erreur
+
+class Socrate{
+
+}
+
+{
+	Socrate s = null;
+	s = null;
+}
+

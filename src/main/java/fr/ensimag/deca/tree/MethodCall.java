@@ -26,6 +26,15 @@ public class MethodCall extends AbstractExpr{
         this.params = params;
     }
 
+    public MethodCall(AbstractIdentifier method, ListExpr params) {
+        Validate.notNull(method);
+        Validate.notNull(params);
+
+        this.obj = new This();
+        this.method = method;
+        this.params = params;
+    }
+
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
 

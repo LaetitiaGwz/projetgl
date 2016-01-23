@@ -8,13 +8,12 @@
 //    cree le 01/01/2016
 
 class A {
-	void a() {
-		a();
+	void a(A b) {
 	}
 }
 
 {
-	A a = new A();
-	a.a();
+	A obj;
+	obj.a(null);
 }
 
