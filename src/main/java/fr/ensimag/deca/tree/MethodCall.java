@@ -31,6 +31,7 @@ public class MethodCall extends AbstractExpr{
         Validate.notNull(params);
 
         this.obj = new This();
+        obj.setLocation(getLocation());
         this.method = method;
         this.params = params;
     }
