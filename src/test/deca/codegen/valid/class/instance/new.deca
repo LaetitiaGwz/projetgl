@@ -4,11 +4,11 @@
 // Resultats:
 //    ok
 
-class Socrate{
+class Platon {
 
 }
 
-class Platon {
+class Socrate {
 	Platon p = new Platon();
 	Socrate s = new Socrate();
 
