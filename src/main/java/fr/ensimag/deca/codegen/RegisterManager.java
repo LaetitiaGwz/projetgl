@@ -81,6 +81,13 @@ public class RegisterManager {
 		int nombreAleatoire = rand.nextInt(getTailleTable() - 3) + 3;
 		return  nombreAleatoire;
 	}
+	public int getGBRegisterInt(int nonVoulue){
+		int nombreAleatoire = getGBRegisterInt();
+		while(nombreAleatoire==nonVoulue){
+			nombreAleatoire=getGBRegisterInt();
+		}
+		return  nombreAleatoire;
+	}
 
 	@Deprecated
 	public void setEtatRegistreTrue(int registre){

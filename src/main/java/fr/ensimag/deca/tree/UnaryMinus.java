@@ -44,26 +44,52 @@ public class UnaryMinus extends AbstractUnaryExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
-        GPRegister reg = compiler.getRegManager().getGBRegister();
-        getOperand().codegenExpr(compiler, reg);
-        compiler.addInstruction(new OPP(reg, Register.R1));
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        getOperand().codegenExpr(compiler, register);
+        compiler.addInstruction(new OPP(register, Register.R1));
         if(this.getType().isInt()){
             compiler.addInstruction(new WINT());
         }
         else if(this.getType().isFloat()){
             compiler.addInstruction(new WFLOAT());
         }
-        compiler.getRegManager().resetTableRegistre();
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
     }
 
     @Override
     protected void codeGenPrintX(DecacCompiler compiler) {
         Validate.isTrue(getType().isFloat());
-        GPRegister reg = compiler.getRegManager().getGBRegister();
-        getOperand().codegenExpr(compiler, reg);
-        compiler.addInstruction(new OPP(reg, Register.R1));
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        getOperand().codegenExpr(compiler, register);
+        compiler.addInstruction(new OPP(register, Register.R1));
         compiler.addInstruction(new WFLOATX());
-        compiler.getRegManager().resetTableRegistre();
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
     }
 
     @Override

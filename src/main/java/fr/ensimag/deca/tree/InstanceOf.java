@@ -42,17 +42,26 @@ public class InstanceOf extends AbstractExpr {
         }
         else{
             boolean[] backup =compiler.getRegManager().getTableRegistre();
-            GPRegister bypass = compiler.getRegManager().getGBRegister();
-            GPRegister stock = compiler.getRegManager().getGBRegister();
+            GPRegister stock;
+            if(compiler.getRegManager().noFreeRegister()){
+                int i =compiler.getRegManager().getGBRegisterInt(register.getNumber());
+                compiler.addInstruction(new PUSH(Register.getR(i)));
+                stock = Register.getR(i);
+                setPush();
+            }
+            else{
+                stock = compiler.getRegManager().getGBRegister();
+
+            }
             int i=compiler.getLblManager().getIf();
             compiler.getLblManager().incrementIf();
-            compiler.addInstruction(new LOAD(var.getDval(),bypass));
+            compiler.addInstruction(new LOAD(var.getDval(),register));
             compiler.addInstruction(new LOAD(className.getClassDefinition().getOperand(),stock));
             compiler.addLabel(new Label("debut.instanceof"+i));
-            compiler.addInstruction(new CMP(bypass,stock));
+            compiler.addInstruction(new CMP(register,stock));
             compiler.addInstruction(new BEQ(new Label("true.instanceof."+i))); //test si egal
-            compiler.addInstruction(new LOAD(new RegisterOffset(0,bypass),bypass)); // on descend
-            compiler.addInstruction(new CMP(new NullOperand(),bypass)); //si object instance
+            compiler.addInstruction(new LOAD(new RegisterOffset(0,register),register)); // on descend
+            compiler.addInstruction(new CMP(new NullOperand(),register)); //si object instance
             compiler.addInstruction(new BNE(new Label("debut.instanceof"+i))); //non, on remonte
             compiler.addInstruction(new LOAD(new ImmediateInteger(0),register));
             compiler.addInstruction(new BRA(new Label("fin.instanceof"+i)));
@@ -60,6 +69,10 @@ public class InstanceOf extends AbstractExpr {
             compiler.addInstruction(new LOAD(new ImmediateInteger(1),register));
             compiler.addLabel(new Label("fin.instanceof"+i));
             compiler.getRegManager().setTableRegistre(backup);
+            if(getPop()){
+                compiler.addInstruction(new POP(register));
+                popDone();
+            }
         }
 
     }

@@ -15,16 +15,7 @@ import fr.ensimag.ima.pseudocode.Label;
  * @date 01/01/2016
  */
 public abstract class AbstractInst extends Tree {
-    private boolean pop = false;
-    public void setPush(){
-        pop=true;
-    }
-    public boolean getPop(){
-        return pop;
-    }
-    public void popDone(){
-        pop=false;
-    }
+
 
     /**
      * Verify the instruction for contextual error.

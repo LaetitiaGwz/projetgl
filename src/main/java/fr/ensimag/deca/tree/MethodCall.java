@@ -72,7 +72,17 @@ public class MethodCall extends AbstractExpr{
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         compiler.addInstruction(new ADDSP(1+params.size()));
-        GPRegister register =compiler.getRegManager().getGBRegister();
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
         obj.codegenExpr(compiler,register);
         compiler.addInstruction(new CMP(new NullOperand(),register));
         compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
@@ -88,6 +98,10 @@ public class MethodCall extends AbstractExpr{
         compiler.addInstruction(new STORE(register,(DAddr)obj.getDval()));
         compiler.addInstruction(new LOAD(Register.R0,register));
         compiler.addInstruction(new SUBSP(1+params.size()));
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
 
     }
     @Override

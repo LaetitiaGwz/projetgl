@@ -65,8 +65,22 @@ public class Initialization extends AbstractInitialization {
 
     @Override
     protected void codeGenInit(DecacCompiler compiler) {
-        GPRegister reg = compiler.getRegManager().getGBRegister();
-        getExpression().codegenExpr(compiler, reg);
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        getExpression().codegenExpr(compiler, register);
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
     }
 
     @Override

@@ -132,16 +132,30 @@ public class Selection extends AbstractLValue {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        GPRegister register = compiler.getRegManager().getGBRegister();
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
         obj.codegenExpr(compiler,register);
         compiler.addInstruction(new LOAD(new RegisterOffset(field.getFieldDefinition().getIndex(),register),register));
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
     }
 
     @Override
     public void codegenExpr(DecacCompiler compiler,GPRegister register){
         GPRegister stock;
         if(compiler.getRegManager().noFreeRegister()){
-            int i =compiler.getRegManager().getGBRegisterInt();
+            int i =compiler.getRegManager().getGBRegisterInt(register.getNumber());
             compiler.addInstruction(new PUSH(Register.getR(i)));
             stock = Register.getR(i);
             setPush();
@@ -154,6 +168,10 @@ public class Selection extends AbstractLValue {
         obj.codegenExpr(compiler,stock);
         //on a l'adresse de l'objet
         compiler.addInstruction(new LOAD(new RegisterOffset(field.getFieldDefinition().getIndex(),stock),register));
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
 
     }
 

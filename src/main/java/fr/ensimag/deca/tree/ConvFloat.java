@@ -5,9 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.FLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * Conversion of an int into a float. Used for implicit conversions.
@@ -50,18 +48,45 @@ public class ConvFloat extends AbstractUnaryExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
-        GPRegister reg = compiler.getRegManager().getGBRegister();
-        getOperand().codegenExpr(compiler, reg);
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        getOperand().codegenExpr(compiler, register);
         compiler.addInstruction(new WFLOAT());
-        compiler.getRegManager().resetTableRegistre();
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
     }
 
     @Override
     protected void codeGenPrintX(DecacCompiler compiler){
-        GPRegister reg = compiler.getRegManager().getGBRegister();
-        getOperand().codegenExpr(compiler, reg);
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        getOperand().codegenExpr(compiler, register);
         compiler.addInstruction(new WFLOATX());
         compiler.getRegManager().resetTableRegistre();
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
     }
 
     @Override

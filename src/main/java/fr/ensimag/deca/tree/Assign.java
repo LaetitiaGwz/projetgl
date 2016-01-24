@@ -70,6 +70,7 @@ public class Assign extends AbstractBinaryExpr {
         }
         if(getPop()){
             compiler.addInstruction(new POP(register));
+            popDone();
         }
     }
 
