@@ -31,7 +31,7 @@ public class DeclClass extends AbstractDeclClass {
     protected ListDeclMethod methods;
 
     public int returnSP(){
-        int stock=1;
+        int stock=2; //on commence à 2
         if (!superClass.getName().toString().equals("Object")){
             stock+=superClass.getClassDefinition().getNumberOfMethods();
         }

@@ -40,6 +40,50 @@ public class InstanceOf extends AbstractExpr {
         if(var.getDval()==null){
             throw new DecacInternalError("element vide");
         }
+        else{boolean[] backup =compiler.getRegManager().getTableRegistre();
+            GPRegister stock;
+            if(compiler.getRegManager().noFreeRegister()){
+                int i =compiler.getRegManager().getGBRegisterInt();
+                compiler.addInstruction(new PUSH(Register.getR(i)));
+                stock = Register.getR(i);
+                setPush();
+            }
+            else{
+                stock = compiler.getRegManager().getGBRegister();
+
+            }
+
+            int i=compiler.getLblManager().getIf();
+            compiler.getLblManager().incrementIf();
+            compiler.addInstruction(new LOAD(var.getDval(),register));
+            compiler.addInstruction(new LOAD(new RegisterOffset(0,register),register));
+            compiler.addInstruction(new LEA(className.getClassDefinition().getOperand(),stock));
+            compiler.addLabel(new Label("debut.instanceof"+i));
+            compiler.addInstruction(new CMP(register,stock));
+            compiler.addInstruction(new BEQ(new Label("true.instanceof."+i))); //test si egal
+            compiler.addInstruction(new LOAD(new RegisterOffset(0,register),register)); // on descend
+            compiler.addInstruction(new CMP(new NullOperand(),register)); //si object instance
+            compiler.addInstruction(new BNE(new Label("debut.instanceof"+i))); //non, on remonte
+            compiler.addInstruction(new LOAD(new ImmediateInteger(0),register));
+            compiler.addInstruction(new BRA(new Label("fin.instanceof"+i)));
+            compiler.addLabel(new Label("true.instanceof."+i));
+            compiler.addInstruction(new LOAD(new ImmediateInteger(1),register));
+            compiler.addLabel(new Label("fin.instanceof"+i));
+            if(getPop()){
+                compiler.addInstruction(new POP(stock));
+                popDone();
+            }
+            compiler.getRegManager().setTableRegistre(backup);
+
+        }
+
+
+    }
+    @Override
+    public void codeGenCMP(DecacCompiler compiler) {
+        if(var.getDval()==null){
+            throw new DecacInternalError("element vide");
+        }
         else{
             boolean[] backup =compiler.getRegManager().getTableRegistre();
             GPRegister stock;
@@ -53,24 +97,36 @@ public class InstanceOf extends AbstractExpr {
                 stock = compiler.getRegManager().getGBRegister();
 
             }
+            GPRegister register;
+            if(compiler.getRegManager().noFreeRegister()){
+                int i =compiler.getRegManager().getGBRegisterInt();
+                compiler.addInstruction(new PUSH(Register.getR(i)));
+                register = Register.getR(i);
+                setPush();
+            }
+            else{
+                register = compiler.getRegManager().getGBRegister();
+
+            }
             int i=compiler.getLblManager().getIf();
             compiler.getLblManager().incrementIf();
-            compiler.addInstruction(new LOAD(var.getDval(),register));
-            compiler.addInstruction(new LOAD(new RegisterOffset(0,register),register));
-            compiler.addInstruction(new LOAD(className.getClassDefinition().getOperand(),stock));
+            compiler.addInstruction(new LOAD(var.getDval(),stock));
+            compiler.addInstruction(new LOAD(new RegisterOffset(0,stock),stock));
+            compiler.addInstruction(new LEA(className.getClassDefinition().getOperand(),register));
             compiler.addLabel(new Label("debut.instanceof"+i));
-            compiler.addInstruction(new CMP(register,stock));
-            compiler.addInstruction(new BEQ(new Label("true.instanceof."+i))); //test si egal
-            compiler.addInstruction(new LOAD(register,register)); // on descend
+            compiler.addInstruction(new CMP(stock,register));
+            compiler.addInstruction(new BEQ(compiler.getLblManager().getLabelTrue())); //test si egal
+            compiler.addInstruction(new LOAD(new RegisterOffset(0,stock),stock)); // on descend
             compiler.addInstruction(new CMP(new NullOperand(),stock)); //si object instance
             compiler.addInstruction(new BNE(new Label("debut.instanceof"+i))); //non, on remonte
-            compiler.addInstruction(new LOAD(new ImmediateInteger(0),register));
-            compiler.addInstruction(new BRA(new Label("fin.instanceof"+i)));
-            compiler.addLabel(new Label("true.instanceof."+i));
-            compiler.addInstruction(new LOAD(new ImmediateInteger(1),register));
-            compiler.addLabel(new Label("fin.instanceof"+i));
+            compiler.addInstruction(new BRA(compiler.getLblManager().getLabelFalse()));
+
             if(getPop()){
                 compiler.addInstruction(new POP(register));
+                popDone();
+            }
+            if(getPop()){
+                compiler.addInstruction(new POP(stock));
                 popDone();
             }
             compiler.getRegManager().setTableRegistre(backup);
