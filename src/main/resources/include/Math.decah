@@ -1,23 +1,536 @@
 // Grenoble INP - Ensimag projet GL -*- mode: java -*-
 // Library for class Math of Deca, coded in Deca
 
-class Math {
-    float sin(float f) {
-        println("sin(f) not yet implemented");
+/**
+ * Classe CodyAndWaite : implémente les valeurs de retour de l'algorithme de Cody and Waite. 
+ * Liens utiles : 
+ * @author Adrien Fischman, Germain Geoffroy.
+ */
+class _CodyAndWaite{
+    /**
+    * La valeur x est la valeur qui va être réduite.
+    */
+    float x ;
+
+    /**
+    *Le coefficient de réduction de x.
+    */
+    int k ;
+
+    /**
+    *Met à jour la valeur réduite.
+    *@param Valeur de mise à jour.
+    */
+    void setX(float x){
+        this.x = x ;
     }
-    float cos(float f) {
-        println("cos(f) not yet implemented");
+    /**
+    *Met à jour le coefficient de réduction.
+    *@param Valeur de mise à jour.
+    */
+    void setK(int k){
+        this.k = k ;
     }
-    float asin(float f) {
-        println("asin(f) not yet implemented");
+    /**
+    *Retourne la valeur réduite.
+    *@return Valeur réduite.
+    */
+    float getX(){
+        return this.x ;
     }
-    float atan(float f) {
-        println("atan(f) not yet implemented");
-    }
-    float ulp(float f) {
-        println("ulp(f) not yet implemented");
+    /**
+    *Retourne le coefficient de réduction.
+    *@return Coefficient de réduction.
+    */
+    int getK(){
+        return this.k;
     }
 }
+/**
+ * Classe Math. 
+ * Liens utiles : 
+ * @author Adrien Fischman, Germain Geoffroy.
+ */
+class Math_deca{
+    /**
+    * Valeur minimale prise par les nombres flottants.
+    */
+    float MIN_VALUE = power((float)(2),-149);
+    /**
+    * Valeur maximale prise par les nombres flottants.
+    */
+    float MAX_VALUE = power((float)(2),127);
+    /**
+    * Valeur de Pi en flottant ;
+    */
+    float PI = (float)(3.14159273653589793);
 
+    /**
+    * Calcule x^y et renvoie le résultat.
+    *@param flottant qui va être élevé à la puissance y.
+    *@param entier correspond à la puissance.
+    *@return flottant représentant le résultat de x^y.
+    */
+    float power(float x, int y){
+
+        float originalX = x;
+        float out = 0 ;
+
+        if ( y==0 ) {
+            return 1;
+        }
+        if (y>0) {
+            while ( y>1) {
+                x = x*originalX ;
+                y = y -1;
+            }
+            return x ;
+        }
+        else {
+            out = power(x, -y) ;
+            return 1/out ;
+        }
+    }
+
+    /**
+    * Calcule ulp(x) et renvoie le résultat.
+    *@param flottant dont on calcule son ulp.
+    *@return flottant correspond au nombre d'ulp du flottant x.
+    */
+    float ulp(float x){
+        /*Les NaN et les infinis sont gérés par le compilateur qui lève les exceptions adéquats.
+        On ne prend donc pas en compte ces cas ici.*/
+
+        //valeur de l'exposant de x.
+        int exp = 0;
+        
+        if ( x == -MAX_VALUE || x == MAX_VALUE) {
+            //valeur de retour de la méthode ulp de la classe Math de Java.
+            return power((float)(2),104);
+        }
+        //On utilise la symétrie : ulp(-x)=ulp(x).
+        if(x < 0) {
+            x = -x ;
+        }   
+
+        if ( x >= 1 ) {
+            //L'exposant est décrémenté de 1 pour satisfaire la condition 2^0=1.
+            exp = exp - 1 ;
+            while (x >= 1 ){
+                x =  (float)(x/2.0);
+                exp = exp + 1 ;
+            }           
+        }
+        else if ( x < 1 && x != 0){
+            while ( x < 1) {
+                x = (float)(x*2.0);
+                exp = exp - 1 ;
+            }
+        }
+        // cas x = 0
+        else{
+            //valeur de retour de la méthode ulp de la classe Math de Java.
+            return MIN_VALUE ; 
+        }
+        return power((float)(2),exp - 23) ;  
+    }
+    /**
+    * Calcule la valeur absolue de x et renvoie le résultat.
+    *@param flottant dont on calcule sa valeur absolue.
+    *@return flottant correspond à la valeur aboslue de x.
+    */
+    float abs(float x){
+        float res = 0 ;
+        if (x<0){
+            x=-x;
+        }
+        res = x ;
+        return res;
+    }
+
+    /**
+    * Calcule la racine carrée de x et renvoie le résultat.
+    *@param flottant dont on calcule sa racine carré.
+    *@return flottant correspond à la racine carré de x.
+    *@throws erreur soulevé si le flottant x est négatif.
+    */
+    float sqrt(float x){
+        //Déclaration variables :
+        //Exposant servant dans le cas x<1.
+        int exp = 0 ;
+        //Variables pour la recherche dichotomique.
+        float low = 0; 
+        float high = x;
+        float mid = x;
+        float oldMid = (float) (-5.0) ;
+        float epsilon = power((float)(2),-45); 
+
+        if (x<0){
+            //String message = new String(est un nombre négatif, on ne considère pas les racines carrés des nombres négatifs.);
+            //throw new arithmeticException(message);
+            print(x);
+            println("est un nombre négatif, on ne considère pas les racines carrés des nombres négatifs.");
+            return 0;
+        }
+
+        if (x == 1 || x == 0){
+            return x ;
+        }
+
+        // On multiplie les nombres inférieurs à 1 par des puissances de 10 pour améliorer la précision.
+        while ( x<1 ) {
+            x = x*power((float)(10),4) ;
+            // 4 car c'est une puissance de 2 et donc on peut retrouver la racine carré facilement.
+            exp = exp + 4 ;
+        }
+        high = x;
+        mid = x;
+        //On fait une recherche dichotomique de la racine carrée.
+        while ( abs(oldMid - mid)>= epsilon ) {
+
+            oldMid = mid ;
+            mid = (high + low)/2 ;
+            if (mid*mid > x ){
+                high = mid ;
+            }
+            else{
+                low = mid;
+            }
+        }
+        //On prend en compte le cas x<1 en divisant par 10^{exp/2}.
+        return mid/power((float)(10),exp/2) ;
+    }
+    /**
+    * Calcule le sinus de x et renvoie le résultat.
+    *@param flottant dont on calcule son sinus.
+    *@return flottant correspondant au sinus de x.
+    */
+    float sinTaylor(float x){
+        //Définition des variables :
+        float coeff = (float)(sqrt((float)(2)));
+        int k = 0 ;
+        boolean minus = false ;
+        _CodyAndWaite reduction = reductionCodyAndWaite(x);
+        float res = x ;
+        float temp = x ;
+        int i = 1 ;
+
+        /*On se ramène à l'intervalle ]-PI/8;PI/8[ 
+        par une réduction de Cody and Waite */
+        x = reduction.getX();
+        k = reduction.getK();
+
+        /*En fonction de l'octant donné par  : k mod 8
+        * on décompose le sinus en fonction du sinus et du cosinus.
+        */
+        k=k%8;
+        coeff = 1/coeff ;
+
+        if(k==1){
+            return (float)(coeff*(sinTaylor(x)+cosTaylor(x)));
+        }
+        else if (k==2){
+            return cosTaylor(x);
+        }
+        else if (k==3){
+            return (float)( coeff*( -sinTaylor(x) + cosTaylor(x) ) );
+        }
+        else if (k==4){
+            minus = !minus;
+        }
+        else if (k==5){
+            return (float)(-coeff*(sinTaylor(x)+cosTaylor(x)));
+        }
+        else if (k==6){
+            return -cosTaylor(x);
+        }
+        else if (k==7){
+            return (float)(coeff*(sinTaylor(x)-cosTaylor(x)));
+        }
+
+        //On calcule le sinus grâce à son développement en série entière.
+        res = x;
+        temp = x;
+        while ( abs(temp) > ulp(res)){
+            temp = - temp*power(x,2)/((2*i + 1)*2*i);
+            res = res + temp ;
+            i = i + 1;
+        }
+        if(minus){
+            return -res ;
+        }
+        else{
+            return res ;
+        }
+
+    }
+
+    /**
+    * Calcule le cosinus de x et renvoie le résultat.
+    *@param flottant dont on calcule son cosinus.
+    *@return flottant correspondant au cosinus de x.
+    */
+    float cosTaylor(float x){
+        //Déclaration variable : 
+        int k = 0 ;
+        boolean minus = false ;
+        _CodyAndWaite reduction = reductionCodyAndWaite(x);
+        float res = 1;
+        float temp = 1;
+        int i = 1;
+        float coeff = (float)(sqrt((float)(2)));
+
+        /*On se ramène à l'intervalle ]-PI/8;PI/8[ 
+        par une réduction de Cody and Waite */
+        x = reduction.getX();
+        k = reduction.getK();
+
+        /*En fonction de l'octant donné par  : k mod 8
+        * on décompose le cosinus en fonction du sinus et du cosinus.
+        */
+        k = k%8 ; 
+        coeff = 1/coeff ;
+        if(k==1){
+            return (float)(coeff*(cosTaylor(x) - sinTaylor(x)));
+        }
+        else if (k==2){
+            return -sinTaylor(x);
+        }
+        else if (k==3){
+           return (float)(-coeff*(cosTaylor(x)+sinTaylor(x)));
+        }
+        else if (k==4){
+            minus = !minus ;
+        }
+        else if (k==5){
+            return (float)(coeff*(-cosTaylor(x)+sinTaylor(x)));
+        }
+        else if (k==6){
+            return sinTaylor(x);
+        }
+        else if (k==7){
+            return (float)(coeff*(cosTaylor(x) + sinTaylor(x)));
+        }
+
+        //On calcule le cosinus grâce à son développement en série entière.
+        while ( abs(temp)> ulp(res) ) {
+            //while ( i < 15){
+            temp = -temp*power(x,2)/((2*i - 1)*2*i);
+            res=res+temp;
+            i = i + 1 ;
+        }
+        if(minus){
+            return -res ;
+        }
+        else{
+            return res ;
+        }
+
+    }
+    /**
+    * Fait la réduction du flottant x sur [-PI/8;PI/8].
+    *@param flottant dont on fait la réduction.
+    *@return objet de le classe CodyAndWaite qui comprend le flottant réduit et son coefficient de réduction.
+    */  
+    _CodyAndWaite reductionCodyAndWaite(float x){
+        //Déclaration des variables :
+        int k = 0;
+        _CodyAndWaite res = new _CodyAndWaite();
+        boolean minus = false ;
+        // Définition des constante correspondant à la méthode de Cody and Waite pour C = PI/4.
+        float c1 = 50*power((float)(2),-6);
+        float c2 = 16*power((float)(2),-12);
+        float c3 = 63*power((float)(2),-18);
+        float c4 = 26*power((float)(2),-24);
+        float c5 = 40*power((float)(2),-30);
+        float c6 = 34*power((float)(2),-36);
+        float c7 = 5*power((float)(2),-42);
+        float c8 = 40*power((float)(2),-48);
+        float c9 = 48*power((float)(2),-54);
+        float c10 = 35*power((float)(2),-60);
+        float c11 = 19*power((float)(2),-66);
+        float c12 = 4*power((float)(2),-72);
+        float c13 = 49*power((float)(2),-78);
+        float c14 = 38*power((float)(2),-84);
+        float c15 = 10*power((float)(2),-90);
+        float c16 = 11*power((float)(2),-96);
+        if(x<PI/8.0){
+            res.setX(x); 
+            return res ;
+        }
+
+        if(x<0){
+            x = -x;
+            minus = !minus ;
+        }
+        //réduction sur [-PI/8;PI/8]
+        k = (int) (x/(PI/4));
+        //L'approximation sera meilleur si l'on est proche de 0 plutot que PI/8
+        if(x-k*PI/4>PI/8.0){
+            k = k + 1;
+        }
+
+        x = x - k*c1;
+        x = x - k*c2;
+        x = x - k*c3;
+        x = x - k*c4;
+        x = x - k*c5;
+        x = x - k*c6;
+        x = x - k*c7;
+        x = x - k*c8;
+        x = x - k*c9;
+        x = x - k*c10;
+        x = x - k*c11;
+        x = x  - k*c12;
+        x = x  - k*c13;
+        x = x  - k*c14;
+        x = x  - k*c15;
+        x = x  - k*c16;
+
+        res.setK(k);
+        if(minus){
+            res.setX(-x);
+        }
+        else{
+            res.setX(x);
+        }
+        return res ;
+    }
+
+    /**
+    *Calcule n!
+    *@param int dont on calcule sa factorielle.
+    *@return flottant correpsond à n! .
+    */
+    float fact(int n){
+        if (n==1 || n==0){
+            return 1;
+        }
+        else{
+            return n*fact(n-1);
+        }
+    }  
+
+    /**
+    *Calcule l'arcsinus du flottant x par un développement en série entière.
+    *@param flottant dont on veut calculer son arcsinus par un développement en série entière.
+    *@return flottant correspond à l'arcsinus de x.
+    */   
+    float asindse(float x){
+        //terme n impaire seulement  
+        int n=33;
+
+        float res=fact(n-1)/(power((float)(2),n-1)*fact((n-1)/2)*fact((n-1)/2)*(n));
+        int k=n-1;
+        boolean b= true;
+        while(k>=0){
+
+            if (b==true){
+                res=res*x;  
+                b=false;
+            }
+            else{
+                res=res*x+fact(k-1)/(power((float)(2),k-1)*fact((k-1)/2)*fact((k-1)/2)*(k));
+                b=true;
+            }
+            k=k-1;
+
+        }
+        return res;
+    }
+    /**
+    *Calcule l'arcsinus du flottant x.
+    *@param flottant dont on veut calculer son arcsinus.
+    *@return flottant correspond à l'arcsinus de x.
+    */
+    float asin(float x){
+        /*On utilise la formule de trigonométrie : arcsin(x) + arcsin( sqrt( 1 - x^2) ) = +- PI/2 , 
+        * afin de se ramener à des petits angles pour utiliser le développement en série entière.
+        */
+        if(abs(x)<=0.72){
+            return asindse(x);
+        }
+        else if(x>0.72){ 
+            return PI/2-asindse(sqrt(1-power(x,2)));
+        }
+        else{
+            return asindse(sqrt(1-power(x,2)))-PI/2;
+        }
+
+    }
+    /**
+    *Calcule l'arctangente du flottant x.
+    *@param flottant dont on veut calculer son arctangente.
+    *@return flottant correspond à l'arctangente de x.
+    */
+    float atan(float x){
+        int minus = 1 ;
+        //Par imparité on se ramène à [O;+infini]
+        if (x<0){
+            minus = -1 ;
+        }
+        //On utilise la formule de trigonométrie : atan(x) + atan(1/x) = +-PI/2.
+        if(x>1.1875){
+            return minus*(PI/2-atanHermite(1/x));
+        }
+        else if (x>0.6875f){            
+            return (float)(minus*(atanHermite((x -1)/(1+x)) + PI/4.0));
+        }
+        else{
+            return minus*atanHermite(x);
+        }
+    }
+    /**
+    *Calcule l'arctangente du flottant x grâce aux polynômes de Hermite.
+    *@param flottant dont on veut calculer son arctangente.
+    *@return flottant correspond à l'arctangente de x.
+    */
+    float atanHermite(float x){
+        float res=
+        (power(x,55)/901120)
+        -(7*power(x,54)/221184)
+        +(377*power(x,53)/868352)
+        -(203*power(x,52)/53248)
+        +(10049*power(x,51)/417792)
+        -(11879*power(x,50)/102400)
+        +(178321*power(x,49)/401408)
+        -(68063*power(x,48)/49152)
+        +(2751463*power(x,47)/770048)
+        -(1454473*power(x,46)/188416)
+        +(10371647*power(x,45)/737280)
+        -(489259*power(x,44)/22528)
+        +(5012527*power(x,43)/176128)
+        -(1361617*power(x,42)/43008)
+        +(5016623*power(x,41)/167936)
+        -(489259*power(x,40)/20480)
+        +(10355263*power(x,39)/638976)
+        -(1454473*power(x,38)/155648)
+        +(2767847*power(x,37)/606208)
+        -(68063*power(x,36)/36864)
+        +(170129*power(x,35)/286720)
+        -(11879*power(x,34)/69632)
+        +(18241*power(x,33)/270336)
+        -(203*power(x,32)/32768)
+        -(16007*power(x,31)/507904)
+        -(7*power(x,30)/122880)
+        +(565*power(x,29)/16384)
+        -(power(x,27)/27)
+        +(power(x,25)/25)
+        -(power(x,23)/23)
+        +(power(x,21)/21)
+        -(power(x,19)/19)
+        +(power(x,17)/17)
+        -(power(x,15)/15)
+        +(power(x,13)/13)
+        -(power(x,11)/11)
+        +(power(x,9)/9)
+        -(power(x,7)/7)
+        +(power(x,5)/5)
+        -(power(x,3)/3)
+        +x;
+        return res;
+
+    }
+}
 
 // End of Deca Math library
