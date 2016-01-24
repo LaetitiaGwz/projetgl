@@ -120,6 +120,7 @@ public class Cast extends AbstractCast {
                 compiler.addInstruction(new CMP(new NullOperand(),stock)); //si object instance
                 compiler.addInstruction(new BNE(new Label("debut.instanceof"+i))); //non, on remonte
                 //on test null
+                expr.codegenExpr(compiler,stock);
                 compiler.addInstruction(new CMP(new NullOperand(),stock));
                 compiler.addInstruction(new BNE(noCast));
 
@@ -223,6 +224,7 @@ public class Cast extends AbstractCast {
                 compiler.addInstruction(new CMP(new NullOperand(),stock)); //si object instance
                 compiler.addInstruction(new BNE(new Label("debut.instanceof"+i))); //non, on remonte
                 //on test null
+                expr.codegenExpr(compiler,stock);
                 compiler.addInstruction(new CMP(new NullOperand(),stock));
                 compiler.addInstruction(new BNE(noCast));
 
