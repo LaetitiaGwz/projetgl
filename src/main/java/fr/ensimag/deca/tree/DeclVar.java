@@ -59,6 +59,7 @@ public class DeclVar extends AbstractDeclVar {
     protected void codeGenDecl(DecacCompiler compiler) {
         getVarName().codeGenInit(compiler);
         if(getInitialization().getExpression() != null){
+            boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
             GPRegister register;
             if(compiler.getRegManager().noFreeRegister()){
                 int i =compiler.getRegManager().getGBRegisterInt();
@@ -77,13 +78,16 @@ public class DeclVar extends AbstractDeclVar {
                 compiler.addInstruction(new POP(register));
                 popDone();
             }
+            compiler.getRegManager().setTableRegistre(table);
         }
     }
 
     @Override
     protected void codeGenDeclMethod(DecacCompiler compiler) {
+
         getVarName().codeGenInitMethod(compiler);
         if(getInitialization().getExpression() != null){
+            boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
             getInitialization().codeGenInit(compiler);
             GPRegister register;
             if(compiler.getRegManager().noFreeRegister()){
@@ -103,7 +107,9 @@ public class DeclVar extends AbstractDeclVar {
                 compiler.addInstruction(new POP(register));
                 popDone();
             }
+            compiler.getRegManager().setTableRegistre(table);
         }
+
     }
 
     @Override

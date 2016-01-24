@@ -48,6 +48,7 @@ public class ConvFloat extends AbstractUnaryExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){
             int i =compiler.getRegManager().getGBRegisterInt();
@@ -65,10 +66,12 @@ public class ConvFloat extends AbstractUnaryExpr {
             compiler.addInstruction(new POP(register));
             popDone();
         }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
     @Override
     protected void codeGenPrintX(DecacCompiler compiler){
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){
             int i =compiler.getRegManager().getGBRegisterInt();
@@ -87,6 +90,7 @@ public class ConvFloat extends AbstractUnaryExpr {
             compiler.addInstruction(new POP(register));
             popDone();
         }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
     @Override

@@ -65,6 +65,7 @@ public class Initialization extends AbstractInitialization {
 
     @Override
     protected void codeGenInit(DecacCompiler compiler) {
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){
             int i =compiler.getRegManager().getGBRegisterInt();
@@ -81,6 +82,7 @@ public class Initialization extends AbstractInitialization {
             compiler.addInstruction(new POP(register));
             popDone();
         }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
     @Override

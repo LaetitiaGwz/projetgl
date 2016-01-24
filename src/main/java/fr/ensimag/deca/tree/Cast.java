@@ -67,7 +67,7 @@ public class Cast extends AbstractCast {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
         // Récupération de l'expression calculée
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){
@@ -94,6 +94,7 @@ public class Cast extends AbstractCast {
             compiler.addInstruction(new POP(register));
             popDone();
         }
+        compiler.getRegManager().setTableRegistre(table);
 
     }
 
@@ -115,6 +116,7 @@ public class Cast extends AbstractCast {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){
             int i =compiler.getRegManager().getGBRegisterInt();
@@ -142,6 +144,7 @@ public class Cast extends AbstractCast {
 
     @Override
     protected void codeGenPrintX(DecacCompiler compiler){
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
         Validate.isTrue(this.getType().isFloat());
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){

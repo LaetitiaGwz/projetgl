@@ -54,6 +54,7 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){
             int i =compiler.getRegManager().getGBRegisterInt();
@@ -70,6 +71,7 @@ public class FloatLiteral extends AbstractExpr {
             compiler.addInstruction(new POP(register));
             popDone();
         }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
     @Override
