@@ -50,7 +50,7 @@ public abstract class AbstractDeclMethod extends Tree {
             throw new ContextualError("Double declaration of method " + name.getName().getName(), getLocation());
         }
 
-        name.verifyMethod(signature, compiler, localEnv, currentClass);
+        name.verifyMethod(signature, compiler, localEnv);
     }
 
     protected abstract void verifyBody(fr.ensimag.deca.DecacCompiler compiler,

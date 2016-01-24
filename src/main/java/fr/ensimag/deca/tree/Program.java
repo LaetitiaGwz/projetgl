@@ -52,6 +52,8 @@ public class Program extends AbstractProgram {
 
 
         getClasses().verifyListClass(compiler);
+        getClasses().verifyListClassMembers(compiler);
+        getClasses().verifyListClassBody(compiler);
         getMain().verifyMain(compiler);
         LOG.debug("verify program: end");
     }

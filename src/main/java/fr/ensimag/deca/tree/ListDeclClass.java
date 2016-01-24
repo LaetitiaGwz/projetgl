@@ -24,36 +24,30 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
     /**
      * Attribute grammar's pass 1
      */
-    //TODO
     void verifyListClass(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify listClass: start");
-        // Passe 1
         for (AbstractDeclClass classDecl : getList()) {
             classDecl.verifyClass(compiler);
         }
-        // Passe 2
-        for (AbstractDeclClass classDecl : getList()) {
-            classDecl.verifyClassMembers(compiler);
-        }
-        // Passe 3
-        for (AbstractDeclClass classDecl : getList()) {
-            classDecl.verifyClassBody(compiler);
-        }
-        LOG.debug("verify listClass: end");
     }
 
     /**
      * Attribute grammar's pass 2
      */
     public void verifyListClassMembers(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        for (AbstractDeclClass classDecl : getList()) {
+            classDecl.verifyClassMembers(compiler);
+        }
     }
     
     /**
      * Attribute grammar's pass 3
      */
     public void verifyListClassBody(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        for (AbstractDeclClass classDecl : getList()) {
+            classDecl.verifyClassBody(compiler);
+        }
+        LOG.debug("verify listClass: end");
     }
 
 
