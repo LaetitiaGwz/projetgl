@@ -9,6 +9,7 @@ import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
@@ -49,8 +50,24 @@ public class Assign extends AbstractBinaryExpr {
 
         getRightOperand().codegenExpr(compiler, register);
         if(getLeftOperand().getDefinition().isField()){
+            GPRegister stock;
+            if(compiler.getRegManager().noFreeRegister()){
+                int i =compiler.getRegManager().getGBRegisterInt();
+                compiler.addInstruction(new PUSH(Register.getR(i)));
+                stock = Register.getR(i);
+                setPush();
+            }
+            else{
+                stock = compiler.getRegManager().getGBRegister();
+
+            }
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB),stock));
             compiler.addInstruction(new STORE(register,
-                    new RegisterOffset(getLeftOperand().getFieldDefinition().getIndex(),Register.getR(2)))); // on store dans R2
+                    new RegisterOffset(getLeftOperand().getFieldDefinition().getIndex(),stock))); // on store
+            if(getPop()){
+                compiler.addInstruction(new POP(register));
+                popDone();
+            }
         }
         else if(getLeftOperand().getDefinition().isClass()){
 

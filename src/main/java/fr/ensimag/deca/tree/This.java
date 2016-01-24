@@ -26,30 +26,10 @@ public class This extends AbstractThis {
         return currentClass.getType();
     }
 
-    @Override
-    protected void codeGenThis(DecacCompiler compiler){
-        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
-        GPRegister register;
-        if(compiler.getRegManager().noFreeRegister()){
-            int i =compiler.getRegManager().getGBRegisterInt();
-            compiler.addInstruction(new PUSH(Register.getR(i)));
-            register = Register.getR(i);
-            setPush();
-        }
-        else{
-            register = compiler.getRegManager().getGBRegister();
 
-        }
-        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB),Register.getR(2)));
-        if(getPop()){
-            compiler.addInstruction(new POP(register));
-            popDone();
-        }
-        compiler.getRegManager().setTableRegistre(table);
-    }
     @Override
     public void codegenExpr(DecacCompiler compiler,GPRegister register){
-        compiler.addInstruction(new LOAD(Register.getR(2),register));
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB),register));
     }
 
     @Override
