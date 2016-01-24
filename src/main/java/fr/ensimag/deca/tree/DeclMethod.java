@@ -77,7 +77,6 @@ public class DeclMethod extends AbstractDeclMethod {
         for(int i=2;i<compiler.getCompilerOptions().getRegistre();i++){
             compiler.addInstruction(new PUSH(Register.getR(i)));
         }
-        compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB), Register.getR(2)));// on sauve l'objet dans R2 tt le temps
         Label fin = new Label("fin."+getIdentifier().getMethodDefinition().getLabel().toString());
         compiler.getLblManager().setLabelFalse(fin);
         params.codeGenListDecl(compiler);

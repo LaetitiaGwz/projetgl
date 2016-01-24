@@ -14,7 +14,7 @@ class Socrate{
 class Platon{
 	Socrate s = new Socrate();
 	void afficheSocrate(){
-		s.quiSuisJe();
+//		s.quiSuisJe();
 	}
 }
 {

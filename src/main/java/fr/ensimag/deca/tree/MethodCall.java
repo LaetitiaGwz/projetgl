@@ -64,9 +64,7 @@ public class MethodCall extends AbstractExpr{
                 compiler.addInstruction(new STORE(register,new RegisterOffset(-j-1,Register.SP)));
             }
         }
-        compiler.addInstruction(new LOAD(new RegisterOffset(0,Register.SP),register));
         compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
-        compiler.addInstruction(new STORE(register,(DAddr)obj.getDval()));
         compiler.addInstruction(new LOAD(Register.R0,register));
         compiler.addInstruction(new SUBSP(1+params.size()));
         compiler.getRegManager().setTableRegistre(table);
@@ -96,9 +94,7 @@ public class MethodCall extends AbstractExpr{
                 compiler.addInstruction(new STORE(register,new RegisterOffset(-j-1,Register.SP)));
             }
         }
-        compiler.addInstruction(new LOAD(new RegisterOffset(0,Register.SP),register));
         compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
-        compiler.addInstruction(new STORE(register,(DAddr)obj.getDval()));
         compiler.addInstruction(new LOAD(Register.R0,register));
         compiler.addInstruction(new SUBSP(1+params.size()));
         if(getPop()){
