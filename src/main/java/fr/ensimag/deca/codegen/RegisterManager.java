@@ -4,6 +4,8 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import org.apache.commons.lang.Validate;
 
+import java.util.Random;
+
 /**
  * Created by florentin on 12/01/16.
  * Classe permettant de gérer l'état des registres
@@ -70,7 +72,14 @@ public class RegisterManager {
 		while(this.tableRegistre[i]){
 			i++;
 		}
+		tableRegistre[i]=true;
 		return Register.getR(i);
+	}
+
+	public int getGBRegisterInt(){
+		Random rand = new Random();
+		int nombreAleatoire = rand.nextInt(getTailleTable() - 3) + 3;
+		return  nombreAleatoire;
 	}
 
 	@Deprecated
