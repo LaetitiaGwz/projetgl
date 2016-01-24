@@ -80,6 +80,7 @@ public abstract class AbstractIdentifier extends AbstractLValue {
     protected abstract void codeGenInitClass(DecacCompiler compiler);
     protected abstract void codeGenInit(DecacCompiler compiler);
     protected abstract void codeGenInitMethod(DecacCompiler compiler);
+    protected abstract void codePreGenInit(DecacCompiler compiler);
 
     /**
      * If this object identifies a type, this function gets its definition from the

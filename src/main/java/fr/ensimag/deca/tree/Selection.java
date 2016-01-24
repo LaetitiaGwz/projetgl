@@ -7,6 +7,7 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -136,6 +137,8 @@ public class Selection extends AbstractLValue {
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){
             int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
             compiler.addInstruction(new PUSH(Register.getR(i)));
             register = Register.getR(i);
             setPush();
@@ -159,6 +162,8 @@ public class Selection extends AbstractLValue {
         GPRegister stock;
         if(compiler.getRegManager().noFreeRegister()){
             int i =compiler.getRegManager().getGBRegisterInt(register.getNumber());
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
             compiler.addInstruction(new PUSH(Register.getR(i)));
             stock = Register.getR(i);
             setPush();

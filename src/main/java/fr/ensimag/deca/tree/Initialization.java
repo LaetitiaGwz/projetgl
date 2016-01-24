@@ -9,10 +9,9 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.POP;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -69,6 +68,8 @@ public class Initialization extends AbstractInitialization {
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){
             int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
             compiler.addInstruction(new PUSH(Register.getR(i)));
             register = Register.getR(i);
             setPush();
@@ -92,6 +93,8 @@ public class Initialization extends AbstractInitialization {
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){
             int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
             compiler.addInstruction(new PUSH(Register.getR(i)));
             register = Register.getR(i);
             setPush();

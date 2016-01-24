@@ -5,14 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.POP;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -39,6 +33,8 @@ public class Assign extends AbstractBinaryExpr {
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){
             int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
             compiler.addInstruction(new PUSH(Register.getR(i)));
             register = Register.getR(i);
             setPush();

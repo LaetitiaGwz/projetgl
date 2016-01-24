@@ -75,6 +75,21 @@ public class DecacCompiler implements Callable {
         this.regManager.resetTableRegistre();
     }
 
+
+    private RegisterManager fakeRegManager;
+    public RegisterManager getFakeRegManager(){
+        return this.fakeRegManager;
+    }
+    private int maxFakeRegister =0;
+    public void addMaxFakeRegister(int ajout){
+        if(ajout>maxFakeRegister){
+            maxFakeRegister=ajout;
+        }
+    }
+    public int getMaxFakeRegister(){
+        return maxFakeRegister;
+    }
+
     /**
      * Gestion des labels
      */
@@ -94,6 +109,7 @@ public class DecacCompiler implements Callable {
         this.source = source;
         this.regManager = new RegisterManager(compilerOptions.getRegistre());
         this.labelManager = new LabelManager();
+        this.fakeRegManager = new RegisterManager(compilerOptions.getRegistre());
 
         /**
          * Ajouts des symboles prédéfinis
