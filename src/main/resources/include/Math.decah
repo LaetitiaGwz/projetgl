@@ -6,7 +6,7 @@
  * Liens utiles : 
  * @author Adrien Fischman, Germain Geoffroy.
  */
-class CodyAndWaite{
+class _CodyAndWaite{
     /**
     * La valeur x est la valeur qui va être réduite.
     */
@@ -55,11 +55,11 @@ class Math_deca{
     /**
     * Valeur minimale prise par les nombres flottants.
     */
-    float MIN_VALUE = power(2,-149);
+    float MIN_VALUE = power((float)(2),-149);
     /**
     * Valeur maximale prise par les nombres flottants.
     */
-    float MAX_VALUE = power(2,127);
+    float MAX_VALUE = power((float)(2),127);
     /**
     * Valeur de Pi en flottant ;
     */
@@ -74,6 +74,7 @@ class Math_deca{
     float power(float x, int y){
 
         float originalX = x;
+        float out = 0 ;
 
         if ( y==0 ) {
             return 1;
@@ -81,12 +82,12 @@ class Math_deca{
         if (y>0) {
             while ( y>1) {
                 x = x*originalX ;
-                y--;
+                y = y -1;
             }
             return x ;
         }
         else {
-            float out = power(x, -y) ;
+            out = power(x, -y) ;
             return 1/out ;
         }
     }
@@ -105,7 +106,7 @@ class Math_deca{
         
         if ( x == -MAX_VALUE || x == MAX_VALUE) {
             //valeur de retour de la méthode ulp de la classe Math de Java.
-            return power(2,104);
+            return power((float)(2),104);
         }
         //On utilise la symétrie : ulp(-x)=ulp(x).
         if(x < 0) {
@@ -114,16 +115,16 @@ class Math_deca{
 
         if ( x >= 1 ) {
             //L'exposant est décrémenté de 1 pour satisfaire la condition 2^0=1.
-            exp-- ;
-            while (x >= 1 ) {
-                x =  x/(float)2.0;
-                exp ++ ;
+            exp = exp - 1 ;
+            while (x >= 1 ){
+                x =  (float)(x/2.0);
+                exp = exp + 1 ;
             }           
         }
         else if ( x < 1 && x != 0){
             while ( x < 1) {
-                x = x*(float)2.0;
-                exp -- ;
+                x = (float)(x*2.0);
+                exp = exp - 1 ;
             }
         }
         // cas x = 0
@@ -131,7 +132,7 @@ class Math_deca{
             //valeur de retour de la méthode ulp de la classe Math de Java.
             return MIN_VALUE ; 
         }
-        return power(2,exp - 23) ;  
+        return power((float)(2),exp - 23) ;  
     }
     /**
     * Calcule la valeur absolue de x et renvoie le résultat.
@@ -139,7 +140,11 @@ class Math_deca{
     *@return flottant correspond à la valeur aboslue de x.
     */
     float abs(float x){
-        float res = (x>=0)?x:-x;
+        float res = 0 ;
+        if (x<0){
+            x=-x;
+        }
+        res = x ;
         return res;
     }
 
@@ -154,28 +159,29 @@ class Math_deca{
         //Exposant servant dans le cas x<1.
         int exp = 0 ;
         //Variables pour la recherche dichotomique.
-        float low = (float) 0.0; 
+        float low = 0; 
         float high = x;
         float mid = x;
-        float oldMid = (float) -5.0 ;
-        float epsilon = power(2,-45); 
+        float oldMid = (float) (-5.0) ;
+        float epsilon = power((float)(2),-45); 
 
         if (x<0){
-            String message = x+" est un nombre négatif, on ne considère pas les racines carrés des nombres négatifs.";
+            //String message = new String(est un nombre négatif, on ne considère pas les racines carrés des nombres négatifs.);
             //throw new arithmeticException(message);
-            System.out.println(message);
-            return (float)0.0;
+            print(x);
+            println("est un nombre négatif, on ne considère pas les racines carrés des nombres négatifs.");
+            return 0;
         }
 
-        if (x == (float)1.0 || x == (float) 0.0){
+        if (x == 1 || x == 0){
             return x ;
         }
 
         // On multiplie les nombres inférieurs à 1 par des puissances de 10 pour améliorer la précision.
         while ( x<1 ) {
-            x = x*power(10,4) ;
+            x = x*power((float)(10),4) ;
             // 4 car c'est une puissance de 2 et donc on peut retrouver la racine carré facilement.
-            exp += 4 ;
+            exp = exp + 4 ;
         }
         high = x;
         mid = x;
@@ -192,14 +198,14 @@ class Math_deca{
             }
         }
         //On prend en compte le cas x<1 en divisant par 10^{exp/2}.
-        return mid/power(10,exp/2) ;
+        return mid/power((float)(10),exp/2) ;
     }
 
     float sinTaylor(float x){
-        float coeff = (float)sqrt(2);
+        float coeff = (float)(sqrt((float)(2)));
         int k = 0 ;
         boolean minus = false ;
-        CodyAndWaite reduction = reductionCodyAndWaite(x,k);
+        _CodyAndWaite reduction = reductionCodyAndWaite(x,k);
         float res = x ;
         float temp = x ;
         int i = 1 ;
@@ -237,7 +243,7 @@ class Math_deca{
         //while ( i < 15){
             temp = - temp*power(x,2)/((2*i + 1)*2*i);
             res = res + temp ;
-            i++;
+            i = i + 1;
         }
         if(minus){
             return -res ;
@@ -252,11 +258,11 @@ class Math_deca{
     float cosTaylor(float x){
         int k = 0 ;
         boolean minus = false ;
-        CodyAndWaite reduction = reductionCodyAndWaite(x,k);
+        _CodyAndWaite reduction = reductionCodyAndWaite(x,k);
         float res = 1;
         float temp = 1;
         int i = 1;
-        float coeff = (float)sqrt(2);
+        float coeff = (float)(sqrt((float)(2)));
         x = reduction.getX();
         k = reduction.getK();
         k = k%8 ; 
@@ -287,7 +293,7 @@ class Math_deca{
             //while ( i < 15){
             temp = -temp*power(x,2)/((2*i - 1)*2*i);
             res=res+temp;
-            i ++ ;
+            i = i + 1 ;
         }
         if(minus){
             return -res ;
@@ -297,26 +303,26 @@ class Math_deca{
         }
 
     }
-    CodyAndWaite reductionCodyAndWaite(float x, int k){
-        CodyAndWaite res = new CodyAndWaite();
+    _CodyAndWaite reductionCodyAndWaite(float x, int k){
+        _CodyAndWaite res = new _CodyAndWaite();
         boolean minus = false ;
 
-        float c1 = 50*power(2,-6);
-        float c2 = 16*power(2,-12);
-        float c3 = 63*power(2,-18);
-        float c4 = 26*power(2,-24);
-        float c5 = 40*power(2,-30);
-        float c6 = 34*power(2,-36);
-        float c7 = 5*power(2,-42);
-        float c8 = 40*power(2,-48);
-        float c9 = 48*power(2,-54);
-        float c10 = 35*power(2,-60);
-        float c11 = 19*power(2,-66);
-        float c12 = 4*power(2,-72);
-        float c13 = 49*power(2,-78);
-        float c14 = 38*power(2,-84);
-        float c15 = 10*power(2,-90);
-        float c16 = 11*power(2,-96);
+        float c1 = 50*power((float)(2),-6);
+        float c2 = 16*power((float)(2),-12);
+        float c3 = 63*power((float)(2),-18);
+        float c4 = 26*power((float)(2),-24);
+        float c5 = 40*power((float)(2),-30);
+        float c6 = 34*power((float)(2),-36);
+        float c7 = 5*power((float)(2),-42);
+        float c8 = 40*power((float)(2),-48);
+        float c9 = 48*power((float)(2),-54);
+        float c10 = 35*power((float)(2),-60);
+        float c11 = 19*power((float)(2),-66);
+        float c12 = 4*power((float)(2),-72);
+        float c13 = 49*power((float)(2),-78);
+        float c14 = 38*power((float)(2),-84);
+        float c15 = 10*power((float)(2),-90);
+        float c16 = 11*power((float)(2),-96);
         if(x<PI/8.0){
             res.setX(x); 
             return res ;
@@ -327,10 +333,10 @@ class Math_deca{
             minus = !minus ;
         }
             //réduction sur [-PI/8;PI/8]
-        k = (int) (x/(Math.PI/4));
+        k = (int) (x/(PI/4));
             //on préfère être proche de 0 plutot que PI/4
-        if(x-k*Math.PI/4>Math.PI/8.0){
-            k++;
+        if(x-k*PI/4>PI/8.0){
+            k = k + 1;
         }
 
         x = x - k*c1;
@@ -368,11 +374,10 @@ class Math_deca{
         }
     }     
     float asindse(float x){
-
-            //terme n impaire seulement  
+        //terme n impaire seulement  
         int n=33;
 
-        float res=fact(n-1)/(power(2,n-1)*fact((n-1)/2)*fact((n-1)/2)*(n));
+        float res=fact(n-1)/(power((float)(2),n-1)*fact((n-1)/2)*fact((n-1)/2)*(n));
         int k=n-1;
         boolean b= true;
         while(k>=0){
@@ -382,7 +387,7 @@ class Math_deca{
                 b=false;
             }
             else{
-                res=res*x+fact(k-1)/(power(2,k-1)*fact((k-1)/2)*fact((k-1)/2)*(k));
+                res=res*x+fact(k-1)/(power((float)(2),k-1)*fact((k-1)/2)*fact((k-1)/2)*(k));
                 b=true;
             }
             k=k-1;
@@ -402,6 +407,68 @@ class Math_deca{
         else{
             return asindse(sqrt(1-power(x,2)))-PI/2;
         }
+
+    }
+    float atan(float x){
+        int minus = 1 ;
+        if (x<0){
+            minus = -1 ;
+        }
+        if(x>1.1875){
+            return minus*(PI/2-atanHermite(1/x));
+        }
+        else if (x>0.6875f){            
+            return (float)(minus*(atanHermite((x -1)/(1+x)) + PI/4.0));
+        }
+        else{
+            return minus*atanHermite(x);
+        }
+    }
+
+    float atanHermite(float x){
+        float res=
+        (power(x,55)/901120)
+        -(7*power(x,54)/221184)
+        +(377*power(x,53)/868352)
+        -(203*power(x,52)/53248)
+        +(10049*power(x,51)/417792)
+        -(11879*power(x,50)/102400)
+        +(178321*power(x,49)/401408)
+        -(68063*power(x,48)/49152)
+        +(2751463*power(x,47)/770048)
+        -(1454473*power(x,46)/188416)
+        +(10371647*power(x,45)/737280)
+        -(489259*power(x,44)/22528)
+        +(5012527*power(x,43)/176128)
+        -(1361617*power(x,42)/43008)
+        +(5016623*power(x,41)/167936)
+        -(489259*power(x,40)/20480)
+        +(10355263*power(x,39)/638976)
+        -(1454473*power(x,38)/155648)
+        +(2767847*power(x,37)/606208)
+        -(68063*power(x,36)/36864)
+        +(170129*power(x,35)/286720)
+        -(11879*power(x,34)/69632)
+        +(18241*power(x,33)/270336)
+        -(203*power(x,32)/32768)
+        -(16007*power(x,31)/507904)
+        -(7*power(x,30)/122880)
+        +(565*power(x,29)/16384)
+        -(power(x,27)/27)
+        +(power(x,25)/25)
+        -(power(x,23)/23)
+        +(power(x,21)/21)
+        -(power(x,19)/19)
+        +(power(x,17)/17)
+        -(power(x,15)/15)
+        +(power(x,13)/13)
+        -(power(x,11)/11)
+        +(power(x,9)/9)
+        -(power(x,7)/7)
+        +(power(x,5)/5)
+        -(power(x,3)/3)
+        +x;
+        return res;
 
     }
 }
