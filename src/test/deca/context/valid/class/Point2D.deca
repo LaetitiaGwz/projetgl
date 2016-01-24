@@ -9,8 +9,8 @@
 
 class Point2D{
 
-        protected int x;
-        protected int y;
+        protected int x = 2;
+        protected int y = 5;
 
         void incremente(){
            x = x + 1;

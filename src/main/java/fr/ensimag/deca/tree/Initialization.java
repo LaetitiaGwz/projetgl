@@ -88,16 +88,25 @@ public class Initialization extends AbstractInitialization {
     @Override
     protected void codeGenInitFieldFloat(DecacCompiler compiler){
         boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
-        for(int i=2;i<compiler.getCompilerOptions().getRegistre();i++){
+
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
             compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
         }
-        compiler.getRegManager().resetTableRegistre();
-        GPRegister reg =compiler.getRegManager().getGBRegister();
-        getExpression().codegenExpr(compiler,reg);
-        compiler.addInstruction(new LOAD(reg,Register.R0));
-        for(int i=compiler.getCompilerOptions().getRegistre()-1;i>1;i--){
-            compiler.addInstruction(new POP(Register.getR(i)));
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
         }
+        getExpression().codegenExpr(compiler,register);
+        compiler.addInstruction(new LOAD(register,Register.R0));
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
+
         compiler.getRegManager().setTableRegistre(table); //on les remets à la fin
 
     }

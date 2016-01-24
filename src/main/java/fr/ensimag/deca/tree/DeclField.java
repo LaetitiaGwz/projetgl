@@ -4,10 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.FLOAT;
-import fr.ensimag.ima.pseudocode.instructions.LEA;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -69,10 +66,12 @@ public class DeclField extends AbstractDeclField {
         initialization.codeGenInitFieldFloat(compiler);
         compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB),Register.R1));
         compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(this.getVarName().getFieldDefinition().getIndex(),Register.R1)));
+
     }
 
     @Override
     protected void codeGenFieldInt(DecacCompiler compiler){
+
         initialization.codeGenInitFieldInt(compiler);
         compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB),Register.R1));
         compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(this.getVarName().getFieldDefinition().getIndex(),Register.R1)));
