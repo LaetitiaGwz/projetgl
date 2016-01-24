@@ -8,6 +8,8 @@ import java.io.PrintStream;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
@@ -57,25 +59,57 @@ public class DeclVar extends AbstractDeclVar {
     protected void codeGenDecl(DecacCompiler compiler) {
         getVarName().codeGenInit(compiler);
         if(getInitialization().getExpression() != null){
-            GPRegister reg = compiler.getRegManager().getGBRegister();
-            this.getInitialization().getExpression().codegenExpr(compiler, reg);
+            boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+            GPRegister register;
+            if(compiler.getRegManager().noFreeRegister()){
+                int i =compiler.getRegManager().getGBRegisterInt();
+                compiler.addInstruction(new PUSH(Register.getR(i)));
+                register = Register.getR(i);
+                setPush();
+            }
+            else{
+                register = compiler.getRegManager().getGBRegister();
+
+            }
+            this.getInitialization().getExpression().codegenExpr(compiler, register);
             DAddr adress = this.getVarName().getNonTypeDefinition().getOperand();
-            compiler.addInstruction(new STORE(reg, adress));
-            compiler.resetTableRegistre();
+            compiler.addInstruction(new STORE(register, adress));
+            if(getPop()){
+                compiler.addInstruction(new POP(register));
+                popDone();
+            }
+            compiler.getRegManager().setTableRegistre(table);
         }
     }
 
     @Override
     protected void codeGenDeclMethod(DecacCompiler compiler) {
+
         getVarName().codeGenInitMethod(compiler);
         if(getInitialization().getExpression() != null){
+            boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
             getInitialization().codeGenInit(compiler);
-            GPRegister reg = compiler.getRegManager().getGBRegister();
-            this.getInitialization().getExpression().codegenExpr(compiler, reg);
+            GPRegister register;
+            if(compiler.getRegManager().noFreeRegister()){
+                int i =compiler.getRegManager().getGBRegisterInt();
+                compiler.addInstruction(new PUSH(Register.getR(i)));
+                register = Register.getR(i);
+                setPush();
+            }
+            else{
+                register = compiler.getRegManager().getGBRegister();
+
+            }
+            this.getInitialization().getExpression().codegenExpr(compiler, register);
             DAddr adress = this.getVarName().getNonTypeDefinition().getOperand();
-            compiler.addInstruction(new STORE(reg, adress));
-            compiler.resetTableRegistre();
+            compiler.addInstruction(new STORE(register, adress));
+            if(getPop()){
+                compiler.addInstruction(new POP(register));
+                popDone();
+            }
+            compiler.getRegManager().setTableRegistre(table);
         }
+
     }
 
     @Override

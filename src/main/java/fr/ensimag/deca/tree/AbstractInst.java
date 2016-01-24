@@ -15,6 +15,8 @@ import fr.ensimag.ima.pseudocode.Label;
  * @date 01/01/2016
  */
 public abstract class AbstractInst extends Tree {
+
+
     /**
      * Verify the instruction for contextual error.
      * 

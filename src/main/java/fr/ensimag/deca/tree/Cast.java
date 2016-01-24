@@ -67,16 +67,34 @@ public class Cast extends AbstractCast {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        expr.codeGenInst(compiler); // Calcul de l'expression
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
         // Récupération de l'expression calculée
-        GPRegister target = Register.getR(compiler.getRegManager().getLastregistre());
-        compiler.getRegManager().setEtatRegistreTrue(compiler.getRegManager().getLastregistre());
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        expr.codegenExpr(compiler,register); // Calcul de l'expression
+
         // Cast de l'expression
-        if(this.getType().isFloat())
-            compiler.addInstruction(new FLOAT(expr.getdValue(),target));
-        else
-            compiler.addInstruction(new INT(expr.getdValue(),target));
-        this.setdValue(target);
+        if(this.getType().isFloat()){
+            compiler.addInstruction(new FLOAT(register,register));
+        }
+
+        else{
+            compiler.addInstruction(new INT(register,register));
+        }
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
 
     }
 
@@ -98,23 +116,53 @@ public class Cast extends AbstractCast {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
-        GPRegister reg = compiler.getRegManager().getGBRegister();
-        expr.codegenExpr(compiler,reg);
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        expr.codegenExpr(compiler,register);
         if(this.getType().isFloat()) {
-            compiler.addInstruction(new FLOAT(reg, Register.R1));
+            compiler.addInstruction(new FLOAT(register, Register.R1));
             compiler.addInstruction(new WFLOAT());
         }else {
-            compiler.addInstruction(new INT(reg, Register.R1));
+            compiler.addInstruction(new INT(register, Register.R1));
             compiler.addInstruction(new WINT());
+        }
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
         }
     }
 
     @Override
     protected void codeGenPrintX(DecacCompiler compiler){
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
         Validate.isTrue(this.getType().isFloat());
-        GPRegister reg = compiler.getRegManager().getGBRegister();
-        expr.codegenExpr(compiler,reg);
-        compiler.addInstruction(new FLOAT(reg, Register.R1));
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        expr.codegenExpr(compiler,register);
+        compiler.addInstruction(new FLOAT(register, Register.R1));
         compiler.addInstruction(new WFLOATX());
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
     }
 }

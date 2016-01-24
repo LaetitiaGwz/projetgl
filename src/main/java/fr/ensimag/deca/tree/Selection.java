@@ -9,10 +9,7 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -134,12 +131,51 @@ public class Selection extends AbstractLValue {
     }
 
     @Override
+    protected void codeGenInst(DecacCompiler compiler){
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        obj.codegenExpr(compiler,register);
+        compiler.addInstruction(new LOAD(new RegisterOffset(field.getFieldDefinition().getIndex(),register),register));
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
+    }
+
+    @Override
     public void codegenExpr(DecacCompiler compiler,GPRegister register){
-        GPRegister stock =compiler.getRegManager().getGBRegister();
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        GPRegister stock;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt(register.getNumber());
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            stock = Register.getR(i);
+            setPush();
+        }
+        else{
+            stock = compiler.getRegManager().getGBRegister();
+
+        }
         //on ne peut appliquer this qu'à un field
         obj.codegenExpr(compiler,stock);
         //on a l'adresse de l'objet
         compiler.addInstruction(new LOAD(new RegisterOffset(field.getFieldDefinition().getIndex(),stock),register));
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
 
     }
 

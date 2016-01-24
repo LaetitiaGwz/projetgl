@@ -6,6 +6,9 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -68,6 +71,7 @@ public class DeclFieldSet extends AbstractDeclFieldSet {
 
     @Override
     protected void codeGenFieldSet(DecacCompiler compiler) {
+
         for( AbstractDeclField a : declFields.getList()){
             if(getFieldType().getName().toString().equals("float")){
                 a.codeGenFieldFloat(compiler);
@@ -77,6 +81,7 @@ public class DeclFieldSet extends AbstractDeclFieldSet {
             }
 
         }
+
     }
 
 

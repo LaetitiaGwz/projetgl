@@ -54,11 +54,24 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        int i=compiler.getRegManager().getLastregistre();
-        compiler.getRegManager().setEtatRegistreTrue(i);
-        GPRegister target= Register.getR(i);
-        this.setdValue(target);
-        compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()),target));
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()),register));
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
     @Override

@@ -19,6 +19,16 @@ import org.apache.log4j.Logger;
  *
  */
 public abstract class Tree {
+    private boolean pop = false;
+    public void setPush(){
+        pop=true;
+    }
+    public boolean getPop(){
+        return pop;
+    }
+    public void popDone(){
+        pop=false;
+    }
 
     private static final Logger LOG = Logger.getLogger(Main.class);
 

@@ -9,6 +9,8 @@ import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 /**
@@ -32,10 +34,22 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        GPRegister reg = compiler.getRegManager().getGBRegister();
-        getRightOperand().codegenExpr(compiler, reg);
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+
+        getRightOperand().codegenExpr(compiler, register);
         if(getLeftOperand().getDefinition().isField()){
-            compiler.addInstruction(new STORE(reg,
+            compiler.addInstruction(new STORE(register,
                     new RegisterOffset(getLeftOperand().getFieldDefinition().getIndex(),Register.getR(2)))); // on store dans R2
         }
         else if(getLeftOperand().getDefinition().isClass()){
@@ -49,12 +63,17 @@ public class Assign extends AbstractBinaryExpr {
         }
         else if(getLeftOperand().getDefinition().isExpression()){
             DAddr adress = this.getLeftOperand().getNonTypeDefinition().getOperand();
-            compiler.addInstruction(new STORE(reg, adress));
+            compiler.addInstruction(new STORE(register, adress));
             compiler.getRegManager().resetTableRegistre();
         }
         else{
 
         }
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
     @Override
