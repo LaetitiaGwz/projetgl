@@ -35,7 +35,7 @@ public class InstanceOf extends AbstractExpr {
         return t;
     }
 
-    @Override
+   /* @Override
     public void codegenExpr(DecacCompiler compiler, GPRegister register) {
         if(var.getDval()==null){
             throw new DecacInternalError("element vide");
@@ -44,7 +44,7 @@ public class InstanceOf extends AbstractExpr {
             boolean[] backup =compiler.getRegManager().getTableRegistre();
             GPRegister stock;
             if(compiler.getRegManager().noFreeRegister()){
-                int i =compiler.getRegManager().getGBRegisterInt(register.getNumber());
+                int i =compiler.getRegManager().getGBRegisterInt();
                 compiler.addInstruction(new PUSH(Register.getR(i)));
                 stock = Register.getR(i);
                 setPush();
@@ -61,7 +61,7 @@ public class InstanceOf extends AbstractExpr {
             compiler.addInstruction(new CMP(register,stock));
             compiler.addInstruction(new BEQ(new Label("true.instanceof."+i))); //test si egal
             compiler.addInstruction(new LOAD(new RegisterOffset(0,register),register)); // on descend
-            compiler.addInstruction(new CMP(new NullOperand(),register)); //si object instance
+            compiler.addInstruction(new CMP(new NullOperand(),stock)); //si object instance
             compiler.addInstruction(new BNE(new Label("debut.instanceof"+i))); //non, on remonte
             compiler.addInstruction(new LOAD(new ImmediateInteger(0),register));
             compiler.addInstruction(new BRA(new Label("fin.instanceof"+i)));
@@ -69,14 +69,10 @@ public class InstanceOf extends AbstractExpr {
             compiler.addInstruction(new LOAD(new ImmediateInteger(1),register));
             compiler.addLabel(new Label("fin.instanceof"+i));
             compiler.getRegManager().setTableRegistre(backup);
-            if(getPop()){
-                compiler.addInstruction(new POP(register));
-                popDone();
-            }
         }
 
     }
-
+*/
     @Override
     public DVal getDval() {
         return null;

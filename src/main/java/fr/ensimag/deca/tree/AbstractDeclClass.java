@@ -41,4 +41,6 @@ public abstract class AbstractDeclClass extends Tree {
     protected abstract void setTSTO(DecacCompiler compiler,int maxStackSize);
 
     public abstract AbstractIdentifier returnIdentifier();
+
+    public abstract int returnSP();
 }

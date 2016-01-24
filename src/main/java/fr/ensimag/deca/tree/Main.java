@@ -5,7 +5,12 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -24,6 +29,9 @@ public class Main extends AbstractMain {
         Validate.notNull(insts);
         this.declVariables = declVariables;
         this.insts = insts;
+    }
+    public int returnSP(){
+        return declVariables.returnSP();
     }
 
     @Override

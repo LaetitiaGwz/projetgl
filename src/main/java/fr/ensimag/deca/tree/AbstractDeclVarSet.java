@@ -20,4 +20,5 @@ public abstract class AbstractDeclVarSet extends Tree {
 
     protected abstract void codegenDeclVarSet(DecacCompiler compiler);
     protected abstract void codegenDeclVarSetMethod(DecacCompiler compiler);
+    public abstract int returnSP();
 }

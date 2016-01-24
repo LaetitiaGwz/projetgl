@@ -22,6 +22,11 @@ public class DeclVarSet extends AbstractDeclVarSet {
     private AbstractIdentifier type;
     private ListDeclVar declVars;
 
+    @Override
+    public int returnSP() {
+        return declVars.size();
+    }
+
     public DeclVarSet(AbstractIdentifier type, ListDeclVar declVars) {
         super();
         Validate.notNull(type);

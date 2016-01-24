@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.CompilerOptions;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.GestionSP;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -91,6 +92,10 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
+        GestionSP gestionSP = new GestionSP();
+        compiler.addInstruction(new TSTO(gestionSP.returnSP(this)));
+        compiler.addInstruction(new BOV(new Label("stack_overflow")));
+        compiler.addInstruction(new ADDSP(gestionSP.returnSP(this)));
         compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
         compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
         compiler.getRegManager().incrementGB();

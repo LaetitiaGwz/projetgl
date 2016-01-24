@@ -41,4 +41,12 @@ public class ListDeclVarSet extends TreeList<AbstractDeclVarSet> {
         }
     }
 
+    public int returnSP(){
+        int stock=0;
+        for(AbstractDeclVarSet declVarSet : getList()){
+            stock+=declVarSet.returnSP();
+        }
+        return stock;
+    }
+
 }

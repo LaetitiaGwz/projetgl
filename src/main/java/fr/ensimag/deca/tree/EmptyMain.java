@@ -21,6 +21,9 @@ public class EmptyMain extends AbstractMain {
     protected void codeGenMain(DecacCompiler compiler) {
         //on fait rien
     }
+    public int returnSP(){
+        return 0;
+    }
 
     /**
      * Contains no real information => nothing to check.

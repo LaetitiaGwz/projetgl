@@ -30,6 +30,15 @@ public class DeclClass extends AbstractDeclClass {
     protected ListDeclFieldSet declFields;
     protected ListDeclMethod methods;
 
+    public int returnSP(){
+        int stock=1;
+        if (!superClass.getName().toString().equals("Object")){
+            stock+=superClass.getClassDefinition().getNumberOfMethods();
+        }
+        stock+=methods.size();
+        return stock;
+    }
+
     // Instruction TSTO
     private Line tstoInst;
 
@@ -151,8 +160,9 @@ public class DeclClass extends AbstractDeclClass {
         tstoInst = new Line(new TSTO(1));
         compiler.add(tstoInst);
         compiler.add(new Line(new BOV(new Label("stack_overflow"))));
-
-        declFields.codeGenListDecl(compiler);
+        if(!declFields.isEmpty()){
+            declFields.codeGenListDecl(compiler);
+        }
         if(!superClass.getName().toString().equals("Object")){
             compiler.addInstruction(new PUSH(Register.R1)); // on sauvegarde R1 pour la superclass
             compiler.addInstruction(new BSR(new Label("init."+superClass.getName().toString())));

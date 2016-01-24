@@ -15,4 +15,5 @@ public abstract class AbstractMain extends Tree {
 
 
     protected abstract void verifyMain(DecacCompiler compiler) throws ContextualError;
+    public abstract int returnSP();
 }
