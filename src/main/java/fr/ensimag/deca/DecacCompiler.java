@@ -18,6 +18,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import fr.ensimag.ima.pseudocode.multipleinstructions.ErrorInstruction;
 import fr.ensimag.ima.pseudocode.multipleinstructions.InstructionList;
@@ -40,7 +46,7 @@ import org.apache.log4j.Logger;
  * @author gl41
  * @date 01/01/2016
  */
-public class DecacCompiler {
+public class DecacCompiler implements Callable {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
 
     public EnvironmentTypes getEnvTypes() {
@@ -59,11 +65,6 @@ public class DecacCompiler {
     private SymbolTable symbols;
 
     /**
-     * Permet de gérer l'état de la mémoire
-     */
-    private MemoryMap memoryMap;
-
-    /**
 	 * table des registres et données utiles
      */
     private RegisterManager regManager;
@@ -75,7 +76,7 @@ public class DecacCompiler {
     }
 
     /**
-     * Gesttion des labels
+     * Gestion des labels
      */
     LabelManager labelManager;
     public LabelManager getLblManager(){
@@ -104,11 +105,6 @@ public class DecacCompiler {
         symbols.create("boolean");
         symbols.create("float");
         symbols.create("Object");
-
-        /**
-         * Initialisation de la map mémoire
-         */
-        memoryMap = new MemoryMap();
 
     }
 
@@ -348,12 +344,8 @@ public class DecacCompiler {
         return symbols;
     }
 
-
-    /**
-     * Accesseur de la map mémoire
-     * @return map mémoire
-     */
-    public MemoryMap getMemoryMap() {
-        return memoryMap;
+    @Override
+    public Object call() throws Exception {
+        return compile();
     }
 }
