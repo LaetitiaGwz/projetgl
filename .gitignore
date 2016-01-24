@@ -17,3 +17,11 @@ planning
 
 # outputs of tests
 src/test/output
+
+#latex generation
+*.pdf
+*.aux
+*.log
+*.out
+*.toc
+
