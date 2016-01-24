@@ -217,8 +217,7 @@ public class Math_deca{
 	/**
 	* Calcule la racine carrée de x et renvoie le résultat.
 	*@param flottant dont on calcule sa racine carré.
-	*@return flottant correspond à la racine carré de x.
-	*@throws erreur soulevé si le flottant x est négatif.
+	*@return flottant correspondant à la racine carré de x.
 	*/
 	public static float sqrt(float x){
 		//Déclaration variables :
@@ -280,96 +279,28 @@ public class Math_deca{
 
 
 	/**
-	* Calcule la racine carrée de x et renvoie le résultat.
-	*@param flottant dont on calcule sa racine carré.
-	*@return flottant correspond à la racine carré de x.
-	*@throws erreur soulevé si le flottant x est négatif.
+	* Calcule le sinus de x et renvoie le résultat.
+	*@param flottant dont on calcule son sinus.
+	*@return flottant correspondant au sinus de x.
 	*/
 	public static float sinTaylor(float x){
-		//réduction sur ]-PI;PI]
-		// int k = 0 ;
-		// x = reductionCodyAndWaite(x,k) ;
-		// // if ( x == PI || x == -PI){
-		// // 	return (float) 0.0 ;
-		// // }
-		// // if ( x == PI_2 || x == -PI_2){
-		// // 	if ( x>0){
-		// // 		return (float) 1.0 ;
-		// // 	}
-		// // 	else {
-		// // 		return (float) -1.0;
-		// // 	}
-		// // }
-
-		// //réduction sur ]-PI_2; PI/2]
-		// boolean minus = false;
-		// // float c1 = (float)3.1415863; // meilleur valeur : 3.1415863
-		// // float c2 = (float)0.00000635358;//0.00000635358
-		// // float c1 = (float)3.125; // meilleur valeur : 3.125
-		// // float c2 = (float)0.016571045;// 0.016571045;
-		// // float c3 = (float)0.00002160858;//0.00002160858
-		// float c1 = (float)13176796*power(2,-22);
-		// float c2 = (float)-11464520*power(2,-45);
-		// float c3 = (float)-15186280*power(2,-67);
-		// if ( x > PI_2 || x < -PI_2){
-		// 	minus = !minus;
-		// 	if(x>0){
-		// 		x = x-c1;
-		// 		x = x-c2;
-		// 		x = x-c3;
-		// 	}
-		// 	else{
-		// 		x = x+c1;
-		// 		x = x+c2;
-		// 		x = x+c3;
-		// 	}
-		// }
-		// //réduction sur [-PI/4;PI/4]
-		// // c1 = (float)1.5707855 ; // meilleur valeur :1.5707855
-		// // c2 = (float)0.00001082679; // 0.00001082679
-		// // test : 618 erreurs
-		// c1 = 13176796*power(2,-23);
-		// c2 = -11464520*power(2,-46);
-		// c3 = -15186280*power(2,-68);
-		// //if ( x>PI_4 ) {
-		// if ( x>c1/2 ) {	
-		// 	x = x -c1;
-		// 	x = x -c2;
-		// 	x = x -c3;
-		// 	if(minus){
-		// 		return -cosTaylor(x);
-		// 	}
-		// 	else{
-		// 		return cosTaylor(x);
-		// 	}		
-		// }
-		// //else if ( x<-PI_4){
-		// else if ( x<-c1/2){	
-		// 	x = x + c1;
-		// 	x = x + c2;
-		// 	x = x + c3;
-
-		// 	if(minus){
-		// 		return cosTaylor(x);
-		// 	}
-		// 	else{
-		// 		return -cosTaylor(x);
-		// 	}
-		// }
-		// //réduction sur [0;PI/4]
-		// if (x<0){
-		// 	minus = !minus;
-		// 	x=-x;
-		// }
+		//Définition des variables :
 		float coeff = (float)sqrt(2);
 		int k = 0 ;
 		boolean minus = false ;
-		CodyAndWaite reduction = reductionCodyAndWaite(x,k);
+		CodyAndWaite reduction = reductionCodyAndWaite(x);
 		float res = x ;
 		float temp = x ;
 		int i = 1 ;
+
+		/*On se ramène à l'intervalle ]-PI/8;PI/8[ 
+		par une réduction de Cody and Waite */
 		x = reduction.getX();
 		k = reduction.getK();
+
+		/*En fonction de l'octant donné par  : k mod 8
+		* on décompose le sinus en fonction du sinus et du cosinus.
+		*/
 		k=k%8;
 		coeff = 1/coeff ;
 		if(k==1){
@@ -394,11 +325,10 @@ public class Math_deca{
 			return (float)(coeff*(sinTaylor(x)-cosTaylor(x)));
 		}
 		
-		//Développement en série entière.
+		//On calcule le sinus grâce à son développement en série entière.
 		res = x;
 		temp = x;
 		while ( abs(temp) > ulp(res)){
-		//while ( i < 15){
 			temp = - temp*power(x,2)/((2*i + 1)*2*i);
 			res = res + temp ;
 			i++;
@@ -410,129 +340,29 @@ public class Math_deca{
 			return res ;
 		}
 	}
-
+	/**
+	* Calcule le cosinus de x et renvoie le résultat.
+	*@param flottant dont on calcule son cosinus.
+	*@return flottant correspondant au cosinus de x.
+	*/
 	public static float cosTaylor(float x){
-		// zone de test 
-		// supposons x >0
-		// float xt =x;
-		// int k = (int) (x/(Math.PI/4));
-		// if(x-k*Math.PI/4>Math.PI/8.0)
-		// 	k++;
-		// // 110010 010000 111111 011010 101000 100010 000101 101000 110000 100011 0100
-		// // 1100010011000110011000101000101110000000110111000001110011010001
-		// float c11 = (0b110010)*power(2,-6);
-		// float c21 = (0b010000)*power(2,-12);
-		// float c31 = (0b111111)*power(2,-18);
-		// float c41 = (0b011010)*power(2,-24);
-		// float c51 = (0b101000)*power(2,-30);
-		// float c61 = (0b100010)*power(2,-36);
-		// float c71 = (0b000101)*power(2,-42);
-		// float c81 = (0b101000)*power(2,-48);
-		// float c91 = (0b110000)*power(2,-54);
-		// float c101 = (0b100011)*power(2,-60);
-		// float c111 = (0b010011)*power(2,-66);
-		// // float c11 = (0b110)*power(2,-3);
-		// // float c11 = (0b110)*power(2,-3);
-		// // float c11 = (0b110)*power(2,-3);
-		// // float c11 = (0b110)*power(2,-3);
-		// // float c11 = (0b110)*power(2,-3);
-		// x= x-k*c11;
-		// x= x-k*c21;
-		// x= x-k*c31;
-		// x= x-k*c41;
-		// x= x-k*c51;
-		// x= x-k*c61;
-		// x= x-k*c71;
-		// x= x-k*c81;
-		// x= x-k*c91;
-		// x= x-k*c101;
-		// x= x-k*c111;
-		// System.out.println("my tests : " +k);
-		// System.out.println("java cos " + Math.cos(xt));
-		// System.out.println("my cos"+ sinTaylor(x));
-		// float diff =Math.abs(Math_deca.sinTaylor(x) - (float)Math.cos(xt));
-		// diff/=Math.ulp(Math.cos(xt));
-		// System.out.println("diff : "+diff);
-		// System.out.println("fin de mes tests:");
-
-		//	fin zone 
-
-		// //réduction sur ]-PI;PI]
-		// x = reductionCodyAndWaite(x) ;
-		// // if ( x == PI || x == -PI){
-		// // 	return (float) -1.0 ;
-		// // }
-		// // if ( x == PI_2 || x == -PI_2){
-		// // 	return (float) 0.0 ;
-		// // }
-		// //réduction sur ]-PI/2; PI/2]
-		// boolean minus = false;
-		// // float c1 = (float)3.125; // meilleur valeur : 3.125
-		// // float c2 = (float)0.016571045;// 0.016571045;
-		// // float c3 = (float)0.00002160858;//0.00002160858
-		// float c1 = 13176796*power(2,-22);
-		// float c2 = -11464520*power(2,-45);
-		// float c3 = -15186280*power(2,-67);
-
-		// if ( x > PI_2 || x < -PI_2 ){
-		// 	minus = !minus;
-		// 	if (x>0){
-		// 		x = x - c1;
-		// 		x = x - c2;
-		// 		x = x - c3;
-		// 	}
-		// 	else{
-		// 		x = x + c1;
-		// 		x = x + c2;
-		// 		x = x + c3;
-		// 	}
-		// }
-		// System.out.println("valeur x : " + x);
-		// //réduction sur [-PI/4;PI/4]
-		// //meilleurs valeurs :
-		// // c1 = (float)3.140625/2;
-		// // c2 = (float)9.67653589793E-4/2;
-		// // c3 = 0f;
-		// c1 = 13176796*power(2,-23);
-		// c2 = -11464520*power(2,-46);
-		// c3 = -15186280*power(2,-68);
-		
-		// if ( x > PI_4 ) {
-		// 	x = x - c1;
-		// 	x = x - c2;
-		// 	x = x - c3;
-		// 	if(minus){
-		// 		return sinTaylor(x);
-		// 	}
-		// 	else{
-
-		// 		return -sinTaylor(x);
-		// 	}
-		// }
-		// else if ( x<-PI_4 ){
-		// 	x = x + c1;
-		// 	x = x + c2;
-		// 	x = x + c3;
-		// 	if(minus){
-		// 		return -sinTaylor(x);
-		// 	}
-		// 	else{
-		// 		return sinTaylor(x);
-		// 	}
-		// }
-		// if (x<0){
-		// 	x = -x;
-		// }
-
+		//Déclaration variable : 
 		int k = 0 ;
 		boolean minus = false ;
-		CodyAndWaite reduction = reductionCodyAndWaite(x,k);
+		CodyAndWaite reduction = reductionCodyAndWaite(x);
 		float res = 1;
 		float temp = 1;
 		int i = 1;
 		float coeff = (float)sqrt(2);
+
+		/*On se ramène à l'intervalle ]-PI/8;PI/8[ 
+		par une réduction de Cody and Waite */
 		x = reduction.getX();
 		k = reduction.getK();
+
+		/*En fonction de l'octant donné par  : k mod 8
+		* on décompose le cosinus en fonction du sinus et du cosinus.
+		*/
 		k = k%8 ; 
 		coeff = 1/coeff ;
 		if(k==1){
@@ -558,9 +388,8 @@ public class Math_deca{
 
 		}
 		
-		//Développement en série entière.
-		 while ( abs(temp)> ulp(res) ) {
-		//while ( i < 15){
+		//On calcule le cosinus grâce à son développement en série entière.
+		 while ( abs(temp)> ulp(res) ){
 			temp = -temp*power(x,2)/((2*i - 1)*2*i);
 			res=res+temp;
 			i ++ ;
@@ -574,29 +403,18 @@ public class Math_deca{
 
 	}
 
-	//cf : 
-	//http://www.vinc17.net/research/papers/arithflottante.pdf
-	// Réduction  l'intervalle ]-PI,PI]
-	// retourne un nb positif
-	public static CodyAndWaite reductionCodyAndWaite(float x, int k){
+	/**
+	* Fait la réduction du flottant x sur [-PI/8;PI/8].
+	*@param flottant dont on fait la réduction.
+	*@return objet de le classe CodyAndWaite qui comprend le flottant réduit et son coefficient de réduction.
+	*/	
+	public static CodyAndWaite reductionCodyAndWaite(float x){
+		//Déclaration des variables :
+		int k = 0 ;
 		CodyAndWaite res = new CodyAndWaite();
 		boolean minus = false ;
-		// float c1 = (0b110010)*power(2,-6);
-		// float c2 = (0b010000)*power(2,-12);
-		// float c3 = (0b111111)*power(2,-18);
-		// float c4 = (0b011010)*power(2,-24);
-		// float c5 = (0b101000)*power(2,-30);
-		// float c6 = (0b100010)*power(2,-36);
-		// float c7 = (0b000101)*power(2,-42);
-		// float c8 = (0b101000)*power(2,-48);
-		// float c9 = (0b110000)*power(2,-54);
-		// float c10 = (0b100011)*power(2,-60);
-		// float c11 = (0b010011)*power(2,-66);
-		// float c12 = (0b000100)*power(2,-72);
-		// float c13 = (0b110001)*power(2,-78);
-		// float c14 = (0b100110)*power(2,-84);
-		// float c15 = (0b001010)*power(2,-90);
-		// float c16 = (0b001011)*power(2,-96);
+
+		// Définition des constante correspondant à la méthode de Cody and Waite pour C = PI/4.
 		float c1 = 50*power(2,-6);
 		float c2 = 16*power(2,-12);
 		float c3 = 63*power(2,-18);
@@ -624,11 +442,13 @@ public class Math_deca{
 		}
 		//réduction sur [-PI/8;PI/8]
 		k = (int) (x/(Math.PI/4));
-		//on préfère être proche de 0 plutot que PI/4
+
+		//L'approximation sera meilleur si l'on est proche de 0 plutot que PI/8
 		if(x-k*Math.PI/4>Math.PI/8.0){
 			k++;
 		}
 		
+
 		x = x - k*c1;
 		x = x - k*c2;
 		x = x - k*c3;
@@ -647,6 +467,7 @@ public class Math_deca{
 		x = x  - k*c16;
 
 		res.setK(k);
+
 		if(minus){
 			res.setX(-x);
 		}
@@ -655,7 +476,11 @@ public class Math_deca{
 		}
 		return res ;
 	}
-
+	/**
+	*Calcule n!
+	*@param int dont on calcule sa factorielle.
+	*@return flottant correpsond à n! .
+	*/
 	public static float fact(int n){
 		if (n==1 || n==0){
 			return 1;
@@ -665,9 +490,14 @@ public class Math_deca{
 		}
 	}     
 
+	/**
+	*Calcule l'arcsinus du flottant x par un développement en série entière.
+	*@param flottant dont on veut calculer son arcsinus par un développement en série entière.
+	*@return flottant correspond à l'arcsinus de x.
+	*/
 	public static float asindse(float x){
 
-		//terme n impaire seulement  
+		//terme n impaire seulement.  
 		int n=33;
 
 		float res=fact(n-1)/(power(2,n-1)*fact((n-1)/2)*fact((n-1)/2)*(n));
@@ -688,9 +518,15 @@ public class Math_deca{
 		}
 		return res;
 	}
-	
+	/**
+	*Calcule l'arcsinus du flottant x.
+	*@param flottant dont on veut calculer son arcsinus.
+	*@return flottant correspond à l'arcsinus de x.
+	*/
 	public static float asin(float x){
-
+		/*On utilise la formule de trigonométrie : arcsin(x) + arcsin( sqrt( 1 - x^2) ) = +- PI/2 , 
+		* afin de se ramener à des petits angles pour utiliser le développement en série entière.
+		*/
 		if(abs(x)<=0.72){
 			return asindse(x);
 		}
@@ -702,11 +538,18 @@ public class Math_deca{
 		}
 
 	}
+	/**
+	*Calcule l'arctangente du flottant x.
+	*@param flottant dont on veut calculer son arctangente.
+	*@return flottant correspond à l'arctangente de x.
+	*/
 	public static float atan(float x){
 		int minus = 1 ;
+		//Par imparité on se ramène à [O;+infini]
 		if (x<0){
 			minus = -1 ;
 		}
+		//On utilise la formule de trigonométrie : atan(x) + atan(1/x) = +-PI/2.
 		if(x>1.1875){
 			return minus*(PI/2-atanHermite(1/x));
 		}
@@ -716,19 +559,12 @@ public class Math_deca{
 		else{
 			return minus*atanHermite(x);
 		}
-		// if (x<0){
-		// 	minus = -1 ;
-		// }
-		// if(x>1.1875){
-		// 	return minus*(PI/2-atandse(1/x));
-		// }
-		// else if (x>0.6875f){			
-		// 	return minus*(atandse((x -1f)/(1f+x)) + PI/4.0f);
-		// }
-		// else{
-		// 	return minus*atandse(x);
-		// }
 	}
+	/**
+	*Calcule l'arctangente du flottant x grâce aux polynômes de Hermite.
+	*@param flottant dont on veut calculer son arctangente.
+	*@return flottant correspond à l'arctangente de x.
+	*/
 	public static float atanHermite(float x){
 		float res=
         (power(x,55)/901120f)

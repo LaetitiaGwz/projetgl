@@ -200,17 +200,29 @@ class Math_deca{
         //On prend en compte le cas x<1 en divisant par 10^{exp/2}.
         return mid/power((float)(10),exp/2) ;
     }
-
+    /**
+    * Calcule le sinus de x et renvoie le résultat.
+    *@param flottant dont on calcule son sinus.
+    *@return flottant correspondant au sinus de x.
+    */
     float sinTaylor(float x){
+        //Définition des variables :
         float coeff = (float)(sqrt((float)(2)));
         int k = 0 ;
         boolean minus = false ;
-        _CodyAndWaite reduction = reductionCodyAndWaite(x,k);
+        _CodyAndWaite reduction = reductionCodyAndWaite(x);
         float res = x ;
         float temp = x ;
         int i = 1 ;
+
+        /*On se ramène à l'intervalle ]-PI/8;PI/8[ 
+        par une réduction de Cody and Waite */
         x = reduction.getX();
         k = reduction.getK();
+
+        /*En fonction de l'octant donné par  : k mod 8
+        * on décompose le sinus en fonction du sinus et du cosinus.
+        */
         k=k%8;
         coeff = 1/coeff ;
 
@@ -236,11 +248,10 @@ class Math_deca{
             return (float)(coeff*(sinTaylor(x)-cosTaylor(x)));
         }
 
-        //Développement en série entière.
+        //On calcule le sinus grâce à son développement en série entière.
         res = x;
         temp = x;
         while ( abs(temp) > ulp(res)){
-        //while ( i < 15){
             temp = - temp*power(x,2)/((2*i + 1)*2*i);
             res = res + temp ;
             i = i + 1;
@@ -254,17 +265,29 @@ class Math_deca{
 
     }
 
-
+    /**
+    * Calcule le cosinus de x et renvoie le résultat.
+    *@param flottant dont on calcule son cosinus.
+    *@return flottant correspondant au cosinus de x.
+    */
     float cosTaylor(float x){
+        //Déclaration variable : 
         int k = 0 ;
         boolean minus = false ;
-        _CodyAndWaite reduction = reductionCodyAndWaite(x,k);
+        _CodyAndWaite reduction = reductionCodyAndWaite(x);
         float res = 1;
         float temp = 1;
         int i = 1;
         float coeff = (float)(sqrt((float)(2)));
+
+        /*On se ramène à l'intervalle ]-PI/8;PI/8[ 
+        par une réduction de Cody and Waite */
         x = reduction.getX();
         k = reduction.getK();
+
+        /*En fonction de l'octant donné par  : k mod 8
+        * on décompose le cosinus en fonction du sinus et du cosinus.
+        */
         k = k%8 ; 
         coeff = 1/coeff ;
         if(k==1){
@@ -288,7 +311,8 @@ class Math_deca{
         else if (k==7){
             return (float)(coeff*(cosTaylor(x) + sinTaylor(x)));
         }
-            //Développement en série entière.
+
+        //On calcule le cosinus grâce à son développement en série entière.
         while ( abs(temp)> ulp(res) ) {
             //while ( i < 15){
             temp = -temp*power(x,2)/((2*i - 1)*2*i);
@@ -303,10 +327,17 @@ class Math_deca{
         }
 
     }
-    _CodyAndWaite reductionCodyAndWaite(float x, int k){
+    /**
+    * Fait la réduction du flottant x sur [-PI/8;PI/8].
+    *@param flottant dont on fait la réduction.
+    *@return objet de le classe CodyAndWaite qui comprend le flottant réduit et son coefficient de réduction.
+    */  
+    _CodyAndWaite reductionCodyAndWaite(float x){
+        //Déclaration des variables :
+        int k = 0;
         _CodyAndWaite res = new _CodyAndWaite();
         boolean minus = false ;
-
+        // Définition des constante correspondant à la méthode de Cody and Waite pour C = PI/4.
         float c1 = 50*power((float)(2),-6);
         float c2 = 16*power((float)(2),-12);
         float c3 = 63*power((float)(2),-18);
@@ -332,9 +363,9 @@ class Math_deca{
             x = -x;
             minus = !minus ;
         }
-            //réduction sur [-PI/8;PI/8]
+        //réduction sur [-PI/8;PI/8]
         k = (int) (x/(PI/4));
-            //on préfère être proche de 0 plutot que PI/4
+        //L'approximation sera meilleur si l'on est proche de 0 plutot que PI/8
         if(x-k*PI/4>PI/8.0){
             k = k + 1;
         }
@@ -365,6 +396,12 @@ class Math_deca{
         }
         return res ;
     }
+
+    /**
+    *Calcule n!
+    *@param int dont on calcule sa factorielle.
+    *@return flottant correpsond à n! .
+    */
     float fact(int n){
         if (n==1 || n==0){
             return 1;
@@ -372,7 +409,13 @@ class Math_deca{
         else{
             return n*fact(n-1);
         }
-    }     
+    }  
+
+    /**
+    *Calcule l'arcsinus du flottant x par un développement en série entière.
+    *@param flottant dont on veut calculer son arcsinus par un développement en série entière.
+    *@return flottant correspond à l'arcsinus de x.
+    */   
     float asindse(float x){
         //terme n impaire seulement  
         int n=33;
@@ -395,9 +438,15 @@ class Math_deca{
         }
         return res;
     }
-
+    /**
+    *Calcule l'arcsinus du flottant x.
+    *@param flottant dont on veut calculer son arcsinus.
+    *@return flottant correspond à l'arcsinus de x.
+    */
     float asin(float x){
-
+        /*On utilise la formule de trigonométrie : arcsin(x) + arcsin( sqrt( 1 - x^2) ) = +- PI/2 , 
+        * afin de se ramener à des petits angles pour utiliser le développement en série entière.
+        */
         if(abs(x)<=0.72){
             return asindse(x);
         }
@@ -409,11 +458,18 @@ class Math_deca{
         }
 
     }
+    /**
+    *Calcule l'arctangente du flottant x.
+    *@param flottant dont on veut calculer son arctangente.
+    *@return flottant correspond à l'arctangente de x.
+    */
     float atan(float x){
         int minus = 1 ;
+        //Par imparité on se ramène à [O;+infini]
         if (x<0){
             minus = -1 ;
         }
+        //On utilise la formule de trigonométrie : atan(x) + atan(1/x) = +-PI/2.
         if(x>1.1875){
             return minus*(PI/2-atanHermite(1/x));
         }
@@ -424,7 +480,11 @@ class Math_deca{
             return minus*atanHermite(x);
         }
     }
-
+    /**
+    *Calcule l'arctangente du flottant x grâce aux polynômes de Hermite.
+    *@param flottant dont on veut calculer son arctangente.
+    *@return flottant correspond à l'arctangente de x.
+    */
     float atanHermite(float x){
         float res=
         (power(x,55)/901120)
