@@ -1,0 +1,42 @@
+// Description:
+//    Test d'appels d'une méthode avec beaucoup (trop !) d'arguments
+//
+// Resultats:
+//    ima_output: okokok
+//
+
+class A {
+    void printOk() {
+        print("ok");
+    }
+
+    void calcul() {
+        if ((3 * 4) + (9 * (5 + 4 * 9)) + 1 + 33 * 2323 * (4 + 5 + 9) > 0) {
+            print("ok");
+        } else {
+            print("non");
+        }
+
+    }
+}
+
+class Arguments {
+    void insane(A a1,A a2,A a3,A a4,A a5,A a6,A a7,A a8,A a9,
+                A a10,A a11,A a12,A a13,A a14,A a15,A a16,A a17,A a18,
+                A a19,A a20,A a21,A a22,A a23,A a24,A a25,A a26,A a27,
+                A a28,A a29,A a30,A a31,A a32,A a33,A a34,A a36,A a37
+                ){
+        a1.printOk();
+        a28.calcul();
+        a37.printOk();
+    }
+}
+
+{
+        Arguments arg = new Arguments();
+        A a = new A();
+        arg.insane(a,a,a,a,a,a,a,a,a,
+                a,a,a,a,a,a,a,a,a,
+                a,a,a,a,a,a,a,a,a,
+                a,a,a,a,a,a,a,a,a);
+}
