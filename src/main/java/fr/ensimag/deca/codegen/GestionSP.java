@@ -10,7 +10,7 @@ import fr.ensimag.deca.tree.Program;
  */
 public class GestionSP {
 
-    private int SP=0;
+    private int SP=2;
     public int returnSP(Program programm){
         ListDeclClass classe= programm.getClasses();
         AbstractMain main = programm.getMain();

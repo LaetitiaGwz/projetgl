@@ -35,7 +35,7 @@ public class InstanceOf extends AbstractExpr {
         return t;
     }
 
-   /* @Override
+    @Override
     public void codegenExpr(DecacCompiler compiler, GPRegister register) {
         if(var.getDval()==null){
             throw new DecacInternalError("element vide");
@@ -56,11 +56,12 @@ public class InstanceOf extends AbstractExpr {
             int i=compiler.getLblManager().getIf();
             compiler.getLblManager().incrementIf();
             compiler.addInstruction(new LOAD(var.getDval(),register));
+            compiler.addInstruction(new LOAD(new RegisterOffset(0,register),register));
             compiler.addInstruction(new LOAD(className.getClassDefinition().getOperand(),stock));
             compiler.addLabel(new Label("debut.instanceof"+i));
             compiler.addInstruction(new CMP(register,stock));
             compiler.addInstruction(new BEQ(new Label("true.instanceof."+i))); //test si egal
-            compiler.addInstruction(new LOAD(new RegisterOffset(0,register),register)); // on descend
+            compiler.addInstruction(new LOAD(register,register)); // on descend
             compiler.addInstruction(new CMP(new NullOperand(),stock)); //si object instance
             compiler.addInstruction(new BNE(new Label("debut.instanceof"+i))); //non, on remonte
             compiler.addInstruction(new LOAD(new ImmediateInteger(0),register));
@@ -68,11 +69,16 @@ public class InstanceOf extends AbstractExpr {
             compiler.addLabel(new Label("true.instanceof."+i));
             compiler.addInstruction(new LOAD(new ImmediateInteger(1),register));
             compiler.addLabel(new Label("fin.instanceof"+i));
+            if(getPop()){
+                compiler.addInstruction(new POP(register));
+                popDone();
+            }
             compiler.getRegManager().setTableRegistre(backup);
         }
 
+
     }
-*/
+
     @Override
     public DVal getDval() {
         return null;

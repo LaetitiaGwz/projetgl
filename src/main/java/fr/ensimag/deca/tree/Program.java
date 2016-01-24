@@ -93,9 +93,10 @@ public class Program extends AbstractProgram {
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
         GestionSP gestionSP = new GestionSP();
-        compiler.addInstruction(new TSTO(gestionSP.returnSP(this)));
+        int SP=gestionSP.returnSP(this);
+        compiler.addInstruction(new TSTO(SP));
         compiler.addInstruction(new BOV(new Label("stack_overflow")));
-        compiler.addInstruction(new ADDSP(gestionSP.returnSP(this)));
+        compiler.addInstruction(new ADDSP(SP));
         compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
         compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(compiler.getRegManager().getGB(),Register.GB)));
         compiler.getRegManager().incrementGB();
