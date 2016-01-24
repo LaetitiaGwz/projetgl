@@ -263,7 +263,7 @@ public class Identifier extends AbstractIdentifier {
 
         }
         else if(getDefinition().isExpression()){
-            compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(), register));
+            compiler.addInstruction(new LOAD(getNonTypeDefinition().getOperand(), register));
         }
         else{
 
