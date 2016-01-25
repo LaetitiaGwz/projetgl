@@ -41,7 +41,16 @@ le code assembleur généré par le compilateur.
 Les nombres entiers étants reconnus avec la fonction de l'api Java Integer.parseInt(), ils doivent être compris entre $-2^{-31}$ et $2^{31} - 1$. \\
 Pareil pour les nombres flottants, qui sont reconnus avec la fonction Float.parsefloat(). Ils doivent êtres compris entre  $2^{-149}$et $(2-2^{-23})2^{127}$.
 
-\item 
+\item Les classes sont soumises à plusieurs limitations. Tout d'abord il est impossible de déclarer des champs et des méthodes ayant le même nom. Les champs
+peuvent être définis comme protégés ou publiques, mais ils ne peuvent pas être restreints à la classe elle-même. Les méthodes peuvent
+ être redéfinis dans les sous-classe mais uniquement avec la même signature et un type de retour identique ou un sous-type de celle
+ définie dans la superclasse. Lorsqu'elle sont appelée, ces méthode peuvent avoir comme paramètre des sous-types de ceux définis.
+
+\item Le compilateur ne gère pas les récursions très profondes. A partir de plusieurs dizaines d'appels, un dépassement de pile est indiqué.
+
+\item Les casts implicites ne sont pas toujours interprétés. Dans certains cas comme les paramètres d'appel de fonction, il
+est préférable d'expliciter les cast pour de meilleurs résultats.
+
 \end{itemize}
 
 \section{Limitations de la bibliothèque math}
