@@ -298,35 +298,35 @@ class Math{
         }
         else if (k==3){
          return (-coeff*(cos(x)+sin(x)));
-     }
-     else if (k==4){
-        minus = !minus ;
-    }
-    else if (k==5){
-        return (coeff*(-cos(x)+sin(x)));
-    }
-    else if (k==6){
-        return sin(x);
-    }
-    else if (k==7){
-        return (coeff*(cos(x) + sin(x)));
-    }
+        }
+         else if (k==4){
+            minus = !minus ;
+        }
+        else if (k==5){
+            return (coeff*(-cos(x)+sin(x)));
+        }
+        else if (k==6){
+            return sin(x);
+        }
+        else if (k==7){
+            return (coeff*(cos(x) + sin(x)));
+        }
 
         //On calcule le cosinus grâce à son développement en série entière.
-    while ( _abs(temp)> ulp(res) ) {
+        while ( _abs(temp)> ulp(res) ) {
             //while ( i < 15){
-        temp = -temp*_power(x,2)/((2*i - 1)*2*i);
-        res=res+temp;
-        i = i + 1 ;
-    }
-    if(minus){
-        return -res ;
-    }
-    else{
-        return res ;
-    }
+            temp = -temp*_power(x,2)/((2*i - 1)*2*i);
+            res=res+temp;
+            i = i + 1 ;
+        }
+        if(minus){
+            return -res ;
+        }
+        else{
+            return res ;
+        }
 
-}
+    }
     /**
     * Fait la réduction du flottant x sur [-PI/8;PI/8].
     *@param flottant dont on fait la réduction.
@@ -451,7 +451,7 @@ class Math{
         if(_abs(x)>1){
           println("Le domaine de définition de l'arcsinus est [-1;1].");
           return 1/0 ;
-      }	    
+        }	    
         /*On utilise la formule de trigonométrie : arcsin(x) + arcsin( _sqrt( 1 - x^2) ) = +- PI/2 , 
         * afin de se ramener à des petits angles pour utiliser le développement en série entière.
         */
