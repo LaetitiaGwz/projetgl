@@ -1,5 +1,8 @@
 package fr.ensimag.ima.pseudocode;
 
+import fr.ensimag.deca.codegen.RegisterManager;
+import org.apache.commons.lang.Validate;
+
 /**
  * General Purpose Register operand (R0, R1, ... R15).
  * 
@@ -20,4 +23,20 @@ public class GPRegister extends Register {
         super(name);
         this.number = number;
     }
+
+    /**
+     *
+     * @param regManager the register manager
+     * @return true if the curent register is the last register (ie  there is no
+     * more free register)
+     */
+    public boolean isLastRegister(RegisterManager regManager){
+        return this.getNumber() == regManager.getTailleTable()-1;
+    }
+
+    public GPRegister next(){
+        Validate.isTrue(getNumber() < 16);
+        return getR(getNumber() + 1);
+    }
+
 }

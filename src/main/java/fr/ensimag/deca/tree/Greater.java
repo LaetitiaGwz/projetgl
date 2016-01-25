@@ -2,9 +2,11 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BGT;
 import fr.ensimag.ima.pseudocode.instructions.BLE;
+import fr.ensimag.ima.pseudocode.instructions.SGT;
 
 /**
  *
@@ -17,6 +19,11 @@ public class Greater extends AbstractOpIneq {
         super(leftOperand, rightOperand);
     }
 
+    @Override
+    protected void fetchCond(DecacCompiler compiler, GPRegister register) {
+        compiler.addInstruction(new SGT(register));
+    }
+
 
     @Override
     protected String getOperatorName() {
@@ -25,12 +32,12 @@ public class Greater extends AbstractOpIneq {
 
     @Override
     protected void codeGenCMPOP(DecacCompiler compiler){
-        compiler.addInstruction(new BLE(compiler.getLabel()));
+        compiler.addInstruction(new BLE(compiler.getLblManager().getLabelFalse()));
     }
 
     @Override
     protected void codeGenNot(DecacCompiler compiler){
-        compiler.addInstruction(new BGT(compiler.getLabel()));
+        compiler.addInstruction(new BGT(compiler.getLblManager().getLabelFalse()));
     }
 
 

@@ -1,16 +1,14 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.GPRegister;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -30,16 +28,18 @@ public abstract class AbstractExpr extends AbstractInst {
 
     private DVal dValue;
 
+    @Deprecated
     public void setdValue(DVal dval){
         this.dValue =dval;
         this.setUtilisation();
     }
 
+    @Deprecated
     public DVal getdValue(){
         return this.dValue;
     }
 
-    private boolean utilisation= false;
+    private boolean utilisation = false;
 
     public void setUtilisation(){
         this.utilisation= true;
@@ -119,9 +119,19 @@ public abstract class AbstractExpr extends AbstractInst {
     protected  void codeGenPrint(DecacCompiler compiler){
 
     }
+    protected  void codePreGenPrint(DecacCompiler compiler){
+
+    }
 
     protected  void codeGenPrintX(DecacCompiler compiler){
-        codeGenPrint(compiler);
+    }
+    protected  void codePreGenPrintX(DecacCompiler compiler){
+    }
+    protected void codePreGenExpr(DecacCompiler compiler){
+
+    }
+    protected void codePreGenInst(DecacCompiler compiler){
+
     }
 
 
@@ -129,15 +139,12 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler) {
     }
 
-    protected void codeGenInit(DecacCompiler compiler){
+    public void codegenExpr(DecacCompiler compiler,GPRegister register){
 
     }
 
-    protected void codeGenOPRight(DecacCompiler compiler){
-
-    }
-    protected void codeGenOPLeft(DecacCompiler compiler){
-
+    public DVal getDval(){
+       return null;
     }
     protected void codeGenNot(DecacCompiler compiler){
 
@@ -146,15 +153,16 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenCMP(DecacCompiler compiler){
         // pour les booleens
     }
-    protected void codeGenCMPNot(DecacCompiler compiler){
-        // pour le or
+    protected void codePreGenCMP(DecacCompiler compiler){
+        // pour les booleens
     }
 
     protected  void codeGenCMPOP(DecacCompiler compiler){
         
     }
+    protected  void codePreGenCMPOP(DecacCompiler compiler){
 
-
+    }
 
     @Override
     protected void decompileInst(IndentPrintStream s) {
@@ -181,12 +189,31 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-    protected boolean subtype(EnvironmentExp env, Type parent, Type child) {
-        return (parent.sameType(child));
+    public static boolean subtype(Type parent, Type child) {
+
+        if(parent.sameType(child)) {
+            return true;
+        }
+
+        if(parent.isClass() && child.isNull()) {
+            return true;
+        }
+
+        if(child.isClass()) {
+            if (parent.getName().getName().equals("Object")) {
+                return true;
+            }
+
+            ClassDefinition superclassDef = ((ClassType) child).getDefinition().getSuperClass();
+            if (superclassDef != null && subtype(parent, superclassDef.getType())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected boolean assignCompatible(EnvironmentExp env, Type object, Type value) {
-        return (object.isFloat() && value.isInt()) || subtype(env, object, value);
+        return (object.isFloat() && value.isInt()) || subtype(object, value);
     }
 
     protected boolean castCompatible(EnvironmentExp env, Type from, Type to) {

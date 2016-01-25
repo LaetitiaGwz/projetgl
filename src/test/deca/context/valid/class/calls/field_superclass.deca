@@ -1,0 +1,18 @@
+// Description:
+//    Utilisation d'un champ de la superclasse
+//
+// Resultats:
+//    Cast correct
+
+class A {
+	int a;
+}
+
+class B extends A {}
+
+{
+	B b;
+	int a;
+	b.a = a;
+}
+

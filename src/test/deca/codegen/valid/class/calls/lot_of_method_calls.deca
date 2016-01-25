@@ -1,0 +1,26 @@
+// Description:
+//    test avec beaucoup d'appel de méthodes imbriqués
+//
+// Resultats:
+//    ima_output: 55
+//
+
+class Maths {
+    int add(int a){
+          return a + 6;
+      }
+
+      int sub(int a){
+          return a - 6;
+      }
+}
+
+{
+    Maths maths = new Maths();
+     int res = maths.add(maths.sub(maths.sub(
+                    maths.sub(maths.add(maths.sub(maths.add(
+                            maths.sub(maths.add(maths.add((55)))))))))));
+    print(res);
+
+}
+

@@ -1,0 +1,23 @@
+// Description:
+//    Affectation de this à un objet de la superclass
+//
+// Resultats:
+//    Aucune erreur
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class B {
+
+}
+
+class A extends B {
+	void m() {
+		B b = this;
+	}
+}
+
+{
+
+}
+

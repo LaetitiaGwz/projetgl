@@ -1,8 +1,9 @@
 package fr.ensimag.deca;
 
-import fr.ensimag.deca.codegen.GestionRegistre;
+import fr.ensimag.deca.codegen.LabelManager;
+import fr.ensimag.deca.codegen.RegisterManager;
 import fr.ensimag.deca.codegen.MemoryMap;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.EnvironmentTypes;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -17,6 +18,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import fr.ensimag.ima.pseudocode.multipleinstructions.ErrorInstruction;
 import fr.ensimag.ima.pseudocode.multipleinstructions.InstructionList;
@@ -39,18 +46,18 @@ import org.apache.log4j.Logger;
  * @author gl41
  * @date 01/01/2016
  */
-public class DecacCompiler {
+public class DecacCompiler implements Callable {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
 
-    public EnvironmentExp getRootEnv() {
+    public EnvironmentTypes getEnvTypes() {
         return rootEnv;
     }
 
-    public void setRootEnv(EnvironmentExp rootEnv) {
+    public void setEnvTypes(EnvironmentTypes rootEnv) {
         this.rootEnv = rootEnv;
     }
 
-    private EnvironmentExp rootEnv;
+    private EnvironmentTypes rootEnv;
 
     /**
      * Les symboles du programme.
@@ -58,94 +65,40 @@ public class DecacCompiler {
     private SymbolTable symbols;
 
     /**
-     * Permet de gérer l'état de la mémoire
-     */
-    private MemoryMap memoryMap;
-
-    /**
 	 * table des registres et données utiles
      */
-    //TODO : refactor le code ci-dessous
-    private GestionRegistre tableRegistre;
-
-    public GestionRegistre getTableRegistre(){
-        return this.tableRegistre;
+    private RegisterManager regManager;
+    public RegisterManager getRegManager(){
+        return this.regManager;
     }
     public void resetTableRegistre(){
-        this.tableRegistre.resetTableRegistre();
+        this.regManager.resetTableRegistre();
     }
 
-    public void setTableRegistre(int nbRegistre){
-        this.tableRegistre=new GestionRegistre(nbRegistre);
+
+    private RegisterManager fakeRegManager;
+    public RegisterManager getFakeRegManager(){
+        return this.fakeRegManager;
     }
-    private int GB; // Global Pointer
-    public int getGB(){
-        return this.GB;
+    private int maxFakeRegister =0;
+    public void addMaxFakeRegister(int ajout){
+        if(ajout>maxFakeRegister){
+            maxFakeRegister=ajout;
+        }
     }
-    public void incrementeGB(){
-        this.GB ++;
+    public void resetMaxFakeRegister(){
+        this.maxFakeRegister= 0;
     }
-    public void initializeGB(){
-        this.GB=1;
+    public int getMaxFakeRegister(){
+        return maxFakeRegister;
     }
 
-    public Label getLabel(){
-        return this.getLabelFalse();
-    }
-    public void setLabel(Label target){
-        this.setLabelFalse(target);
-    }
-
-    private Label labelTrue;
-    public void setLabelTrue(Label target){
-        this.labelTrue=target;
-    }
-    public Label getLabelTrue(){
-        return this.labelTrue;
-    }
-    private Label labelFalse;
-    public void setLabelFalse(Label target){
-        this.labelFalse=target;
-    }
-    public Label getLabelFalse(){
-        return this.labelFalse;
-    }
-    private int nbIf;// pour gerer les labels
-    public void initializeIf(){
-        this.nbIf=0;
-    }
-    public void incrementeIf(){
-        this.nbIf++;
-    }
-    public int getIf(){
-        return this.nbIf;
-    }
-    private int nbWhile;
-    public void initializeWhile(){
-        this.nbWhile=0;
-    }
-    public void incrementeWhile(){
-        this.nbWhile++;
-    }
-    public int getWhile(){
-        return this.nbWhile;
-    }
-    private int nbOr;
-    public void initializeOR(){
-        this.nbOr=0;
-    }
-    public void incrementeOr(){
-        this.nbOr++;
-    }
-    public int getOr(){
-        return this.nbOr;
-    }
-
-    public void initialize(){
-        this.initializeGB();
-        this.initializeIf();
-        this.initializeWhile();
-        this.initializeOR();
+    /**
+     * Gestion des labels
+     */
+    LabelManager labelManager;
+    public LabelManager getLblManager(){
+        return this.labelManager;
     }
 
     /**
@@ -157,6 +110,9 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        this.regManager = new RegisterManager(compilerOptions.getRegistre());
+        this.labelManager = new LabelManager();
+        this.fakeRegManager = new RegisterManager(compilerOptions.getRegistre());
 
         /**
          * Ajouts des symboles prédéfinis
@@ -168,11 +124,6 @@ public class DecacCompiler {
         symbols.create("boolean");
         symbols.create("float");
         symbols.create("Object");
-
-        /**
-         * Initialisation de la map mémoire
-         */
-        memoryMap = new MemoryMap();
 
     }
 
@@ -220,6 +171,13 @@ public class DecacCompiler {
      */
     public void addInstruction(Instruction instruction) {
         program.addInstruction(instruction);
+    }
+
+    /**
+     * @return ligne courante dans le fichier assembleur
+     */
+    public int getCurrentLine(){
+        return program.totalLineNumber();
     }
 
     /**
@@ -338,11 +296,21 @@ public class DecacCompiler {
             else{
                 assert(prog.checkAllDecorations());
 
+                /* Code du programme */
                 addComment("start main program");
                 prog.codeGenProgram(this);
                 addComment("end main program");
+
+                /* Code des erreurs */
                 addLabel(new Label("overflow_error"));
                 addInstructionList(new ErrorInstruction("Error : overflow during arithmetic operation"));
+                addLabel(new Label("stack_overflow"));
+                addInstructionList(new ErrorInstruction("Error : stack overflow"));
+                addLabel(new Label("heap_overflow"));
+                addInstructionList(new ErrorInstruction("Error : heap overflow"));
+                addLabel(new Label("dereferencement.null"));
+                addInstructionList(new ErrorInstruction("Error : dereferencing null pointer"));
+
                 LOG.debug("Generated assembly code:" + nl + program.display());
                 LOG.info("Output file assembly file is: " + destName);
 
@@ -402,12 +370,8 @@ public class DecacCompiler {
         return symbols;
     }
 
-
-    /**
-     * Accesseur de la map mémoire
-     * @return map mémoire
-     */
-    public MemoryMap getMemoryMap() {
-        return memoryMap;
+    @Override
+    public Object call() throws Exception {
+        return compile();
     }
 }

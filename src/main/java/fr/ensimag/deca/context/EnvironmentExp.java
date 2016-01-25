@@ -1,8 +1,11 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Dictionary associating identifier's NonTypeDefinition to their names.
@@ -16,21 +19,20 @@ import java.util.Map;
  * @author gl41
  * @date 01/01/2016
  */
-public class EnvironmentExp {
+public class EnvironmentExp extends AbstractEnvironnement {
     // A FAIRE : implémenter la structure de donnée représentant un
     // environnement (association nom -> définition, avec possibilité
     // d'empilement).
     
     protected EnvironmentExp parentEnvironment;
-    protected HashMap<Symbol, Definition> environment ;
-    
+    /**
+     * Contains definition methods, parameters, variables and fields
+     */
+    protected HashMap<Symbol, NonTypeDefinition> vars ;
+
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment ;
-        this.environment = new HashMap<Symbol, Definition>();
-    }
-
-    public static class DoubleDefException extends Exception {
-        private static final long serialVersionUID = -2733379901827316441L;
+        this.vars = new HashMap<Symbol, NonTypeDefinition>();
     }
 
     /**
@@ -43,41 +45,15 @@ public class EnvironmentExp {
      *          the symbol is undefined
      */
     public NonTypeDefinition get(Symbol key) {
-        Definition result = environment.get(key);
-        if (result != null && (result instanceof NonTypeDefinition)) {
-            return (NonTypeDefinition) result ;
+        NonTypeDefinition result = vars.get(key);
+        if (result != null) {
+            return result ;
         }
         else if(parentEnvironment == null) {
             return null;
         }
         else{
             return parentEnvironment.get(key);
-        }
-    }
-
-    public TypeDefinition getTypeDef(Symbol key) {
-        Definition result = environment.get(key);
-        if (result != null && (result instanceof TypeDefinition)) {
-            return (TypeDefinition) result ;
-        }
-        else if(parentEnvironment == null) {
-            return null;
-        }
-        else{
-            return parentEnvironment.getTypeDef(key);
-        }
-    }
-
-    public ClassDefinition getClassDef(Symbol key) {
-        Definition result = environment.get(key);
-        if (result != null && (result instanceof ClassDefinition)) {
-            return (ClassDefinition) result ;
-        }
-        else if(parentEnvironment == null) {
-            return null;
-        }
-        else{
-            return parentEnvironment.getClassDef(key);
         }
     }
 
@@ -98,37 +74,22 @@ public class EnvironmentExp {
      *             environment.
      */
     public void declare(Symbol name, NonTypeDefinition def) throws DoubleDefException {
-        if (this.get(name) != null) {
+        NonTypeDefinition res = vars.get(name);
+        if (res != null) {
             throw new DoubleDefException();
         }
         else {
-            this.environment.put(name, def);
-        }
-    }
-    public void declareClass(Symbol name, ClassDefinition def) throws DoubleDefException {
-        if (this.getClassDef(name) != null) {
-            throw new DoubleDefException();
-        }
-        else {
-            this.environment.put(name, def);
-        }
-    }
-    public void declareType(Symbol name, TypeDefinition def) throws DoubleDefException {
-        if (this.getTypeDef(name) != null) {
-            throw new DoubleDefException();
-        }
-        else {
-            this.environment.put(name, def);
+            this.vars.put(name, def);
         }
     }
 
     @Override
     public String toString() {
-        String s = "Affichage de l'environnement : \n";
-
-        for (Map.Entry<Symbol, Definition> entry : environment.entrySet()) {
+        String s = "Affichage des variables et méthodes : ";
+        for (Map.Entry<Symbol, NonTypeDefinition> entry : vars.entrySet()) {
             s += "\nSymbol : " + entry.getKey().getName() + " Definition : " + entry.getValue();
         }
+        s += "\n#############################";
         return s;
     }
 }

@@ -1,0 +1,15 @@
+// Description:
+//    Déclaration d'une fonction non void mais sans instruction return
+//
+// Resultats:
+//    missing return instruction
+
+class A {
+	int a () {
+
+	}
+}
+
+{
+}
+

@@ -1,0 +1,19 @@
+// Description:
+//    Appel d'une méthode de classe dans le main
+//
+// Resultats:
+//    Aucune erreur
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class A {
+	void a(A b) {
+	}
+}
+
+{
+	A obj;
+	obj.a(null);
+}
+

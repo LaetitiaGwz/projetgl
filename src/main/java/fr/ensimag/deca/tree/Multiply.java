@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 
+import com.sun.tools.javac.resources.compiler;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -14,25 +15,17 @@ public class Multiply extends AbstractOpArith {
         super(leftOperand, rightOperand);
     }
 
+    @Override
+    protected void mnemoOp(DecacCompiler compiler, DVal left, GPRegister right) {
+        compiler.addInstruction(new MUL(left,right));
+        if(this.getType().isFloat())
+            compiler.addInstruction(new BOV(new Label("overflow_error"), compiler));
+    }
 
     @Override
     protected String getOperatorName() {
         return "*";
     }
 
-    @Override
-    protected void codeGenInst(DecacCompiler compiler){
-        // a * b
-        this.getLeftOperand().codeGenOPLeft(compiler);
-        GPRegister mulRight= (GPRegister) this.getLeftOperand().getdValue();
-        this.getRightOperand().codeGenOPRight(compiler);
-        DVal mulLeft = this.getRightOperand().getdValue();
-        compiler.addInstruction(new MUL(mulLeft,mulRight));
-        if(this.getType().isFloat())
-            compiler.addInstruction(new BOV(new Label("overflow_error")));
-        // a <- a * b
-        //on libère le registre de b
-        this.setdValue(mulRight);
-   }
 
 }

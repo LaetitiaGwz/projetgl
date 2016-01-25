@@ -1,0 +1,40 @@
+// Description:
+//    Utilisation de this
+//
+// Resultats:
+//    ima_output: ok!ok!ok!
+// 
+
+class Socrate {
+	int a = 99;
+	int b = 99;
+
+	void suisJeMoiMeme(){
+	    if(this == this){
+	        print("ok!");
+	    }else{
+	        print("no");
+	    }
+	}
+
+	void testRedefVar(int b) {
+		Socrate a = this;
+		if( this == a ){
+		    print("ok!");
+		}
+
+		if(this.a == this.b){
+		    print("ok!");
+		}
+
+		if(b == this.b){
+		    print("no");
+		}
+	}
+}
+{
+    Socrate s = new Socrate();
+    s.suisJeMoiMeme();
+    s.testRedefVar(4);
+}
+

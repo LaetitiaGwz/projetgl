@@ -15,18 +15,29 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
 
     public void verifyMethodsMembers(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass)
+                                     ClassDefinition currentClass)
             throws ContextualError {
         for(AbstractDeclMethod method : getList()) {
-            method.verifyMember(compiler, localEnv, currentClass);
+            method.verifyMembers(compiler, localEnv, currentClass);
         }
     }
+
+    public void verifyMethodsBody(DecacCompiler compiler, EnvironmentExp localEnv,
+                                     ClassDefinition currentClass)
+            throws ContextualError {
+        for(AbstractDeclMethod method : getList()) {
+            method.verifyBody(compiler, localEnv, currentClass);
+        }
+    }
+
     public void codeGenListInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        //non utilisé directement dans declclass
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        for(AbstractDeclMethod a : getList()){
+            a.decompile(s);
+        }
     }
 }

@@ -1,0 +1,18 @@
+// Description:
+//   Méthode retournant un type non void, sans return. Doit lever une erreur
+//   à l'éxécution
+//
+// Resultats:
+//  ima_output: missing return
+//
+
+class A{
+    int noReturn(){
+        int b = 0;
+    }
+}
+
+{
+    A a = new A();
+    int c = a.noReturn();
+}

@@ -1,6 +1,14 @@
 package fr.ensimag.deca;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -13,6 +21,7 @@ public class DecacMain {
     private static Logger LOG = Logger.getLogger(DecacMain.class);
     
     public static void main(String[] args) {
+
         // example log4j message.
         LOG.info("Decac compiler started");
         boolean error = false;
@@ -35,11 +44,23 @@ public class DecacMain {
 			System.exit(1);
         }
         if (options.getParallel()) {
-            // A FAIRE : instancier DecacCompiler pour chaque fichier à
-            // compiler, et lancer l'exécution des méthodes compile() de chaque
-            // instance en parallèle. Il est conseillé d'utiliser
-            // java.util.concurrent de la bibliothèque standard Java.
-            throw new UnsupportedOperationException("Parallel build not yet implemented");
+            int nbProc = Runtime.getRuntime().availableProcessors();
+            ExecutorService executor = Executors.newFixedThreadPool(nbProc);
+            List<Future<?>> results = new LinkedList<Future<?>>();
+            for (File source : options.getSourceFiles()) {
+                results.add(executor.submit(new DecacCompiler(options, source)));
+            }
+            for(Future<?> future : results){
+                try {
+                    if((Boolean) future.get()){
+                        error = true;
+                    }
+                } catch (InterruptedException e) {
+                    System.err.println("La compilation a été arrétée");
+                } catch (ExecutionException e) {
+                    System.err.println("Un problème est intervenu dans l'éxécution");
+                }
+            }
         } else {
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);

@@ -1,0 +1,14 @@
+// Description:
+//    Déclaration d'une classe vide
+//
+// Resultats:
+//    ima_output: ok
+// 
+
+class test {
+
+}
+
+{
+    print("ok");
+}

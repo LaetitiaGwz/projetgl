@@ -1,15 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.ClassType;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Definition;
-import fr.ensimag.deca.context.FieldDefinition;
-import fr.ensimag.deca.context.MethodDefinition;
-import fr.ensimag.deca.context.NonTypeDefinition;
-import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.SymbolTable;
 
 /**
@@ -70,6 +62,7 @@ public abstract class AbstractIdentifier extends AbstractLValue {
      */
     public abstract NonTypeDefinition getNonTypeDefinition();
 
+
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * VariableDefinition.
@@ -84,10 +77,44 @@ public abstract class AbstractIdentifier extends AbstractLValue {
 
     public abstract void setDefinition(Definition definition);
 
+    protected abstract void codeGenInitClass(DecacCompiler compiler);
+    protected abstract void codeGenInit(DecacCompiler compiler);
+    protected abstract void codeGenInitMethod(DecacCompiler compiler);
+    protected abstract void codePreGenInit(DecacCompiler compiler);
 
-
+    /**
+     * If this object identifies a type, this function gets its definition from the
+     * env_types of the program. It also sets its definition and its type so that both
+     * can be displayed in the abstract tree.
+     * @param compiler The compiler main class containing the environment.
+     * @return The corresponding type in the environment.
+     * @throws ContextualError If no such type exists in the environment.
+     */
     public abstract Type verifyType(DecacCompiler compiler) throws ContextualError;
 
+    /**
+     * If this object identifies a class, this function gets its definition from the
+     * env_types of the program. It also sets its definition and its type so that both
+     * can be displayed in the abstract tree.
+     * @param compiler The compiler main class containing the environment.
+     * @return The corresponding ClassType in the environment.
+     * @throws ContextualError If no such class exists in the environment.
+     */
     public abstract Type verifyClass(DecacCompiler compiler) throws ContextualError;
-    
+
+    /**
+     * If this object identifies a method, this function gets its definition from the
+     * localEnv. It also sets its definition and its type so that both can be displayed
+     * in the abstract tree.
+     * Moreover signatures from fetched definition and parameters
+     * are checked to be identical or a ContextualError is thrown.
+     * @param s The signature which has to be checked.
+     * @param compiler The compiler main class containing the environment.
+     * @param localEnv The environment in which the method is fetch.
+     * @return The return type of the method checked from its definition.
+     * @throws ContextualError If the signatures don't correspond or the method doesn't exist
+     * in the specified environment.
+     */
+    public abstract Type verifyMethod(Signature s, DecacCompiler compiler, EnvironmentExp localEnv) throws ContextualError;
+
 }

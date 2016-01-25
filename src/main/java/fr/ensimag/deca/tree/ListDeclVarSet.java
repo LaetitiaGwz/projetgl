@@ -27,12 +27,31 @@ public class ListDeclVarSet extends TreeList<AbstractDeclVarSet> {
             varSet.verifyDeclVarSet(compiler, localEnv, currentClass);
         }
     }
+    public void codePreGenListDeclMethod(DecacCompiler compiler){
+        for(AbstractDeclVarSet declVarSet : getList()){
+            declVarSet.codePreGenDeclVarSet(compiler);
+        }
+    }
 
     public void codeGenListDecl(DecacCompiler compiler) {
         // run codegen on each declaration set
         for(AbstractDeclVarSet declVarSet : getList()){
             declVarSet.codegenDeclVarSet(compiler);
         }
+    }
+    public void codeGenListDeclMethod(DecacCompiler compiler) {
+        // run codegen on each declaration set
+        for(AbstractDeclVarSet declVarSet : getList()){
+            declVarSet.codegenDeclVarSetMethod(compiler);
+        }
+    }
+
+    public int returnSP(){
+        int stock=0;
+        for(AbstractDeclVarSet declVarSet : getList()){
+            stock+=declVarSet.returnSP();
+        }
+        return stock;
     }
 
 }

@@ -1,0 +1,19 @@
+// Description:
+//    Affectation de this à un int
+//
+// Resultats:
+//    Incompatile type
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class A {
+	void m() {
+		int a = this;
+	}
+}
+
+{
+
+}
+

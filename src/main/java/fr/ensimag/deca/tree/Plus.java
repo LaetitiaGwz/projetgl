@@ -16,26 +16,17 @@ public class Plus extends AbstractOpArith {
     public Plus(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
- 
+
+    @Override
+    protected void mnemoOp(DecacCompiler compiler, DVal left, GPRegister right) {
+        compiler.addInstruction(new ADD(left, right));
+        if(this.getType().isFloat())
+            compiler.addInstruction(new BOV(new Label("overflow_error"), compiler));
+    }
 
     @Override
     protected String getOperatorName() {
         return "+";
     }
-
-    @Override
-    protected void codeGenInst(DecacCompiler compiler){
-        // a + b
-        this.getLeftOperand().codeGenOPLeft(compiler);
-        GPRegister addRight= (GPRegister) this.getLeftOperand().getdValue();
-        this.getRightOperand().codeGenOPRight(compiler);
-        DVal addLeft = this.getRightOperand().getdValue();
-        compiler.addInstruction(new ADD(addLeft, addRight));
-        // Vérification des overflow pour les flottants
-        if(this.getType().isFloat())
-            compiler.addInstruction(new BOV(new Label("overflow_error")));
-        // a <- a + b
-        this.setdValue(addRight);
-        }
 
 }

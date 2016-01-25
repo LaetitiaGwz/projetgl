@@ -1,0 +1,14 @@
+// Test de la classe objet
+//
+// Resultats:
+//    ok
+
+class A{
+
+}
+
+{
+    Object a = new Object();
+    A foo = new A();
+    Object c = (Object) foo;
+}

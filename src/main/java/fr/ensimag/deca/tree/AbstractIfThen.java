@@ -20,4 +20,5 @@ public abstract class AbstractIfThen extends Tree {
             throws ContextualError;
 
     protected abstract void codeGenIfThen(DecacCompiler compiler);
+    protected abstract void codePreGenIfThen(DecacCompiler compiler);
 }

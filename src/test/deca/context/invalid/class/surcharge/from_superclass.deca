@@ -1,0 +1,18 @@
+// Description:
+//    Surcharge de méthode de la superclasse
+//
+// Resultats:
+//    Wrong signature
+
+class B {
+	void m() {}
+}
+
+class A extends B {
+	void m(int a) {}
+}
+
+{
+
+}
+

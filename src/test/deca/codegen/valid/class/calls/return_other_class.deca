@@ -1,0 +1,36 @@
+// Description:
+//    Utilisation de la selection et affichage
+//
+// Resultats:
+//    ima_output: socrateplatonsocrate
+// 
+
+class Socrate {
+
+    Socrate retourneSoiMeme(){
+        return new Socrate();
+    }
+
+    void quiSuisJe(){
+        print("socrate");
+    }
+}
+
+class Platon{
+    Socrate retourneSocrate(){
+        return new Socrate();
+    }
+    void quiSuisJe(){
+        print("platon");
+    }
+}
+
+{
+    Platon p = new Platon();
+    Socrate s = p.retourneSocrate();
+    Socrate s1 = s.retourneSoiMeme();
+    s.quiSuisJe();
+    p.quiSuisJe();
+    s1.quiSuisJe();
+}
+

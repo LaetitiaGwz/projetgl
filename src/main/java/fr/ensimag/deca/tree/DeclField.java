@@ -3,7 +3,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -33,20 +34,57 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
-    protected void verifyDeclField(Type t, Visibility visibility, DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass)
+    protected void verifyMembers(Type t, Visibility visibility, DecacCompiler compiler,
+                                 EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        FieldDefinition fieldDef = new FieldDefinition(t, getLocation(), visibility, currentClass, currentClass.incNumberOfFields());
+
+        try {
+            currentClass.getMembers().declare(varName.getName(), fieldDef);
+        } catch (AbstractEnvironnement.DoubleDefException e) {
+            throw new ContextualError("Name " + getVarName().getName().getName() + " already used in the class.", getLocation());
+        }
+
+        varName.verifyExpr(compiler, localEnv, currentClass);
+    }
+
+    @Override
+    protected void verifyBody(Type t, Visibility visibility, DecacCompiler compiler,
+                                 EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
+
+        initialization.verifyInitialization(compiler, t, localEnv, currentClass);
     }
 
     @Override
     protected void codeGenDecl(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+
+    }
+    @Override
+    protected void codePreGenField(DecacCompiler compiler){
+        initialization.codePreGenInit(compiler);
+    }
+    @Override
+    protected void codeGenFieldFloat(DecacCompiler compiler){ // on met tout dans R1, on recupere de R0
+        initialization.codeGenInitFieldFloat(compiler);
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB),Register.R1));
+        compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(this.getVarName().getFieldDefinition().getIndex(),Register.R1)));
+
+    }
+
+    @Override
+    protected void codeGenFieldInt(DecacCompiler compiler){
+
+        initialization.codeGenInitFieldInt(compiler);
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB),Register.R1));
+        compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(this.getVarName().getFieldDefinition().getIndex(),Register.R1)));
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print(getVarName().getName().toString());
+
     }
 
     @Override

@@ -1,0 +1,25 @@
+// Description:
+//    Héritage d'une classe
+//
+// Resultats:
+//    Aucune erreur
+//
+// ima_output: ok
+
+class A {
+	void m() {
+		println("Erreur");
+	}
+}
+
+class B extends A {
+	void m() {
+		println("ok");
+	}
+}
+
+{
+	B b = new B();
+	b.m();
+}
+

@@ -1,0 +1,52 @@
+// Description:
+//    Utilisation de instanceof
+//
+// ima_output: okokokok
+
+class A {
+}
+
+class B {
+
+}
+
+class C extends A{
+
+}
+
+class D extends A{
+
+}
+
+{
+	  A a = new A();
+      D d = new D();
+      Object o = new Object();
+       boolean e = d instanceof A;
+
+      if(a instanceof A) {
+          print("ok");
+      }else{
+          print("no");
+      }
+
+      if(a instanceof C){
+          print("no");
+      }else {
+         print("ok");
+      }
+
+        if(e){
+              print("ok");
+        }else{
+            print("no");
+        }
+
+        if(o instanceof A){
+            print("no");
+        }else{
+             print("ok");
+        }
+
+}
+

@@ -1,0 +1,14 @@
+// Description:
+//   Test d'une assignation à l'intérieur d'une condition
+//
+// Resultats:
+//    ok
+// 
+
+{
+    int a = 4;
+    int b;
+    if( b=0 ){
+    }
+
+}

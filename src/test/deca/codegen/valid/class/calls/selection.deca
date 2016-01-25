@@ -1,0 +1,18 @@
+// Description:
+//    Utilisation de la selection
+//
+// Resultats:
+//    Aucune erreur
+//
+//  ima_output: 33
+
+class A {
+	int a = 33;
+}
+
+{
+	A b = new A();
+	int a = b.a;
+	print(a);
+}
+

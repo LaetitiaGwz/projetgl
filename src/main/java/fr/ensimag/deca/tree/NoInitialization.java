@@ -6,6 +6,11 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+
 import java.io.PrintStream;
 
 /**
@@ -25,8 +30,22 @@ public class NoInitialization extends AbstractInitialization {
     }
 
     @Override
+    protected void codePreGenInit(DecacCompiler compiler) {
+        // Nothing to do
+    }
+    @Override
     protected void codeGenInit(DecacCompiler compiler) {
         // Nothing to do
+    }
+    @Override
+    protected  void codeGenInitFieldFloat(DecacCompiler compiler){
+        compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.R0));
+
+
+    }
+    @Override
+    protected void codeGenInitFieldInt(DecacCompiler compiler){
+        compiler.addInstruction(new LOAD(new ImmediateInteger(0), Register.R0));
     }
 
     @Override
@@ -43,7 +62,7 @@ public class NoInitialization extends AbstractInitialization {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // nothing
+        s.println(";");
     }
 
     @Override

@@ -5,9 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
@@ -56,23 +54,37 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        int i=compiler.getTableRegistre().getLastregistre();
-        compiler.getTableRegistre().setEtatRegistreTrue(i);
-        GPRegister target= Register.getR(i);
-        this.setdValue(target);
-        compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()),target));
-    }
-
-    @Override
-    protected void codeGenOPLeft(DecacCompiler compiler){
-        this.codeGenInst(compiler); // pour un litteral c'est pareil
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
         }
+        else{
+            register = compiler.getRegManager().getGBRegister();
 
-    @Override
-    protected void codeGenOPRight(DecacCompiler compiler){
-        this.setdValue(new ImmediateFloat(this.getValue()));
+        }
+        compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()),register));
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
+    @Override
+    public void codegenExpr(DecacCompiler compiler, GPRegister register) {
+        compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()), register));
+    }
+
+    @Override
+    public DVal getDval() {
+        return new ImmediateFloat(this.getValue());
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {

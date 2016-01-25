@@ -1,0 +1,23 @@
+// Description:
+//    Utilisation de this
+//
+// Resultats:
+//    Aucune erreur
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class A {
+	int a;
+	protected int b;
+	void m() {
+		A d = this;
+		int c = this.a;
+		int b = this.b;
+	}
+}
+
+{
+
+}
+

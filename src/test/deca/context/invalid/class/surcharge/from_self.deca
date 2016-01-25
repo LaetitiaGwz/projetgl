@@ -1,0 +1,15 @@
+// Description:
+//    Héritage d'une classe
+//
+// Resultats:
+//    Already defined
+
+class A {
+	void m(int a) {}
+	void m() {}
+}
+
+{
+
+}
+

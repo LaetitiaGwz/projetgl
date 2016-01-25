@@ -15,6 +15,8 @@ import fr.ensimag.ima.pseudocode.Label;
  * @date 01/01/2016
  */
 public abstract class AbstractInst extends Tree {
+
+
     /**
      * Verify the instruction for contextual error.
      * 
@@ -42,9 +44,9 @@ public abstract class AbstractInst extends Tree {
      *            (null if absent or unknown)
      */
     protected abstract void codeGenInst(DecacCompiler compiler);
+    protected abstract void codePreGenInst(DecacCompiler compiler);
 
-
-    /**
+     /**
      * Decompile the tree, considering it as an instruction.
      *
      * In most case, this simply calls decompile(), but it may add a semicolon 

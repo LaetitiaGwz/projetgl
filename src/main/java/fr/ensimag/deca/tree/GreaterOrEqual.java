@@ -2,9 +2,11 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BGE;
 import fr.ensimag.ima.pseudocode.instructions.BLT;
+import fr.ensimag.ima.pseudocode.instructions.SGE;
 
 /**
  * Operator "x >= y"
@@ -18,6 +20,11 @@ public class GreaterOrEqual extends AbstractOpIneq {
         super(leftOperand, rightOperand);
     }
 
+    @Override
+    protected void fetchCond(DecacCompiler compiler, GPRegister register) {
+        compiler.addInstruction(new SGE(register));
+    }
+
 
     @Override
     protected String getOperatorName() {
@@ -26,12 +33,12 @@ public class GreaterOrEqual extends AbstractOpIneq {
 
     @Override
     protected void codeGenCMPOP(DecacCompiler compiler){
-        compiler.addInstruction(new BLT(compiler.getLabel()));
+        compiler.addInstruction(new BLT(compiler.getLblManager().getLabelFalse()));
     }
 
     @Override
     protected void codeGenNot(DecacCompiler compiler){
-        compiler.addInstruction(new BGE(compiler.getLabel()));
+        compiler.addInstruction(new BGE(compiler.getLblManager().getLabelFalse()));
     }
 
 }

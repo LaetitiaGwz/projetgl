@@ -1,0 +1,15 @@
+// Description:
+//    Test de modification d'un paramètre entré
+//
+// Resultats:
+//    aucune erreur
+//
+
+class A {
+	void m(A b) {
+		b = new A();
+		b = null;
+	}
+}
+
+{}

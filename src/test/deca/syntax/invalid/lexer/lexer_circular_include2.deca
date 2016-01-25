@@ -1,0 +1,9 @@
+// Description:
+//    test du parser pour les identificateurs
+//    vérifie qu'aucun identificateur ne commence par un nombre
+//
+// Resultats:
+// inclusion circulaire
+// Ligne <8> : <Circular include for lexer_circular_include.java>
+
+#include "lexer_circular_include.deca"

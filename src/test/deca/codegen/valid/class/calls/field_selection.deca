@@ -1,0 +1,17 @@
+// Description:
+//    Utilisation de la selection et affichage
+//
+// Resultats:
+//    ima_output: 673.00000e+00
+// 
+
+class A {
+	int a = 67;
+	float b = 3.0;
+}
+
+{
+	A b = new A();
+	print(b.a,b.b);
+}
+

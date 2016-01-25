@@ -18,6 +18,7 @@ public class ListInst extends TreeList<AbstractInst> {
     public void verifyListInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+
         for(AbstractInst inst : this.getList()) {
             inst.verifyInst(compiler, localEnv, currentClass, returnType);
         }
@@ -28,11 +29,17 @@ public class ListInst extends TreeList<AbstractInst> {
         }
     }
 
+    protected void codePreGenListInst(DecacCompiler compiler){
+        for (AbstractInst i : getList()) {
+            i.codePreGenInst(compiler);
+        }
+    }
+
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractInst i : getList()) {
             i.decompileInst(s);
-            s.println();
+            s.println(";");
         }
     }
 }

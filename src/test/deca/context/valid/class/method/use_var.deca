@@ -1,0 +1,17 @@
+// Description:
+//    Déclaration de variable dans les méthodes
+//
+// Resultats:
+//    Aucune erreur
+//
+
+
+class A {
+    void a() {
+        int b;
+        b = 5;
+	}
+}
+
+{}
+

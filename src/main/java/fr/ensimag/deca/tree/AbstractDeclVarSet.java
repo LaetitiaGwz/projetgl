@@ -19,4 +19,7 @@ public abstract class AbstractDeclVarSet extends Tree {
             throws ContextualError;
 
     protected abstract void codegenDeclVarSet(DecacCompiler compiler);
+    protected abstract void codegenDeclVarSetMethod(DecacCompiler compiler);
+    protected abstract void codePreGenDeclVarSet(DecacCompiler compiler);
+    public abstract int returnSP();
 }

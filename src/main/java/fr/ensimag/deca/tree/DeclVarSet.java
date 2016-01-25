@@ -22,6 +22,11 @@ public class DeclVarSet extends AbstractDeclVarSet {
     private AbstractIdentifier type;
     private ListDeclVar declVars;
 
+    @Override
+    public int returnSP() {
+        return declVars.size();
+    }
+
     public DeclVarSet(AbstractIdentifier type, ListDeclVar declVars) {
         super();
         Validate.notNull(type);
@@ -44,7 +49,6 @@ public class DeclVarSet extends AbstractDeclVarSet {
             throw new ContextualError("A variable can not be declared as void.", getLocation());
         }
 
-
         for(AbstractDeclVar var : declVars.getList()) {
             var.verifyDeclVar(t, compiler, localEnv, currentClass);
         }
@@ -59,6 +63,24 @@ public class DeclVarSet extends AbstractDeclVarSet {
             declVar.codeGenDecl(compiler);
         }
     }
+
+    protected void codePreGenDeclVarSet(DecacCompiler compiler){
+        for(AbstractDeclVar declVar : getDeclVars().getList()){
+            declVar.codePreGenDecl(compiler);
+        }
+
+    }
+    @Override
+    protected void codegenDeclVarSetMethod(DecacCompiler compiler) {
+        // run codegen on each declaration
+        for(AbstractDeclVar declVar : getDeclVars().getList()){
+            declVar.codeGenDeclMethod(compiler);
+            if(type.getDefinition().isClass()){
+
+            }
+        }
+    }
+
 
 
     @Override

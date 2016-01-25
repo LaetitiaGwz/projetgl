@@ -1,0 +1,11 @@
+// Description:
+//    Utilisation de instanceof sur un String
+//
+// Resultats:
+//    cannot cast String to String
+
+{
+	int a;
+	if(a instanceof String) {}
+}
+

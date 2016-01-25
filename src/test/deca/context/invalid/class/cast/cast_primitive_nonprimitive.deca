@@ -1,0 +1,14 @@
+// Description:
+//    Cast type primitif/ type non primitif non permis
+//
+// Resultats:
+//    Incompatible cast from int to A
+
+class A{
+
+}
+
+{
+    A a = new A();
+    int b = (A) (5);
+}

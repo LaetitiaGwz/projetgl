@@ -1,11 +1,10 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -14,16 +13,23 @@ import java.io.PrintStream;
  * @author gl41
  * @date 01/01/2016
  */
-public class DeclParam extends AbstractDeclField {
+public class DeclParam extends AbstractDeclParam {
 
     public AbstractIdentifier getVarName() {
         return varName;
     }
-
+    private int indice;
     private AbstractIdentifier type;
     private AbstractIdentifier varName;
+    public void setIndice(int i){
+        indice=i;
+    }
+    public int getIndice(){
+        return indice;
+    }
 
-    public DeclParam(AbstractIdentifier varName, Identifier type) {
+
+    public DeclParam(AbstractIdentifier type, AbstractIdentifier varName) {
         Validate.notNull(varName);
         Validate.notNull(type);
         this.varName = varName;
@@ -31,20 +37,38 @@ public class DeclParam extends AbstractDeclField {
     }
 
     @Override
-    protected void verifyDeclField(Type t, Visibility visibility, DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass)
+    protected Type verifyMembers(DecacCompiler compiler,
+                                 EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        return type.verifyType(compiler);
     }
 
     @Override
+    protected void verifyBody(DecacCompiler compiler,
+                                 EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
+
+        VariableDefinition paramDef = new VariableDefinition(type.getType(), getLocation());
+
+        try {
+            localEnv.declare(compiler.getSymbols().create(varName.getName().getName()), paramDef);
+        } catch (AbstractEnvironnement.DoubleDefException e) {
+            throw new ContextualError("Double definition of variable " + varName.getName().getName(), getLocation());
+        }
+
+        varName.verifyExpr(compiler, localEnv, currentClass);
+    }
+
+
+    @Override
     protected void codeGenDecl(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        varName.getNonTypeDefinition().setOperand(new RegisterOffset(indice, Register.LB));
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print(type.getName().toString()+" "+varName.getName().toString());
     }
 
     @Override

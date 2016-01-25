@@ -1,0 +1,23 @@
+// Description:
+//    Utilisation de la methode equals
+//
+// Resultats:
+//    Aucune erreur
+
+class A {}
+class C {
+}
+
+{
+	A a;
+	A b;
+	C c;
+
+	if(a.equals(b)) {}
+	if(a.equals(a)) {}
+	if(a.equals(new Object())) {}
+	if(a.equals(c)) {}
+	if(c.equals(c)) {}
+	if(c.equals(a)) {}
+	if(c.equals(new Object())) {}
+}

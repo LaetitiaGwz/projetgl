@@ -5,10 +5,11 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * Arithmetic binary operations (+, -, /, ...)
@@ -24,16 +25,16 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(this.getdValue(), Register.R1));
+        GPRegister reg = compiler.getRegManager().getGBRegister();
+        this.codegenExpr(compiler, reg);
+        compiler.addInstruction(new LOAD(reg, Register.R1));
         if(this.getType().isInt()){
             compiler.addInstruction(new WINT());
         }
         else if(this.getType().isFloat()){
             compiler.addInstruction(new WFLOAT());
         }
-
-
+        compiler.getRegManager().resetTableRegistre();
     }
 
     @Override
@@ -65,16 +66,51 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         return opType;
     }
 
-    @Override
-    protected void codeGenOPRight(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-        if(getRightOperand().getUtilisation()){
-            compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+    protected void codePreGenExp(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+
+        getLeftOperand().codePreGenExpr(compiler);
+        if(getRightOperand().getDval()==null){
+            compiler.getFakeRegManager().getGBRegister();
+            compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+            getRightOperand().codePreGenExpr(compiler);
         }
+        compiler.getFakeRegManager().setTableRegistre(table);
+
+    }
+    @Override
+    public void codegenExpr(DecacCompiler compiler,GPRegister register){
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        getLeftOperand().codegenExpr(compiler, register);
+        if(getRightOperand().getDval() != null){
+            mnemoOp(compiler, getRightOperand().getDval(), register);
+        }else {
+            GPRegister stock;
+            if(compiler.getRegManager().noFreeRegister()){
+                int i =compiler.getRegManager().getGBRegisterInt(register.getNumber());
+                compiler.addInstruction(new TSTO(1));
+                compiler.addInstruction(new BOV(new Label("stack_overflow")));
+                compiler.addInstruction(new PUSH(Register.getR(i)));
+                stock = Register.getR(i);
+                setPush();
+            }
+            else {
+                stock = compiler.getRegManager().getGBRegister();
+            }
+            getRightOperand().codegenExpr(compiler, stock);
+            mnemoOp(compiler, stock, register);
+            if(getPop()){
+                compiler.addInstruction(new POP(stock));
+                popDone();
+            }
+        }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
+    protected abstract void mnemoOp(DecacCompiler compiler, DVal left,GPRegister right);
+
     @Override
-    protected void codeGenOPLeft(DecacCompiler compiler) {
-        this.codeGenInst(compiler);
+    public DVal getDval() {
+        return null;
     }
 }

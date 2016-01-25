@@ -1,0 +1,11 @@
+// Description:
+//    Utilisation de instanceof sur un int
+//
+// Resultats:
+//    cannot cast int to int
+
+{
+	int a;
+	if(a instanceof int) {}
+}
+

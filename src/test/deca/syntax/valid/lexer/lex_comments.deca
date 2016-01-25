@@ -1,0 +1,14 @@
+// Description:
+//    test du lexeur pour les commentaires
+//
+// Resultats:
+// ok
+
+// Ce commentaire doit être accepté
+
+/* Commentaire sur
+plusieures  lignes
+doit être accépté
+*/
+
+// Celui là aussi, même sans ligne après!

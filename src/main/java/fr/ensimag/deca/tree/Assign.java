@@ -5,9 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -28,14 +27,77 @@ public class Assign extends AbstractBinaryExpr {
         super(leftOperand, rightOperand);
     }
 
+    protected void codePreGenInst(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        getRightOperand().codePreGenExpr(compiler);
+        if(getLeftOperand().getDefinition().isField()){
+            compiler.getFakeRegManager().getGBRegister();
+            compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        }
+        compiler.getFakeRegManager().setTableRegistre(table);
+    }
     @Override
     protected void codeGenInst(DecacCompiler compiler){
-        getRightOperand().codeGenOPLeft(compiler);
-        getLeftOperand().codeGenInst(compiler);
-        Register regLeft = (Register) getRightOperand().getdValue();
-        DAddr adress = this.getLeftOperand().getNonTypeDefinition().getOperand();
-        compiler.addInstruction(new STORE(regLeft, adress));
-        compiler.getTableRegistre().resetTableRegistre();
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+
+        getRightOperand().codegenExpr(compiler, register);
+        if(getLeftOperand().getDefinition().isField()){
+            GPRegister stock;
+            if(compiler.getRegManager().noFreeRegister()){
+                int i =compiler.getRegManager().getGBRegisterInt(register.getNumber());
+                compiler.addInstruction(new PUSH(Register.getR(i)));
+                stock = Register.getR(i);
+                setPush();
+            }
+            else{
+                stock = compiler.getRegManager().getGBRegister();
+
+            }
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB),stock));
+            compiler.addInstruction(new STORE(register,
+                    new RegisterOffset(getLeftOperand().getFieldDefinition().getIndex(),stock))); // on store
+            if(getPop()){
+                compiler.addInstruction(new POP(stock));
+                popDone();
+            }
+        }
+        else if(getLeftOperand().getDefinition().isClass()){
+
+        }
+        else if(getLeftOperand().getDefinition().isMethod()){
+
+        }
+        else if(getLeftOperand().getDefinition().isParam()){
+
+        }
+        else if(getLeftOperand().getDefinition().isExpression()){
+            DAddr adress = this.getLeftOperand().getNonTypeDefinition().getOperand();
+            compiler.addInstruction(new STORE(register, adress));
+            compiler.getRegManager().resetTableRegistre();
+        }
+        else{
+
+        }
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
     @Override
@@ -43,19 +105,32 @@ public class Assign extends AbstractBinaryExpr {
             ClassDefinition currentClass) throws ContextualError {
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-        Type t;
 
-        if(rightType.sameType(leftType)) {
-            t = rightType;
+        if(!assignCompatible(localEnv, leftType, rightType)) {
+            throw new ContextualError("Cannot assign " + rightType + " to " + leftType, getLocation());
         }
-        else if(rightType.isInt() && leftType.isFloat()) {
+
+        if(rightType.isInt() && leftType.isFloat()) {
             // Conversion du rightoperand
-            setRightOperand(new ConvFloat(getRightOperand()));
-            t = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+            ConvFloat conv = new ConvFloat(getRightOperand());
+            conv.setLocation(getLocation());
+            setRightOperand(conv);
+            getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         }
-        else {
-            throw new ContextualError("Assignement incompatible : cannot cast " + rightType + " into " + leftType + ".", getLocation());
+        else if (!leftType.sameType(rightType)) {
+            // On crée le type et on met sa location
+            Identifier typeIdentifier = new Identifier(leftType.getName());
+            typeIdentifier.setLocation(getLocation());
+            // On crée le cast et on met sa location
+            Cast cast = new Cast(typeIdentifier, getRightOperand());
+            cast.setLocation(getLocation());
+
+            // On relie le tout à l'affectation
+            setRightOperand(cast);
+            getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         }
+
+        Type t = compiler.getEnvTypes().get(compiler.getSymbols().create("boolean")).getType();
         setType(t);
         return t;
     }

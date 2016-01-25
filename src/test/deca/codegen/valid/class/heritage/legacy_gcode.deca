@@ -1,0 +1,60 @@
+// Description:
+//    Héritage d'une classe
+//
+// Resultats:
+//    ima_output: socrateplatonsocrate36socrate
+
+class Socrate {
+
+    int a = 3;
+    int b = 1;
+
+    void quiSuisJe(){
+        print("socrate");
+    }
+
+    void heritageMethode(){
+        print("socrate");
+    }
+
+    void afficheA(){
+        print(a);
+    }
+
+    void afficheB(){
+        print(b);
+    }
+}
+
+class Platon extends Socrate {
+    int b = 6;
+
+    void quiSuisJe(){
+        print("platon");
+    }
+
+    void afficheA(){
+        print(a);
+    }
+
+    void afficheB(){
+        print(b);
+    }
+
+    void appelSuper(){
+        heritageMethode();
+    }
+
+}
+
+{
+    Socrate s = new Socrate();
+    Platon p = new Platon();
+    s.quiSuisJe();
+    p.quiSuisJe();
+    p.heritageMethode();
+    p.afficheA();
+    p.afficheB();
+    p.appelSuper();
+}
+

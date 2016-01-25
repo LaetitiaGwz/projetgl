@@ -13,13 +13,19 @@ import fr.ensimag.deca.context.Type;
  * @date 01/01/2016
  */
 public abstract class AbstractDeclParam extends Tree {
-    
-    protected abstract void verifyDeclParam(Type typeDeclaration, DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
+
+    protected abstract Type verifyMembers(DecacCompiler compiler,
+                                          EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
+
+    protected abstract void verifyBody(DecacCompiler compiler,
+                                          EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
 
     /**
      * Generates the code for the declaration
      * @param compiler
      */
     protected abstract void codeGenDecl(DecacCompiler compiler);
+
+    public abstract void setIndice(int i);
+    public abstract int getIndice();
 }

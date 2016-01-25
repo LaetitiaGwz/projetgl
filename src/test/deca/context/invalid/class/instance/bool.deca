@@ -1,0 +1,11 @@
+// Description:
+//    Utilisation de instanceof sur un bool
+//
+// Resultats:
+//    cannot cast bool to bool
+
+{
+	int a;
+	if(a instanceof bool) {}
+}
+

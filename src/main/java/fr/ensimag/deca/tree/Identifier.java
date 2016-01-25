@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.TableMethode;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -18,6 +19,7 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2016
  */
 public class Identifier extends AbstractIdentifier {
+
 
     @Override
     protected void checkDecoration() {
@@ -156,41 +158,68 @@ public class Identifier extends AbstractIdentifier {
         Validate.notNull(name);
         this.name = name;
     }
+    protected void codePreGenInit(DecacCompiler compiler){
+        //pas besoin de registre
+    }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        NonTypeDefinition t = localEnv.get(getName());
 
-        NonTypeDefinition t = localEnv.get(this.getName());
         if(t == null) {
             throw new ContextualError("Undefinded variable " + getName(), getLocation());
         }
+
         setDefinition(t);
+        setType(t.getType());
         return t.getType();
     }
 
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        TypeDefinition t = compiler.getRootEnv().getTypeDef(compiler.getSymbols().create(getName().getName()));
+        TypeDefinition t = compiler.getEnvTypes().get(compiler.getSymbols().create(getName().getName()));
 
         if(t == null) {
-            throw new DecacInternalError("Type " + getName().getName() + " undefinded.");
+            throw new ContextualError("Type " + getName().getName() + " undefinded.", getLocation());
         }
 
         setDefinition(t);
+        setType(t.getType());
         return t.getType();
     }
 
     @Override
     public Type verifyClass(DecacCompiler compiler) throws ContextualError {
-        ClassDefinition c = compiler.getRootEnv().getClassDef(compiler.getSymbols().create(getName().getName()));
+        TypeDefinition c = compiler.getEnvTypes().get(compiler.getSymbols().create(getName().getName()));
 
-        if(c == null) {
+        if(c == null || (!(c instanceof ClassDefinition))) {
             throw new ContextualError("Class " + getName().getName() + " undefinded.", this.getLocation());
         }
 
         setDefinition(c);
+        setType(c.getType());
         return c.getType();
+    }
+
+    @Override
+    public Type verifyMethod(Signature s, DecacCompiler compiler, EnvironmentExp localEnv) throws ContextualError {
+        NonTypeDefinition c = localEnv.get(compiler.getSymbols().create(getName().getName()));
+
+        if(c == null) {
+            throw new ContextualError("Method " + getName().getName() + " undefinded.", this.getLocation());
+        }
+
+        MethodDefinition mDef = c.asMethodDefinition(getName().getName() + " is not a method.", getLocation());
+
+        if (!mDef.getSignature().accepts(s)) {
+
+            throw new ContextualError("Invalid signature for method " + getName().getName(), this.getLocation());
+        }
+
+        setDefinition(mDef);
+        setType(mDef.getType());
+        return mDef.getType();
     }
     
     
@@ -198,7 +227,25 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
-        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),Register.R1));
+        if(getDefinition().isField()){
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB),Register.R1)); // on charge l'objet
+            compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(),Register.R1),Register.R1)); //on charge l'élément
+        }
+        else if(getDefinition().isClass()){
+            compiler.addInstruction(new LOAD(getClassDefinition().getOperand(),Register.R1));
+        }
+        else if(getDefinition().isMethod()){
+
+        }
+        else if(getDefinition().isParam()){
+
+        }
+        else if(getDefinition().isExpression()){
+            compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(), Register.R1));
+        }
+        else{
+
+        }
         if(definition.getType().isInt())
             compiler.addInstruction(new WINT());
         else
@@ -206,66 +253,73 @@ public class Identifier extends AbstractIdentifier {
 
 
     }
+
     @Override
-    protected void codeGenInst(DecacCompiler compiler){
-        int i = compiler.getTableRegistre().getLastregistre();
-        GPRegister reg = Register.getR(i);
-        compiler.getTableRegistre().setEtatRegistreTrue(i);
-        this.setdValue(reg);
-        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(), reg));
+    public void codegenExpr(DecacCompiler compiler,GPRegister register){
+        if(getDefinition().isField()){
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB),register)); // on charge l'objet
+            compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(),register),register)); //on charge l'élément
+        }
+        else if(getDefinition().isClass()){
+            compiler.addInstruction(new LOAD(getClassDefinition().getOperand(),register));
+        }
+        else if(getDefinition().isMethod()){
+
+        }
+        else if(getDefinition().isParam()){
+
+        }
+        else if(getDefinition().isExpression()){
+            compiler.addInstruction(new LOAD(getNonTypeDefinition().getOperand(), register));
+        }
+        else{
+
+        }
+
     }
+
     @Override
     protected void codeGenInit(DecacCompiler compiler){
-        RegisterOffset stock = new RegisterOffset(compiler.getGB(), Register.GB);
+        RegisterOffset stock = new RegisterOffset(compiler.getRegManager().getGB(), Register.GB);
         this.getNonTypeDefinition().setOperand(stock);
-        compiler.incrementeGB();
+        compiler.getRegManager().incrementGB();
     }
 
     @Override
-    protected void codeGenOPLeft(DecacCompiler compiler){
-        DAddr stock = this.getNonTypeDefinition().getOperand();
-        int i=compiler.getTableRegistre().getLastregistre();
-        compiler.getTableRegistre().setEtatRegistreTrue(i);
-        compiler.addInstruction(new LOAD(stock,Register.getR(i)));
-        this.setdValue(Register.getR(i));
+    protected void codeGenInitMethod(DecacCompiler compiler){
+        RegisterOffset stock = new RegisterOffset(compiler.getRegManager().getLB(), Register.LB);
+        this.getNonTypeDefinition().setOperand(stock);
+        compiler.getRegManager().incrementLB();
     }
 
+
     @Override
-    protected void codeGenOPRight(DecacCompiler compiler){
-        this.setdValue(this.getNonTypeDefinition().getOperand());
+    public DVal getDval() {
+        return this.getNonTypeDefinition().getOperand();
     }
+
+
+    @Override
+    protected void codeGenInitClass(DecacCompiler compiler){
+        RegisterOffset stock = new RegisterOffset(compiler.getRegManager().getGB(), Register.GB);
+        this.getClassDefinition().setOperand(stock);
+        compiler.getRegManager().incrementGB();
+
+    }
+
     @Override
     protected void codeGenNot(DecacCompiler compiler){
-            int i = compiler.getTableRegistre().getLastregistre();
-            GPRegister target= Register.getR(i);
-            compiler.getTableRegistre().setEtatRegistreTrue(i);
-            compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),target));
-            compiler.addInstruction(new ADD(new ImmediateInteger(1),target));
-            compiler.addInstruction(new REM(new ImmediateInteger(2),target));
-            this.setdValue(target);
+        this.codegenExpr(compiler,Register.R0);
+            compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),Register.R0));
+            compiler.addInstruction(new ADD(new ImmediateInteger(1),Register.R0));
+            compiler.addInstruction(new REM(new ImmediateInteger(2),Register.R0));
     }
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        int i = compiler.getTableRegistre().getLastregistre();
-        GPRegister target= Register.getR(i);
-        compiler.getTableRegistre().setEtatRegistreTrue(i);
-        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),target));
-        compiler.addInstruction(new CMP(new ImmediateInteger(0),target));
-        compiler.addInstruction(new BEQ(compiler.getLabel()));
-        compiler.getTableRegistre().setEtatRegistreFalse(i);
-    }
-
-    @Override
-    protected void codeGenCMPNot(DecacCompiler compiler){
-        int i = compiler.getTableRegistre().getLastregistre();
-        GPRegister target= Register.getR(i);
-        compiler.getTableRegistre().setEtatRegistreTrue(i);
-        compiler.addInstruction(new LOAD(this.getNonTypeDefinition().getOperand(),target));
-        compiler.addInstruction(new CMP(new ImmediateInteger(0),target));
-        compiler.addInstruction(new BNE(compiler.getLabel()));
-        compiler.getTableRegistre().setEtatRegistreFalse(i);
-
+        this.codegenExpr(compiler,Register.R0);
+        compiler.addInstruction(new CMP(0,Register.R0));
+        compiler.addInstruction(new BEQ(compiler.getLblManager().getLabelFalse()));
     }
 
     @Override

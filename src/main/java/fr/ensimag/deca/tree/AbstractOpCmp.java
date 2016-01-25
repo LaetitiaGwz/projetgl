@@ -3,9 +3,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  *
@@ -53,18 +52,54 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        this.getLeftOperand().codeGenOPLeft(compiler);
-        GPRegister cmpRight= (GPRegister) getLeftOperand().getdValue();
-        this.getRightOperand().codeGenOPRight(compiler);
-        DVal cmpLeft = getRightOperand().getdValue();
-        compiler.addInstruction(new CMP(cmpLeft, cmpRight));
-        this.codeGenCMPOP(compiler);
-        if(getRightOperand().getUtilisation()){
-            compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
+        this.getLeftOperand().codegenExpr(compiler, Register.R0);
+        this.getRightOperand().codegenExpr(compiler, Register.R1);
+        compiler.addInstruction(new CMP(Register.R1, Register.R0));
+        codeGenCMPOP(compiler);
+    }
+
+    @Override
+    public void codegenExpr(DecacCompiler compiler, GPRegister register) {
+        this.getLeftOperand().codegenExpr(compiler, Register.R0);
+        this.getRightOperand().codegenExpr(compiler, Register.R1);
+        compiler.addInstruction(new CMP(Register.R0, Register.R1));
+        this.fetchCond(compiler, register);
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler){
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        this.codegenExpr(compiler,null);
+        int i=compiler.getLblManager().getIf();
+        compiler.getLblManager().incrementIf();
+        Label finTest = new Label("endTest"+i);
+        Label suiteTest = new Label("suiteTest"+i);
+        compiler.getLblManager().setLabelFalse(suiteTest);
+        GPRegister stock;
+        if(compiler.getRegManager().noFreeRegister()){
+            int j =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
+            compiler.addInstruction(new PUSH(Register.getR(j)));
+            stock = Register.getR(j);
+            setPush();
+        }
+        else{
+            stock = compiler.getRegManager().getGBRegister();
 
         }
-        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
-        //on libère quoi qu'il arrive
+        this.codeGenCMPOP(compiler);
+
+        compiler.addInstruction(new LOAD(new ImmediateInteger(1),stock));
+        compiler.addInstruction(new BRA(finTest));
+        compiler.addLabel(suiteTest);
+        compiler.addInstruction(new LOAD(new ImmediateInteger(0),stock));
+        compiler.addLabel(finTest);
+        if(getPop()){
+            compiler.addInstruction(new POP(stock));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
     @Override
@@ -73,5 +108,17 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         s.print(this.getOperatorName());
         getRightOperand().decompile(s);
     }
+
+    @Override
+    public DVal getDval() {
+        return null;
+    }
+
+    /**
+     *
+     * @param compiler
+     * @param register
+     */
+    protected abstract void fetchCond(DecacCompiler compiler, GPRegister register);
 
 }

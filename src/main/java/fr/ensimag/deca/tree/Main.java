@@ -4,6 +4,13 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -23,6 +30,9 @@ public class Main extends AbstractMain {
         this.declVariables = declVariables;
         this.insts = insts;
     }
+    public int returnSP(){
+        return declVariables.returnSP();
+    }
 
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
@@ -38,9 +48,10 @@ public class Main extends AbstractMain {
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        // A FAIRE: traiter les déclarations de variables.
-        compiler.addComment("Beginning of main instructions:");
         declVariables.codeGenListDecl(compiler);
+
+        compiler.addComment("Beginning of main instructions:");
+
         insts.codeGenListInst(compiler);
     }
     

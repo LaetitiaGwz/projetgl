@@ -1,0 +1,31 @@
+// Description:
+//    utilisation des cast
+//
+// Resultats:
+//    Aucune erreur
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class A {}
+class B extends A {}
+class C extends B {}
+
+{
+	int entier = 5;
+	float flottant = (float) (entier);
+
+	A a1, a2;
+	B b1, b2;
+	C c1, c2;
+
+	// on cast B->A (implicite)
+	a1 = b1;
+	// on cast C->A (implicite)
+	a2 = c1;
+
+	// on undercast A->B
+	b2 = (B) (a1);
+	// on undercast A->C
+	c2 = (C) (a2);
+}

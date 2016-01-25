@@ -15,8 +15,27 @@ import java.util.LinkedList;
 public class IMAProgram {
     private final LinkedList<AbstractLine> lines = new LinkedList<AbstractLine>();
 
-    public void add(AbstractLine line) {
+    public int add(AbstractLine line) {
         lines.add(line);
+        return lines.size();
+    }
+
+    /**
+     * Ajoute une ligne après la ligne à la position pos
+     * @param pos
+     * @param line
+     */
+    public void addInstruction(Instruction inst,int pos) {
+        Line l = new Line(inst);
+        lines.add(pos,l);
+    }
+
+    /**
+     * Retourne le nombre totals de lignes
+     * @return
+     */
+    public int totalLineNumber(){
+        return lines.size();
     }
 
     public void addComment(String s) {

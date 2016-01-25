@@ -18,7 +18,7 @@ import java.util.Iterator;
  */
 public class ListExpr extends TreeList<AbstractExpr> {
     public void verifyParams(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Signature signature, Location location)
+                                  ClassDefinition currentClass, Signature signature, Location location)
             throws ContextualError {
 
         // Erreur si nombres de paramètres différents
@@ -37,8 +37,21 @@ public class ListExpr extends TreeList<AbstractExpr> {
         }
     }
 
+    public Signature verifySignature(DecacCompiler compiler, EnvironmentExp localEnv,
+                                  ClassDefinition currentClass)
+            throws ContextualError {
+        Signature s = new Signature();
+        // Erreur si types différents pour un certain paramètre
+        for (AbstractExpr expr : getList()) {
+            s.add(expr.verifyExpr(compiler, localEnv, currentClass));
+        }
+        return s;
+    }
+
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        for(AbstractExpr a : getList()){
+            a.decompile(s);
+        }
     }
 }

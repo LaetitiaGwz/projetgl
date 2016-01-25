@@ -32,42 +32,72 @@ public class UnaryMinus extends AbstractUnaryExpr {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler){
-        getOperand().codeGenOPRight(compiler);
-        GPRegister unRight= Register.getR(compiler.getTableRegistre().getLastregistre());
-        if(getType().isInt())
-            compiler.addInstruction(new LOAD(new ImmediateInteger(0), unRight));
-        else
-            compiler.addInstruction(new LOAD(new ImmediateFloat(0), unRight));
-        compiler.getTableRegistre().setEtatRegistreTrue(compiler.getTableRegistre().getLastregistre());
-        compiler.addInstruction(new SUB(getOperand().getdValue(), unRight));
+    public void codegenExpr(DecacCompiler compiler, GPRegister register) {
+        getOperand().codegenExpr(compiler, register);
+        compiler.addInstruction(new OPP(register,register));
+    }
 
-        this.setdValue(unRight);
-        this.setUtilisation();
+    @Override
+    public DVal getDval() {
+        return null;
     }
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
-        getOperand().codeGenInst(compiler);
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        getOperand().codegenExpr(compiler, register);
+        compiler.addInstruction(new OPP(register, Register.R1));
         if(this.getType().isInt()){
-            compiler.addInstruction(new LOAD(new ImmediateInteger(0), Register.R1));
-            compiler.addInstruction(new SUB(getOperand().getdValue(), Register.R1));
             compiler.addInstruction(new WINT());
         }
         else if(this.getType().isFloat()){
-            compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.R1));
-            compiler.addInstruction(new SUB(getOperand().getdValue(), Register.R1));
             compiler.addInstruction(new WFLOAT());
         }
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
     @Override
     protected void codeGenPrintX(DecacCompiler compiler) {
         Validate.isTrue(getType().isFloat());
-        getOperand().codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.R1));
-        compiler.addInstruction(new SUB(getOperand().getdValue(), Register.R1));
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        getOperand().codegenExpr(compiler, register);
+        compiler.addInstruction(new OPP(register, Register.R1));
         compiler.addInstruction(new WFLOATX());
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
     @Override

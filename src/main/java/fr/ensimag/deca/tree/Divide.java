@@ -19,29 +19,22 @@ public class Divide extends AbstractOpArith {
         super(leftOperand, rightOperand);
     }
 
+    @Override
+    protected void mnemoOp(DecacCompiler compiler, DVal left, GPRegister right) {
+         if(this.getType().isFloat()) {
+            // Instruction DIV pour les flottants
+            compiler.addInstruction(new DIV(left, right));
+        }else{
+            // Instruction QUO pour les entiers
+            compiler.addInstruction(new QUO(left, right));
+        }
+        compiler.addInstruction(new BOV(new Label("overflow_error"), compiler));
+    }
+
 
     @Override
     protected String getOperatorName() {
         return "/";
-    }
-
-    @Override
-    protected void codeGenInst(DecacCompiler compiler){
-        // a / b
-        this.getLeftOperand().codeGenOPLeft(compiler);
-        GPRegister divRight= (GPRegister) this.getLeftOperand().getdValue();
-        this.getRightOperand().codeGenOPRight(compiler);
-        DVal divLeft = this.getRightOperand().getdValue();
-        if(this.getType().isFloat()) {
-            // Instruction DIV pour les flottants
-            compiler.addInstruction(new DIV(divLeft,divRight));
-        }else{
-            // Instruction QUO pour les entiers
-            compiler.addInstruction(new QUO(divLeft, divRight));
-        }
-        compiler.addInstruction(new BOV(new Label("overflow_error")));
-        // a <- a/b
-        this.setdValue(divRight);
     }
 
 }

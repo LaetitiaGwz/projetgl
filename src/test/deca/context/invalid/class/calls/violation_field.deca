@@ -1,0 +1,19 @@
+// Description:
+//    Appel d'un champ protected dans main
+//
+// Resultats:
+//    undefined field
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class A {
+	protected int a;
+}
+
+{
+	A a;
+	int b = a.a;
+
+}
+

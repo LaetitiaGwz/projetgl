@@ -1,0 +1,17 @@
+// Description:
+//    Utilisation de instanceof
+//
+// Resultats:
+//    Aucune erreur
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class A {
+}
+
+{
+	A a;
+	if(a instanceof A) {}
+}
+

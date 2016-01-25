@@ -1,0 +1,17 @@
+// Test de la classe objet et de sa méthode equals
+//
+// Resultats:
+//    ok
+
+{
+    Object a = new Object();
+    Object b = new Object();
+
+    if(a.equals(b)){
+        print("no");
+    }else if(a.equals(a)){
+        print("ok");
+    }else{
+        print("no");
+    }
+}

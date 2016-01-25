@@ -15,10 +15,10 @@ options {
 /* 
  * mot réservé
 */
-ASM: 'asm';         
+ASM: 'asm';
 CLASS: 'class';     
 EXTENDS: 'extends';  
-ELSE: 'else'   ;    
+ELSE: 'else'   ;
 FALSE: 'false';      
 IF: 'if';
 INSTANCEOF: 'instanceof';  

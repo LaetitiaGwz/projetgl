@@ -7,6 +7,11 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -38,22 +43,92 @@ public class Initialization extends AbstractInitialization {
         Type initType = expression.verifyExpr(compiler, localEnv, currentClass);
         if(initType.isInt() && t.isFloat()) {
             expression = new ConvFloat(expression);
+            expression.setLocation(getLocation());
             expression.verifyExpr(compiler, localEnv, currentClass);
         }
-        else if(!initType.sameType(t)) {
+        else if(!AbstractExpr.subtype(t, initType)) {
             throw new ContextualError("Incompatible type initialization. Expected " + t.getName() + ", had " + initType.getName() + ".", this.getLocation());
         }
+        else if(!initType.sameType(t)) {
+            // On cast
+            // On crée le type et on met sa location
+            Identifier typeIdentifier = new Identifier(t.getName());
+            typeIdentifier.setLocation(getLocation());
+            // On crée le cast et on met sa location
+            Cast cast = new Cast(typeIdentifier, expression);
+            cast.setLocation(getLocation());
+
+            expression.verifyExpr(compiler, localEnv, currentClass);
+        }
+    }
+    protected void codePreGenInit(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        getExpression().codePreGenExpr(compiler);
+        compiler.getFakeRegManager().setTableRegistre(table);
+    }
+    @Override
+    protected void codeGenInit(DecacCompiler compiler) {
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        getExpression().codegenExpr(compiler, register);
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
     @Override
-    protected void codeGenInit(DecacCompiler compiler) {
-        getExpression().codeGenInst(compiler);
+    protected void codeGenInitFieldFloat(DecacCompiler compiler){
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        getExpression().codegenExpr(compiler,register);
+        compiler.addInstruction(new LOAD(register,Register.R0));
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
+
+        compiler.getRegManager().setTableRegistre(table); //on les remets à la fin
+
+    }
+    @Override
+    protected void codeGenInitFieldInt(DecacCompiler compiler){//l'expression fait tout
+        this.codeGenInitFieldFloat(compiler);
     }
 
 
     @Override
     public void decompile(IndentPrintStream s) {
         getExpression().decompileInst(s);
+        s.println(";");
 
     }
 

@@ -13,14 +13,27 @@ import fr.ensimag.deca.context.Type;
  * @date 01/01/2016
  */
 public abstract class AbstractDeclField extends Tree {
-    
-    protected abstract void verifyDeclField(Type typeDeclaration,
-            Visibility visibility, DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError;
+
+    protected abstract void verifyMembers(Type typeDeclaration,
+                                          Visibility visibility, DecacCompiler compiler, EnvironmentExp localEnv,
+                                          ClassDefinition currentClass) throws ContextualError;
+
+    protected abstract void verifyBody(Type typeDeclaration,
+                                          Visibility visibility, DecacCompiler compiler, EnvironmentExp localEnv,
+                                          ClassDefinition currentClass) throws ContextualError;
 
     /**
      * Generates the code for the declaration
      * @param compiler
      */
+
     protected abstract void codeGenDecl(DecacCompiler compiler);
+
+    protected abstract void codeGenFieldFloat(DecacCompiler compiler);
+
+    protected abstract void codeGenFieldInt(DecacCompiler compiler);
+    protected abstract void codePreGenField(DecacCompiler compiler);
+
+    public abstract AbstractIdentifier getVarName();
+
 }

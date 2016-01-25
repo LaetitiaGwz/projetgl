@@ -12,8 +12,16 @@
 Deca.iml
 *.ass
 *.tokens
+/src/main/java/fr/ensimag/deca/Sandbox.java
+planning
 
 # outputs of tests
-/test/output/etapeC/invalid/*
-/test/output/etapeC/valid/*
-/test/output/etapeC/error/*
+src/test/output
+
+#latex generation
+*.pdf
+*.aux
+*.log
+*.out
+*.toc
+

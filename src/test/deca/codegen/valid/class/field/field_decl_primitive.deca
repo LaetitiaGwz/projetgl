@@ -1,0 +1,27 @@
+// Description:
+//    Tests de déclaration de champs primitifs
+//
+// Resultats:
+//   ima_output: 59.40000e+00true
+// 
+
+class Platon{
+    int a = 5;
+    float b = 9.4;
+    boolean c = true;
+
+    void afficheChamps(){
+        print(a,b);
+        if(c){
+            print("true");
+        }else{
+            print("false");
+        }
+    }
+}
+
+{
+    Platon p = new Platon();
+	p.afficheChamps();
+}
+

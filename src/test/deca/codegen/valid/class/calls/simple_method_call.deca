@@ -1,0 +1,18 @@
+// Description:
+//    Appel d'une méthode de classe dans le main
+//
+// Resultats:
+//    ima_output: ok
+//
+
+class A {
+	void printOk() {
+        print("ok");
+	}
+}
+
+{
+	A a = new A();
+	a.printOk();
+}
+

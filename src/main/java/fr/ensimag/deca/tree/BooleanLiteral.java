@@ -6,9 +6,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
 
@@ -60,36 +58,19 @@ public class BooleanLiteral extends AbstractExpr {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        int i=compiler.getTableRegistre().getLastregistre();
-        compiler.getTableRegistre().setEtatRegistreTrue(i);
-        GPRegister target= Register.getR(i);
-        this.setdValue(target);
+    public void codegenExpr(DecacCompiler compiler, GPRegister register) {
         int convBool = (getValue()) ? 1 : 0; // Conversion booléen -> integer
-        compiler.addInstruction(new LOAD(new ImmediateInteger(convBool), target));
+        compiler.addInstruction(new LOAD(new ImmediateInteger(convBool), register));
     }
 
     @Override
     protected void codeGenNot(DecacCompiler compiler){
-        this.value=!this.getValue();
+        this.value = !this.getValue();
     }
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        int i=compiler.getTableRegistre().getLastregistre();
-        compiler.getTableRegistre().setEtatRegistreTrue(i);
-        GPRegister target= Register.getR(i);
-        compiler.addInstruction(new LOAD(new ImmediateInteger(0),target));
-        this.codeGenInst(compiler);
-        compiler.addInstruction(new CMP(this.getdValue(),target));
-        compiler.addInstruction(new BEQ(compiler.getLabel()));
-        compiler.getTableRegistre().setEtatRegistreFalse(compiler.getTableRegistre().getLastregistre()-1);
-        compiler.getTableRegistre().setEtatRegistreFalse(i); // on libère les deux
-    }
-
-    @Override
-    protected void codeGenCMPNot(DecacCompiler compiler){
-        this.codeGenNot(compiler);
-        this.codeGenCMP(compiler);
+        if(!getValue())
+            compiler.addInstruction(new BRA(compiler.getLblManager().getLabelFalse()));
     }
 }

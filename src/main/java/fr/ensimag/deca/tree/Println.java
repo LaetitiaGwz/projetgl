@@ -22,9 +22,21 @@ public class Println extends AbstractPrint {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         for (AbstractExpr a : getArguments().getList()) {
-            a.codeGenPrint(compiler);
+            if(getPrintHex())
+                a.codeGenPrintX(compiler);
+            else
+                a.codeGenPrint(compiler);
         }
         compiler.addInstruction(new WNL());
+    }
+    @Override
+    protected void codePreGenInst(DecacCompiler compiler){
+        for (AbstractExpr a : getArguments().getList()) {
+            if(getPrintHex())
+                a.codePreGenPrintX(compiler);
+            else
+                a.codePreGenPrint(compiler);
+        }
     }
 
     @Override

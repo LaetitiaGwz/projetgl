@@ -1,0 +1,19 @@
+// Description:
+//    Utilisation de la selection
+//
+// Resultats:
+//    Aucune erreur
+// 
+// Historique:
+//    cree le 01/01/2016
+
+class A {
+	A a;
+}
+
+{
+	A b;
+	A a = b.a;
+	b = b.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a;
+}
+

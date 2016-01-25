@@ -37,11 +37,16 @@ public class While extends AbstractInst {
     }
 
     @Override
+    protected void codePreGenInst(DecacCompiler compiler){
+        condition.codePreGenCMP(compiler);
+        body.codePreGenListInst(compiler);
+    }
+    @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        Label DebutWhile = new Label("DebutWhile"+compiler.getWhile());
-        Label EndWhile = new Label("EndWhile"+compiler.getWhile());
-        compiler.incrementeWhile();
-        compiler.setLabel(EndWhile);
+        Label DebutWhile = new Label("DebutWhile"+compiler.getLblManager().getWhile());
+        Label EndWhile = new Label("EndWhile"+compiler.getLblManager().getWhile());
+        compiler.getLblManager().incrementWhile();
+        compiler.getLblManager().setLabelFalse(EndWhile);
         compiler.addLabel(DebutWhile);
         condition.codeGenCMP(compiler);
         body.codeGenListInst(compiler);

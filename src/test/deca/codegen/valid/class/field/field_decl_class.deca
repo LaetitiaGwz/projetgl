@@ -1,0 +1,23 @@
+// Description:
+//    Tests des champs d'une classe
+//
+// Resultats:
+//   ima_output: socrate
+//
+
+class Socrate{
+	void quiSuisJe(){
+		print("socrate");
+	}
+}
+
+class Platon{
+	Socrate s = new Socrate();
+	void afficheSocrate(){
+		s.quiSuisJe();
+	}
+}
+{
+    Platon p = new Platon();
+    p.afficheSocrate();
+}

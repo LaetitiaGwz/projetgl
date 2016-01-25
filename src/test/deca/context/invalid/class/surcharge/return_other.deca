@@ -1,0 +1,18 @@
+// Description:
+//    Héritage d'une classe
+//
+// Resultats:
+//    Wrong return type
+
+class A {
+	int m() {}
+}
+
+class B extends A {
+	boolean m() {}
+}
+
+{
+
+}
+

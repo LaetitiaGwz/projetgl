@@ -14,7 +14,10 @@ public class ListIfThen extends TreeList<AbstractIfThen> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        for(AbstractIfThen a : getList()){
+            a.decompile(s);
+        }
+
     }
 
     protected void codeGenListIfThen(DecacCompiler compiler){
@@ -24,5 +27,11 @@ public class ListIfThen extends TreeList<AbstractIfThen> {
 
         }
 
+    }
+    protected void codePreGenListIfThen(DecacCompiler compiler){
+        for (AbstractIfThen i: getList()) {
+            i.codePreGenIfThen(compiler);
+
+        }
     }
 }

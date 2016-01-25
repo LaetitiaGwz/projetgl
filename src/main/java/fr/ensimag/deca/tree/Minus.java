@@ -5,8 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.instructions.BOV;
-import fr.ensimag.ima.pseudocode.instructions.SUB;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * @author gl41
@@ -17,25 +17,18 @@ public class Minus extends AbstractOpArith {
         super(leftOperand, rightOperand);
     }
 
+    @Override
+    protected void mnemoOp(DecacCompiler compiler, DVal left, GPRegister right) {
+       compiler.addInstruction(new SUB(left, right));
+        if(this.getType().isFloat())
+            compiler.addInstruction(new BOV(new Label("overflow_error"), compiler));
+    }
+
 
     @Override
     protected String getOperatorName() {
         return "-";
     }
 
-    @Override
-    protected void codeGenInst(DecacCompiler compiler){
-        // a - b
-        this.getLeftOperand().codeGenOPLeft(compiler);
-        GPRegister subRight= (GPRegister) this.getLeftOperand().getdValue();
-        this.getRightOperand().codeGenOPRight(compiler);
-        DVal subLeft = getRightOperand().getdValue();
-        compiler.addInstruction(new SUB(subLeft,subRight));
-        if(this.getType().isFloat())
-            compiler.addInstruction(new BOV(new Label("overflow_error")));
-        // a <- a - b
-        this.setdValue(subRight);
-
-    }
 
 }

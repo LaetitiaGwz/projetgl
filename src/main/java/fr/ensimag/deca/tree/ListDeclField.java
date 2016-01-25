@@ -12,6 +12,9 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        for(AbstractDeclField a : getList()){
+            a.decompile(s);
+        }
+
     }
 }
