@@ -65,11 +65,11 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     protected void codePreGenMethod(fr.ensimag.deca.DecacCompiler compiler) {
         name.getMethodDefinition().setLabel(compiler.getLblManager().getLabelFalse());
-        declVars.codePreGenListDeclMethod(compiler);
 
     }
     @Override
     protected void codeGenMethod(fr.ensimag.deca.DecacCompiler compiler) {
+        declVars.codePreGenListDeclMethod(compiler);
         compiler.add(new Line(name.getMethodDefinition().getLabel()));
         tstoInst = new Line(new TSTO(1));
         compiler.add(tstoInst);

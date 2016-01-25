@@ -19,7 +19,10 @@ public class Minus extends AbstractOpArith {
 
     @Override
     protected void mnemoOp(DecacCompiler compiler, DVal left, GPRegister right) {
-       compiler.addInstruction(new SUB(left, right));
+        compiler.addInstruction(new SUB(left, right));
+        compiler.addInstruction(new BOV(new Label("overflow_error")));
+
+
     }
 
 

@@ -75,18 +75,21 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         Label finTest = new Label("endTest"+i);
         Label suiteTest = new Label("suiteTest"+i);
         compiler.getLblManager().setLabelFalse(suiteTest);
-        this.codeGenCMPOP(compiler);
         GPRegister stock;
         if(compiler.getRegManager().noFreeRegister()){
             int j =compiler.getRegManager().getGBRegisterInt();
-            compiler.addInstruction(new PUSH(Register.getR(i)));
-            stock = Register.getR(i);
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
+            compiler.addInstruction(new PUSH(Register.getR(j)));
+            stock = Register.getR(j);
             setPush();
         }
         else{
             stock = compiler.getRegManager().getGBRegister();
 
         }
+        this.codeGenCMPOP(compiler);
+
         compiler.addInstruction(new LOAD(new ImmediateInteger(1),stock));
         compiler.addInstruction(new BRA(finTest));
         compiler.addLabel(suiteTest);

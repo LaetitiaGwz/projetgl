@@ -30,6 +30,10 @@ public class NoInitialization extends AbstractInitialization {
     }
 
     @Override
+    protected void codePreGenInit(DecacCompiler compiler) {
+        // Nothing to do
+    }
+    @Override
     protected void codeGenInit(DecacCompiler compiler) {
         // Nothing to do
     }

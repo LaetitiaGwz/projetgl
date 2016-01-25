@@ -36,6 +36,13 @@ public class Not extends AbstractUnaryExpr {
         return type;
     }
 
+    protected void codePreGenCMPOP(DecacCompiler compiler){
+        getOperand().codePreGenExpr(compiler);
+    }
+
+    protected void codePreGenExpr(DecacCompiler compiler){
+        getOperand().codePreGenExpr(compiler);
+    }
     @Override
     protected void codeGenCMPOP(DecacCompiler compiler){
         getOperand().codegenExpr(compiler, Register.R0);

@@ -119,8 +119,19 @@ public abstract class AbstractExpr extends AbstractInst {
     protected  void codeGenPrint(DecacCompiler compiler){
 
     }
+    protected  void codePreGenPrint(DecacCompiler compiler){
+
+    }
 
     protected  void codeGenPrintX(DecacCompiler compiler){
+    }
+    protected  void codePreGenPrintX(DecacCompiler compiler){
+    }
+    protected void codePreGenExpr(DecacCompiler compiler){
+
+    }
+    protected void codePreGenInst(DecacCompiler compiler){
+
     }
 
 
@@ -142,9 +153,15 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenCMP(DecacCompiler compiler){
         // pour les booleens
     }
+    protected void codePreGenCMP(DecacCompiler compiler){
+        // pour les booleens
+    }
 
     protected  void codeGenCMPOP(DecacCompiler compiler){
         
+    }
+    protected  void codePreGenCMPOP(DecacCompiler compiler){
+
     }
 
     @Override

@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -65,22 +66,45 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         return opType;
     }
 
+    protected void codePreGenExp(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+
+        getLeftOperand().codePreGenExpr(compiler);
+        if(getRightOperand().getDval()==null){
+            compiler.getFakeRegManager().getGBRegister();
+            compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+            getRightOperand().codePreGenExpr(compiler);
+        }
+        compiler.getFakeRegManager().setTableRegistre(table);
+
+    }
     @Override
     public void codegenExpr(DecacCompiler compiler,GPRegister register){
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
         getLeftOperand().codegenExpr(compiler, register);
         if(getRightOperand().getDval() != null){
             mnemoOp(compiler, getRightOperand().getDval(), register);
-        }else if(register.isLastRegister(compiler.getRegManager())){
-            compiler.addInstruction(new PUSH(register));
-            getRightOperand().codegenExpr(compiler, register);
-            compiler.addInstruction(new LOAD(register, Register.R0));
-            compiler.addInstruction(new POP(register));
-            mnemoOp(compiler, Register.R0, register);
         }else {
-            GPRegister nextFreeReg = register.next();
-            getRightOperand().codegenExpr(compiler, nextFreeReg);
-            mnemoOp(compiler, nextFreeReg, register);
+            GPRegister stock;
+            if(compiler.getRegManager().noFreeRegister()){
+                int i =compiler.getRegManager().getGBRegisterInt(register.getNumber());
+                compiler.addInstruction(new TSTO(1));
+                compiler.addInstruction(new BOV(new Label("stack_overflow")));
+                compiler.addInstruction(new PUSH(Register.getR(i)));
+                stock = Register.getR(i);
+                setPush();
+            }
+            else {
+                stock = compiler.getRegManager().getGBRegister();
+            }
+            getRightOperand().codegenExpr(compiler, stock);
+            mnemoOp(compiler, stock, register);
+            if(getPop()){
+                compiler.addInstruction(new POP(stock));
+                popDone();
+            }
         }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
     protected abstract void mnemoOp(DecacCompiler compiler, DVal left,GPRegister right);

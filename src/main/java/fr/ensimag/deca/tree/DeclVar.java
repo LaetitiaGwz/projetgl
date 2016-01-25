@@ -38,7 +38,8 @@ public class DeclVar extends AbstractDeclVar {
         if(getInitialization().getExpression() != null) {
             boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
             compiler.getFakeRegManager().getGBRegister();
-            compiler.addMaxFakeRegister(1);
+            compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+            this.getInitialization().getExpression().codePreGenExpr(compiler);
             compiler.getFakeRegManager().setTableRegistre(table);
         }
 

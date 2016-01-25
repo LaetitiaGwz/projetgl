@@ -61,7 +61,13 @@ public class Initialization extends AbstractInitialization {
             expression.verifyExpr(compiler, localEnv, currentClass);
         }
     }
-
+    protected void codePreGenInit(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        getExpression().codePreGenExpr(compiler);
+        compiler.getFakeRegManager().setTableRegistre(table);
+    }
     @Override
     protected void codeGenInit(DecacCompiler compiler) {
         boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre

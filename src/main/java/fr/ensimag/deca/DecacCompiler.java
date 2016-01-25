@@ -86,6 +86,9 @@ public class DecacCompiler implements Callable {
             maxFakeRegister=ajout;
         }
     }
+    public void resetMaxFakeRegister(){
+        this.maxFakeRegister= 0;
+    }
     public int getMaxFakeRegister(){
         return maxFakeRegister;
     }

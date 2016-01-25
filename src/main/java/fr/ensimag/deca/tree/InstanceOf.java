@@ -34,6 +34,22 @@ public class InstanceOf extends AbstractExpr {
         setType(t);
         return t;
     }
+    protected void codePreGenExpr(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        compiler.getFakeRegManager().setTableRegistre(table);
+    }
+
+    protected void codePreGenCMP(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        compiler.getFakeRegManager().setTableRegistre(table);
+    }
+
 
     @Override
     public void codegenExpr(DecacCompiler compiler, GPRegister register) {
