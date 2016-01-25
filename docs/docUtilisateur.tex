@@ -88,5 +88,525 @@ le code assembleur généré par le compilateur.
 
 
 \section{Exemples}
+\subsection{Hello World}
+
+\textbf{Code deca :} 
+\begin{verbatim}
+	{
+        println("Hello");
+	}
+\end{verbatim}
+\textbf{Code assembleur :} 
+\begin{verbatim}
+; start main program
+	TSTO #4
+	BOV stack_overflow
+	ADDSP #4
+	LOAD #null, R0
+	STORE R0, 1(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 2(GB)
+; Main program
+; Beginning of main instructions:
+	WSTR "Hello"
+	WNL
+	HALT
+init.Object:
+	RTS
+code.Object.equals:
+	TSTO #2
+	BOV stack_overflow
+	PUSH R2
+	PUSH R3
+	LOAD -2(LB), R2
+	LOAD -3(LB), R3
+	CMP R2, R3
+	SEQ R0
+	POP R3
+	POP R2
+	RTS
+; end main program
+arith_overflow:
+	WSTR "Error : overflow during arithmetic operation"
+	ERROR
+stack_overflow:
+	WSTR "Error : stack overflow"
+	ERROR
+heap_overflow:
+	WSTR "Error : heap overflow"
+	ERROR
+dereferencement.null:
+	WSTR "Error : dereferencing null pointer"
+	ERROR
+\end{verbatim}
+
+\subsection{Fibonacci itératif}
+\textbf{Code deca :} 
+\begin{verbatim}
+{
+    int n = 25;
+    int i = 1;
+    int first = 0;
+    int second = 1;
+    int tmp;
+    while(i <= n){
+        tmp = first + second;
+        first = second;
+        second = tmp;
+        i = i + 1;
+    }
+    print(first);
+}
+\end{verbatim}
+\textbf{Code assembleur :} 
+\begin{verbatim}
+; start main program
+	TSTO #9
+	BOV stack_overflow
+	ADDSP #9
+	LOAD #null, R0
+	STORE R0, 1(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 2(GB)
+; Main program
+	LOAD #25, R2
+	STORE R2, 3(GB)
+	LOAD #1, R3
+	STORE R3, 4(GB)
+	LOAD #0, R4
+	STORE R4, 5(GB)
+	LOAD #1, R5
+	STORE R5, 6(GB)
+; Beginning of main instructions:
+DebutWhile0:
+	LOAD 4(GB), R0
+	LOAD 3(GB), R1
+	CMP R1, R0
+	BGT EndWhile0
+	LOAD 5(GB), R6
+	ADD 6(GB), R6
+	STORE R6, 7(GB)
+	LOAD 6(GB), R2
+	STORE R2, 5(GB)
+	LOAD 7(GB), R2
+	STORE R2, 6(GB)
+	LOAD 4(GB), R2
+	ADD #1, R2
+	STORE R2, 4(GB)
+	BRA DebutWhile0
+EndWhile0:
+	LOAD 5(GB), R1
+	WINT
+	HALT
+init.Object:
+	RTS
+code.Object.equals:
+	TSTO #2
+	BOV stack_overflow
+	PUSH R2
+	PUSH R3
+	LOAD -2(LB), R2
+	LOAD -3(LB), R3
+	CMP R2, R3
+	SEQ R0
+	POP R3
+	POP R2
+	RTS
+; end main program
+arith_overflow:
+	WSTR "Error : overflow during arithmetic operation"
+	ERROR
+stack_overflow:
+	WSTR "Error : stack overflow"
+	ERROR
+heap_overflow:
+	WSTR "Error : heap overflow"
+	ERROR
+dereferencement.null:
+	WSTR "Error : dereferencing null pointer"
+	ERROR
+\end{verbatim}
+\subsection{Grosse expression et option -r 4}
+Nous testons ici le bon fonctionnement de l'option -r qui permet de limiter le nombre de registres disponibles. On remarque que l'option fonctionne correctement, puisqu'aucun registre supérieur à R3 n'est utilisé. L'expression est aussi correctement évaluée à 94. \\
+\textbf{Code deca :} 
+\begin{verbatim}
+{
+    int a = ( ( (5 + (3 % 1)) - 2 + ((2 - 2 + 3)*5 + 2 - 2) + (1 - 1) - (1/3 + 54) + 2
+    - ( 2 + 3*2*3*(9*10/11)) + 1 - 8) % 4
+    *
+    ( (5 + (3 % 1)) - 2 + ((2 - 2 + 3)*5 + 2 - 2) + (1 - 1) - (1/3 + 54) + 2
+    - ( 2 + 3*2*3*(9*10/11)) + 1 - 8) % 4
+    -
+    ( (5 + (3 % 1)) - 2 + ((2 - 2 + 3)*5 + 2 - 2) + (1 - 1) - (1/3 + 54) + 2
+    - ( 2 + 3*2*3*(9*10/11)) + 1 - 8) % 4
+    + (2*23*3 - 1)
+    ) / ( (23%2) + 2*2*(2-(3*(4-3+1-1))))
+    *
+     (( (5 + (3 % 1)) - 1 + ((2 - 2 + 3)*5 + 2 - 2) + (1 - 1) - (1/3 + 54) + 2
+    - ( 2 + 3*2*3*(9*10/11)) + 1 - 8) % 4) ;
+    print(a);
+}
+\end{verbatim}
+\textbf{Code assembleur :} 
+\begin{verbatim}
+; start main program
+	TSTO #5
+	BOV stack_overflow
+	ADDSP #5
+	LOAD #null, R0
+	STORE R0, 1(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 2(GB)
+; Main program
+	LOAD #5, R2
+	LOAD #3, R3
+	REM #1, R3
+	BOV arith_overflow
+	ADD R3, R2
+	SUB #2, R2
+	TSTO #1
+	BOV stack_overflow
+	PUSH R3
+	LOAD #2, R3
+	SUB #2, R3
+	ADD #3, R3
+	MUL #5, R3
+	ADD #2, R3
+	SUB #2, R3
+	ADD R3, R2
+	POP R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R3
+	LOAD #1, R3
+	SUB #1, R3
+	ADD R3, R2
+	POP R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R3
+	LOAD #1, R3
+	QUO #3, R3
+	BOV arith_overflow
+	ADD #54, R3
+	SUB R3, R2
+	POP R3
+	ADD #2, R2
+	TSTO #1
+	BOV stack_overflow
+	PUSH R3
+	LOAD #2, R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #3, R2
+	MUL #2, R2
+	MUL #3, R2
+	TSTO #1
+	BOV stack_overflow
+	PUSH R3
+	LOAD #9, R3
+	MUL #10, R3
+	QUO #11, R3
+	BOV arith_overflow
+	MUL R3, R2
+	POP R3
+	ADD R2, R3
+	POP R2
+	SUB R3, R2
+	POP R3
+	ADD #1, R2
+	SUB #8, R2
+	REM #4, R2
+	BOV arith_overflow
+	TSTO #1
+	BOV stack_overflow
+	PUSH R3
+	LOAD #5, R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #3, R2
+	REM #1, R2
+	BOV arith_overflow
+	ADD R2, R3
+	POP R2
+	SUB #2, R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #2, R2
+	SUB #2, R2
+	ADD #3, R2
+	MUL #5, R2
+	ADD #2, R2
+	SUB #2, R2
+	ADD R2, R3
+	POP R2
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #1, R2
+	SUB #1, R2
+	ADD R2, R3
+	POP R2
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #1, R2
+	QUO #3, R2
+	BOV arith_overflow
+	ADD #54, R2
+	SUB R2, R3
+	POP R2
+	ADD #2, R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #2, R2
+	TSTO #1
+	BOV stack_overflow
+	PUSH R3
+	LOAD #3, R3
+	MUL #2, R3
+	MUL #3, R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #9, R2
+	MUL #10, R2
+	QUO #11, R2
+	BOV arith_overflow
+	MUL R2, R3
+	POP R2
+	ADD R3, R2
+	POP R3
+	SUB R2, R3
+	POP R2
+	ADD #1, R3
+	SUB #8, R3
+	MUL R3, R2
+	POP R3
+	REM #4, R2
+	BOV arith_overflow
+	TSTO #1
+	BOV stack_overflow
+	PUSH R3
+	LOAD #5, R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #3, R2
+	REM #1, R2
+	BOV arith_overflow
+	ADD R2, R3
+	POP R2
+	SUB #2, R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #2, R2
+	SUB #2, R2
+	ADD #3, R2
+	MUL #5, R2
+	ADD #2, R2
+	SUB #2, R2
+	ADD R2, R3
+	POP R2
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #1, R2
+	SUB #1, R2
+	ADD R2, R3
+	POP R2
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #1, R2
+	QUO #3, R2
+	BOV arith_overflow
+	ADD #54, R2
+	SUB R2, R3
+	POP R2
+	ADD #2, R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #2, R2
+	TSTO #1
+	BOV stack_overflow
+	PUSH R3
+	LOAD #3, R3
+	MUL #2, R3
+	MUL #3, R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #9, R2
+	MUL #10, R2
+	QUO #11, R2
+	BOV arith_overflow
+	MUL R2, R3
+	POP R2
+	ADD R3, R2
+	POP R3
+	SUB R2, R3
+	POP R2
+	ADD #1, R3
+	SUB #8, R3
+	REM #4, R3
+	BOV arith_overflow
+	SUB R3, R2
+	POP R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R3
+	LOAD #2, R3
+	MUL #23, R3
+	MUL #3, R3
+	SUB #1, R3
+	ADD R3, R2
+	POP R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R3
+	LOAD #23, R3
+	REM #2, R3
+	BOV arith_overflow
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #2, R2
+	MUL #2, R2
+	TSTO #1
+	BOV stack_overflow
+	PUSH R3
+	LOAD #2, R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #3, R2
+	TSTO #1
+	BOV stack_overflow
+	PUSH R3
+	LOAD #4, R3
+	SUB #3, R3
+	ADD #1, R3
+	SUB #1, R3
+	MUL R3, R2
+	POP R3
+	SUB R2, R3
+	POP R2
+	MUL R3, R2
+	POP R3
+	ADD R2, R3
+	POP R2
+	QUO R3, R2
+	BOV arith_overflow
+	POP R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R3
+	LOAD #5, R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #3, R2
+	REM #1, R2
+	BOV arith_overflow
+	ADD R2, R3
+	POP R2
+	SUB #1, R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #2, R2
+	SUB #2, R2
+	ADD #3, R2
+	MUL #5, R2
+	ADD #2, R2
+	SUB #2, R2
+	ADD R2, R3
+	POP R2
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #1, R2
+	SUB #1, R2
+	ADD R2, R3
+	POP R2
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #1, R2
+	QUO #3, R2
+	BOV arith_overflow
+	ADD #54, R2
+	SUB R2, R3
+	POP R2
+	ADD #2, R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #2, R2
+	TSTO #1
+	BOV stack_overflow
+	PUSH R3
+	LOAD #3, R3
+	MUL #2, R3
+	MUL #3, R3
+	TSTO #1
+	BOV stack_overflow
+	PUSH R2
+	LOAD #9, R2
+	MUL #10, R2
+	QUO #11, R2
+	BOV arith_overflow
+	MUL R2, R3
+	POP R2
+	ADD R3, R2
+	POP R3
+	SUB R2, R3
+	POP R2
+	ADD #1, R3
+	SUB #8, R3
+	REM #4, R3
+	BOV arith_overflow
+	MUL R3, R2
+	POP R3
+	STORE R2, 3(GB)
+; Beginning of main instructions:
+	LOAD 3(GB), R1
+	WINT
+	HALT
+init.Object:
+	RTS
+code.Object.equals:
+	TSTO #2
+	BOV stack_overflow
+	PUSH R2
+	PUSH R3
+	LOAD -2(LB), R2
+	LOAD -3(LB), R3
+	CMP R2, R3
+	SEQ R0
+	POP R3
+	POP R2
+	RTS
+; end main program
+arith_overflow:
+	WSTR "Error : overflow during arithmetic operation"
+	ERROR
+stack_overflow:
+	WSTR "Error : stack overflow"
+	ERROR
+heap_overflow:
+	WSTR "Error : heap overflow"
+	ERROR
+dereferencement.null:
+	WSTR "Error : dereferencing null pointer"
+	ERROR
+\end{verbatim}
 
 \end{document}
