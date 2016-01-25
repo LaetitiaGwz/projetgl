@@ -14,6 +14,7 @@
 \frenchbsetup{StandardLists=true}
 \usepackage{enumitem}
 \setlength\parindent{20pt}
+\usepackage[left=1cm,right=1cm,top=2cm,bottom=2cm]{geometry}
 \begin{document}
 \begin{titlepage}
 \title{ Documentation Utilisateur du compilateur Ddca}
@@ -65,11 +66,22 @@ le code assembleur généré par le compilateur.
    \hline
 \end{tabular}
 \subsection{Erreur à l'éxécution}
+
 \begin{tabular}{|l|l|l|}
 \hline
    Description de l'erreur & Exemple & Résultat \\
    \hline
-   Débordement arithmétique & int a = 5.3/0.0 & Error : overflow during arithmetic operation  \\
+   Débordement arithmétique & int a = 5.4/0.0; & Error :  \\
+      &  & overflow during arithmetic operation \\
+   \hline
+   Débordement du tas & Trop d'appels à new() & Error : heap overflow \\
+   \hline
+   Débordement de la pile & Trop d'appel& Error : stack overflow \\
+         & de fonctions récursives &\\
+   
+   \hline
+   Déréférencement d'un pointeur NULL & Object a = null;  & Error :  \\
+   & a.equals(a); & dereferencing null pointer \\
    \hline
 \end{tabular}
 
