@@ -273,20 +273,13 @@ public class DecacCompiler implements Callable {
             LOG.info("Parsing failed");
             return true;
         }
-
         if(this.compilerOptions.getParse()){
             IndentPrintStream istream= new IndentPrintStream(out);
             prog.decompile(istream);
             return false;
-
         }
-
-
         else{
-
             assert(prog.checkAllLocations());
-
-
             prog.verifyProgram(this);
             if(this.compilerOptions.getVerification()){
                 return false;
@@ -294,13 +287,13 @@ public class DecacCompiler implements Callable {
             else{
                 assert(prog.checkAllDecorations());
 
-                /* Code du programme */
+                /* Code du programme principal */
                 addComment("start main program");
                 prog.codeGenProgram(this);
                 addComment("end main program");
 
                 /* Code des erreurs */
-                addLabel(new Label("overflow_error"));
+                addLabel(new Label("arith_overflow"));
                 addInstructionList(new ErrorInstruction("Error : overflow during arithmetic operation"));
                 addLabel(new Label("stack_overflow"));
                 addInstructionList(new ErrorInstruction("Error : stack overflow"));
@@ -326,10 +319,6 @@ public class DecacCompiler implements Callable {
                 return false;
             }
         }
-
-
-
-
     }
 
     /**
