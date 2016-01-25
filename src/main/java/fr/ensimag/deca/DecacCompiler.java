@@ -2,7 +2,6 @@ package fr.ensimag.deca;
 
 import fr.ensimag.deca.codegen.LabelManager;
 import fr.ensimag.deca.codegen.RegisterManager;
-import fr.ensimag.deca.codegen.MemoryMap;
 import fr.ensimag.deca.context.EnvironmentTypes;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
@@ -18,12 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import fr.ensimag.ima.pseudocode.multipleinstructions.ErrorInstruction;
 import fr.ensimag.ima.pseudocode.multipleinstructions.InstructionList;

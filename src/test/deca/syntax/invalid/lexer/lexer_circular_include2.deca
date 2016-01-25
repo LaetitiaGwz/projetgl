@@ -1,6 +1,5 @@
 // Description:
-//    test du parser pour les identificateurs
-//    vérifie qu'aucun identificateur ne commence par un nombre
+//    test de l'inclusion circulaire
 //
 // Resultats:
 // inclusion circulaire
