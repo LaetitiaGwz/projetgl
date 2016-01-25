@@ -14,7 +14,6 @@
 \frenchbsetup{StandardLists=true}
 \usepackage{enumitem}
 \setlength\parindent{20pt}
-\usepackage[left=1cm,right=1cm,top=2cm,bottom=2cm]{geometry}
 \begin{document}
 \begin{titlepage}
 \title{ Documentation Utilisateur du compilateur Ddca}
@@ -37,55 +36,23 @@ le code assembleur généré par le compilateur.
 
 \section{Limitations du compilateur}
 
-\section{Limitations de la bibliothèque maths}
+\section{Limitations de la bibliothèque math}
+La classe Math contient différentes méthodes :
+\begin{itemize}
+    \item float ulp(float f)
+    \item float sin(float f)
+    \item float cos(float f)
+    \item float asin(float f)
+    \item float atan(float f)
+\end{itemize}
+Chaque méthode a été testée grâce aux valeurs retournées par les fonctions prédéfinies de Java.Math. Ces méthodes sont des approximations de valeurs mathématiques, dont on mesure la précision grâce aux ULP (Unit in the Last Place).\\
+Pour une analyse complète et détaillée des algorithmes et de leurs précisions respectives, il faut se reporter à la \textbf{documentation de la classe Math}. \\
+On présente ici, sous forme de tableau, les différents résultats obtenus.
+\subsection{Méthode ulp.}
+La méthode ulp donne le résultat exacte sans approximation.\\
+\\
 
 \section{Recensement des erreurs}
-
-\subsection{Erreur de lexicographie}
-\begin{tabular}{|l|l|l|}
-\hline
-   Description de l'erreur & Exemple & Résultat \\
-   \hline
-   blabla & int a = 5.3/0.0 & Lexer error...  \\
-   \hline
-\end{tabular}
-\subsection{Erreur de syntaxe hors-contexte}
-\begin{tabular}{|l|l|l|}
-\hline
-   Description de l'erreur & Exemple & Résultat \\
-   \hline
-   blabla & int a = 5.3/0.0 & Syntax error  \\
-   \hline
-\end{tabular}
-\subsection{Erreur de syntaxe contextuelle}
-\begin{tabular}{|l|l|l|}
-\hline
-   Description de l'erreur & Exemple & Résultat \\
-   \hline
-   blabla & int a = 5.3/0.0 & Context error...  \\
-   \hline
-\end{tabular}
-\subsection{Erreur à l'éxécution}
-
-\begin{tabular}{|l|l|l|}
-\hline
-   Description de l'erreur & Exemple & Résultat \\
-   \hline
-   Débordement arithmétique & int a = 5.4/0.0; & Error :  \\
-      &  & overflow during arithmetic operation \\
-   \hline
-   Débordement du tas & Trop d'appels à new() & Error : heap overflow \\
-   \hline
-   Débordement de la pile & Trop d'appel& Error : stack overflow \\
-         & de fonctions récursives &\\
-   
-   \hline
-   Déréférencement d'un pointeur NULL & Object a = null;  & Error :  \\
-   & a.equals(a); & dereferencing null pointer \\
-   \hline
-\end{tabular}
-
-
 
 \section{Exemples}
 \subsection{Hello World}
