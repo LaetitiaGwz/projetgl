@@ -55,11 +55,11 @@ class Math{
     /**
     * Valeur minimale prise par les nombres flottants.
     */
-    float MIN_VALUE = _power((float)(2),-23);
+    float MIN_VALUE = _power((float)(2),-149);
     /**
     * Valeur maximale prise par les nombres flottants.
     */
-    float MAX_VALUE = _power((float)(2),23);
+    float MAX_VALUE = _power((float)(2),127);
     /**
     * Valeur de Pi en flottant ;
     */
