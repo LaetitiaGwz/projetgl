@@ -36,6 +36,13 @@ le code assembleur généré par le compilateur.
 \newpage
 
 \section{Limitations du compilateur}
+\begin{itemize}
+\item Taille maximum des nombres entiers et flottants : \\
+Les nombres entiers étants reconnus avec la fonction de l'api Java Integer.parseInt(), ils doivent être compris entre $-2^{-31}$ et $2^{31} - 1$. \\
+Pareil pour les nombres flottants, qui sont reconnus avec la fonction Float.parsefloat(). Ils doivent êtres compris entre  $2^{-149}$et $(2-2^{-23})2^{127}$.
+
+\item 
+\end{itemize}
 
 \section{Limitations de la bibliothèque math}
 La classe Math contient différentes méthodes :
