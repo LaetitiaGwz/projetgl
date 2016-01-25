@@ -23,4 +23,5 @@ public abstract class AbstractDeclFieldSet extends Tree {
             throws ContextualError;
 
     protected abstract void codeGenFieldSet(DecacCompiler compiler);
+    protected abstract void codePreGenFieldSet(DecacCompiler compiler);
 }

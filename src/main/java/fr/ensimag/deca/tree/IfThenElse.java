@@ -47,6 +47,11 @@ public class IfThenElse extends AbstractInst {
         }
         elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
     }
+    @Override
+    protected void codePreGenInst(DecacCompiler compiler){
+        getIfThen().codePreGenListIfThen(compiler);
+        getElseBranch().codePreGenListInst(compiler);
+    }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {

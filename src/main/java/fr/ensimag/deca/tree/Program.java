@@ -142,9 +142,6 @@ public class Program extends AbstractProgram {
             a.codeGenFieldClass(compiler);
             a.codeGenMethodClass(compiler);
         }
-        for(AbstractDeclClass a: classes.getList()){
-            a.setTSTO(compiler, 500);
-        }
 
 
     }

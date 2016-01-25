@@ -157,13 +157,13 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void codeGenFieldClass(DecacCompiler compiler){
         compiler.addLabel(new Label("init."+name.getName().toString())); //pour s'en rappeler
-        tstoInst = new Line(new TSTO(1));
-        compiler.add(tstoInst);
-        compiler.add(new Line(new BOV(new Label("stack_overflow"))));
+
         if(!declFields.isEmpty()){
             declFields.codeGenListDecl(compiler);
         }
         if(!superClass.getName().toString().equals("Object")){
+            compiler.addInstruction(new TSTO(3));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
             compiler.addInstruction(new PUSH(Register.R1)); // on sauvegarde R1 pour la superclass
             compiler.addInstruction(new BSR(new Label("init."+superClass.getName().toString())));
 
@@ -181,12 +181,6 @@ public class DeclClass extends AbstractDeclClass {
 
     }
 
-    @Override
-    protected void setTSTO(DecacCompiler compiler,int maxStackSize) {
-        for(AbstractDeclMethod method : methods.getList()){
-            tstoInst.setInstruction(new TSTO(maxStackSize));
-            method.setTSTO(compiler, maxStackSize);
-        }
-    }
+
 
 }

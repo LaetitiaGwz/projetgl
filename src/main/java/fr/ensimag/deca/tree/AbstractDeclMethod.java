@@ -67,5 +67,4 @@ public abstract class AbstractDeclMethod extends Tree {
         decompile(s);
     }
 
-    protected abstract void setTSTO(DecacCompiler compiler,int maxStackSize);
 }

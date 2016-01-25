@@ -32,6 +32,7 @@ public abstract class AbstractDeclField extends Tree {
     protected abstract void codeGenFieldFloat(DecacCompiler compiler);
 
     protected abstract void codeGenFieldInt(DecacCompiler compiler);
+    protected abstract void codePreGenField(DecacCompiler compiler);
 
     public abstract AbstractIdentifier getVarName();
 

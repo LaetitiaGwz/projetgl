@@ -27,6 +27,10 @@ public class NoOperation extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler) {
         // Nothing to do
     }
+    @Override
+    protected void codePreGenInst(DecacCompiler compiler) {
+        // Nothing to do
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {

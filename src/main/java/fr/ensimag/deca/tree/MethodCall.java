@@ -49,7 +49,7 @@ public class MethodCall extends AbstractExpr{
         setType(retType);
         return retType;
     }
-
+    @Override
     protected void codePreGenExpr(DecacCompiler compiler){
         boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
         obj.codePreGenExpr(compiler);
@@ -59,6 +59,8 @@ public class MethodCall extends AbstractExpr{
     @Override
     public void codegenExpr(DecacCompiler compiler,GPRegister register){
         boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        compiler.addInstruction(new TSTO(3+params.size()));
+        compiler.addInstruction(new BOV(new Label("stack_overflow")));
         compiler.addInstruction(new ADDSP(1+params.size()));
         obj.codegenExpr(compiler,register);
         compiler.addInstruction(new CMP(new NullOperand(),register));
@@ -77,7 +79,7 @@ public class MethodCall extends AbstractExpr{
         compiler.addInstruction(new SUBSP(1+params.size()));
         compiler.getRegManager().setTableRegistre(table);
         }
-
+    @Override
     protected void codePreGenInst(DecacCompiler compiler){
         boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
         compiler.getFakeRegManager().getGBRegister();
@@ -88,6 +90,8 @@ public class MethodCall extends AbstractExpr{
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        compiler.addInstruction(new TSTO(3+params.size()));
+        compiler.addInstruction(new BOV(new Label("stack_overflow")));
         compiler.addInstruction(new ADDSP(1+params.size()));
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){
@@ -124,10 +128,11 @@ public class MethodCall extends AbstractExpr{
         compiler.getRegManager().setTableRegistre(table);
 
     }
-
+    @Override
     protected void codePreGenPrint(DecacCompiler compiler){
         this.codePreGenInst(compiler);
     }
+    @Override
     protected void codePreGenPrintX(DecacCompiler compiler){
         this.codePreGenInst(compiler);
     }

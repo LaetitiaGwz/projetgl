@@ -47,6 +47,11 @@ public class IfThen extends AbstractIfThen {
 
     }
     @Override
+    protected void codePreGenIfThen(DecacCompiler compiler){
+        getCondition().codePreGenCMP(compiler);
+        getInstructions().codePreGenListInst(compiler);
+    }
+    @Override
     protected void codeGenIfThen(DecacCompiler compiler){
         Label finIf = new Label("fin_if" + compiler.getLblManager().getIf()); // à la suite du else
         Label debutIf= new Label("debutIf"+compiler.getLblManager().getIf());

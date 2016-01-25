@@ -46,7 +46,13 @@ public class DeclFieldSet extends AbstractDeclFieldSet {
         this.type = type;
         this.declFields = declFields;
     }
+    @Override
+    protected void codePreGenFieldSet(DecacCompiler compiler){
+        for( AbstractDeclField a : declFields.getList()){
+                a.codePreGenField(compiler);
+            }
 
+    }
     @Override
     protected void verifyMembers(DecacCompiler compiler,
                                  EnvironmentExp localEnv, ClassDefinition currentClass)
