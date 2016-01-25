@@ -10,7 +10,7 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * Conversion of an int into a float. Used for implicit conversions.
- * 
+ *
  * @author gl41
  * @date 01/01/2016
  */
@@ -21,7 +21,7 @@ public class ConvFloat extends AbstractUnaryExpr {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) {
+                           ClassDefinition currentClass) {
 
         Type floatType = new FloatType(compiler.getSymbols().create("float"));
         getOperand().setType(new IntType(compiler.getSymbols().create("int")));
@@ -35,7 +35,31 @@ public class ConvFloat extends AbstractUnaryExpr {
     protected String getOperatorName() {
         return "/* conv float */";
     }
-
+    protected void codePreGenPrint(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        getOperand().codePreGenExpr(compiler);
+        compiler.getFakeRegManager().setTableRegistre(table);
+    }
+    protected void codePreGenPrintX(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        getOperand().codePreGenExpr(compiler);
+        compiler.getFakeRegManager().setTableRegistre(table);
+    }
+    protected void codePreGenCMP(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        getOperand().codePreGenExpr(compiler);
+        compiler.getFakeRegManager().setTableRegistre(table);
+    }
+    @Override
+    public void codePreGenExpr(DecacCompiler compiler) {
+        getOperand().codePreGenExpr(compiler);
+    }
     @Override
     public void codegenExpr(DecacCompiler compiler, GPRegister register) {
         getOperand().codegenExpr(compiler, register);
