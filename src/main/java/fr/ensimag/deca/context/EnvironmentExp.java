@@ -26,19 +26,13 @@ public class EnvironmentExp extends AbstractEnvironnement {
     
     protected EnvironmentExp parentEnvironment;
     /**
-     * Contains definition parameters, variables and fields
+     * Contains definition methods, parameters, variables and fields
      */
     protected HashMap<Symbol, NonTypeDefinition> vars ;
-    /**
-     * Contains definition of methods
-     */
-    protected HashMap<Symbol, MethodDefinition> methods ;
 
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment ;
         this.vars = new HashMap<Symbol, NonTypeDefinition>();
-        this.methods = new HashMap<Symbol, MethodDefinition>();
-
     }
 
     /**
@@ -60,18 +54,6 @@ public class EnvironmentExp extends AbstractEnvironnement {
         }
         else{
             return parentEnvironment.get(key);
-        }
-    }
-    public MethodDefinition getMethodDef(Symbol key) {
-        MethodDefinition result = methods.get(key);
-        if (result != null) {
-            return result ;
-        }
-        else if(parentEnvironment == null) {
-            return null;
-        }
-        else{
-            return parentEnvironment.getMethodDef(key);
         }
     }
 
@@ -100,24 +82,11 @@ public class EnvironmentExp extends AbstractEnvironnement {
             this.vars.put(name, def);
         }
     }
-    public void declareMethod(Symbol name, MethodDefinition def) throws DoubleDefException {
-        MethodDefinition res = methods.get(name);
-        if (res != null) {
-            throw new DoubleDefException();
-        }
-        else {
-            this.methods.put(name, def);
-        }
-    }
 
     @Override
     public String toString() {
-        String s = "Affichage des variables : ";
+        String s = "Affichage des variables et méthodes : ";
         for (Map.Entry<Symbol, NonTypeDefinition> entry : vars.entrySet()) {
-            s += "\nSymbol : " + entry.getKey().getName() + " Definition : " + entry.getValue();
-        }
-        s += "\nAffichage des méthodes : ";
-        for (Map.Entry<Symbol, MethodDefinition> entry : methods.entrySet()) {
             s += "\nSymbol : " + entry.getKey().getName() + " Definition : " + entry.getValue();
         }
         s += "\n#############################";

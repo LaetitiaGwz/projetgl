@@ -43,6 +43,9 @@ public class MethodCall extends AbstractExpr{
         Type t = obj.verifyExpr(compiler, localEnv, currentClass);
 
         ClassDefinition classDef = compiler.getEnvTypes().getClassDef(t.getName());
+        if(classDef == null) {
+            throw new ContextualError("Not and instance of a class given for method call.", getLocation());
+        }
         Signature s = params.verifySignature(compiler, localEnv, currentClass);
 
         Type retType = method.verifyMethod(s, compiler, classDef.getMembers());
@@ -139,7 +142,7 @@ public class MethodCall extends AbstractExpr{
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
         this.codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(Register.R0,Register.R1));
+        compiler.addInstruction(new LOAD(Register.R0, Register.R1));
         if(method.getType().isFloat()){
             compiler.addInstruction(new WFLOAT());
         }
@@ -152,7 +155,7 @@ public class MethodCall extends AbstractExpr{
     @Override
     protected void codeGenPrintX(DecacCompiler compiler){
         this.codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(Register.R0,Register.R1));
+        compiler.addInstruction(new LOAD(Register.R0, Register.R1));
         compiler.addInstruction(new WFLOATX());
 
     }

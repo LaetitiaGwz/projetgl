@@ -1,0 +1,11 @@
+// Description:
+//    Appel d'un champ d'un objet de non classe
+//
+// Resultats:
+//    undefined class
+
+{
+	int a;
+	int c = a.b;
+}
+

@@ -85,7 +85,7 @@ public class Program extends AbstractProgram {
         /* On ajoute le tout aux environnements */
 
         // la méthode equals() à l'environnement de la classe Object
-        Object.getMembers().declareMethod(compiler.getSymbols().create("equals"), equalDef);
+        Object.getMembers().declare(compiler.getSymbols().create("equals"), equalDef);
         // Object à l'environnement root
         envTypes.declare(compiler.getSymbols().create("Object"), Object);
     }
