@@ -178,8 +178,11 @@ atan & $[100; 10\ 000]$ & 0 & 0 & 1.0 & $2^{-7}$ & 1 267 200\\
    \hline
    Mauvais token & \#include "é" & Token recognition error at '\#include'  \\
    \hline
+    Inclusion circulaire & & Circular include for file file.deca  \\
+    \hline
 \end{tabular}
 \subsection{Erreur de syntaxe hors-contexte}
+En plus des erreurs générés par ANTLR4, le parseur retourne une exeption "\textbf{Number too large}" pour les nombres trop grands (entiers ou flottants).
 
 
 \subsection{Erreur de syntaxe contextuelle}
