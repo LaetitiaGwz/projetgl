@@ -63,7 +63,7 @@ class Math{
     /**
     * Valeur de Pi en flottant ;
     */
-    float PI = 3.14159273653589793;
+    float PI = (float)(3.14159273653589793);
 
     /**
     * Calcule x^y et renvoie le résultat.
@@ -444,6 +444,10 @@ class Math{
     *@return flottant correspond à l'arcsinus de x.
     */
     float asin(float x){
+        if(_abs(x)>1){
+            asm( " WSTR ERROR : "Le domaine de définition de l'arcsinus est [-1;1]" \n
+                ERROR");
+        }
         /*On utilise la formule de trigonométrie : arcsin(x) + arcsin( _sqrt( 1 - x^2) ) = +- PI/2 , 
         * afin de se ramener à des petits angles pour utiliser le développement en série entière.
         */
