@@ -84,7 +84,7 @@ public class RegisterManager {
 		return Register.getR(i);
 	}
 
-	private int getGBRegisterInt(){
+	public int getGBRegisterInt(){
 		Random rand = new Random();
 		int nombreAleatoire = rand.nextInt(getTailleTable() - 2) + 2;
 		return  nombreAleatoire;
