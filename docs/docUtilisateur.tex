@@ -460,17 +460,18 @@ Impossible d'effectuer le cast de la variable de type <cast type> en une variabl
 \hline
    Description de l'erreur & Exemple & Résultat \\
    \hline
-   Débordement arithmétique & int a = 5.4/0.0; & Error :  \\
-      &  & overflow during arithmetic operation \\
+   Débordement arithmétique & int a = 5.4/0.0; & Error : overflow during \\
+      &  &  arithmetic operation \\
    \hline
-   Débordement du tas & Trop d'appels à new() & Error : heap overflow \\
+   Débordement du tas & Trop d'allocation & Error : heap overflow \\
+    &  mémoire avec new() &  \\
    \hline
    Débordement de la pile & Trop d'appel& Error : stack overflow \\
          & de fonctions récursives &\\
    
    \hline
-   Déréférencement d'un pointeur NULL & Object a = null;  & Error :  \\
-   & a.equals(a); & dereferencing null pointer \\
+   Déréférencement d'un pointeur NULL & Object a = null;  & Error : dereferencing  \\
+   & a.equals(a); & null pointer \\
    \hline
 \end{tabular}
 
