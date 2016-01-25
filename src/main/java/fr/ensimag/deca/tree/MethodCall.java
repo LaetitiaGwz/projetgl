@@ -55,14 +55,17 @@ public class MethodCall extends AbstractExpr{
                 // On cast
                 if(sDeclared.paramNumber(i).isFloat() && sGiven.paramNumber(i).isInt()) {
                     ConvFloat conv = new ConvFloat(params.getList().get(i));
+                    conv.verifyExpr(compiler, localEnv, currentClass);
                     conv.setLocation(getLocation());
                     params.set(i, conv);
                     params.getList().get(i).verifyExpr(compiler, localEnv, currentClass);
                 }
                 else {
                     AbstractIdentifier typeid = new Identifier(sDeclared.paramNumber(i).getName());
+                    typeid.verifyExpr(compiler, localEnv, currentClass)
                     typeid.setLocation(getLocation());
                     Cast cast = new Cast(typeid, params.getList().get(i));
+                    cast.verifyExpr(compiler, localEnv, currentClass);
                     cast.setLocation(getLocation());
                     params.set(i, cast);
                 }
