@@ -78,7 +78,7 @@ public class DeclMethod extends AbstractDeclMethod {
             compiler.addInstruction(new PUSH(Register.getR(i)));
         }
         Label fin = new Label("fin."+getIdentifier().getMethodDefinition().getLabel().toString());
-        compiler.getLblManager().setLabelFalse(fin);
+        compiler.getLblManager().setLabelTrue(fin);
         params.codeGenListDecl(compiler);
         declVars.codeGenListDeclMethod(compiler);
         body.codeGenListInst(compiler);
