@@ -1,0 +1,6 @@
+#include "Math.decah"
+{
+        float a;
+        Math m = new Math();
+        a = m.cos(1);
+}

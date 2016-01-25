@@ -62,7 +62,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     public void codegenExpr(DecacCompiler compiler, GPRegister register) {
         this.getLeftOperand().codegenExpr(compiler, Register.R0);
         this.getRightOperand().codegenExpr(compiler, Register.R1);
-        compiler.addInstruction(new CMP(Register.R0, Register.R1));
+        compiler.addInstruction(new CMP(Register.R1, Register.R0));
         this.fetchCond(compiler, register);
     }
 

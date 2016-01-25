@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 
 /**
@@ -19,6 +20,6 @@ public abstract class AbstractIfThen extends Tree {
             EnvironmentExp localEnv, ClassDefinition currentClass, Type returnType)
             throws ContextualError;
 
-    protected abstract void codeGenIfThen(DecacCompiler compiler);
+    protected abstract void codeGenIfThen(DecacCompiler compiler,GPRegister register);
     protected abstract void codePreGenIfThen(DecacCompiler compiler);
 }

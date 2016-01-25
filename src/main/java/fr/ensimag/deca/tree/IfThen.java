@@ -8,8 +8,10 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -52,23 +54,17 @@ public class IfThen extends AbstractIfThen {
         getInstructions().codePreGenListInst(compiler);
     }
     @Override
-    protected void codeGenIfThen(DecacCompiler compiler){
-        Label finIf = new Label("fin_if" + compiler.getLblManager().getIf()); // à la suite du else
-        Label debutIf= new Label("debutIf"+compiler.getLblManager().getIf());
-        compiler.getLblManager().incrementIf(); // on s'assure qu'on en ai pas d'autre
+    protected void codeGenIfThen(DecacCompiler compiler,GPRegister register){
         // Calcul de la condition
-        Label braSuite= compiler.getLblManager().getLabelFalse();
-        compiler.getLblManager().setLabelFalse(finIf);
-        compiler.getLblManager().setLabelTrue(debutIf);
-
-        getCondition().codeGenCMP(compiler);
-
+        Label endIf = new Label("endIf"+compiler.getLblManager().getIf());
+        compiler.getLblManager().incrementIf();
+        getCondition().codegenExpr(compiler,register);
+        compiler.addInstruction(new CMP(0,register));
+        compiler.addInstruction(new BEQ(endIf));
         // Instructions
-        compiler.addLabel(debutIf);
         getInstructions().codeGenListInst(compiler);
-        compiler.getLblManager().setLabelFalse(braSuite);
-        compiler.addInstruction(new BRA(braSuite));
-        compiler.addLabel(finIf);
+        compiler.addInstruction(new BRA(compiler.getLblManager().getLabelFalse()));
+        compiler.addLabel(endIf);
 
     }
 

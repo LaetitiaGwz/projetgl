@@ -2,8 +2,10 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  *
@@ -21,11 +23,29 @@ public class ListIfThen extends TreeList<AbstractIfThen> {
     }
 
     protected void codeGenListIfThen(DecacCompiler compiler){
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
 
-        for (AbstractIfThen i: getList()) {
-            i.codeGenIfThen(compiler);
+        GPRegister stock;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            stock = Register.getR(i);
+            setPush();
+        }
+        else{
+            stock = compiler.getRegManager().getGBRegister();
 
         }
+        for (AbstractIfThen i: getList()) {
+            i.codeGenIfThen(compiler,stock);
+        }
+        if(getPop()){
+            compiler.addInstruction(new POP(stock));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
 
     }
     protected void codePreGenListIfThen(DecacCompiler compiler){
