@@ -55,11 +55,11 @@ class Math{
     /**
     * Valeur minimale prise par les nombres flottants.
     */
-    float MIN_VALUE = _power((float)(2),-149);
+    float MIN_VALUE = _power((float)(2),-32);
     /**
     * Valeur maximale prise par les nombres flottants.
     */
-    float MAX_VALUE = _power((float)(2),127);
+    float MAX_VALUE = _power((float)(2),23);
     /**
     * Valeur de Pi en flottant ;
     */
@@ -445,7 +445,7 @@ class Math{
     */
     float asin(float x){
         // if(_abs(x)>1){
-        //     asm( " WSTR ERROR : "Le domaine de définition de l'arcsinus est [-1;1]" \n
+        //     asm( " WSTR \"ERROR : Le domaine de définition de l'arcsinus est [-1;1]\" \n
         //         ERROR");
         // }
         /*On utilise la formule de trigonométrie : arcsin(x) + arcsin( _sqrt( 1 - x^2) ) = +- PI/2 , 
