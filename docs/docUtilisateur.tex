@@ -77,8 +77,11 @@ La méthode ulp donne le résultat exacte sans approximation.\\
    \hline
    Mauvais token & \#include "é" & Token recognition error at '\#include'  \\
    \hline
+    Inclusion circulaire & & Circular include for file file.deca  \\
+    \hline
 \end{tabular}
 \subsection{Erreur de syntaxe hors-contexte}
+En plus des erreurs générés par ANTLR4, le parseur retourne une exeption "\textbf{Number too large}" pour les nombres trop grands (entiers ou flottants).
 
 
 \subsection{Erreur de syntaxe contextuelle}
