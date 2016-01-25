@@ -1,0 +1,34 @@
+// Description:
+//    Héritage d'une classe
+//
+// Resultats:
+//    5
+//
+// ima_output: ok
+
+class Fibo {
+
+	int fibo(int ordre){
+	    int stock1=0;
+	    int stock2=0;
+        if (ordre == 1 || ordre == 2){
+    		return 1;
+    	}
+    	else{
+    	stock1 = fibo(ordre -1);
+    	stock2 = fibo(ordre -2);
+    	return stock1 + stock2;
+    	}
+	}
+
+
+}
+
+
+{
+    Fibo test = new Fibo();
+    int affiche;
+    affiche = test.fibo(8);
+    print(affiche);
+}
+

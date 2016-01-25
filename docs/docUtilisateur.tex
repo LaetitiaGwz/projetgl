@@ -35,6 +35,13 @@ le code assembleur généré par le compilateur.
 \newpage
 
 \section{Limitations du compilateur}
+\begin{itemize}
+\item Taille maximum des nombres entiers et flottants : \\
+Les nombres entiers étants reconnus avec la fonction de l'api Java Integer.parseInt(), ils doivent être compris entre $-2^{-31}$ et $2^{31} - 1$. \\
+Pareil pour les nombres flottants, qui sont reconnus avec la fonction Float.parsefloat(). Ils doivent êtres compris entre  $2^{-149}$et $(2-2^{-23})2^{127}$.
+
+\item 
+\end{itemize}
 
 \section{Limitations de la bibliothèque math}
 La classe Math contient différentes méthodes :
@@ -54,9 +61,390 @@ La méthode ulp donne le résultat exacte sans approximation.\\
 
 \section{Recensement des erreurs}
 
+\subsection{Erreur de lexicographie}
+\begin{tabular}{|l|l|l|}
+\hline
+   Description de l'erreur & Exemple & Résultat \\
+   \hline
+   Mauvais token & \#include "é" & Token recognition error at '\#include'  \\
+   \hline
+\end{tabular}
+\subsection{Erreur de syntaxe hors-contexte}
+
+
+\subsection{Erreur de syntaxe contextuelle}
+
+\textbf{Cannot override method <method name> with a different signature.} \\
+Tentative de sucharge d'une méthode de superclasse avec une signature différente.
+\begin{lstlisting}
+   class A {
+      void m() {}
+   }
+   class B exends A {
+      void m(int a) {}
+   }
+\end{lstlisting}
+
+
+
+\textbf{Type returned by method <method name> is not a subtype of overrided method.}\\
+Une méthode est redéfinie mais le type renvoyé n'est pas un sous-type de la méthode initiale.
+\begin{lstlisting}
+   class A {
+      int m() {}
+   }
+   class B exends A {
+      boolean m() {}
+   }
+\end{lstlisting}
+
+
+
+\textbf{Double declaration of method <method name>}\\
+Un méthode est déclarée deux fois dans la même classe.
+\begin{lstlisting}
+   class A {
+      int m() {}
+      int m() {}
+   }
+\end{lstlisting}
+
+
+
+\textbf{Condition must be a boolean.}\\
+La condition donnée n'est pas un booléen.
+\begin{lstlisting}
+{
+   while(5) {}
+}
+\end{lstlisting}
+
+
+
+\textbf{Arithmetic operation on expressions which types are differents.}\\
+Les deux opérande de l'opération ne sont pas de même type, et il ne s'agit pas d'un entier et d'un flottant.
+\begin{lstlisting}
+{
+   int a = 5 + false;
+}
+\end{lstlisting}
+
+
+
+\textbf{Boolean operation on non-boolean operands.}\\
+L'un des opérande de l'opération booléenne n'est pas un booléen.
+\begin{lstlisting}
+{
+   boolean x = false || 5;
+}
+\end{lstlisting}
+
+
+
+\textbf{Inequality on non-numbers.}\\
+L'un des opérande de l'inégalité n'est pas un nombre.
+\begin{lstlisting}
+{
+   boolean x = 5 == true;
+}
+\end{lstlisting}
+
+
+
+\textbf{Cannot assign <right type> to <left type>}\\
+
+\begin{lstlisting}
+
+\end{lstlisting}
+
+
+
+\textbf{Incompatible cast from <operand type> to <cast type>}\\
+Impossible d'effectuer le cast de la variable de type <cast type> en une variable de type <cast type>.
+\begin{lstlisting}
+{
+   int a = (int)5.2;
+}
+\end{lstlisting}
+
+
+
+\textbf{Class <name> twice declared.}\\
+La classe de nom <name> a été déclaré deux fois.
+\begin{lstlisting}
+class A {}
+class A {}
+\end{lstlisting}
+
+
+
+\textbf{Name <name> already used in the class.}\\
+Le nom donnée <name> a déjà été utilisé, pour une méthode ou pour un champs dans la classe.
+\begin{lstlisting}
+class A {
+   int a;
+   void a() {}
+}
+\end{lstlisting}
+
+
+
+\textbf{"Double definition of variable <name>}\\
+Le paramètre de nom <name> ne peut pas être déclaré car un paramètre ou une variable de même nom à déja été déclaré.
+\begin{lstlisting}
+class A {
+   int a(int a, boolean a) {}
+}
+\end{lstlisting}
+
+
+
+\textbf{Multiple declaration of variable <name>}\\
+La variable de nom <name> a été défini deux fois.
+\begin{lstlisting}
+{
+   int a = 5;
+   int a;
+}
+\end{lstlisting}
+
+
+
+\textbf{A variable can not be declared as void.}\\
+Une variable est définie de type void. Cela est impossible.
+\begin{lstlisting}
+{
+   void a;
+}
+\end{lstlisting}
+
+
+
+\textbf{Undefinded variable <name>}\\
+La variable <name> n'a pas été défini.
+\begin{lstlisting}
+{
+   int a;
+   a = unknownVar;
+}
+\end{lstlisting}
+
+
+
+
+\textbf{Type <name> undefinded.}\\
+Les type de nom <name> n'a pas été défini. Ou alors il ne s'agit pas d'un type.
+\begin{lstlisting}
+{
+   UnknownType a;
+}
+\end{lstlisting}
+
+
+
+
+\textbf{Class <name> undefinded.}\\
+La classe <name> n'a pas été définit, ou alors il ne s'agit pas d'une classe.
+\begin{lstlisting}
+{
+   int a;
+   boolean x = a instanceof UndefinedClass;
+}
+\end{lstlisting}
+
+
+
+
+\textbf{Method <name> undefinded.}\\
+La méthode indiquée n'a pas été définie.
+\begin{lstlisting}
+class A {}
+{
+   int a = a.undefMethod();
+}
+\end{lstlisting}
+
+
+
+
+\textbf{Invalid signature for method <name>}\\
+Les paramètres de la méthode appelée <name> ne possède pas les type ou les sous-type correspondant à la signature de la
+fonction.
+\begin{lstlisting}
+class A {
+   int m(void b) {}
+}
+{
+   A a = new A();
+   a.m(false);
+}
+\end{lstlisting}
+
+
+
+
+\textbf{Incompatible type initialization.}\\
+L'expression donnée pour l'initialisation de la variable ou du champ n'est pas du type de la variable ou du champ.
+\begin{lstlisting}
+{
+   int a = false;
+}
+\end{lstlisting}
+
+
+
+
+\textbf{Wrong argument number.}\\
+La méthode a été appelée avec un mauvais nombre d'arguments.
+\begin{lstlisting}
+class A {
+   int m() {}
+}
+{
+   A a = new A();
+   a.m(int a);
+}
+\end{lstlisting}
+
+
+
+
+\textbf{Wrong type for param <number>}\\
+Le paramètre numéro <number> de la fonction n'est pas de type correspondant à la signature de la méthode.
+\begin{lstlisting}
+class A {
+   int m(int a) {}
+}
+{
+   A a = new ();
+   a.m(false);
+}
+\end{lstlisting}
+
+
+
+
+\textbf{Not and instance of a class given for method call.}\\
+L'objet indiqué por l'appel de méthode n'est pas une instance de classe.
+\begin{lstlisting}
+{
+   int a;
+   a.m();
+}
+\end{lstlisting}
+
+
+
+
+\textbf{Modulo must be used with two int.}\\
+Un des opérande de l'opérateur modulo n'est pas un entier.
+\begin{lstlisting}
+{
+   int a;
+   boolean b;
+   int c = a % c;
+}
+\end{lstlisting}
+
+
+
+
+\textbf{Must apply 'not' operator to a boolean.}\\
+L'opérande de l'opérateur 'non' n'est pas un booléen.
+\begin{lstlisting}
+{
+   int a;
+   boolean b = !a;
+}
+\end{lstlisting}
+
+
+
+
+\textbf{Return type does not match definition.}\\
+Le type de l'expression retournée par la fonction n'est pas celui indiqué par la défninition de la fonction.
+\begin{lstlisting}
+class A {
+   int m() {
+      return false;
+   }
+}
+\end{lstlisting}
+
+
+
+
+\textbf{Not and instance of a class given for selection.}\\
+L'objet indiqué por la selection n'est pas une instance de classe.
+\begin{lstlisting}
+{
+   int a;
+   a.m;
+}
+\end{lstlisting}
+
+
+
+
+\textbf{Cannot call a protected field outside its class or a subclass.}\\
+Tentative de sélection d'un champ protégé hors de sa classe ou d'une de ses sous-classe.
+\begin{lstlisting}
+class A {
+   protected int b;
+}
+{
+   a A = new A();
+   a.b = 5;
+}
+\end{lstlisting}
+
+
+
+
+\textbf{Cannot use 'this' in main.}\\
+Le mot 'this' a été utilisé dans le main. C'est impossible.
+\begin{lstlisting}
+{
+   int a = this;
+}
+\end{lstlisting}
+
+
+
+
+\textbf{Must apply unary minus to an int or float.}\\
+Le mois doit être appliqué à un nombre.
+\begin{lstlisting}
+{
+   int a = -false;
+}
+\end{lstlisting}
+
+
+
+\subsection{Erreur à l'éxécution}
+\begin{tabular}{|l|l|l|}
+\hline
+   Description de l'erreur & Exemple & Résultat \\
+   \hline
+   Débordement arithmétique & int a = 5.4/0.0; & Error : overflow during \\
+      &  &  arithmetic operation \\
+   \hline
+   Débordement du tas & Trop d'allocation & Error : heap overflow \\
+    &  mémoire avec new() &  \\
+   \hline
+   Débordement de la pile & Trop d'appel& Error : stack overflow \\
+         & de fonctions récursives &\\
+   
+   \hline
+   Déréférencement d'un pointeur NULL & Object a = null;  & Error : dereferencing  \\
+   & a.equals(a); & null pointer \\
+   \hline
+\end{tabular}
+
 \section{Exemples}
 \subsection{Hello World}
-
+Un hello-world basique. \\ \\
 \textbf{Code deca :} 
 \begin{verbatim}
 	{
@@ -108,6 +496,7 @@ dereferencement.null:
 \end{verbatim}
 
 \subsection{Fibonacci itératif}
+Implémentation de la fonction de fibonacci en itératif. Le code ci dessous calcule fibo(25). \\ \\
 \textbf{Code deca :} 
 \begin{verbatim}
 {
@@ -575,5 +964,207 @@ dereferencement.null:
 	WSTR "Error : dereferencing null pointer"
 	ERROR
 \end{verbatim}
+\subsection{Un exemple de code objet }
+Voici  un exemple pour un code orienté objet. Le résultat obtenu par le calcul ci-dessous est bon. \\ \\
+\textbf{Code deca :} 
+\begin{verbatim}
+class Calcul {
+   int carre(int a){
+        return a*a;
+   }
 
+   int moinsTrois(int a){
+        return a - 3;
+   }
+
+   int grosseExpression(int a,int b,int c,int d){
+        return a*(c + d) + b*(c - a % c) % 3;
+   }
+}
+
+{
+    Calcul c = new Calcul();
+    int res = c.carre(c.moinsTrois(3) + c.grosseExpression(1,2,3,4)*c.carre(3-4+8));
+    print(res);
+
+}
+\end{verbatim}
+\textbf{Code assembleur :} 
+\begin{verbatim}
+; start main program
+	TSTO #11
+	BOV stack_overflow
+	ADDSP #11
+	LOAD #null, R0
+	STORE R0, 1(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 2(GB)
+	LEA 1(GB), R0
+	STORE R0, 3(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 4(GB)
+	LOAD code.Calcul.carre, R0
+	STORE R0, 5(GB)
+	LOAD code.Calcul.moinsTrois, R0
+	STORE R0, 6(GB)
+	LOAD code.Calcul.grosseExpression, R0
+	STORE R0, 7(GB)
+; Main program
+	NEW #1, R1
+	BOV heap_overflow
+	LEA 3(GB), R0
+	STORE R0, 0(R1)
+	TSTO #3
+	BOV stack_overflow
+	ADDSP #1
+	STORE R1, 0(SP)
+	BSR init.Calcul
+	SUBSP #1
+	LOAD R1, R2
+	STORE R2, 8(GB)
+	TSTO #4
+	BOV stack_overflow
+	ADDSP #2
+	LOAD 8(GB), R3
+	CMP #null, R3
+	BEQ dereferencement.null
+	STORE R3, 0(SP)
+	TSTO #4
+	BOV stack_overflow
+	ADDSP #2
+	LOAD 8(GB), R3
+	CMP #null, R3
+	BEQ dereferencement.null
+	STORE R3, 0(SP)
+	LOAD #3, R3
+	STORE R3, -1(SP)
+	LOAD 0(SP), R3
+	LOAD 0(R3), R3
+	BSR 3(R3)
+	LOAD R0, R3
+	SUBSP #2
+	TSTO #7
+	BOV stack_overflow
+	ADDSP #5
+	LOAD 8(GB), R4
+	CMP #null, R4
+	BEQ dereferencement.null
+	STORE R4, 0(SP)
+	LOAD #1, R4
+	STORE R4, -1(SP)
+	LOAD #2, R4
+	STORE R4, -2(SP)
+	LOAD #3, R4
+	STORE R4, -3(SP)
+	LOAD #4, R4
+	STORE R4, -4(SP)
+	LOAD 0(SP), R4
+	LOAD 0(R4), R4
+	BSR 4(R4)
+	LOAD R0, R4
+	SUBSP #5
+	TSTO #4
+	BOV stack_overflow
+	ADDSP #2
+	LOAD 8(GB), R5
+	CMP #null, R5
+	BEQ dereferencement.null
+	STORE R5, 0(SP)
+	LOAD #3, R5
+	SUB #4, R5
+	ADD #8, R5
+	STORE R5, -1(SP)
+	LOAD 0(SP), R5
+	LOAD 0(R5), R5
+	BSR 2(R5)
+	LOAD R0, R5
+	SUBSP #2
+	MUL R5, R4
+	ADD R4, R3
+	STORE R3, -1(SP)
+	LOAD 0(SP), R3
+	LOAD 0(R3), R3
+	BSR 2(R3)
+	LOAD R0, R3
+	SUBSP #2
+	STORE R3, 9(GB)
+; Beginning of main instructions:
+	LOAD 9(GB), R1
+	WINT
+	HALT
+init.Object:
+	RTS
+code.Object.equals:
+	TSTO #2
+	BOV stack_overflow
+	PUSH R2
+	PUSH R3
+	LOAD -2(LB), R2
+	LOAD -3(LB), R3
+	CMP R2, R3
+	SEQ R0
+	POP R3
+	POP R2
+	RTS
+init.Calcul:
+	RTS
+code.Calcul.carre:
+	TSTO #0
+	BOV stack_overflow
+	LOAD -3(LB), R0
+	MUL -3(LB), R0
+	BRA fin.code.Calcul.carre
+	WSTR "Erreur : sortie de la methode carre sans return"
+	WNL
+	ERROR
+fin.code.Calcul.carre:
+	RTS
+code.Calcul.moinsTrois:
+	TSTO #0
+	BOV stack_overflow
+	LOAD -3(LB), R0
+	SUB #3, R0
+	BRA fin.code.Calcul.moinsTrois
+	WSTR "Erreur : sortie de la methode moinsTrois sans return"
+	WNL
+	ERROR
+fin.code.Calcul.moinsTrois:
+	RTS
+code.Calcul.grosseExpression:
+	TSTO #0
+	BOV stack_overflow
+	LOAD -3(LB), R0
+	LOAD -5(LB), R6
+	ADD -6(LB), R6
+	MUL R6, R0
+	LOAD -4(LB), R7
+	LOAD -5(LB), R8
+	LOAD -3(LB), R9
+	REM -5(LB), R9
+	BOV arith_overflow
+	SUB R9, R8
+	MUL R8, R7
+	REM #3, R7
+	BOV arith_overflow
+	ADD R7, R0
+	BRA fin.code.Calcul.grosseExpression
+	WSTR "Erreur : sortie de la methode grosseExpression sans return"
+	WNL
+	ERROR
+fin.code.Calcul.grosseExpression:
+	RTS
+; end main program
+arith_overflow:
+	WSTR "Error : overflow during arithmetic operation"
+	ERROR
+stack_overflow:
+	WSTR "Error : stack overflow"
+	ERROR
+heap_overflow:
+	WSTR "Error : heap overflow"
+	ERROR
+dereferencement.null:
+	WSTR "Error : dereferencing null pointer"
+	ERROR
+\end{verbatim}
 \end{document}

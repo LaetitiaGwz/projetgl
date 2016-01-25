@@ -24,6 +24,7 @@ do
     # du fichier de test
     line_err=$(cat ${cas_de_test} | grep Ligne | sed -e "s/[^0-9]//g")
     filename=$(echo ${cas_de_test} | sed -e "s@${INVALID_DIR}/@@g")
+    test_lex "$cas_de_test" 2>&1
     if test_lex "$cas_de_test" 2>&1 \
         | grep -q -e "$filename"':'"$line_err"
     then
