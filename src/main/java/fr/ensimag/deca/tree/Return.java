@@ -56,7 +56,7 @@ public class Return extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         retValue.codegenExpr(compiler, Register.R0);
-        compiler.addInstruction(new BRA(compiler.getLblManager().getLabelFalse()));
+        compiler.addInstruction(new BRA(compiler.getLblManager().getLabelTrue()));
     }
 
     @Override
