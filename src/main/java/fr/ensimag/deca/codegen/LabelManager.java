@@ -9,9 +9,9 @@ import fr.ensimag.ima.pseudocode.Label;
 public class LabelManager {
 
     public LabelManager() {
-        this.nbIf=0;
-        this.nbWhile=0;
-        this.nbOr=0;
+        this.nbIf = 0;
+        this.nbWhile = 0;
+        this.nbOr = 0;
     }
 
     private Label labelTrue;

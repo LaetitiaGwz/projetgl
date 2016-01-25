@@ -1,7 +1,6 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.MemoryMap;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.ByteArrayOutputStream;
@@ -45,12 +44,6 @@ public abstract class Tree {
         this.location = new Location(line, column, filename);
     }
     private Location location;
-
-    private MemoryMap memoryMap = new MemoryMap();
-
-    public MemoryMap getMemoryMap() {
-        return memoryMap;
-    }
 
     /**
      * Display the tree as a (compilable) source program

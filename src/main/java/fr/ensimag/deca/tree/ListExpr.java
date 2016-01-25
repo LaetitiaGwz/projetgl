@@ -17,25 +17,6 @@ import java.util.Iterator;
  * @date 01/01/2016
  */
 public class ListExpr extends TreeList<AbstractExpr> {
-    public void verifyParams(DecacCompiler compiler, EnvironmentExp localEnv,
-                                  ClassDefinition currentClass, Signature signature, Location location)
-            throws ContextualError {
-
-        // Erreur si nombres de paramètres différents
-        if(signature.size() != this.size()) {
-            throw new ContextualError("Wrong argument number.", location);
-        }
-
-        // Erreur si types différents pour un certain paramètre
-        int i = 0;
-        for (AbstractExpr expr : getList()) {
-            if(!signature.paramNumber(i).sameType(expr.verifyExpr(compiler, localEnv, currentClass))) {
-                throw new ContextualError("Wrong type for param " + i, location);
-            }
-
-            i++;
-        }
-    }
 
     public Signature verifySignature(DecacCompiler compiler, EnvironmentExp localEnv,
                                   ClassDefinition currentClass)

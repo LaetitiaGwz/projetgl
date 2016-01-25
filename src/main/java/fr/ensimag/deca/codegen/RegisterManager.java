@@ -12,11 +12,13 @@ import java.util.Random;
  */
 public class RegisterManager {
 
+	// Table des registres : true = utilisé et false = libre
 	private boolean tableRegistre[];
 
 	private int GB; // Global Pointer
-	private int LB;
-	    public int getGB(){
+	private int LB; // Local Pointer
+
+	public int getGB(){
         return this.GB;
     }
     public void incrementGB(){
@@ -34,9 +36,9 @@ public class RegisterManager {
 
 
 	public RegisterManager(int nbRegistre){ //nbRegistre >4 <17
-		this.tableRegistre=new boolean[nbRegistre];
+		this.tableRegistre = new boolean[nbRegistre];
 		for(int i=0; i<nbRegistre;i++){
-			this.tableRegistre[i]=false;
+			this.tableRegistre[i] = false;
 		}
 		this.GB = 1;
 		this.LB=1;
@@ -46,7 +48,7 @@ public class RegisterManager {
 	}
 
 	public void setTableRegistre(boolean table[]){
-		this.tableRegistre=table;
+		this.tableRegistre = table;
 	}
 
 	public int getTailleTable(){ // pour recupérer la dimension
@@ -55,9 +57,11 @@ public class RegisterManager {
 
 	public boolean getEtatRegistre(int registre){
 			return this.tableRegistre[registre];
-
 	}
 
+	/**
+	 * @return le dernier registre utilisé
+     */
 	public int getLastregistre(){
 		int i=2;
 		while((i < tableRegistre.length -1) && this.tableRegistre[i]){
@@ -66,6 +70,11 @@ public class RegisterManager {
 		return i;
 	}
 
+	/**
+	 * Méthode à appeller pour obtenir un registre libre
+	 * @return le premier registre libre, ou la taille du tableau
+	 * si tous les registres sont utilisés
+     */
 	public GPRegister getGBRegister(){
 		int i=2;
 		while((i < tableRegistre.length - 1) && this.tableRegistre[i]){
@@ -80,6 +89,12 @@ public class RegisterManager {
 		int nombreAleatoire = rand.nextInt(getTailleTable() - 2) + 2;
 		return  nombreAleatoire;
 	}
+
+	/**
+	 * Récupère un registre pour un push si un registre est déjà pris.
+	 * @param nonVoulue le registre déja pris
+	 * @return le registre voulu
+     */
 	public int getGBRegisterInt(int nonVoulue){
 		int nombreAleatoire = getGBRegisterInt();
 		while(nombreAleatoire==nonVoulue){
@@ -88,22 +103,20 @@ public class RegisterManager {
 		return  nombreAleatoire;
 	}
 
-	@Deprecated
-	public void setEtatRegistreTrue(int registre){
-			this.tableRegistre[registre]=true;
-	}
-
-	@Deprecated
-	public void setEtatRegistreFalse(int registre){
-		this.tableRegistre[registre]=false;
-	}
-
+	/**
+	 * Remet à zéro la table des registres. Après appel
+	 * à cette méthode, tous les registres sont libres et
+	 * peuvent êtres utilisés.
+	 */
 	public void resetTableRegistre(){
-		for(int i=3; i<this.tableRegistre.length;i++){
+		for(int i=2; i<this.tableRegistre.length;i++){
 			this.tableRegistre[i]=false;
 		}
 	}
 
+	/**
+	 * @return vrai si il n'y a plus de registre libre
+     */
 	public boolean noFreeRegister(){
 		return tableRegistre[getTailleTable()-1];
 	}

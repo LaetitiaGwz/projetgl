@@ -44,7 +44,16 @@ public class Signature {
             return false;
         }
         for (int i = 0; i < size(); i++) {
-            if(!AbstractExpr.subtype(paramNumber(i), s.paramNumber(i))) {
+            if(paramNumber(i).sameType(s.paramNumber(i)) ||
+                    paramNumber(i).isClass() && s.paramNumber(i).isNull()) {
+                return true;
+            }
+            if(paramNumber(i).isClass() && s.paramNumber(i).isClass()) {
+                if(!((ClassType)paramNumber(i)).isSubClassOf((ClassType)s.paramNumber(i))) {
+                    return false;
+                }
+            }
+            else if(!paramNumber(i).isFloat() || !s.paramNumber(i).isInt()) {
                 return false;
             }
         }

@@ -1,0 +1,20 @@
+// Description:
+//    Utilisation simple de la classe Math
+//
+// Resultats:
+//    atan(0.0) = 1
+//    atan(1.57) = 1 (environ) 
+//    atan(3.14) = 1.26  (environ)
+//    atan(100.0) = 1.56 (environ)
+//
+// Un exemple de programme Deca utilisant la classe Math
+
+#include "Math.decah"
+{ 
+	Math m ;
+	m = new Math();
+	println("atan(0.0) = ", m.atan(0.0));
+	println("atan(1.57) = ", m.atan(1.57));
+	println("atan(3.14) = ", m.atan(3.14));
+	println("atan(100.0) = ", m.atan(100.0));
+}

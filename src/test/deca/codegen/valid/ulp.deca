@@ -1,0 +1,14 @@
+// Description:
+//    Utilisation simple de la classe Math
+//
+// Resultats:
+//    ulp(1.0) = 1.19000e-07
+//
+// Un exemple de programme Deca utilisant la classe Math
+
+#include "Math.decah"
+{ 
+	Math m ;
+	m = new Math();
+	println("ulp(1.0) = ", m.ulp(1.0));
+}
