@@ -456,45 +456,62 @@ L'opérande de l'opérateur 'non' n'est pas un booléen.
 
 
 \textbf{Return type does not match definition.}\\
-
+Le type de l'expression retournée par la fonction n'est pas celui indiqué par la défninition de la fonction.
 \begin{lstlisting}
-
+class A {
+   int m() {
+      return false;
+   }
+}
 \end{lstlisting}
 
 
 
 
 \textbf{Not and instance of a class given for selection.}\\
-
+L'objet indiqué por la selection n'est pas une instance de classe.
 \begin{lstlisting}
-
+{
+   int a;
+   a.m;
+}
 \end{lstlisting}
 
 
 
 
 \textbf{Cannot call a protected field outside its class or a subclass.}\\
-
+Tentative de sélection d'un champ protégé hors de sa classe ou d'une de ses sous-classe.
 \begin{lstlisting}
-
+class A {
+   protected int b;
+}
+{
+   a A = new A();
+   a.b = 5;
+}
 \end{lstlisting}
 
 
 
 
 \textbf{Cannot use 'this' in main.}\\
-
+Le mot 'this' a été utilisé dans le main. C'est impossible.
 \begin{lstlisting}
-
+{
+   int a = this;
+}
 \end{lstlisting}
 
 
 
 
 \textbf{Must apply unary minus to an int or float.}\\
-
+Le mois doit être appliqué à un nombre.
 \begin{lstlisting}
-
+{
+   int a = -false;
+}
 \end{lstlisting}
 
 
