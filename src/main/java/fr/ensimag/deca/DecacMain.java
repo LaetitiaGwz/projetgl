@@ -45,7 +45,6 @@ public class DecacMain {
         }
         if (options.getParallel()) {
             int nbProc = Runtime.getRuntime().availableProcessors();
-            System.out.print(nbProc);
             ExecutorService executor = Executors.newFixedThreadPool(nbProc);
             List<Future<?>> results = new LinkedList<Future<?>>();
             for (File source : options.getSourceFiles()) {
@@ -53,7 +52,9 @@ public class DecacMain {
             }
             for(Future<?> future : results){
                 try {
-                    error = (Boolean) future.get();
+                    if((Boolean) future.get()){
+                        error = true;
+                    }
                 } catch (InterruptedException e) {
                     System.err.println("La compilation a été arrétée");
                 } catch (ExecutionException e) {

@@ -1,0 +1,14 @@
+// Description:
+//   Test d'un débordement arithmétique de flottant
+//
+// Resultats:
+//  ima_output: overflow
+//
+
+{
+    float a = -10000000000000000000000000000000000000.0;
+    while(true){
+        a = a - 1000000000000000000000000000000000000.0;
+    }
+
+}

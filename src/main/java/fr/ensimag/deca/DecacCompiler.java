@@ -174,6 +174,13 @@ public class DecacCompiler implements Callable {
     }
 
     /**
+     * @return ligne courante dans le fichier assembleur
+     */
+    public int getCurrentLine(){
+        return program.totalLineNumber();
+    }
+
+    /**
      * Add a list of instructions to the program
      * @param list list of instructions to be added to the program
      */
