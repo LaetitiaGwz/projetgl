@@ -58,6 +58,8 @@ public class FloatLiteral extends AbstractExpr {
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){
             int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
             compiler.addInstruction(new PUSH(Register.getR(i)));
             register = Register.getR(i);
             setPush();

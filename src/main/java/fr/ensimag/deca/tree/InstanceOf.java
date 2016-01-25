@@ -34,6 +34,22 @@ public class InstanceOf extends AbstractExpr {
         setType(t);
         return t;
     }
+    protected void codePreGenExpr(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        compiler.getFakeRegManager().setTableRegistre(table);
+    }
+
+    protected void codePreGenCMP(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        compiler.getFakeRegManager().setTableRegistre(table);
+    }
+
 
     @Override
     public void codegenExpr(DecacCompiler compiler, GPRegister register) {
@@ -44,6 +60,8 @@ public class InstanceOf extends AbstractExpr {
             GPRegister stock;
             if(compiler.getRegManager().noFreeRegister()){
                 int i =compiler.getRegManager().getGBRegisterInt();
+                compiler.addInstruction(new TSTO(1));
+                compiler.addInstruction(new BOV(new Label("stack_overflow")));
                 compiler.addInstruction(new PUSH(Register.getR(i)));
                 stock = Register.getR(i);
                 setPush();
@@ -89,6 +107,8 @@ public class InstanceOf extends AbstractExpr {
             GPRegister stock;
             if(compiler.getRegManager().noFreeRegister()){
                 int i =compiler.getRegManager().getGBRegisterInt();
+                compiler.addInstruction(new TSTO(1));
+                compiler.addInstruction(new BOV(new Label("stack_overflow")));
                 compiler.addInstruction(new PUSH(Register.getR(i)));
                 stock = Register.getR(i);
                 setPush();
@@ -100,6 +120,8 @@ public class InstanceOf extends AbstractExpr {
             GPRegister register;
             if(compiler.getRegManager().noFreeRegister()){
                 int i =compiler.getRegManager().getGBRegisterInt();
+                compiler.addInstruction(new TSTO(1));
+                compiler.addInstruction(new BOV(new Label("stack_overflow")));
                 compiler.addInstruction(new PUSH(Register.getR(i)));
                 register = Register.getR(i);
                 setPush();

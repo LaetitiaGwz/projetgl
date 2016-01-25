@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
@@ -35,6 +36,13 @@ public class Not extends AbstractUnaryExpr {
         return type;
     }
 
+    protected void codePreGenCMPOP(DecacCompiler compiler){
+        getOperand().codePreGenExpr(compiler);
+    }
+
+    protected void codePreGenExpr(DecacCompiler compiler){
+        getOperand().codePreGenExpr(compiler);
+    }
     @Override
     protected void codeGenCMPOP(DecacCompiler compiler){
         getOperand().codegenExpr(compiler, Register.R0);
@@ -51,9 +59,10 @@ public class Not extends AbstractUnaryExpr {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        getOperand().codegenExpr(compiler, Register.R0);
-        compiler.addInstruction(new CMP(0,Register.R0));
-        compiler.addInstruction(new BNE(compiler.getLblManager().getLabelFalse()));
+        Label stock =compiler.getLblManager().getLabelFalse();
+        compiler.getLblManager().setLabelFalse(compiler.getLblManager().getLabelTrue());
+        compiler.getLblManager().setLabelTrue(stock);
+        getOperand().codeGenCMP(compiler);
     }
 
     @Override

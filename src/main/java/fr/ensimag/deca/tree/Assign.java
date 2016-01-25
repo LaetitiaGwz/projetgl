@@ -5,14 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.POP;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -33,12 +27,25 @@ public class Assign extends AbstractBinaryExpr {
         super(leftOperand, rightOperand);
     }
 
+    protected void codePreGenInst(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        getRightOperand().codePreGenExpr(compiler);
+        if(getLeftOperand().getDefinition().isField()){
+            compiler.getFakeRegManager().getGBRegister();
+            compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        }
+        compiler.getFakeRegManager().setTableRegistre(table);
+    }
     @Override
     protected void codeGenInst(DecacCompiler compiler){
         boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){
             int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
             compiler.addInstruction(new PUSH(Register.getR(i)));
             register = Register.getR(i);
             setPush();
@@ -52,7 +59,7 @@ public class Assign extends AbstractBinaryExpr {
         if(getLeftOperand().getDefinition().isField()){
             GPRegister stock;
             if(compiler.getRegManager().noFreeRegister()){
-                int i =compiler.getRegManager().getGBRegisterInt();
+                int i =compiler.getRegManager().getGBRegisterInt(register.getNumber());
                 compiler.addInstruction(new PUSH(Register.getR(i)));
                 stock = Register.getR(i);
                 setPush();
@@ -65,7 +72,7 @@ public class Assign extends AbstractBinaryExpr {
             compiler.addInstruction(new STORE(register,
                     new RegisterOffset(getLeftOperand().getFieldDefinition().getIndex(),stock))); // on store
             if(getPop()){
-                compiler.addInstruction(new POP(register));
+                compiler.addInstruction(new POP(stock));
                 popDone();
             }
         }

@@ -4,12 +4,13 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * Conversion of an int into a float. Used for implicit conversions.
- * 
+ *
  * @author gl41
  * @date 01/01/2016
  */
@@ -20,7 +21,7 @@ public class ConvFloat extends AbstractUnaryExpr {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) {
+                           ClassDefinition currentClass) {
 
         Type floatType = new FloatType(compiler.getSymbols().create("float"));
         getOperand().setType(new IntType(compiler.getSymbols().create("int")));
@@ -34,7 +35,31 @@ public class ConvFloat extends AbstractUnaryExpr {
     protected String getOperatorName() {
         return "/* conv float */";
     }
-
+    protected void codePreGenPrint(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        getOperand().codePreGenExpr(compiler);
+        compiler.getFakeRegManager().setTableRegistre(table);
+    }
+    protected void codePreGenPrintX(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        getOperand().codePreGenExpr(compiler);
+        compiler.getFakeRegManager().setTableRegistre(table);
+    }
+    protected void codePreGenCMP(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+        getOperand().codePreGenExpr(compiler);
+        compiler.getFakeRegManager().setTableRegistre(table);
+    }
+    @Override
+    public void codePreGenExpr(DecacCompiler compiler) {
+        getOperand().codePreGenExpr(compiler);
+    }
     @Override
     public void codegenExpr(DecacCompiler compiler, GPRegister register) {
         getOperand().codegenExpr(compiler, register);
@@ -52,6 +77,8 @@ public class ConvFloat extends AbstractUnaryExpr {
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){
             int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
             compiler.addInstruction(new PUSH(Register.getR(i)));
             register = Register.getR(i);
             setPush();
@@ -75,6 +102,8 @@ public class ConvFloat extends AbstractUnaryExpr {
         GPRegister register;
         if(compiler.getRegManager().noFreeRegister()){
             int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
             compiler.addInstruction(new PUSH(Register.getR(i)));
             register = Register.getR(i);
             setPush();

@@ -35,6 +35,8 @@ public class New extends AbstractNew {
         compiler.addInstruction(new BOV(new Label("heap_overflow")));
         compiler.addInstruction(new LEA(className.getClassDefinition().getOperand(),Register.R0));
         compiler.addInstruction(new STORE(Register.R0,new RegisterOffset(0,Register.R1)));
+        compiler.addInstruction(new TSTO(1));
+        compiler.addInstruction(new BOV(new Label("stack_overflow")));
         compiler.addInstruction(new ADDSP(1));
         compiler.addInstruction(new STORE(Register.R1,new RegisterOffset(0,Register.SP)));
         compiler.addInstruction(new BSR(new Label("init."+className.getName().toString())));

@@ -30,6 +30,7 @@ public abstract class Tree {
         pop--;
     }
 
+
     private static final Logger LOG = Logger.getLogger(Main.class);
 
     public Location getLocation() {

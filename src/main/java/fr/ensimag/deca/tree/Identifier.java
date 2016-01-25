@@ -158,6 +158,9 @@ public class Identifier extends AbstractIdentifier {
         Validate.notNull(name);
         this.name = name;
     }
+    protected void codePreGenInit(DecacCompiler compiler){
+        //pas besoin de registre
+    }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,

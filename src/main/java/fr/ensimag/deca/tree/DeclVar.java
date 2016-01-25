@@ -5,12 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.POP;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -35,6 +31,18 @@ public class DeclVar extends AbstractDeclVar {
         Validate.notNull(initialization);
         this.varName = varName;
         this.initialization = initialization;
+    }
+
+    protected void codePreGenDecl(DecacCompiler compiler){
+        getVarName().codePreGenInit(compiler);
+        if(getInitialization().getExpression() != null) {
+            boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+            compiler.getFakeRegManager().getGBRegister();
+            compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+            this.getInitialization().getExpression().codePreGenExpr(compiler);
+            compiler.getFakeRegManager().setTableRegistre(table);
+        }
+
     }
 
     @Override
@@ -63,6 +71,8 @@ public class DeclVar extends AbstractDeclVar {
             GPRegister register;
             if(compiler.getRegManager().noFreeRegister()){
                 int i =compiler.getRegManager().getGBRegisterInt();
+                compiler.addInstruction(new TSTO(1));
+                compiler.addInstruction(new BOV(new Label("stack_overflow")));
                 compiler.addInstruction(new PUSH(Register.getR(i)));
                 register = Register.getR(i);
                 setPush();
@@ -92,6 +102,8 @@ public class DeclVar extends AbstractDeclVar {
             GPRegister register;
             if(compiler.getRegManager().noFreeRegister()){
                 int i =compiler.getRegManager().getGBRegisterInt();
+                compiler.addInstruction(new TSTO(1));
+                compiler.addInstruction(new BOV(new Label("stack_overflow")));
                 compiler.addInstruction(new PUSH(Register.getR(i)));
                 register = Register.getR(i);
                 setPush();

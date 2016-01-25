@@ -59,7 +59,7 @@ public class RegisterManager {
 	}
 
 	public int getLastregistre(){
-		int i=3;
+		int i=2;
 		while(i < tableRegistre.length && this.tableRegistre[i]){
 			i++;
 		}
@@ -78,7 +78,7 @@ public class RegisterManager {
 
 	public int getGBRegisterInt(){
 		Random rand = new Random();
-		int nombreAleatoire = rand.nextInt(getTailleTable() - 3) + 3;
+		int nombreAleatoire = rand.nextInt(getTailleTable() - 2) + 2;
 		return  nombreAleatoire;
 	}
 	public int getGBRegisterInt(int nonVoulue){

@@ -4,9 +4,7 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.BRA;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  *
@@ -70,22 +68,38 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler){
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
         this.codegenExpr(compiler,null);
         int i=compiler.getLblManager().getIf();
         compiler.getLblManager().incrementIf();
         Label finTest = new Label("endTest"+i);
         Label suiteTest = new Label("suiteTest"+i);
         compiler.getLblManager().setLabelFalse(suiteTest);
+        GPRegister stock;
+        if(compiler.getRegManager().noFreeRegister()){
+            int j =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
+            compiler.addInstruction(new PUSH(Register.getR(j)));
+            stock = Register.getR(j);
+            setPush();
+        }
+        else{
+            stock = compiler.getRegManager().getGBRegister();
+
+        }
         this.codeGenCMPOP(compiler);
-        int j = compiler.getRegManager().getLastregistre();
-        compiler.getRegManager().setEtatRegistreTrue(j);
-        GPRegister bypass = Register.getR(j);
-        compiler.addInstruction(new LOAD(new ImmediateInteger(1),bypass));
+
+        compiler.addInstruction(new LOAD(new ImmediateInteger(1),stock));
         compiler.addInstruction(new BRA(finTest));
         compiler.addLabel(suiteTest);
-        compiler.addInstruction(new LOAD(new ImmediateInteger(0),bypass));
+        compiler.addInstruction(new LOAD(new ImmediateInteger(0),stock));
         compiler.addLabel(finTest);
-        setdValue(bypass);
+        if(getPop()){
+            compiler.addInstruction(new POP(stock));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
     @Override
