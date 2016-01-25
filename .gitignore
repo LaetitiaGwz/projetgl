@@ -19,7 +19,6 @@ planning
 src/test/output
 
 #latex generation
-*.pdf
 *.aux
 *.log
 *.out
