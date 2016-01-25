@@ -66,118 +66,113 @@ public class Cast extends AbstractCast {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
-        // Récupération de l'expression calculée
-        GPRegister register;
-        if(compiler.getRegManager().noFreeRegister()){
-            int i =compiler.getRegManager().getGBRegisterInt();
-            compiler.addInstruction(new TSTO(1));
-            compiler.addInstruction(new BOV(new Label("stack_overflow")));
-            compiler.addInstruction(new PUSH(Register.getR(i)));
-            register = Register.getR(i);
-            setPush();
-        }
-        else{
-            register = compiler.getRegManager().getGBRegister();
-
-        }
-        expr.codegenExpr(compiler,register); // Calcul de l'expression
-        // Cast de l'expression
-        if(type.getType().isFloat()){
-            compiler.addInstruction(new FLOAT(register,register));
-        }
-        else if(type.getType().isClass()){//c'est une classe
-            //if(a instanceof Bor a== null){ (B) (a) = a} else {error}
-            Label caCast = new Label("cast_ok" + compiler.getLblManager().getIf()); // à la suite du else
-            Label noCast= new Label("cast_not"+compiler.getLblManager().getIf());
-            Label endCast= new Label("cast_end"+compiler.getLblManager().getIf());
-            compiler.getLblManager().incrementIf(); // on s'assure qu'on en ai pas d'autre
-            // Calcul de la condition
-            if(type.getDval()==null){
-                throw new DecacInternalError("element vide");
-            }
-            else{
-                boolean[] backup =compiler.getRegManager().getTableRegistre();
-                GPRegister stock;
-                if(compiler.getRegManager().noFreeRegister()){
-                    int i =compiler.getRegManager().getGBRegisterInt();
-                    compiler.addInstruction(new TSTO(1));
-                    compiler.addInstruction(new BOV(new Label("stack_overflow")));
-                    compiler.addInstruction(new PUSH(Register.getR(i)));
-                    stock = Register.getR(i);
-                    setPush();
-                }
-                else{
-                    stock = compiler.getRegManager().getGBRegister();
-
-                }
-
-                int i=compiler.getLblManager().getIf();
-                compiler.getLblManager().incrementIf();
-                expr.codegenExpr(compiler,stock);
-                compiler.addInstruction(new LOAD(new RegisterOffset(0,stock),stock));
-                compiler.addInstruction(new LEA(type.getClassDefinition().getOperand(),register));
-                compiler.addLabel(new Label("debut.instanceof"+i));
-                compiler.addInstruction(new CMP(stock,register));
-                compiler.addInstruction(new BEQ(caCast)); //test si egal
-                compiler.addInstruction(new LOAD(new RegisterOffset(0,stock),stock)); // on descend
-                compiler.addInstruction(new CMP(new NullOperand(),stock)); //si object instance
-                compiler.addInstruction(new BNE(new Label("debut.instanceof"+i))); //non, on remonte
-                //on test null
-                expr.codegenExpr(compiler,stock);
-                compiler.addInstruction(new CMP(new NullOperand(),stock));
-                compiler.addInstruction(new BNE(noCast));
-
-                // Instructions
-                compiler.addLabel(caCast);
-                expr.codegenExpr(compiler,register);
-                compiler.addInstruction(new LEA(type.getClassDefinition().getOperand(),stock)); //classe, a forcément une adresse GB ou LB
-                compiler.addInstruction(new STORE(stock,new RegisterOffset(0,register)));
-                compiler.addInstruction(new BRA(endCast));
-                compiler.addLabel(noCast);
-                compiler.addInstruction(new WSTR("Erreur: bad cast from "+expr.getType().toString() +" to "+type.getName().toString()));
-                compiler.addInstruction(new WNL());
-                compiler.addInstruction(new ERROR());
-                compiler.addLabel(endCast);
-
-
-                compiler.getRegManager().setTableRegistre(backup);
-                // Instructions
-                compiler.addLabel(caCast);
-                compiler.addInstruction(new STORE(register,type.getVariableDefinition().getOperand())); //classe, a forcément une adresse GB ou LB
-
-                compiler.addLabel(noCast);
-                compiler.addInstruction(new WSTR("Erreur: bad cast from "+expr.getType().toString() +" to "+type.getName().toString()));
-                compiler.addInstruction(new WNL());
-                compiler.addInstruction(new ERROR());
-
-
-                if(getPop()){
-                    compiler.addInstruction(new POP(stock));
-                    popDone();
-                }
-
+        if(type.getType()!=expr.getType()) {
+            boolean[] table = compiler.getRegManager().getTableRegistre(); //on verifie les registre
+            // Récupération de l'expression calculée
+            GPRegister register;
+            if (compiler.getRegManager().noFreeRegister()) {
+                int i = compiler.getRegManager().getGBRegisterInt();
+                compiler.addInstruction(new TSTO(1));
+                compiler.addInstruction(new BOV(new Label("stack_overflow")));
+                compiler.addInstruction(new PUSH(Register.getR(i)));
+                register = Register.getR(i);
+                setPush();
+            } else {
+                register = compiler.getRegManager().getGBRegister();
 
             }
+            expr.codegenExpr(compiler, register); // Calcul de l'expression
+            // Cast de l'expression
+            if (type.getType().isFloat()) {
+                compiler.addInstruction(new FLOAT(register, register));
+            } else if (type.getType().isClass()) {//c'est une classe
+                //if(a instanceof Bor a== null){ (B) (a) = a} else {error}
+                Label caCast = new Label("cast_ok" + compiler.getLblManager().getIf()); // à la suite du else
+                Label noCast = new Label("cast_not" + compiler.getLblManager().getIf());
+                Label endCast = new Label("cast_end" + compiler.getLblManager().getIf());
+                compiler.getLblManager().incrementIf(); // on s'assure qu'on en ai pas d'autre
+                // Calcul de la condition
+                if (type.getDval() == null) {
+                    throw new DecacInternalError("element vide");
+                } else {
+                    boolean[] backup = compiler.getRegManager().getTableRegistre();
+                    GPRegister stock;
+                    if (compiler.getRegManager().noFreeRegister()) {
+                        int i = compiler.getRegManager().getGBRegisterInt();
+                        compiler.addInstruction(new TSTO(1));
+                        compiler.addInstruction(new BOV(new Label("stack_overflow")));
+                        compiler.addInstruction(new PUSH(Register.getR(i)));
+                        stock = Register.getR(i);
+                        setPush();
+                    } else {
+                        stock = compiler.getRegManager().getGBRegister();
+
+                    }
+
+                    int i = compiler.getLblManager().getIf();
+                    compiler.getLblManager().incrementIf();
+                    expr.codegenExpr(compiler, stock);
+                    compiler.addInstruction(new LOAD(new RegisterOffset(0, stock), stock));
+                    compiler.addInstruction(new LEA(type.getClassDefinition().getOperand(), register));
+                    compiler.addLabel(new Label("debut.instanceof" + i));
+                    compiler.addInstruction(new CMP(stock, register));
+                    compiler.addInstruction(new BEQ(caCast)); //test si egal
+                    compiler.addInstruction(new LOAD(new RegisterOffset(0, stock), stock)); // on descend
+                    compiler.addInstruction(new CMP(new NullOperand(), stock)); //si object instance
+                    compiler.addInstruction(new BNE(new Label("debut.instanceof" + i))); //non, on remonte
+                    //on test null
+                    expr.codegenExpr(compiler, stock);
+                    compiler.addInstruction(new CMP(new NullOperand(), stock));
+                    compiler.addInstruction(new BNE(noCast));
+
+                    // Instructions
+                    compiler.addLabel(caCast);
+                    expr.codegenExpr(compiler, register);
+                    compiler.addInstruction(new LEA(type.getClassDefinition().getOperand(), stock)); //classe, a forcément une adresse GB ou LB
+                    compiler.addInstruction(new STORE(stock, new RegisterOffset(0, register)));
+                    compiler.addInstruction(new BRA(endCast));
+                    compiler.addLabel(noCast);
+                    compiler.addInstruction(new WSTR("Erreur: bad cast from " + expr.getType().toString() + " to " + type.getName().toString()));
+                    compiler.addInstruction(new WNL());
+                    compiler.addInstruction(new ERROR());
+                    compiler.addLabel(endCast);
 
 
+                    compiler.getRegManager().setTableRegistre(backup);
+                    // Instructions
+                    compiler.addLabel(caCast);
+                    compiler.addInstruction(new STORE(register, type.getVariableDefinition().getOperand())); //classe, a forcément une adresse GB ou LB
+
+                    compiler.addLabel(noCast);
+                    compiler.addInstruction(new WSTR("Erreur: bad cast from " + expr.getType().toString() + " to " + type.getName().toString()));
+                    compiler.addInstruction(new WNL());
+                    compiler.addInstruction(new ERROR());
+
+
+                    if (getPop()) {
+                        compiler.addInstruction(new POP(stock));
+                        popDone();
+                    }
+
+
+                }
+
+
+            } else if (type.getType().isInt()) {
+                compiler.addInstruction(new INT(register, register));
+            } else {//pas de raison de cast, erreur à lever
+                compiler.addInstruction(new WSTR("Erreur: bad cast from string or boolean "));
+                compiler.addInstruction(new WNL());
+                compiler.addInstruction(new ERROR());
+
+            }
+
+            if (getPop()) {
+                compiler.addInstruction(new POP(register));
+                popDone();
+            }
+            compiler.getRegManager().setTableRegistre(table);
         }
-        else if(type.getType().isInt()){
-            compiler.addInstruction(new INT(register,register));
-        }
-        else {//pas de raison de cast, erreur à lever
-            compiler.addInstruction(new WSTR("Erreur: bad cast from string or boolean "));
-            compiler.addInstruction(new WNL());
-            compiler.addInstruction(new ERROR());
-
-        }
-
-        if(getPop()){
-            compiler.addInstruction(new POP(register));
-            popDone();
-        }
-        compiler.getRegManager().setTableRegistre(table);
-
     }
 
     @Override
