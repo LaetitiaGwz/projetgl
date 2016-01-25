@@ -221,8 +221,6 @@ public class DecacCompiler implements Callable {
     public boolean compile() {
         String sourceFile = source.getAbsolutePath();
         String destFile = null;
-        // A FAIRE: calculer le nom du fichier .ass à partir du nom du
-        // A FAIRE: fichier .decac
 		Integer finNom=sourceFile.lastIndexOf(".deca"); //pour fin nom
 		destFile=sourceFile.substring(0,finNom); //on a récupéré nom
         destFile=destFile.concat(".ass");
