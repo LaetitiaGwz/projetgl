@@ -45,7 +45,6 @@ public class Signature {
         }
         for (int i = 0; i < size(); i++) {
             if(!AbstractExpr.subtype(paramNumber(i), s.paramNumber(i))) {
-                System.out.println(i + " got " + s.paramNumber(i) + " expected " + paramNumber(i));
                 return false;
             }
         }
