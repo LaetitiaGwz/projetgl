@@ -39,6 +39,7 @@ public class Program extends AbstractProgram {
 
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
+        LOG.debug("verify program: start");
 
         EnvironmentTypes envTypes = new EnvironmentTypes(null);
         try {
@@ -55,6 +56,7 @@ public class Program extends AbstractProgram {
         getClasses().verifyListClassMembers(compiler);
         getClasses().verifyListClassBody(compiler);
         getMain().verifyMain(compiler);
+        LOG.debug("verify program: end");
     }
 
     private void declareTypes(DecacCompiler compiler, EnvironmentTypes env) throws AbstractEnvironnement.DoubleDefException {

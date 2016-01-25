@@ -8,10 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
-import fr.ensimag.ima.pseudocode.instructions.BNE;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.SEQ;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  *
@@ -59,10 +56,29 @@ public class Not extends AbstractUnaryExpr {
 
     @Override
     protected void codeGenCMP(DecacCompiler compiler){
-        Label stock =compiler.getLblManager().getLabelFalse();
-        compiler.getLblManager().setLabelFalse(compiler.getLblManager().getLabelTrue());
-        compiler.getLblManager().setLabelTrue(stock);
-        getOperand().codeGenCMP(compiler);
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        getOperand().codegenExpr(compiler,register);
+        compiler.addInstruction(new CMP(1,register));
+        compiler.addInstruction(new BEQ(compiler.getLblManager().getLabelTrue()));
+        compiler.addInstruction(new BRA(compiler.getLblManager().getLabelFalse()));
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
     }
 
     @Override

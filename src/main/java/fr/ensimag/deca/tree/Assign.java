@@ -99,6 +99,16 @@ public class Assign extends AbstractBinaryExpr {
         }
         compiler.getRegManager().setTableRegistre(table);
     }
+    @Override
+    public void codegenExpr(DecacCompiler compiler, GPRegister register){
+        this.codeGenInst(compiler);
+        if(getLeftOperand().getDval()!=null){
+            compiler.addInstruction(new LOAD(1,register));
+        }
+        else{
+            compiler.addInstruction(new LOAD(0,register));
+        }
+    }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,

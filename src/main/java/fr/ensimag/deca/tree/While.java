@@ -6,10 +6,12 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -43,15 +45,34 @@ public class While extends AbstractInst {
     }
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
         Label DebutWhile = new Label("DebutWhile"+compiler.getLblManager().getWhile());
-        Label EndWhile = new Label("EndWhile"+compiler.getLblManager().getWhile());
+        Label StartWhile = new Label("StartWhile"+compiler.getLblManager().getWhile());
         compiler.getLblManager().incrementWhile();
-        compiler.getLblManager().setLabelFalse(EndWhile);
-        compiler.addLabel(DebutWhile);
-        condition.codeGenCMP(compiler);
-        body.codeGenListInst(compiler);
         compiler.addInstruction(new BRA(DebutWhile));
-        compiler.addLabel(EndWhile);
+        compiler.addLabel(StartWhile);
+        body.codeGenListInst(compiler);
+        compiler.addLabel(DebutWhile);
+        condition.codegenExpr(compiler,register);
+        compiler.addInstruction(new CMP(0,register));
+        compiler.addInstruction(new BNE(StartWhile));
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
 
 
     }
