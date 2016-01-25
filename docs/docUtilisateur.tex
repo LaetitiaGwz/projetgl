@@ -10,14 +10,13 @@
 \usepackage{graphicx}
 \usepackage{wrapfig}
 \usepackage{hyperref}
-\usepackage{listings}
 \usepackage{array,multirow,makecell}
 \frenchbsetup{StandardLists=true}
 \usepackage{enumitem}
 \setlength\parindent{20pt}
 \begin{document}
 \begin{titlepage}
-\title{ Documentation Utilisateur du compilateur Deca}
+\title{ Documentation Utilisateur du compilateur Ddca}
 \author{Gonthier Florentin, Bergeron Matthieu, Beaupère Matthias,\\ Fischman Adrien, Geoffroy Germain}
 \date{}
 
@@ -54,129 +53,6 @@ La méthode ulp donne le résultat exacte sans approximation.\\
 \\
 
 \section{Recensement des erreurs}
-
-\subsection{Erreur de lexicographie}
-\begin{tabular}{|l|l|l|}
-\hline
-   Description de l'erreur & Exemple & Résultat \\
-   \hline
-   blabla & int a = 5.3/0.0 & Lexer error...  \\
-   \hline
-\end{tabular}
-\subsection{Erreur de syntaxe hors-contexte}
-
-
-\subsection{Erreur de syntaxe contextuelle}
-
-\textbf{Cannot override method <method name> with a different signature.} \\
-Tentative de sucharge d'une méthode de superclasse avec une signature différente.
-\begin{lstlisting}
-   class A {
-      void m() {}
-   }
-   class B exends A {
-      void m(int a) {}
-   }
-\end{lstlisting}
-
-
-
-\textbf{Type returned by method <method name> is not a subtype of overrided method.}\\
-Une méthode est redéfinie mais le type renvoyé n'est pas un sous-type de la méthode initiale.
-\begin{lstlisting}
-   class A {
-      int m() {}
-   }
-   class B exends A {
-      boolean m() {}
-   }
-\end{lstlisting}
-
-
-
-\textbf{Double declaration of method <method name>}\\
-Un méthode est déclarée deux fois dans la même classe.
-\begin{lstlisting}
-   class A {
-      int m() {}
-      int m() {}
-   }
-\end{lstlisting}
-
-
-
-\textbf{Condition must be a boolean.}\\
-La condition donnée n'est pas un booléen.
-\begin{lstlisting}
-{
-   while(5) {}
-}
-\end{lstlisting}
-
-
-
-\textbf{Arithmetic operation on expressions which types are differents.}\\
-Les deux opérande de l'opération ne sont pas de même type, et il ne s'agit pas d'un entier et d'un flottant.
-\begin{lstlisting}
-{
-   int a = 5 + false;
-}
-\end{lstlisting}
-
-
-
-\textbf{Boolean operation on non-boolean operands.}\\
-L'un des opérande de l'opération booléenne n'est pas un booléen.
-\begin{lstlisting}
-{
-   boolean x = false || 5;
-}
-\end{lstlisting}
-
-
-
-\textbf{Inequality on non-numbers.}\\
-L'un des opérande de l'inégalité n'est pas un nombre.
-\begin{lstlisting}
-{
-   boolean x = 5 == true;
-}
-\end{lstlisting}
-
-
-
-\textbf{Cannot assign " + rightType + " to " + leftType}\\
-
-\begin{lstlisting}
-
-\end{lstlisting}
-
-
-
-\textbf{}\\
-
-\begin{lstlisting}
-
-\end{lstlisting}
-
-
-
-\textbf{}\\
-
-\begin{lstlisting}
-
-\end{lstlisting}
-
-
-
-\subsection{Erreur à l'éxécution}
-\begin{tabular}{|l|l|l|}
-\hline
-   Description de l'erreur & Exemple & Résultat \\
-   \hline
-   Débordement arithmétique & int a = 5.3/0.0 & Error : overflow during arithmetic operation  \\
-   \hline
-\end{tabular}
 
 \section{Exemples}
 \subsection{Hello World}
