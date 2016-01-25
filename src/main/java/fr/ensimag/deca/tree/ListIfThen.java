@@ -28,4 +28,10 @@ public class ListIfThen extends TreeList<AbstractIfThen> {
         }
 
     }
+    protected void codePreGenListIfThen(DecacCompiler compiler){
+        for (AbstractIfThen i: getList()) {
+            i.codePreGenIfThen(compiler);
+
+        }
+    }
 }

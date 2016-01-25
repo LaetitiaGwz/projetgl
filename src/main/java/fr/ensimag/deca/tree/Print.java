@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+
 /**
  * @author gl41
  * @date 01/01/2016
@@ -16,5 +18,9 @@ public class Print extends AbstractPrint {
     @Override
     String getSuffix() {
         return "";
+    }
+    @Override
+    protected void codePreGenInst(DecacCompiler compiler){
+
     }
 }

@@ -29,6 +29,15 @@ public class Println extends AbstractPrint {
         }
         compiler.addInstruction(new WNL());
     }
+    @Override
+    protected void codePreGenInst(DecacCompiler compiler){
+        for (AbstractExpr a : getArguments().getList()) {
+            if(getPrintHex())
+                a.codePreGenPrintX(compiler);
+            else
+                a.codePreGenPrint(compiler);
+        }
+    }
 
     @Override
     String getSuffix() {

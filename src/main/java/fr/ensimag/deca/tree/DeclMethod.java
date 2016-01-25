@@ -30,10 +30,6 @@ public class DeclMethod extends AbstractDeclMethod {
         return this.name;
     }
 
-    @Override
-    protected void setTSTO(DecacCompiler compiler, int maxStackSize) {
-        tstoInst.setInstruction(new TSTO(maxStackSize));
-    }
 
     public DeclMethod(AbstractIdentifier name, AbstractIdentifier ret, ListDeclParam params, ListInst body, ListDeclVarSet declVars) {
         Validate.notNull(name);
@@ -70,13 +66,15 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     protected void codeGenMethod(fr.ensimag.deca.DecacCompiler compiler) {
         declVars.codePreGenListDeclMethod(compiler);
-        compiler.add(new Line(name.getMethodDefinition().getLabel()));
-        tstoInst = new Line(new TSTO(1));
-        compiler.add(tstoInst);
+        body.codePreGenListInst(compiler);
+        int stockTSTO=compiler.getMaxFakeRegister();
+        compiler.add(new Line(name.getMethodDefinition().getLabel()));;
+        compiler.addInstruction(new TSTO(stockTSTO));
+        compiler.resetMaxFakeRegister();
         compiler.add(new Line(new BOV(new Label("stack_overflow"))));
 
         boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
-        for(int i=2;i<compiler.getCompilerOptions().getRegistre();i++){
+        for(int i=2;i<stockTSTO+1;i++){
             compiler.addInstruction(new PUSH(Register.getR(i)));
         }
         Label fin = new Label("fin."+getIdentifier().getMethodDefinition().getLabel().toString());
@@ -92,7 +90,7 @@ public class DeclMethod extends AbstractDeclMethod {
         compiler.addLabel(fin);
 
 
-        for(int i=compiler.getCompilerOptions().getRegistre()-1;i>1;i--){
+        for(int i=stockTSTO;i>1;i--){
             compiler.addInstruction(new POP(Register.getR(i)));
         }
         compiler.getRegManager().setTableRegistre(table); //on les remets à la fin

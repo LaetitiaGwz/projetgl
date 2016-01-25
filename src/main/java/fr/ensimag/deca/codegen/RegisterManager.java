@@ -60,7 +60,7 @@ public class RegisterManager {
 
 	public int getLastregistre(){
 		int i=2;
-		while(i < tableRegistre.length && this.tableRegistre[i]){
+		while((i < tableRegistre.length -1) && this.tableRegistre[i]){
 			i++;
 		}
 		return i;

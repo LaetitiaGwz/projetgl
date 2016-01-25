@@ -62,6 +62,10 @@ public class DeclField extends AbstractDeclField {
 
     }
     @Override
+    protected void codePreGenField(DecacCompiler compiler){
+        initialization.codePreGenInit(compiler);
+    }
+    @Override
     protected void codeGenFieldFloat(DecacCompiler compiler){ // on met tout dans R1, on recupere de R0
         initialization.codeGenInitFieldFloat(compiler);
         compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB),Register.R1));

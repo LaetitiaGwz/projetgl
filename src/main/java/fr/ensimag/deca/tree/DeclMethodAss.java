@@ -32,10 +32,6 @@ public class DeclMethodAss extends AbstractDeclMethod {
         return this.name;
     }
 
-    @Override
-    protected void setTSTO(DecacCompiler compiler, int maxStackSize) {
-       //on fait rien
-    }
 
     public DeclMethodAss(AbstractIdentifier name, AbstractIdentifier ret, ListDeclParam params, String code) {
         Validate.notNull(name);
