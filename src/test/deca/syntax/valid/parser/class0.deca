@@ -1,0 +1,23 @@
+// Description:
+// Tests sur la déclaration de classes
+//
+// Resultats:
+// ok
+
+class A{
+    A a;
+}
+
+class B{
+    B b;
+}
+
+class C extends A{
+    B b;
+
+    int methode(A a,B b,float c){
+        int a = 3;
+        int b = 8;
+        return a + b;
+    }
+}
