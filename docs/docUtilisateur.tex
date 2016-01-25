@@ -40,6 +40,41 @@ le code assembleur généré par le compilateur.
 
 \section{Recensement des erreurs}
 
+\subsection{Erreur de lexicographie}
+\begin{tabular}{|l|l|l|}
+\hline
+   Description de l'erreur & Exemple & Résultat \\
+   \hline
+   blabla & int a = 5.3/0.0 & Lexer error...  \\
+   \hline
+\end{tabular}
+\subsection{Erreur de syntaxe hors-contexte}
+\begin{tabular}{|l|l|l|}
+\hline
+   Description de l'erreur & Exemple & Résultat \\
+   \hline
+   blabla & int a = 5.3/0.0 & Syntax error  \\
+   \hline
+\end{tabular}
+\subsection{Erreur de syntaxe contextuelle}
+\begin{tabular}{|l|l|l|}
+\hline
+   Description de l'erreur & Exemple & Résultat \\
+   \hline
+   blabla & int a = 5.3/0.0 & Context error...  \\
+   \hline
+\end{tabular}
+\subsection{Erreur à l'éxécution}
+\begin{tabular}{|l|l|l|}
+\hline
+   Description de l'erreur & Exemple & Résultat \\
+   \hline
+   Débordement arithmétique & int a = 5.3/0.0 & Error : overflow during arithmetic operation  \\
+   \hline
+\end{tabular}
+
+
+
 \section{Exemples}
 
 \end{document}
