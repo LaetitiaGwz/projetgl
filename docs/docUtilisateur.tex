@@ -274,13 +274,23 @@ L'un des opérande de l'inégalité n'est pas un nombre.
 \hline
    Description de l'erreur & Exemple & Résultat \\
    \hline
-   Débordement arithmétique & int a = 5.3/0.0 & Error : overflow during arithmetic operation  \\
+   Débordement arithmétique & int a = 5.4/0.0; & Error :  \\
+      &  & overflow during arithmetic operation \\
+   \hline
+   Débordement du tas & Trop d'appels à new() & Error : heap overflow \\
+   \hline
+   Débordement de la pile & Trop d'appel& Error : stack overflow \\
+         & de fonctions récursives &\\
+   
+   \hline
+   Déréférencement d'un pointeur NULL & Object a = null;  & Error :  \\
+   & a.equals(a); & dereferencing null pointer \\
    \hline
 \end{tabular}
 
 \section{Exemples}
 \subsection{Hello World}
-
+Un hello-world basique. \\ \\
 \textbf{Code deca :} 
 \begin{verbatim}
 	{
@@ -332,6 +342,7 @@ dereferencement.null:
 \end{verbatim}
 
 \subsection{Fibonacci itératif}
+Implémentation de la fonction de fibonacci en itératif. Le code ci dessous calcule fibo(25). \\ \\
 \textbf{Code deca :} 
 \begin{verbatim}
 {
@@ -799,5 +810,207 @@ dereferencement.null:
 	WSTR "Error : dereferencing null pointer"
 	ERROR
 \end{verbatim}
+\subsection{Un exemple de code objet }
+Voici  un exemple pour un code orienté objet. Le résultat obtenu par le calcul ci-dessous est bon. \\ \\
+\textbf{Code deca :} 
+\begin{verbatim}
+class Calcul {
+   int carre(int a){
+        return a*a;
+   }
 
+   int moinsTrois(int a){
+        return a - 3;
+   }
+
+   int grosseExpression(int a,int b,int c,int d){
+        return a*(c + d) + b*(c - a % c) % 3;
+   }
+}
+
+{
+    Calcul c = new Calcul();
+    int res = c.carre(c.moinsTrois(3) + c.grosseExpression(1,2,3,4)*c.carre(3-4+8));
+    print(res);
+
+}
+\end{verbatim}
+\textbf{Code assembleur :} 
+\begin{verbatim}
+; start main program
+	TSTO #11
+	BOV stack_overflow
+	ADDSP #11
+	LOAD #null, R0
+	STORE R0, 1(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 2(GB)
+	LEA 1(GB), R0
+	STORE R0, 3(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 4(GB)
+	LOAD code.Calcul.carre, R0
+	STORE R0, 5(GB)
+	LOAD code.Calcul.moinsTrois, R0
+	STORE R0, 6(GB)
+	LOAD code.Calcul.grosseExpression, R0
+	STORE R0, 7(GB)
+; Main program
+	NEW #1, R1
+	BOV heap_overflow
+	LEA 3(GB), R0
+	STORE R0, 0(R1)
+	TSTO #3
+	BOV stack_overflow
+	ADDSP #1
+	STORE R1, 0(SP)
+	BSR init.Calcul
+	SUBSP #1
+	LOAD R1, R2
+	STORE R2, 8(GB)
+	TSTO #4
+	BOV stack_overflow
+	ADDSP #2
+	LOAD 8(GB), R3
+	CMP #null, R3
+	BEQ dereferencement.null
+	STORE R3, 0(SP)
+	TSTO #4
+	BOV stack_overflow
+	ADDSP #2
+	LOAD 8(GB), R3
+	CMP #null, R3
+	BEQ dereferencement.null
+	STORE R3, 0(SP)
+	LOAD #3, R3
+	STORE R3, -1(SP)
+	LOAD 0(SP), R3
+	LOAD 0(R3), R3
+	BSR 3(R3)
+	LOAD R0, R3
+	SUBSP #2
+	TSTO #7
+	BOV stack_overflow
+	ADDSP #5
+	LOAD 8(GB), R4
+	CMP #null, R4
+	BEQ dereferencement.null
+	STORE R4, 0(SP)
+	LOAD #1, R4
+	STORE R4, -1(SP)
+	LOAD #2, R4
+	STORE R4, -2(SP)
+	LOAD #3, R4
+	STORE R4, -3(SP)
+	LOAD #4, R4
+	STORE R4, -4(SP)
+	LOAD 0(SP), R4
+	LOAD 0(R4), R4
+	BSR 4(R4)
+	LOAD R0, R4
+	SUBSP #5
+	TSTO #4
+	BOV stack_overflow
+	ADDSP #2
+	LOAD 8(GB), R5
+	CMP #null, R5
+	BEQ dereferencement.null
+	STORE R5, 0(SP)
+	LOAD #3, R5
+	SUB #4, R5
+	ADD #8, R5
+	STORE R5, -1(SP)
+	LOAD 0(SP), R5
+	LOAD 0(R5), R5
+	BSR 2(R5)
+	LOAD R0, R5
+	SUBSP #2
+	MUL R5, R4
+	ADD R4, R3
+	STORE R3, -1(SP)
+	LOAD 0(SP), R3
+	LOAD 0(R3), R3
+	BSR 2(R3)
+	LOAD R0, R3
+	SUBSP #2
+	STORE R3, 9(GB)
+; Beginning of main instructions:
+	LOAD 9(GB), R1
+	WINT
+	HALT
+init.Object:
+	RTS
+code.Object.equals:
+	TSTO #2
+	BOV stack_overflow
+	PUSH R2
+	PUSH R3
+	LOAD -2(LB), R2
+	LOAD -3(LB), R3
+	CMP R2, R3
+	SEQ R0
+	POP R3
+	POP R2
+	RTS
+init.Calcul:
+	RTS
+code.Calcul.carre:
+	TSTO #0
+	BOV stack_overflow
+	LOAD -3(LB), R0
+	MUL -3(LB), R0
+	BRA fin.code.Calcul.carre
+	WSTR "Erreur : sortie de la methode carre sans return"
+	WNL
+	ERROR
+fin.code.Calcul.carre:
+	RTS
+code.Calcul.moinsTrois:
+	TSTO #0
+	BOV stack_overflow
+	LOAD -3(LB), R0
+	SUB #3, R0
+	BRA fin.code.Calcul.moinsTrois
+	WSTR "Erreur : sortie de la methode moinsTrois sans return"
+	WNL
+	ERROR
+fin.code.Calcul.moinsTrois:
+	RTS
+code.Calcul.grosseExpression:
+	TSTO #0
+	BOV stack_overflow
+	LOAD -3(LB), R0
+	LOAD -5(LB), R6
+	ADD -6(LB), R6
+	MUL R6, R0
+	LOAD -4(LB), R7
+	LOAD -5(LB), R8
+	LOAD -3(LB), R9
+	REM -5(LB), R9
+	BOV arith_overflow
+	SUB R9, R8
+	MUL R8, R7
+	REM #3, R7
+	BOV arith_overflow
+	ADD R7, R0
+	BRA fin.code.Calcul.grosseExpression
+	WSTR "Erreur : sortie de la methode grosseExpression sans return"
+	WNL
+	ERROR
+fin.code.Calcul.grosseExpression:
+	RTS
+; end main program
+arith_overflow:
+	WSTR "Error : overflow during arithmetic operation"
+	ERROR
+stack_overflow:
+	WSTR "Error : stack overflow"
+	ERROR
+heap_overflow:
+	WSTR "Error : heap overflow"
+	ERROR
+dereferencement.null:
+	WSTR "Error : dereferencing null pointer"
+	ERROR
+\end{verbatim}
 \end{document}
