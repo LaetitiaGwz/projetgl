@@ -40,7 +40,7 @@ public class Modulo extends AbstractOpArith {
     @Override
     protected void mnemoOp(DecacCompiler compiler, DVal left, GPRegister right) {
         compiler.addInstruction(new REM(left, right));
-        compiler.addInstruction(new BOV(new Label("overflow_error"), compiler));
+        compiler.addInstruction(new BOV(new Label("arith_overflow"), compiler));
     }
 
     @Override
