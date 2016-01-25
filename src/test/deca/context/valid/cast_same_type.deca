@@ -6,7 +6,7 @@
 //
 
 {
-    float a = (float) 2323.34;
-    int b = (int) 5;
-    boolean c = (boolean) true;
+    float a = (float) (2323.34);
+    int b = (int) (5);
+    boolean c = (boolean) (true);
 }
