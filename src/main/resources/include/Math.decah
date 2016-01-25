@@ -494,6 +494,7 @@ class Math{
     *@return flottant correspond à l'arctangente de x.
     */
     float _atanHermite(float x){
+        //polynome de Hermite d'ordre 7.
         float res=
         (_power(x,55)/901120)
         -(7*_power(x,54)/221184)
