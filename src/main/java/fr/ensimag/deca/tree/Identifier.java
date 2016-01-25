@@ -204,18 +204,20 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     public Type verifyMethod(Signature s, DecacCompiler compiler, EnvironmentExp localEnv) throws ContextualError {
-        MethodDefinition c = localEnv.getMethodDef(compiler.getSymbols().create(getName().getName()));
+        NonTypeDefinition c = localEnv.get(compiler.getSymbols().create(getName().getName()));
 
         if(c == null) {
             throw new ContextualError("Method " + getName().getName() + " undefinded.", this.getLocation());
         }
-        else if(!c.getSignature().accepts(s)) {
+
+        MethodDefinition mDef = c.asMethodDefinition(getName().getName() + " is not a method.", getLocation());
+        if (!mDef.getSignature().accepts(s)) {
             throw new ContextualError("Invalid signature for method " + getName().getName(), this.getLocation());
         }
 
-        setDefinition(c);
-        setType(c.getType());
-        return c.getType();
+        setDefinition(mDef);
+        setType(mDef.getType());
+        return mDef.getType();
     }
     
     

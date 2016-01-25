@@ -117,18 +117,26 @@ public class Selection extends AbstractLValue {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         Type t = obj.verifyExpr(compiler, localEnv, currentClass);
 
-        ClassDefinition classDef = compiler.getEnvTypes().getClassDef(t.getName());
+        TypeDefinition typeDef = compiler.getEnvTypes().get(t.getName());
+        if(!typeDef.isClass()) {
+            throw new ContextualError("Not and instance of a class given for selection.", getLocation());
+        }
+        ClassDefinition classDef = (ClassDefinition) typeDef;
 
-        Type retType = field.verifyExpr(compiler, classDef.getMembers(), currentClass);
+        field.verifyExpr(compiler, classDef.getMembers(), currentClass);
+        NonTypeDefinition def = classDef.getMembers().get(field.getName());
 
-        // Erreur si le field est protected et qu'on ne se trouve pas dans sa classe
-        if(!classDef.equals(currentClass) &&
-                field.getFieldDefinition().getVisibility() == Visibility.PROTECTED) {
-            throw new ContextualError("Cannot call a protected field outside its class.", getLocation());
+        FieldDefinition fieldDecl = def.asFieldDefinition(field.getName().getName() + " is not a field.", getLocation());
+
+        // Erreur si le field est protected et qu'on ne se trouve pas dans sa classe ou dans une sous-classe
+        if((currentClass == null ||
+                !AbstractExpr.subtype(classDef.getType(), currentClass.getType())) &&
+                fieldDecl.getVisibility() == Visibility.PROTECTED) {
+            throw new ContextualError("Cannot call a protected field outside its class or a subclass.", getLocation());
         }
 
-        setType(retType);
-        return retType;
+        setType(fieldDecl.getType());
+        return fieldDecl.getType();
     }
 
     @Override

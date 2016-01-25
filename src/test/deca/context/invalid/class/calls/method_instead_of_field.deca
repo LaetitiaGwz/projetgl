@@ -1,0 +1,15 @@
+// Description:
+//    Appel d'une méthode alors que le nom correspond à un champ
+//
+// Resultats:
+//    is not a field
+
+class A {
+	int a;
+}
+
+{
+	A inst;
+	A.a();
+}
+

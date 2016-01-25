@@ -1,0 +1,22 @@
+// Description:
+//    Déclaration d'une classe avec un attribut int
+//
+// Resultats:
+//    Aucune erreur
+
+class A {
+	protected int a;
+}
+
+class B extends A {
+	int m() {
+		A inst;
+		int b;
+		inst.a = 5;
+		b = inst.a;
+	}
+}
+
+{
+}
+
