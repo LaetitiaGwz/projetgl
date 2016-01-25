@@ -55,7 +55,7 @@ class Math{
     /**
     * Valeur minimale prise par les nombres flottants.
     */
-    float MIN_VALUE = _power((float)(2),-32);
+    float MIN_VALUE = _power((float)(2),-23);
     /**
     * Valeur maximale prise par les nombres flottants.
     */
@@ -63,7 +63,7 @@ class Math{
     /**
     * Valeur de Pi en flottant ;
     */
-    float PI = (float)(3.14159273653589793);
+    float PI = (3.14159273653589793);
 
     /**
     * Calcule x^y et renvoie le résultat.
