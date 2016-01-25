@@ -10,12 +10,13 @@ import fr.ensimag.deca.tree.Program;
  */
 public class GestionSP {
 
-    private int SP=3;
+    private int SP = 3;
+
     public int returnSP(Program programm){
-        ListDeclClass classe= programm.getClasses();
+        ListDeclClass classe = programm.getClasses();
         AbstractMain main = programm.getMain();
-        this.SP+=returnSp(classe);
-        this.SP+=main.returnSP();
+        this.SP += returnSp(classe);
+        this.SP += main.returnSP();
         return SP;
     }
 
@@ -25,7 +26,6 @@ public class GestionSP {
             stock+=a.returnSP();
         }
         return stock;
-
 
     }
 
