@@ -21,28 +21,28 @@ class _CodyAndWaite{
     *Met à jour la valeur réduite.
     *@param Valeur de mise à jour.
     */
-    void setX(float x){
+    void _setX(float x){
         this.x = x ;
     }
     /**
     *Met à jour le coefficient de réduction.
     *@param Valeur de mise à jour.
     */
-    void setK(int k){
+    void _setK(int k){
         this.k = k ;
     }
     /**
     *Retourne la valeur réduite.
     *@return Valeur réduite.
     */
-    float getX(){
+    float _getX(){
         return this.x ;
     }
     /**
     *Retourne le coefficient de réduction.
     *@return Coefficient de réduction.
     */
-    int getK(){
+    int _getK(){
         return this.k;
     }
 }
@@ -51,19 +51,19 @@ class _CodyAndWaite{
  * Liens utiles : 
  * @author Adrien Fischman, Germain Geoffroy.
  */
-class Math_deca{
+class Math{
     /**
     * Valeur minimale prise par les nombres flottants.
     */
-    float MIN_VALUE = power((float)(2),-149);
+    float MIN_VALUE = _power((float)(2),-149);
     /**
     * Valeur maximale prise par les nombres flottants.
     */
-    float MAX_VALUE = power((float)(2),127);
+    float MAX_VALUE = _power((float)(2),127);
     /**
     * Valeur de Pi en flottant ;
     */
-    float PI = (float)(3.14159273653589793);
+    float PI = 3.14159273653589793;
 
     /**
     * Calcule x^y et renvoie le résultat.
@@ -71,7 +71,7 @@ class Math_deca{
     *@param entier correspond à la puissance.
     *@return flottant représentant le résultat de x^y.
     */
-    float power(float x, int y){
+    float _power(float x, int y){
 
         float originalX = x;
         float out = 0 ;
@@ -87,7 +87,7 @@ class Math_deca{
             return x ;
         }
         else {
-            out = power(x, -y) ;
+            out = _power(x, -y) ;
             return 1/out ;
         }
     }
@@ -106,7 +106,7 @@ class Math_deca{
         
         if ( x == -MAX_VALUE || x == MAX_VALUE) {
             //valeur de retour de la méthode ulp de la classe Math de Java.
-            return power((float)(2),104);
+            return _power((float)(2),104);
         }
         //On utilise la symétrie : ulp(-x)=ulp(x).
         if(x < 0) {
@@ -117,13 +117,13 @@ class Math_deca{
             //L'exposant est décrémenté de 1 pour satisfaire la condition 2^0=1.
             exp = exp - 1 ;
             while (x >= 1 ){
-                x =  (float)(x/2.0);
+                x =  x/2.0;
                 exp = exp + 1 ;
             }           
         }
         else if ( x < 1 && x != 0){
             while ( x < 1) {
-                x = (float)(x*2.0);
+                x = x*2.0;
                 exp = exp - 1 ;
             }
         }
@@ -132,14 +132,14 @@ class Math_deca{
             //valeur de retour de la méthode ulp de la classe Math de Java.
             return MIN_VALUE ; 
         }
-        return power((float)(2),exp - 23) ;  
+        return _power((float)(2),exp - 23) ;  
     }
     /**
     * Calcule la valeur absolue de x et renvoie le résultat.
     *@param flottant dont on calcule sa valeur absolue.
     *@return flottant correspond à la valeur aboslue de x.
     */
-    float abs(float x){
+    float _abs(float x){
         float res = 0 ;
         if (x<0){
             x=-x;
@@ -154,7 +154,7 @@ class Math_deca{
     *@return flottant correspond à la racine carré de x.
     *@throws erreur soulevé si le flottant x est négatif.
     */
-    float sqrt(float x){
+    float _sqrt(float x){
         //Déclaration variables :
         //Exposant servant dans le cas x<1.
         int exp = 0 ;
@@ -162,8 +162,8 @@ class Math_deca{
         float low = 0; 
         float high = x;
         float mid = x;
-        float oldMid = (float) (-5.0) ;
-        float epsilon = power((float)(2),-45); 
+        float oldMid = -5.0 ;
+        float epsilon = _power((float)(2),-45); 
 
         if (x<0){
             //String message = new String(est un nombre négatif, on ne considère pas les racines carrés des nombres négatifs.);
@@ -179,14 +179,14 @@ class Math_deca{
 
         // On multiplie les nombres inférieurs à 1 par des puissances de 10 pour améliorer la précision.
         while ( x<1 ) {
-            x = x*power((float)(10),4) ;
+            x = x*_power((float)(10),4) ;
             // 4 car c'est une puissance de 2 et donc on peut retrouver la racine carré facilement.
             exp = exp + 4 ;
         }
         high = x;
         mid = x;
         //On fait une recherche dichotomique de la racine carrée.
-        while ( abs(oldMid - mid)>= epsilon ) {
+        while ( _abs(oldMid - mid)>= epsilon ) {
 
             oldMid = mid ;
             mid = (high + low)/2 ;
@@ -198,27 +198,27 @@ class Math_deca{
             }
         }
         //On prend en compte le cas x<1 en divisant par 10^{exp/2}.
-        return mid/power((float)(10),exp/2) ;
+        return mid/_power((float)(10),exp/2) ;
     }
     /**
     * Calcule le sinus de x et renvoie le résultat.
     *@param flottant dont on calcule son sinus.
     *@return flottant correspondant au sinus de x.
     */
-    float sinTaylor(float x){
+    float _sinTaylor(float x){
         //Définition des variables :
-        float coeff = (float)(sqrt((float)(2)));
+        float coeff = _sqrt((float)(2));
         int k = 0 ;
         boolean minus = false ;
-        _CodyAndWaite reduction = reductionCodyAndWaite(x);
+        _CodyAndWaite reduction = _reductionCodyAndWaite(x);
         float res = x ;
         float temp = x ;
         int i = 1 ;
 
         /*On se ramène à l'intervalle ]-PI/8;PI/8[ 
         par une réduction de Cody and Waite */
-        x = reduction.getX();
-        k = reduction.getK();
+        x = reduction._getX();
+        k = reduction._getK();
 
         /*En fonction de l'octant donné par  : k mod 8
         * on décompose le sinus en fonction du sinus et du cosinus.
@@ -227,32 +227,32 @@ class Math_deca{
         coeff = 1/coeff ;
 
         if(k==1){
-            return (float)(coeff*(sinTaylor(x)+cosTaylor(x)));
+            return (coeff*(_sinTaylor(x)+_cosTaylor(x)));
         }
         else if (k==2){
-            return cosTaylor(x);
+            return _cosTaylor(x);
         }
         else if (k==3){
-            return (float)( coeff*( -sinTaylor(x) + cosTaylor(x) ) );
+            return ( coeff*( -_sinTaylor(x) + _cosTaylor(x) ) );
         }
         else if (k==4){
             minus = !minus;
         }
         else if (k==5){
-            return (float)(-coeff*(sinTaylor(x)+cosTaylor(x)));
+            return (-coeff*(_sinTaylor(x)+_cosTaylor(x)));
         }
         else if (k==6){
-            return -cosTaylor(x);
+            return -_cosTaylor(x);
         }
         else if (k==7){
-            return (float)(coeff*(sinTaylor(x)-cosTaylor(x)));
+            return (coeff*(_sinTaylor(x)-_cosTaylor(x)));
         }
 
         //On calcule le sinus grâce à son développement en série entière.
         res = x;
         temp = x;
-        while ( abs(temp) > ulp(res)){
-            temp = - temp*power(x,2)/((2*i + 1)*2*i);
+        while ( _abs(temp) > ulp(res)){
+            temp = - temp*_power(x,2)/((2*i + 1)*2*i);
             res = res + temp ;
             i = i + 1;
         }
@@ -270,20 +270,20 @@ class Math_deca{
     *@param flottant dont on calcule son cosinus.
     *@return flottant correspondant au cosinus de x.
     */
-    float cosTaylor(float x){
+    float _cosTaylor(float x){
         //Déclaration variable : 
         int k = 0 ;
         boolean minus = false ;
-        _CodyAndWaite reduction = reductionCodyAndWaite(x);
+        _CodyAndWaite reduction = _reductionCodyAndWaite(x);
         float res = 1;
         float temp = 1;
         int i = 1;
-        float coeff = (float)(sqrt((float)(2)));
+        float coeff = _sqrt((float)(2));
 
         /*On se ramène à l'intervalle ]-PI/8;PI/8[ 
         par une réduction de Cody and Waite */
-        x = reduction.getX();
-        k = reduction.getK();
+        x = reduction._getX();
+        k = reduction._getK();
 
         /*En fonction de l'octant donné par  : k mod 8
         * on décompose le cosinus en fonction du sinus et du cosinus.
@@ -291,31 +291,31 @@ class Math_deca{
         k = k%8 ; 
         coeff = 1/coeff ;
         if(k==1){
-            return (float)(coeff*(cosTaylor(x) - sinTaylor(x)));
+            return (coeff*(_cosTaylor(x) - _sinTaylor(x)));
         }
         else if (k==2){
-            return -sinTaylor(x);
+            return -_sinTaylor(x);
         }
         else if (k==3){
-           return (float)(-coeff*(cosTaylor(x)+sinTaylor(x)));
+           return (-coeff*(_cosTaylor(x)+_sinTaylor(x)));
         }
         else if (k==4){
             minus = !minus ;
         }
         else if (k==5){
-            return (float)(coeff*(-cosTaylor(x)+sinTaylor(x)));
+            return (coeff*(-_cosTaylor(x)+_sinTaylor(x)));
         }
         else if (k==6){
-            return sinTaylor(x);
+            return _sinTaylor(x);
         }
         else if (k==7){
-            return (float)(coeff*(cosTaylor(x) + sinTaylor(x)));
+            return (coeff*(_cosTaylor(x) + _sinTaylor(x)));
         }
 
         //On calcule le cosinus grâce à son développement en série entière.
-        while ( abs(temp)> ulp(res) ) {
+        while ( _abs(temp)> ulp(res) ) {
             //while ( i < 15){
-            temp = -temp*power(x,2)/((2*i - 1)*2*i);
+            temp = -temp*_power(x,2)/((2*i - 1)*2*i);
             res=res+temp;
             i = i + 1 ;
         }
@@ -332,30 +332,30 @@ class Math_deca{
     *@param flottant dont on fait la réduction.
     *@return objet de le classe CodyAndWaite qui comprend le flottant réduit et son coefficient de réduction.
     */  
-    _CodyAndWaite reductionCodyAndWaite(float x){
+    _CodyAndWaite _reductionCodyAndWaite(float x){
         //Déclaration des variables :
         int k = 0;
         _CodyAndWaite res = new _CodyAndWaite();
         boolean minus = false ;
         // Définition des constante correspondant à la méthode de Cody and Waite pour C = PI/4.
-        float c1 = 50*power((float)(2),-6);
-        float c2 = 16*power((float)(2),-12);
-        float c3 = 63*power((float)(2),-18);
-        float c4 = 26*power((float)(2),-24);
-        float c5 = 40*power((float)(2),-30);
-        float c6 = 34*power((float)(2),-36);
-        float c7 = 5*power((float)(2),-42);
-        float c8 = 40*power((float)(2),-48);
-        float c9 = 48*power((float)(2),-54);
-        float c10 = 35*power((float)(2),-60);
-        float c11 = 19*power((float)(2),-66);
-        float c12 = 4*power((float)(2),-72);
-        float c13 = 49*power((float)(2),-78);
-        float c14 = 38*power((float)(2),-84);
-        float c15 = 10*power((float)(2),-90);
-        float c16 = 11*power((float)(2),-96);
+        float c1 = 50*_power((float)(2),-6);
+        float c2 = 16*_power((float)(2),-12);
+        float c3 = 63*_power((float)(2),-18);
+        float c4 = 26*_power((float)(2),-24);
+        float c5 = 40*_power((float)(2),-30);
+        float c6 = 34*_power((float)(2),-36);
+        float c7 = 5*_power((float)(2),-42);
+        float c8 = 40*_power((float)(2),-48);
+        float c9 = 48*_power((float)(2),-54);
+        float c10 = 35*_power((float)(2),-60);
+        float c11 = 19*_power((float)(2),-66);
+        float c12 = 4*_power((float)(2),-72);
+        float c13 = 49*_power((float)(2),-78);
+        float c14 = 38*_power((float)(2),-84);
+        float c15 = 10*_power((float)(2),-90);
+        float c16 = 11*_power((float)(2),-96);
         if(x<PI/8.0){
-            res.setX(x); 
+            res._setX(x); 
             return res ;
         }
 
@@ -387,12 +387,12 @@ class Math_deca{
         x = x  - k*c15;
         x = x  - k*c16;
 
-        res.setK(k);
+        res._setK(k);
         if(minus){
-            res.setX(-x);
+            res._setX(-x);
         }
         else{
-            res.setX(x);
+            res._setX(x);
         }
         return res ;
     }
@@ -402,12 +402,12 @@ class Math_deca{
     *@param int dont on calcule sa factorielle.
     *@return flottant correpsond à n! .
     */
-    float fact(int n){
+    float _fact(int n){
         if (n==1 || n==0){
             return 1;
         }
         else{
-            return n*fact(n-1);
+            return n*_fact(n-1);
         }
     }  
 
@@ -416,11 +416,11 @@ class Math_deca{
     *@param flottant dont on veut calculer son arcsinus par un développement en série entière.
     *@return flottant correspond à l'arcsinus de x.
     */   
-    float asindse(float x){
+    float _asindse(float x){
         //terme n impaire seulement  
         int n=33;
 
-        float res=fact(n-1)/(power((float)(2),n-1)*fact((n-1)/2)*fact((n-1)/2)*(n));
+        float res=_fact(n-1)/(_power((float)(2),n-1)*_fact((n-1)/2)*_fact((n-1)/2)*(n));
         int k=n-1;
         boolean b= true;
         while(k>=0){
@@ -430,7 +430,7 @@ class Math_deca{
                 b=false;
             }
             else{
-                res=res*x+fact(k-1)/(power((float)(2),k-1)*fact((k-1)/2)*fact((k-1)/2)*(k));
+                res=res*x+_fact(k-1)/(_power((float)(2),k-1)*_fact((k-1)/2)*_fact((k-1)/2)*(k));
                 b=true;
             }
             k=k-1;
@@ -444,17 +444,17 @@ class Math_deca{
     *@return flottant correspond à l'arcsinus de x.
     */
     float asin(float x){
-        /*On utilise la formule de trigonométrie : arcsin(x) + arcsin( sqrt( 1 - x^2) ) = +- PI/2 , 
+        /*On utilise la formule de trigonométrie : arcsin(x) + arcsin( _sqrt( 1 - x^2) ) = +- PI/2 , 
         * afin de se ramener à des petits angles pour utiliser le développement en série entière.
         */
-        if(abs(x)<=0.72){
-            return asindse(x);
+        if(_abs(x)<=0.72){
+            return _asindse(x);
         }
         else if(x>0.72){ 
-            return PI/2-asindse(sqrt(1-power(x,2)));
+            return PI/2-_asindse(_sqrt(1-_power(x,2)));
         }
         else{
-            return asindse(sqrt(1-power(x,2)))-PI/2;
+            return _asindse(_sqrt(1-_power(x,2)))-PI/2;
         }
 
     }
@@ -471,13 +471,13 @@ class Math_deca{
         }
         //On utilise la formule de trigonométrie : atan(x) + atan(1/x) = +-PI/2.
         if(x>1.1875){
-            return minus*(PI/2-atanHermite(1/x));
+            return minus*(PI/2-_atanHermite(1/x));
         }
         else if (x>0.6875f){            
-            return (float)(minus*(atanHermite((x -1)/(1+x)) + PI/4.0));
+            return (minus*(_atanHermite((x -1)/(1+x)) + PI/4.0));
         }
         else{
-            return minus*atanHermite(x);
+            return minus*_atanHermite(x);
         }
     }
     /**
@@ -485,48 +485,48 @@ class Math_deca{
     *@param flottant dont on veut calculer son arctangente.
     *@return flottant correspond à l'arctangente de x.
     */
-    float atanHermite(float x){
+    float _atanHermite(float x){
         float res=
-        (power(x,55)/901120)
-        -(7*power(x,54)/221184)
-        +(377*power(x,53)/868352)
-        -(203*power(x,52)/53248)
-        +(10049*power(x,51)/417792)
-        -(11879*power(x,50)/102400)
-        +(178321*power(x,49)/401408)
-        -(68063*power(x,48)/49152)
-        +(2751463*power(x,47)/770048)
-        -(1454473*power(x,46)/188416)
-        +(10371647*power(x,45)/737280)
-        -(489259*power(x,44)/22528)
-        +(5012527*power(x,43)/176128)
-        -(1361617*power(x,42)/43008)
-        +(5016623*power(x,41)/167936)
-        -(489259*power(x,40)/20480)
-        +(10355263*power(x,39)/638976)
-        -(1454473*power(x,38)/155648)
-        +(2767847*power(x,37)/606208)
-        -(68063*power(x,36)/36864)
-        +(170129*power(x,35)/286720)
-        -(11879*power(x,34)/69632)
-        +(18241*power(x,33)/270336)
-        -(203*power(x,32)/32768)
-        -(16007*power(x,31)/507904)
-        -(7*power(x,30)/122880)
-        +(565*power(x,29)/16384)
-        -(power(x,27)/27)
-        +(power(x,25)/25)
-        -(power(x,23)/23)
-        +(power(x,21)/21)
-        -(power(x,19)/19)
-        +(power(x,17)/17)
-        -(power(x,15)/15)
-        +(power(x,13)/13)
-        -(power(x,11)/11)
-        +(power(x,9)/9)
-        -(power(x,7)/7)
-        +(power(x,5)/5)
-        -(power(x,3)/3)
+        (_power(x,55)/901120)
+        -(7*_power(x,54)/221184)
+        +(377*_power(x,53)/868352)
+        -(203*_power(x,52)/53248)
+        +(10049*_power(x,51)/417792)
+        -(11879*_power(x,50)/102400)
+        +(178321*_power(x,49)/401408)
+        -(68063*_power(x,48)/49152)
+        +(2751463*_power(x,47)/770048)
+        -(1454473*_power(x,46)/188416)
+        +(10371647*_power(x,45)/737280)
+        -(489259*_power(x,44)/22528)
+        +(5012527*_power(x,43)/176128)
+        -(1361617*_power(x,42)/43008)
+        +(5016623*_power(x,41)/167936)
+        -(489259*_power(x,40)/20480)
+        +(10355263*_power(x,39)/638976)
+        -(1454473*_power(x,38)/155648)
+        +(2767847*_power(x,37)/606208)
+        -(68063*_power(x,36)/36864)
+        +(170129*_power(x,35)/286720)
+        -(11879*_power(x,34)/69632)
+        +(18241*_power(x,33)/270336)
+        -(203*_power(x,32)/32768)
+        -(16007*_power(x,31)/507904)
+        -(7*_power(x,30)/122880)
+        +(565*_power(x,29)/16384)
+        -(_power(x,27)/27)
+        +(_power(x,25)/25)
+        -(_power(x,23)/23)
+        +(_power(x,21)/21)
+        -(_power(x,19)/19)
+        +(_power(x,17)/17)
+        -(_power(x,15)/15)
+        +(_power(x,13)/13)
+        -(_power(x,11)/11)
+        +(_power(x,9)/9)
+        -(_power(x,7)/7)
+        +(_power(x,5)/5)
+        -(_power(x,3)/3)
         +x;
         return res;
 

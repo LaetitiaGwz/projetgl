@@ -187,7 +187,7 @@ public class Test_Math_deca{
 		nb=0;
 		diffMax = 0 ;
 		diffMean = 0 ;
-		for(float x = -1f; x < 1f ; x = x + (float) Math.pow(2,-15)){
+		for(float x = -2f; x < 1f ; x = x + (float) Math.pow(2,-15)){
 			diff =Math.abs(((float)Math.asin(x) - Math_deca.asin(x)));
 			diffMax = (diff/Math_deca.ulp((float)Math.asin(x)) > diffMax)?diff/Math_deca.ulp((float)Math.asin(x)):diffMax;
 			nb ++ ;

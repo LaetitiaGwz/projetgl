@@ -524,6 +524,13 @@ public class Math_deca{
 	*@return flottant correspond à l'arcsinus de x.
 	*/
 	public static float asin(float x){
+		if(abs(x)>1){
+			System.out.println("Le domaine de définition de l'arcsinus est [-1;1].");
+			System.out.print("Or la valeur : ");
+			System.out.print(x);
+			System.out.println(" vient d'être passée en argument.");
+			return 0;
+		}
 		/*On utilise la formule de trigonométrie : arcsin(x) + arcsin( sqrt( 1 - x^2) ) = +- PI/2 , 
 		* afin de se ramener à des petits angles pour utiliser le développement en série entière.
 		*/
