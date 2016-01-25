@@ -213,6 +213,7 @@ public class Identifier extends AbstractIdentifier {
         MethodDefinition mDef = c.asMethodDefinition(getName().getName() + " is not a method.", getLocation());
 
         if (!mDef.getSignature().accepts(s)) {
+
             throw new ContextualError("Invalid signature for method " + getName().getName(), this.getLocation());
         }
 

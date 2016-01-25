@@ -39,39 +39,16 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+
         Type t = obj.verifyExpr(compiler, localEnv, currentClass);
 
         ClassDefinition classDef = compiler.getEnvTypes().getClassDef(t.getName());
         if(classDef == null) {
             throw new ContextualError("Not and instance of a class given for method call.", getLocation());
         }
-        Signature sGiven = params.verifySignature(compiler, localEnv, currentClass);
+        Signature s = params.verifySignature(compiler, localEnv, currentClass);
 
-        Type retType = method.verifyMethod(sGiven, compiler, classDef.getMembers());
-        Signature sDeclared = method.getMethodDefinition().getSignature();
-
-        for (int i = 0; i < sGiven.size(); i++) {
-            if(!sGiven.paramNumber(i).sameType(sDeclared.paramNumber(i))) {
-                // On cast
-                if(sDeclared.paramNumber(i).isFloat() && sGiven.paramNumber(i).isInt()) {
-                    ConvFloat conv = new ConvFloat(params.getList().get(i));
-                    conv.verifyExpr(compiler, localEnv, currentClass);
-                    conv.setLocation(getLocation());
-                    params.set(i, conv);
-                    params.getList().get(i).verifyExpr(compiler, localEnv, currentClass);
-                }
-                else {
-                    AbstractIdentifier typeid = new Identifier(sDeclared.paramNumber(i).getName());
-                    typeid.verifyExpr(compiler, localEnv, currentClass)
-                    typeid.setLocation(getLocation());
-                    Cast cast = new Cast(typeid, params.getList().get(i));
-                    cast.verifyExpr(compiler, localEnv, currentClass);
-                    cast.setLocation(getLocation());
-                    params.set(i, cast);
-                }
-            }
-        }
-
+        Type retType = method.verifyMethod(s, compiler, classDef.getMembers());
         setType(retType);
         return retType;
     }
