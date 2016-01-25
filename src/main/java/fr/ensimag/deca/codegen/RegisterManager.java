@@ -67,9 +67,8 @@ public class RegisterManager {
 	}
 
 	public GPRegister getGBRegister(){
-		Validate.isTrue(!noFreeRegister());
-		int i=3;
-		while(this.tableRegistre[i]){
+		int i=2;
+		while((i < tableRegistre.length - 1) && this.tableRegistre[i]){
 			i++;
 		}
 		tableRegistre[i]=true;
