@@ -205,7 +205,7 @@ class Math{
     *@param flottant dont on calcule son sinus.
     *@return flottant correspondant au sinus de x.
     */
-    float _sinTaylor(float x){
+    float sin(float x){
         //Définition des variables :
         float coeff = _sqrt((float)(2));
         int k = 0 ;
@@ -227,25 +227,25 @@ class Math{
         coeff = 1/coeff ;
 
         if(k==1){
-            return (coeff*(_sinTaylor(x)+_cosTaylor(x)));
+            return (coeff*(sin(x)+cos(x)));
         }
         else if (k==2){
-            return _cosTaylor(x);
+            return cos(x);
         }
         else if (k==3){
-            return ( coeff*( -_sinTaylor(x) + _cosTaylor(x) ) );
+            return ( coeff*( -sin(x) + cos(x) ) );
         }
         else if (k==4){
             minus = !minus;
         }
         else if (k==5){
-            return (-coeff*(_sinTaylor(x)+_cosTaylor(x)));
+            return (-coeff*(sin(x)+cos(x)));
         }
         else if (k==6){
-            return -_cosTaylor(x);
+            return -cos(x);
         }
         else if (k==7){
-            return (coeff*(_sinTaylor(x)-_cosTaylor(x)));
+            return (coeff*(sin(x)-cos(x)));
         }
 
         //On calcule le sinus grâce à son développement en série entière.
@@ -270,7 +270,7 @@ class Math{
     *@param flottant dont on calcule son cosinus.
     *@return flottant correspondant au cosinus de x.
     */
-    float _cosTaylor(float x){
+    float cos(float x){
         //Déclaration variable : 
         int k = 0 ;
         boolean minus = false ;
@@ -291,25 +291,25 @@ class Math{
         k = k%8 ; 
         coeff = 1/coeff ;
         if(k==1){
-            return (coeff*(_cosTaylor(x) - _sinTaylor(x)));
+            return (coeff*(cos(x) - sin(x)));
         }
         else if (k==2){
-            return -_sinTaylor(x);
+            return -sin(x);
         }
         else if (k==3){
-           return (-coeff*(_cosTaylor(x)+_sinTaylor(x)));
+           return (-coeff*(cos(x)+sin(x)));
         }
         else if (k==4){
             minus = !minus ;
         }
         else if (k==5){
-            return (coeff*(-_cosTaylor(x)+_sinTaylor(x)));
+            return (coeff*(-cos(x)+sin(x)));
         }
         else if (k==6){
-            return _sinTaylor(x);
+            return sin(x);
         }
         else if (k==7){
-            return (coeff*(_cosTaylor(x) + _sinTaylor(x)));
+            return (coeff*(cos(x) + sin(x)));
         }
 
         //On calcule le cosinus grâce à son développement en série entière.
@@ -442,12 +442,16 @@ class Math{
     *Calcule l'arcsinus du flottant x.
     *@param flottant dont on veut calculer son arcsinus.
     *@return flottant correspond à l'arcsinus de x.
+    *@throws Lève l'erreur débordement arithmétique
+    * si le domaine de définition [-1;1]n'est pas respécté.
     */
     float asin(float x){
-        // if(_abs(x)>1){
-        //     asm( " WSTR \"ERROR : Le domaine de définition de l'arcsinus est [-1;1]\" \n
-        //         ERROR");
-        // }
+	    /*L'erreur débordement arithmétique est levée grâce à la division par 0
+        * dans le cas où l'argument x n'est pas dans le domaine de définition [-1;1]*/
+        if(_abs(x)>1){
+	     println("Le domaine de définition de l'arcsinus est [-1;1].");
+	     return 1/0 ;
+	 }	    
         /*On utilise la formule de trigonométrie : arcsin(x) + arcsin( _sqrt( 1 - x^2) ) = +- PI/2 , 
         * afin de se ramener à des petits angles pour utiliser le développement en série entière.
         */

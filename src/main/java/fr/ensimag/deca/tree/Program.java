@@ -81,6 +81,7 @@ public class Program extends AbstractProgram {
         MethodDefinition equalDef = new MethodDefinition(returnType, Location.BUILTIN, signature, equalIndex);
         equalDef.setLabel(new Label("code.Object.equals"));
 
+
         /* On ajoute le tout aux environnements */
 
         // la méthode equals() à l'environnement de la classe Object
@@ -136,6 +137,17 @@ public class Program extends AbstractProgram {
         //public boolean equals (Object other) {
         //    return this == other;
         //}
+        compiler.addInstruction(new TSTO(2));
+        compiler.addInstruction(new BOV(new Label("stack_overflow")));
+        compiler.addInstruction(new PUSH(Register.getR(2)));
+        compiler.addInstruction(new PUSH(Register.getR(3)));
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2,Register.LB),Register.getR(2))); // on charge l'object
+        compiler.addInstruction(new LOAD(new RegisterOffset(-3,Register.LB),Register.getR(3))); // on charge l'object à test
+        compiler.addInstruction(new CMP(Register.getR(2),Register.getR(3)));
+        compiler.addInstruction(new SEQ(Register.R0));
+        compiler.addInstruction(new POP(Register.getR(3)));
+        compiler.addInstruction(new POP(Register.getR(2)));
+        compiler.addInstruction(new RTS());
 
         for(AbstractDeclClass a: classes.getList()){
             a.codeGenFieldClass(compiler);

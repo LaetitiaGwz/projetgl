@@ -9,6 +9,6 @@ class A{
 
 {
     Object a = new Object();
-    A foo = new A();
-    Object c = (Object) foo;
+    Object d = a;
+    boolean b = a.equals(d);
 }

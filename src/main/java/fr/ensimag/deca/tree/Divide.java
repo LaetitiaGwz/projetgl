@@ -28,7 +28,7 @@ public class Divide extends AbstractOpArith {
             // Instruction QUO pour les entiers
             compiler.addInstruction(new QUO(left, right));
         }
-        compiler.addInstruction(new BOV(new Label("overflow_error"), compiler));
+        compiler.addInstruction(new BOV(new Label("arith_overflow"), compiler));
     }
 
 
