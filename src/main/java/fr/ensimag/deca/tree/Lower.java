@@ -21,7 +21,7 @@ public class Lower extends AbstractOpIneq {
 
     @Override
     protected void fetchCond(DecacCompiler compiler, GPRegister register) {
-        compiler.addInstruction(new SLE(register));
+        compiler.addInstruction(new SLT(register));
     }
 
 

@@ -141,22 +141,60 @@ public class MethodCall extends AbstractExpr{
     }
     @Override
     protected void codeGenPrint(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(Register.R0, Register.R1));
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        this.codegenExpr(compiler,register);
+        compiler.addInstruction(new LOAD(register, Register.R1));
         if(method.getType().isFloat()){
             compiler.addInstruction(new WFLOAT());
         }
         else{
             compiler.addInstruction(new WINT());
         }
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
 
 
     }
     @Override
     protected void codeGenPrintX(DecacCompiler compiler){
-        this.codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(Register.R0, Register.R1));
+        boolean[] table=compiler.getRegManager().getTableRegistre(); //on verifie les registre
+        GPRegister register;
+        if(compiler.getRegManager().noFreeRegister()){
+            int i =compiler.getRegManager().getGBRegisterInt();
+            compiler.addInstruction(new TSTO(1));
+            compiler.addInstruction(new BOV(new Label("stack_overflow")));
+            compiler.addInstruction(new PUSH(Register.getR(i)));
+            register = Register.getR(i);
+            setPush();
+        }
+        else{
+            register = compiler.getRegManager().getGBRegister();
+
+        }
+        this.codegenExpr(compiler,register);
+        compiler.addInstruction(new LOAD(register, Register.R1));
         compiler.addInstruction(new WFLOATX());
+        if(getPop()){
+            compiler.addInstruction(new POP(register));
+            popDone();
+        }
+        compiler.getRegManager().setTableRegistre(table);
 
     }
 
