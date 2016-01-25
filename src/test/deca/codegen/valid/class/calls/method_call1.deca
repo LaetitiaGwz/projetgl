@@ -1,0 +1,35 @@
+// Description:
+//    Appel d'appel de méthode
+//
+//
+// Historique:
+//    cree le 01/01/2016
+
+class A {
+	A a() {
+		return new A();
+	}
+	void b(Object a) {
+
+	}
+
+	A c(int a, float b) {
+		return this;
+	}
+
+	void printOk(){
+        print("ok");
+	}
+}
+
+{
+	A a = new A();
+	a = a.a();
+    a = a.a().a();
+    a = a.c(5, 6.2);
+    a.b(new Object());
+    a.b(a);
+    a.b(new A());
+    a.a().a().a().c(1,9.3).a().a().printOk();
+}
+
