@@ -20,10 +20,7 @@ import java.util.Set;
  * @date 01/01/2016
  */
 public class EnvironmentExp extends AbstractEnvironnement {
-    // A FAIRE : implémenter la structure de donnée représentant un
-    // environnement (association nom -> définition, avec possibilité
-    // d'empilement).
-    
+
     protected EnvironmentExp parentEnvironment;
     /**
      * Contains definition methods, parameters, variables and fields

@@ -1,22 +1,24 @@
 // Description:
-//    Appel d'une méthode de classe dans le main
+//    Appel d'appel de méthode
 //
-// Resultats:
-//    Aucune erreur
-// 
+//
 // Historique:
 //    cree le 01/01/2016
 
 class A {
 	A a() {
-		a();
 		return new A();
 	}
 	void b(Object a) {
 
 	}
+
 	A c(int a, float b) {
 		return this;
+	}
+
+	void printOk(){
+        print("ok");
 	}
 }
 
@@ -28,5 +30,6 @@ class A {
     a.b(new Object());
     a.b(a);
     a.b(new A());
+    a.a().a().a().c(1,9.3).a().a().printOk();
 }
 

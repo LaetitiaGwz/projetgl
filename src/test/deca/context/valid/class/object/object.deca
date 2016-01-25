@@ -1,0 +1,14 @@
+// Test de la classe objet
+//
+// Resultats:
+//    ok
+
+class A{
+
+}
+
+{
+    Object a = new Object();
+    Object d = a;
+    boolean b = a.equals(d);
+}

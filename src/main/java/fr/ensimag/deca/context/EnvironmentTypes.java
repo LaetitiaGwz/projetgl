@@ -19,9 +19,6 @@ import java.util.Map;
  * @date 01/01/2016
  */
 public class EnvironmentTypes extends AbstractEnvironnement {
-    // A FAIRE : implémenter la structure de donnée représentant un
-    // environnement (association nom -> définition, avec possibilité
-    // d'empilement).
 
     protected EnvironmentTypes parentEnvironment;
     /**
