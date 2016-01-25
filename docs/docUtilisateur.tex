@@ -263,149 +263,193 @@ Impossible d'effectuer le cast de la variable de type <cast type> en une variabl
 
 
 
-\textbf{Class " + name.getName().getName() + " twice declared.}\\
-
+\textbf{Class <name> twice declared.}\\
+La classe de nom <name> a été déclaré deux fois.
 \begin{lstlisting}
-
+class A {}
+class A {}
 \end{lstlisting}
 
 
 
-\textbf{Name " + getVarName().getName().getName() + " already used in the class.}\\
-
+\textbf{Name <name> already used in the class.}\\
+Le nom donnée <name> a déjà été utilisé, pour une méthode ou pour un champs dans la classe.
 \begin{lstlisting}
-
+class A {
+   int a;
+   void a() {}
+}
 \end{lstlisting}
 
 
 
-\textbf{"Double definition of variable " + varName.getName().getName()}\\
-
+\textbf{"Double definition of variable <name>}\\
+Le paramètre de nom <name> ne peut pas être déclaré car un paramètre ou une variable de même nom à déja été déclaré.
 \begin{lstlisting}
-
+class A {
+   int a(int a, boolean a) {}
+}
 \end{lstlisting}
 
 
 
-\textbf{Multiple declaration of variable " + getVarName()}\\
-
+\textbf{Multiple declaration of variable <name>}\\
+La variable de nom <name> a été défini deux fois.
 \begin{lstlisting}
-
+{
+   int a = 5;
+   int a;
+}
 \end{lstlisting}
 
 
 
 \textbf{A variable can not be declared as void.}\\
-
+Une variable est définie de type void. Cela est impossible.
 \begin{lstlisting}
-
+{
+   void a;
+}
 \end{lstlisting}
 
 
 
-\textbf{Undefinded variable " + getName()}\\
-
+\textbf{Undefinded variable <name>}\\
+La variable <name> n'a pas été défini.
 \begin{lstlisting}
-
-\end{lstlisting}
-
-
-
-
-\textbf{A variable can not be declared as void.}\\
-
-\begin{lstlisting}
-
-\end{lstlisting}
-
-
-
-
-\textbf{Type " + getName().getName() + " undefinded.}\\
-
-\begin{lstlisting}
-
+{
+   int a;
+   a = unknownVar;
+}
 \end{lstlisting}
 
 
 
 
-\textbf{Class " + getName().getName() + " undefinded.}\\
-
+\textbf{Type <name> undefinded.}\\
+Les type de nom <name> n'a pas été défini. Ou alors il ne s'agit pas d'un type.
 \begin{lstlisting}
-
+{
+   UnknownType a;
+}
 \end{lstlisting}
 
 
 
 
-\textbf{Method " + getName().getName() + " undefinded.}\\
-
+\textbf{Class <name> undefinded.}\\
+La classe <name> n'a pas été définit, ou alors il ne s'agit pas d'une classe.
 \begin{lstlisting}
-
+{
+   int a;
+   boolean x = a instanceof UndefinedClass;
+}
 \end{lstlisting}
 
 
 
 
-\textbf{Invalid signature for method " + getName().getName()}\\
-
+\textbf{Method <name> undefinded.}\\
+La méthode indiquée n'a pas été définie.
 \begin{lstlisting}
+class A {}
+{
+   int a = a.undefMethod();
+}
+\end{lstlisting}
 
+
+
+
+\textbf{Invalid signature for method <name>}\\
+Les paramètres de la méthode appelée <name> ne possède pas les type ou les sous-type correspondant à la signature de la
+fonction.
+\begin{lstlisting}
+class A {
+   int m(void b) {}
+}
+{
+   A a = new A();
+   a.m(false);
+}
 \end{lstlisting}
 
 
 
 
 \textbf{Incompatible type initialization.}\\
-
+L'expression donnée pour l'initialisation de la variable ou du champ n'est pas du type de la variable ou du champ.
 \begin{lstlisting}
-
+{
+   int a = false;
+}
 \end{lstlisting}
 
 
 
 
 \textbf{Wrong argument number.}\\
-
+La méthode a été appelée avec un mauvais nombre d'arguments.
 \begin{lstlisting}
-
+class A {
+   int m() {}
+}
+{
+   A a = new A();
+   a.m(int a);
+}
 \end{lstlisting}
 
 
 
 
-\textbf{Wrong type for param " + i}\\
-
+\textbf{Wrong type for param <number>}\\
+Le paramètre numéro <number> de la fonction n'est pas de type correspondant à la signature de la méthode.
 \begin{lstlisting}
-
+class A {
+   int m(int a) {}
+}
+{
+   A a = new ();
+   a.m(false);
+}
 \end{lstlisting}
 
 
 
 
 \textbf{Not and instance of a class given for method call.}\\
-
+L'objet indiqué por l'appel de méthode n'est pas une instance de classe.
 \begin{lstlisting}
-
+{
+   int a;
+   a.m();
+}
 \end{lstlisting}
 
 
 
 
 \textbf{Modulo must be used with two int.}\\
-
+Un des opérande de l'opérateur modulo n'est pas un entier.
 \begin{lstlisting}
-
+{
+   int a;
+   boolean b;
+   int c = a % c;
+}
 \end{lstlisting}
 
 
 
 
 \textbf{Must apply 'not' operator to a boolean.}\\
-
+L'opérande de l'opérateur 'non' n'est pas un booléen.
 \begin{lstlisting}
-
+{
+   int a;
+   boolean b = !a;
+}
 \end{lstlisting}
 
 
