@@ -5,7 +5,7 @@
 //    ima_output: 153664
 //
 
-class Maths {
+class Calcul {
    int carre(int a){
         return a*a;
    }
@@ -20,8 +20,8 @@ class Maths {
 }
 
 {
-    Maths maths = new Maths();
-    int res = maths.carre(maths.moinsTrois(3) + maths.grosseExpression(1,2,3,4)*maths.carre(3-4+8));
+    Calcul c = new Calcul();
+    int res = c.carre(c.moinsTrois(3) + c.grosseExpression(1,2,3,4)*c.carre(3-4+8));
     print(res);
 
 }
