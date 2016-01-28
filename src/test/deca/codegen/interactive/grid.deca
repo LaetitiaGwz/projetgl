@@ -1,0 +1,109 @@
+// Librairie pour l'affichage d'une grille dans le terminal en deca
+
+class Grid{
+	int width = 100;
+	int height = 50;
+	Ball ball; // la balle de golf
+	Hole hole; // le trou
+		
+	void display(){
+		int i = 0, j = 0;
+		// Affichage de la limite haute
+		while(i < width){
+			print(".");
+			i = i + 1;
+		}
+		j = 1;
+
+		// Affichage des limites droites et gauches
+		while(j < height){
+			if(i == 1 || i == width){
+				print(".");
+			}else if(i == ball.getPosition().getX() && j == ball.getPosition().getY()){
+				ball.display();
+			}else if(i == hole.getPosition().getX() && j == hole.getPosition().getY()){
+				hole.display();
+			}else{
+				print(" ");
+			}
+			j = j + 1;
+		}
+
+		// Affichage de la limite basse
+		i = 0;
+		while(i < width){
+			print(".");
+			i = i + 1;
+		}
+	}
+
+	boolean ballInHole(){
+		return (ball.getPosition().getX() == hole.getPosition().getX()) && 
+			(ball.getPosition().getX() == hole.getPosition().getX());
+	}
+
+	// Change la position de la balle dans la grille
+	boolean setBallPosition(Position p){
+		ball.setPosition(p);
+		return true;
+	}
+
+	Position getBallPosition(){
+		return ball.getPosition();
+	}
+
+	Position getHolePosition(){
+		return hole.getPosition();
+	}
+
+	// Change la position du trou dans la grille
+	boolean setHolePosition(Position p){
+		hole.setPosition(p);
+		return true;
+	}
+}
+
+// Représente un symbole dans la grille
+class Symbol{
+	// Position du symbole courant
+	Position position;
+
+	Position getPosition(){
+		return this.position;
+	}
+
+	void setPosition(Position p){
+		this.position = p;	
+	}
+}
+
+class Ball extends Symbol{
+	void display(){
+		print("o");		
+	}
+}
+
+class Hole extends Symbol{
+	void display(){
+		print("O");
+	}
+}
+
+// Position d'un symbole dans la grille
+class Position{
+	protected int x;
+	protected int y;
+
+	void setPosition(Position p){
+		this.x = p.getX();
+		this.y = p.getY();
+	}
+
+	int getX(){
+		return this.x;
+	}
+
+	int getY(){
+		return this.y;
+	}
+}
