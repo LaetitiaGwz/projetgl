@@ -44,7 +44,7 @@ class Grid{
 
 	// Change la position de la balle dans la grille
 	boolean setBallPosition(Position p){
-		if(p.getX() < width && p.getY() < height){
+		if(p.getX() < width && p.getY() < height && p.getX() > 0 && p.getY() > 0){
 			ball.setPosition(p.getX(),p.getY());
 			return true;
 		}
@@ -61,7 +61,7 @@ class Grid{
 
 	// Change la position du trou dans la grille
 	boolean setHolePosition(Position p){
-		if(p.getX() < width && p.getY() < height){
+		if(p.getX() < width && p.getY() < height && p.getX() > 0 && p.getY() > 0){
 			hole.setPosition(p.getX(),p.getY());
 			return true;
 		}else{
