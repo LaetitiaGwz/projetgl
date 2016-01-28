@@ -65,6 +65,7 @@ public class DeclMethod extends AbstractDeclMethod {
     }
     @Override
     protected void codeGenMethod(fr.ensimag.deca.DecacCompiler compiler) {
+        compiler.getRegManager().initialiseLB();
         declVars.codePreGenListDeclMethod(compiler);
         body.codePreGenListInst(compiler);
         int stockTSTO=compiler.getMaxFakeRegister();

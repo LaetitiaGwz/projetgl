@@ -18,8 +18,8 @@ public class Multiply extends AbstractOpArith {
     @Override
     protected void mnemoOp(DecacCompiler compiler, DVal left, GPRegister right) {
         compiler.addInstruction(new MUL(left,right));
-        if(this.getType().isFloat())
-            compiler.addInstruction(new BOV(new Label("arith_overflow"), compiler));
+        //if(this.getType().isFloat())
+          //  compiler.addInstruction(new BOV(new Label("arith_overflow"), compiler));
     }
 
     @Override

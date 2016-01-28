@@ -20,8 +20,8 @@ public class Plus extends AbstractOpArith {
     @Override
     protected void mnemoOp(DecacCompiler compiler, DVal left, GPRegister right) {
         compiler.addInstruction(new ADD(left, right));
-        if(this.getType().isFloat())
-            compiler.addInstruction(new BOV(new Label("arith_overflow"), compiler));
+        //if(this.getType().isFloat())
+          //  compiler.addInstruction(new BOV(new Label("arith_overflow"), compiler));
     }
 
     @Override
