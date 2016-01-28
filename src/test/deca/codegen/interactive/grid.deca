@@ -44,7 +44,7 @@ class Grid{
 
 	// Change la position de la balle dans la grille
 	boolean setBallPosition(Position p){
-		ball.setPosition(p);
+		ball.setPosition(p.getX(),p.getY());
 		return true;
 	}
 
@@ -58,7 +58,7 @@ class Grid{
 
 	// Change la position du trou dans la grille
 	boolean setHolePosition(Position p){
-		hole.setPosition(p);
+		hole.setPosition(p.getX(),p.getY());
 		return true;
 	}
 }
@@ -66,14 +66,14 @@ class Grid{
 // Représente un symbole dans la grille
 class Symbol{
 	// Position du symbole courant
-	Position position;
+	Position position = new Position(); 
 
 	Position getPosition(){
 		return this.position;
 	}
 
-	void setPosition(Position p){
-		this.position = p;	
+	void setPosition(int x,int y){
+		position.setPosition(x,y);
 	}
 }
 
@@ -91,12 +91,12 @@ class Hole extends Symbol{
 
 // Position d'un symbole dans la grille
 class Position{
-	protected int x;
-	protected int y;
+	protected int x = -1;
+	protected int y = -1;
 
-	void setPosition(Position p){
-		this.x = p.getX();
-		this.y = p.getY();
+	void setPosition(int x,int y){
+		this.x = x;
+		this.y = y;
 	}
 
 	int getX(){
