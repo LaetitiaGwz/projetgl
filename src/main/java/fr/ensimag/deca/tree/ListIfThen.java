@@ -49,9 +49,14 @@ public class ListIfThen extends TreeList<AbstractIfThen> {
 
     }
     protected void codePreGenListIfThen(DecacCompiler compiler){
+        boolean[] table = compiler.getFakeRegManager().getTableRegistre(); //on verifie les registre
+        compiler.getFakeRegManager().getGBRegister();
+        compiler.addMaxFakeRegister(compiler.getFakeRegManager().getLastregistre());
+
         for (AbstractIfThen i: getList()) {
             i.codePreGenIfThen(compiler);
 
         }
+        compiler.getFakeRegManager().setTableRegistre(table);
     }
 }
