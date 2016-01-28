@@ -1,0 +1,117 @@
+\documentclass[11pt]{article}
+%Gummi|065|=)
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+
+\title{Projet GL : documentation de validation}
+\author{Germain Geoffroy Adrien Fischman Matthias Beaupere Florentin Gonthier}
+\date{}
+\begin{document}
+
+\maketitle
+
+\section{Descriptifs des tests}
+\subsection{Types de tests}
+Nous avons décidé de ne pas concevoir de tests unitaires. En effet, écrire des tests unitaires s'avère très compliqué dans un projet comme celui ci. L'utilisaiton des méthodes agiles nous amenait aussi souvent à changer en profondeur nos implémentations : faire des tests unitaires pour une fonctionnalité dont les spécifications ont changés aurait été une perte de temps. \\
+Tous nos tests sont donc des petits programmes au format .deca .
+\subsection{Organisation des tests}
+Nos tests sont organisés selon la hiérarchie demandée dans le sujet. Pour plus de clarté, nous avons regroupés ces tests en sous-dossiers. \\
+\begin{itemize}
+\item Pour la partie A : les tests pour le lexer sont dans les dossiers valid/lexer et invalid/lexer, les tests pour le parseur sont dans les dossiers valid/parser et invalid/parser.
+\item Pour la partie B : les tests pour le langage sans-objet sont situés dans les répertoires racines /valid et /invalid, et le répertoire /valid/binary\_op\_bool regroupe les tests des opérateurs binaires.
+\\ Les tests pour le langage objet sont situés dans les sous dossiers de /valid/class et /invalid/class
+\item Pour la partie C : les tests pour le langage sans objet sont situés dans les répertoires racines /valid et /invalid. Le répertoire /valid/register comporte des tests utilisant beaucoup de registres.
+\\ Les tests pour le langage objet sont situés dans les sous dossiers de /valid/class et /invalid/class
+\end{itemize}
+\subsection{Comment ajouter des tests ?}
+Pour pouvoir êtres éxécutés par nos scripts de validation, les tests doivent suivre certaines règles.
+\begin{itemize}
+\item Pour les parties A et B : \\
+- Les tests valides ne requièrent pas de format spécial, mais nous avons choisi la convention de formatter les commentaires comme ci-dessous :
+\begin{verbatim}
+// Description:
+//   Test de l'addition entre float et int
+//
+// Resultats:
+//    ok
+// 
+\end{verbatim}
+~\\
+- Pour les tests invalides, il est nécéssaire d'indiquer la ligne ou se passe l'erreur, en commentaire avec le format Ligne$<$NUMERO LIGNE ERREUR$>$ $<$DESCRIPTION DE L'ERREUR$>$. Notons que la description de l'erreur n'est pas obligatoire mais conseillée. Le numéro de ligne ne doit pas obligatoirement être écrit sous crochet, mais aucun autre nombre ne doit apparaitre sur cette ligne. \\
+\begin{verbatim}
+// Description:
+//    Déclaration de variable
+//
+// Resultats:
+//    Ligne 11 : impossible de déclarer une variable de type void
+// 
+\end{verbatim}
+\item Pour la partie C : \\ \\
+Tous les tests doivent comporter une ligne du format :\\ \textbf{ima\_output: $<$TEXTE AFFICHE A L'EXECUTION$>$} \\ \\
+- Les tests invalides doivent comporter une ligne décrivant l'erreur à l'éxécution. Notons que notre script ne gère pas les espaces, il est donc conseillé de n'indiquer qu'un seul mot dans l'erreur. Par exemple, le test ci-dessous doit lever l'erreur arithmetic overflow, et le mot recherché est overflow : 
+\begin{verbatim}
+// Description:
+//   Test d'un débordement arithmétique de flottant
+//
+// Resultats:
+//  ima_output: overflow
+//
+\end{verbatim}
+- Les tests valides doivent comporter des affichages avec la fonction print. Ces sorties sont comparées aux valeurs passées en commentaires dans la ligne comportant le mot \textbf{ima\_output:} . Encore une fois, le script ne gère pas les espaces, et les valeurs doivent donc êtres collées.
+\begin{verbatim}
+// Description:
+//   Test du while
+//
+// Resultats:
+//    ima_output: 123456789
+//
+
+{
+    int a = 1;
+    while(a < 10){
+        print(a);
+        a = a + 1;
+    }
+}
+\end{verbatim}
+\end{itemize}
+\section{Méthodes de validation}
+\subsection{Validation automatique}
+Notre démarche de validation s'est effectuée en grande partie grâce à des scripts de tests automatiques. Chaque partie a son propre script de validation. Tous les scripts sont placés dans le répertoire \textbf{src/test/script/}, et ils se lancent avec un terminal sans prendre d'argument : par exemple pour tester la vérification contextuelle, on tapera \textbf{\$all\_context.sh} . Voici un apperçu de nos scripts de validation automatique :
+\begin{itemize}
+\item Les script \textbf{all-lex.sh} et \textbf{all-synt.sh} permettent de vérifier le bon fonctionnement du parseur et du lexeur, indépendemment du reste du compilateur. Ils ont deux sorties possible : \textcolor{red}{NO} quand le test ne passe pas, et \textcolor{green}{OK} quand le test passe.\\
+Les fichiers testés sont ceux des sous-dossiers de src/test/syntax/ .
+\item Le script \textbf{all-context.sh} teste la vérification contextuelle. \\
+Les fichiers testés sont ceux des sous-dossiers de src/test/context/. Quatres sorties sont possibles : 
+\begin{itemize}
+\item \textcolor{yellow}{NOT IMPLEMENTED} quand la fonctionnalitée testée n'a pas encore été implémentée sur le compilateur.
+\item \textcolor{red}{EXCEPTION CAUGHT} quand une exception non attendue est levée à la compilation (pointeur null par exemple).
+\item \textcolor{red}{ERROR} dans les autres cas.
+\item \textcolor{green}{OK} quand le test est valide.
+\end{itemize}
+\item Le script \textbf{all-gencode.sh} teste le compilateur dans son intégralité (commande decac). Les fichiers testés sont les tests valides de la partie B dans /src/test/context/valid/ et tous les tests de génération de code dans src/test/codegen.  \\
+On peut donc distinguer deux étapes dans ce script :
+\begin{enumerate}
+\item Pour les tests valides de l'étape B, on vérifie qu'ils compilent sans lever d'exception.
+\item Pour tous les tests de l'étape C, on vérifie qu'ils compilent sans exception \textbf{et} que le code assembleur s'éxécute comme voulu.
+\end{enumerate}
+Les sorties de ce script sur le terminal sont les mêmes que pour le script all-context.sh, avec en plus  le message 
+ \textcolor{red}{EXCEPTION FROM ANOTHER PART} quand le test ne compile pas à cause d'une erreur dû à autre chose que la génération de code (lexeur, parseur, ou contexte).
+
+Pour débugger plus facilement, les résultats de ces tests sont sauvegardés dans les dossiers :
+\begin{itemize}
+\item src/output/nom d'étape/valid :  tests valides qui passent.
+\item src/output/nom d'étape/invalid : tests invalides qui passent.
+\item src/output/nom d'étape/error pour tous les tests qui ne passent pas. La sortie retournée par decac ou ima est écrite dans un fichier .error correspondant.
+\end{itemize}
+\item Le script option\_register.sh permet de tester l'option -r de decac. Ce script vérifie qu'aucun registre supérieux à RMAX n'est utilisé. La bonne éxécution du programme avec ima est aussi testée de la même façon que pour le script all-gencode.sh.
+\end{itemize}
+
+\subsection{Autres techniques de validation}
+Nos autres techniques de validations consistaient à lancer decac ou les scripts de tests fournis test-lex,test-synt et test-context sur un fichier de tests. Les résultats pouvaient donc êtres vérifiés à la main. Par exemple, c'est avec la commande decac -n que l'option no check a été vérifiée.
+\section{Résultats de cobertura}
+
+ 
+
+\end{document}

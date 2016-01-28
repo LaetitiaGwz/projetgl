@@ -1,0 +1,33 @@
+#include "grid.deca"
+
+		//Math m = new Math();
+		//int x = (int) (power*m.cos((float)(angle)));
+		//int y = (int) (power*m.sin((float)(angle)));
+
+{
+	Grid g = new Grid();
+	int angle, power;
+	Position new_pos;
+	boolean outOfGrid = false;
+
+	//Positionnement de la balle et du trou
+	g.setBallPosition(6,4);
+
+	//Affichage du terrain de golf
+	g.display();
+
+	while(g.ballInHole()) {
+		println("Angle de lancer ?");
+		angle = readInt();
+		println("Puissance de lancer ?");
+		power = readInt();
+		outOfGrid = g.shootBall(power,angle);
+		if(!outOfGrid){
+			print("La balle est en dehors du terrain ! Réessayez !");
+		}else{
+			g.display();
+		}
+	}
+
+	println("C'est gagné !! ;)");
+}
