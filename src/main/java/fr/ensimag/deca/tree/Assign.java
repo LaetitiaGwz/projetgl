@@ -140,7 +140,7 @@ public class Assign extends AbstractBinaryExpr {
             getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         }
 
-        Type t = compiler.getEnvTypes().get(compiler.getSymbols().create("int")).getType();
+        Type t = leftType;
         setType(t);
         return t;
     }
