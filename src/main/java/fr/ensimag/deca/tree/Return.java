@@ -28,6 +28,9 @@ public class Return extends AbstractInst {
                               ClassDefinition currentClass, Type returnType) throws ContextualError {
 
         Type detectedType = retValue.verifyExpr(compiler, localEnv, currentClass);
+        if(returnType.isVoid()) {
+            throw new ContextualError("Cannot have a return instruction on void method", getLocation());
+        }
         if (detectedType.isInt() && returnType.isFloat()) {
             retValue = new ConvFloat(retValue);
             retValue.verifyExpr(compiler, localEnv, currentClass);
