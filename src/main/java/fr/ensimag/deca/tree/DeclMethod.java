@@ -65,11 +65,12 @@ public class DeclMethod extends AbstractDeclMethod {
     }
     @Override
     protected void codeGenMethod(fr.ensimag.deca.DecacCompiler compiler) {
-        compiler.getRegManager().initialiseLB();
+        compiler.add(new Line(name.getMethodDefinition().getLabel()));
         declVars.codePreGenListDeclMethod(compiler);
+        compiler.addInstruction(new ADDSP(declVars.returnSP()));
+        compiler.getRegManager().initialiseLB();
         body.codePreGenListInst(compiler);
         int stockTSTO=compiler.getMaxFakeRegister();
-        compiler.add(new Line(name.getMethodDefinition().getLabel()));;
         compiler.addInstruction(new TSTO(stockTSTO));
         compiler.resetMaxFakeRegister();
         compiler.add(new Line(new BOV(new Label("stack_overflow"))));
