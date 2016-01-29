@@ -479,6 +479,9 @@ literal returns[AbstractExpr tree]
              }catch(IllegalArgumentException e){
                 throw new DecaRecognitionException("Number too large.", this, _localctx);
             }
+            if(Float.parseFloat($fd.getText()) < Math.pow(2, -149)) {
+                throw new DecaRecognitionException("Number too small.", this, _localctx);
+            }
         }
     | STRING {
             $tree = new StringLiteral($STRING.getText());
