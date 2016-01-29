@@ -28,7 +28,10 @@ public class InstanceOf extends AbstractExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
 
         className.verifyClass(compiler);
-        var.verifyExpr(compiler, localEnv, currentClass);
+        Type type = var.verifyExpr(compiler, localEnv, currentClass);
+        if(!(type instanceof ClassType)) {
+            throw new ContextualError("Cannot do instanceof on a literal.", getLocation());
+        }
 
         Type t = compiler.getEnvTypes().get(compiler.getSymbols().create("boolean")).getType();
         setType(t);
