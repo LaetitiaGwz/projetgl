@@ -102,12 +102,7 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     public void codegenExpr(DecacCompiler compiler, GPRegister register){
         this.codeGenInst(compiler);
-        if(getLeftOperand().getDval()!=null){
-            compiler.addInstruction(new LOAD(1,register));
-        }
-        else{
-            compiler.addInstruction(new LOAD(0,register));
-        }
+        compiler.addInstruction(new LOAD(this.getDval(),register));
     }
 
     @Override
