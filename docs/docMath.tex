@@ -11,6 +11,13 @@
 \usepackage{wrapfig}
 \usepackage{hyperref}
 \usepackage{array,multirow,makecell}
+\usepackage[
+backend=biber,
+style=alphabetic,
+sorting=ynt
+]{biblatex}
+
+\addbibresource{biblio.bib}
 \frenchbsetup{StandardLists=true}
 \usepackage{enumitem}
 \setlength\parindent{20pt}
@@ -103,7 +110,7 @@ ulp & $[ 1\ 000\ 000 ;1\ 010\ 000]$ & 0 & $0$ & $2^{-4}$ & 160 000\\
 \subsection{Démarche d'implémentation.}
 L'implémentation des fonctions sinus et cosinus a nécessité quelques ajustements. Nous avons commencé par utiliser l'algorithme de Cordic, puis finalement nous avons continué en utilisant le développement en série entière des ces fonctions pour gagner en précision. \\
 La difficulté de l'utilisation des développements en série entière réside en la réduction des arguments d'entrés, pour cela nous avons dû implémenté l'algorithme de réduction de Cody \& Waite.
-\subsubsection{Algorithme de Cordic.}
+\subsubsection{Algorithme de Cordic \footnote{Wikipédia : https://fr.wikipedia.org/wiki/CORDIC}.}
 L'algorithme de Cordic consiste à calculer $tan(\theta)$ en appliquant au vecteur de coordonnée (x,y) une suite de rotations d'angles décroissants tendant vers 0 et dont la somme est égale à $\theta$. Le quotient $\frac{y}{x}$ est alors une approximation de $tan(\theta)$. \\
 Ainsi, on peut retrouver les valeurs des sinus et des cosinus en utilisant les relations : 
 $$
@@ -114,7 +121,7 @@ $$
     \end{array}
 \right .
 $$
-Dès lors, nous avons implémenté une fonction racine carrée : \textbf{float Math.\_sqrt(float x)}. Cette fonction fait une recherche dichotomique sur les flottants inférieurs $\tilde x$ à $x$ qui vérifie $ \tilde x^2 = x $. Cependant, les résultats de l'algorithme de Cordic n'étaient pas convaincant, en effet on atteingnant des erreurs moyennes d'une trentaine d'ulp. \\
+Dès lors, nous avons implémenté\footnote{http://www.trigofacile.com/maths/trigo/calcul/cordic/cordic.htm#haut} une fonction racine carrée : \textbf{float Math.\_sqrt(float x)}. Cette fonction fait une recherche dichotomique sur les flottants inférieurs $\tilde x$ à $x$ qui vérifie $ \tilde x^2 = x $. Cependant, les résultats de l'algorithme de Cordic n'étaient pas convaincant, en effet on atteingnant des erreurs moyennes d'une trentaine d'ulp. \\
 \\
 
 \hspace{-4cm}
@@ -181,7 +188,7 @@ cos & $[\pi /2;5\pi /8]$ & 316165 & 279598 & $2^{-20}$ & 411775\\
 \end{tabular}
 
 
-\subsubsection{Algorithme de Cody \& Waite.}
+\subsubsection{Algorithme de Cody \& Waite\footnote{Jean-Michel Muller, Elementary Functions, Algorithms and Implementation, second edition, pages 177--184, 2005}.}
 L'algorithme de Cody \& Waite est une méthode de réduction additive d'un argument $x$ sur un intervalle $[-C ; C]$.
 Dans notre cas, $C = \pi /4$ et $x$ correspond à l'argument des fonctions sinus ou cosinus. On cherche donc à exprimer : 
 $ cos(\tilde x) \ avec \ \tilde x = x - k.C $. \\
@@ -218,25 +225,27 @@ sin & $[100\ 000; 100\ 000 + 2\pi]$ & 127      & $4$ &$ 2.20$ & $2^{-7}$ & 804\\
 \hline
 \end{tabular}
 \newline
-\hspace{-8cm}\begin{figure}[h!]
+\begin{figure}[h!]
+    \hspace{-5cm}
     \centering
     \includegraphics[scale=0.5]{sin1000}
     \caption{Nombre d'ulp d'erreur en fonction de x, pour sin(x)}
     \label{fig:my_label}
 \end{figure}
 \newline
-\hspace{-8cm}\begin{figure}[h!]
-
+\begin{figure}[h!]
     \centering
+    \hspace{-5cm}
     \includegraphics[scale=0.5]{sin2PI}
     \caption{Nombre d'ulp d'erreur en fonction de x, pour sin(x)}
     \label{fig:my_label}
 \end{figure}
 \\
-\newpage
+\clearpage
 La méthode cos donne une approximation à 6 ulp d'écart au maximum.\\
 Pour des petits angles ($<\pi /8$), la précision est de 2 ulp dans le pire cas.\\
 \\
+
 \hspace{-4cm}\begin{tabular}{|c|c|c|c|c|c|c|}
 
 \hline 
@@ -253,8 +262,9 @@ cos & $[100\ 000; 100\ 000 + 2\pi]$ & 162     & $4$ &$ 2.12$ & $2^{-7}$ & 804\\
 \end{tabular}
 \\
 \\
-\hspace{-6cm}\begin{figure}[h!]
+\begin{figure}[h!]
     \centering
+    \hspace{-5cm}
     \includegraphics[scale=0.5]{cos1000}
     \caption{Nombre d'ulp d'erreur en fonction de x, pour cos(x)}
     \label{fig:my_label}
@@ -262,19 +272,19 @@ cos & $[100\ 000; 100\ 000 + 2\pi]$ & 162     & $4$ &$ 2.12$ & $2^{-7}$ & 804\\
 
 \\
 \\
-\hspace{-6cm}\begin{figure}[h!]
+\begin{figure}[h!]
     \centering
+    \hspace{-5cm}
     \includegraphics[scale=0.5]{cos2PI}
     \caption{Nombre d'ulp d'erreur en fonction de x, pour cos(x)}
     \label{fig:my_label}
 \end{figure}
 
 \\
-\newpage
 
 \cleardoublepage
 \section{Fonction atan.}
-\subsection{Utilisation des polynômes de Hermite}
+\subsection{Utilisation des polynômes de Hermite\footnote{http://myweb.lmu.edu/hmedina/papers/arctan.pdf}}
 \subsubsection{Justification}
 La fonction $arctan$ est facile à décrire avec un développement en série entière mais contrairement aux fonctions $cos$, $sin$, $arcsin$ implémentées, la suite des termes de la série ne convergent pas aussi vite car les coefficients ne comportent pas de termes en factoriels aux dénominateurs.Ceci s'amplifie dès que x s'approche de 1 en valeur absolue.
 Les polynômes de hermite sont une meilleure solution.
@@ -332,15 +342,16 @@ arctan & $[0.98;1]$ & 216 & 2.42 &$6$ & $2^{-17}$ & 2622\\
 \\
 \\
 
-\hspace{-4cm}
+
 \begin{figure}[h!]
     \centering
+    \hspace{-5cm}
     \includegraphics[scale=0.5]{atan100}
     \caption{Nombre d'ulp d'erreur en fonction de x, pour atan(x)}
     \label{fig:my_label}
 \end{figure}
 
-
+\clearpage
 \section{Fonction asin.}
 \subsection{Utilisation du dévelopement en série entière et de Horner}
 Pour le calcul de asin nous avons utilisé la formule classique du développement en série entière de arcsin:
@@ -378,18 +389,12 @@ asin & $[0.98;1]$ & 1687 & 2.43 & 7 & $2^{-20}$ & 20972\\
 \end{tabular}\\
 \\
 
-\hspace{-6cm}
 \begin{figure}[h!]
     \centering
+    \hspace{-5cm}
     \includegraphics[scale=0.5]{asin}
     \caption{Nombre d'ulp d'erreur en fonction de x, pour asin(x)}
     \label{fig:my_label}
 \end{figure}
-
-
-
-
-
-
 
 \end{document}
